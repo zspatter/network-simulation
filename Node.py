@@ -17,13 +17,12 @@ class Node:
         return list(self.adjacency_list.keys())
 
 
-    # def __del__(self):
-    #     print(f'Destructor called, Node #{self.node_id}: {self.label} removed.')
+    def __del__(self):
+        print(f'Destructor called, Node #{self.node_id}: {self.label} removed.')
 
     def __str__(self):
-        # print('Node to string')
         string = '\n\nLabel: ' + self.label +  '\t(node id: ' + str(self.node_id) + ')\nNeighbors:'
         for key in self.adjacency_list:
-            string += '\n\tNode #' + str(key) + ': ' + str(self.adjacency_list[key]) + ' (weight)'
+            string += '\n\tNode #' + str(key) + ': weight - ' + str(self.adjacency_list[key])
         return string
 

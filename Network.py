@@ -47,14 +47,13 @@ class Network:
 
 
     def __str__(self):
-        # print('Network to string')
-        string = str(self.graph_id) + " " + self.label 
+        string = str(self.graph_id) + " " + self.label
         for key in self.network_dict.keys():
             string += f'{self.network_dict[key].__str__()}'
         return string
 
 
-
+# creates 10 individual nodes (hard coded adjacency lists to match)
 node1 = Node(1, {2: 3, 3: 1, 5: 4, 9: 2}, "A")
 node2 = Node(2, {1: 3, 4: 2, 5: 3, 7: 9, 8: 10, 9: 4}, "B")
 node3 = Node(3, {1: 1, 4: 2, 6: 4, 7: 3}, "C")
@@ -66,6 +65,7 @@ node8 = Node(8, {2: 10, 5: 3, 7: 2, 9: 4}, "H")
 node9 = Node(9, {1: 2, 2: 4, 5: 4, 6: 8, 8: 4}, "I")
 node10 = Node(10, {4: 4, 6: 2, 7: 5}, "J")
 
+# create a newtwork consisting of the nodes above
 network = Network(1, 'Sample Network', {node1.node_id: node1,
                                         node2.node_id: node2,
                                         node3.node_id: node3,
@@ -78,3 +78,7 @@ network = Network(1, 'Sample Network', {node1.node_id: node1,
                                         node10.node_id: node10})
 
 print(network.__str__())
+if network.is_connected():
+    print("\nThe network is connected!\n")
+else:
+    print("\nThe network is not connected!\n")
