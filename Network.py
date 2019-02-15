@@ -33,17 +33,41 @@ class Network:
 
 
     def add_node(self, node_id, adjacency_list, label):
-        # need to handle adding edge to adjacency list(s) of neighbor(s)
+        # if node_id is unique, add it to the network
         if node_id not in self.network_dict:
-            self.network_dict[node] = Node(node_id, adjacency_list, label)
+            # creates new node with pass parameters
+            self.network_dict[node_id] = Node(node_id, adjacency_list, label)
+            # adds edges to the new node from the nodes in the adjaceny list
+            # (this ensures the edge is represented in both directions)
+            for key in adjacency_list:
+                self.network_dict[key].adjacency_list[node_id] = adjacency_list[key]
+
+
+    def remove_node(self, node_id):
+        # gathers list of adjacent node id's
+        adjacency_list = self.network_dict[node_id].adjacency_list.keys()
+
+        # removes edges store on adjacent objects
+        for key in adjacency_list:
+            del self.network_dict[key].adjacency_list[node_id]
+
+        # removes node object
+        del self.network_dict[node_id]
+        print(f'Node ID: #{node_id} and all of it\'s edges has been removed')
 
 
     # add edge to both adjacency lists
-    def add_edge(self, node1, node2, weight):
+    def add_edge(self, node_id1, node_id2, weight):
         if node2 not in self.network_dict[node1].adjacency_list.keys() \
                 and node1 not in self.network_dict[node2].adjacency_list.keys():
             self.network_dict[node1].adjacency_list[node2] = weight
             self.network_dict[node2].adjacency_list[node1] = weight
+
+
+    def remove_edge(self, node_id1, node_id2):
+        del self.network_dict[node_id1].adjacency_list[node_id2]
+        del self.network_dict[node_id2].adjacency_list[node_id1]
+
 
 
     def __str__(self):
@@ -76,9 +100,21 @@ network = Network(1, 'Sample Network', {node1.node_id: node1,
                                         node8.node_id: node8,
                                         node9.node_id: node9,
                                         node10.node_id: node10})
-
+# demonstrates __str__() function works
 print(network.__str__())
+# demonstrates is_connected() function works
 if network.is_connected():
     print("\nThe network is connected!\n")
 else:
     print("\nThe network is not connected!\n")
+
+# demonstrates remove edges function works
+network.remove_edge(1, 2)
+print(network.__str__())
+network.remove_node(3)
+print(network.__str__())
+
+print('\n\n\n')
+# demonstrates the add node function works
+network.add_node(11, {1: 3, 2: 4, 10: 8}, 'K')
+print(network.__str__())
