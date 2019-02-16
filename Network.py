@@ -2,15 +2,25 @@ from Node import Node
 
 
 class Network:
-    # need to ensure adjacency lists mirror each other
-    def __init__(self, graph_id, label, network_dict = None):
+    def __init__(self, graph_id, label, network_dict=None):
         self.graph_id = graph_id
         self.label = label
         if network_dict is None:
             network_dict = {}
         self.network_dict = network_dict
 
-    def is_connected(self, nodes_encountered = None, start_node = None):
+        # ensures adjacency lists mirror each other (undirected weighted edges)
+        nodes = network_dict.keys()
+        for node in nodes:
+            adjacents = network_dict[node].adjacency_list.keys()
+            for adjacent in adjacents:
+                if node in self.network_dict[adjacent].adjacency_list.keys():
+                    continue
+                else:
+                    self.network_dict[adjacent].adjacency_list[node] = \
+                        self.network_dict[node].adjacency_list[adjacent]
+
+    def is_connected(self, nodes_encountered=None, start_node=None):
         if nodes_encountered is None:
             nodes_encountered = set()
         network_dict = self.network_dict
@@ -36,7 +46,7 @@ class Network:
         if node_id not in self.network_dict:
             # creates new node with pass parameters
             self.network_dict[node_id] = Node(node_id, adjacency_list, label)
-            # adds edges to the new node from the nodes in the adjaceny list
+            # adds edges to the new node from the nodes in the adjacency list
             # (this ensures the edge is represented in both directions)
             for key in adjacency_list:
                 self.network_dict[key].adjacency_list[node_id] = adjacency_list[key]
@@ -70,6 +80,12 @@ class Network:
             string += f'{self.network_dict[key].__str__()}'
         return string
 
+"""
+The lines below behave as the main method in Java
+
+Everything below is just to briefly demonstrate/test
+the basic functions of our graph/network
+"""
 
 # creates 10 individual nodes (hard coded adjacency lists to match)
 node1 = Node(1, {2: 3, 3: 1, 5: 4, 9: 2}, "A")
@@ -94,8 +110,9 @@ network = Network(1, 'Sample Network', {node1.node_id: node1,
                                         node8.node_id: node8,
                                         node9.node_id: node9,
                                         node10.node_id: node10})
+
 # demonstrates __str__() function works
-print(network.__str__())
+print(network.__str__() + '\n\n===============================\n')
 # demonstrates is_connected() function works
 if network.is_connected():
     print("\nThe network is connected!\n")
@@ -104,11 +121,27 @@ else:
 
 # demonstrates remove edges function works
 network.remove_edge(1, 2)
-print(network.__str__())
+print(network.__str__() + '\n\n===============================\n')
 network.remove_node(3)
-print(network.__str__())
+print(network.__str__() + '\n\n===============================\n')
 
-print('\n\n\n')
 # demonstrates the add node function works
 network.add_node(11, {1: 3, 2: 4, 10: 8}, 'K')
-print(network.__str__())
+print(network.__str__() + '\n\n===============================\n')
+
+
+# tests the functionality in __init__ that ensures adjacency lists
+# of separate nodes mirror each other (undirected, weighted edges)
+init_tester_node1 = Node(1, {2: 3, 3: 5}, "A")
+init_tester_node2 = Node(2, {1: 2, 4: 3}, "B")
+init_tester_node3 = Node(3, {2: 6, 4: 9}, "C")
+init_tester_node4 = Node(4, {3: 8, 2: 4}, "D")
+init_tester_node5 = Node(5, {1: 1, 4: 2}, "E")
+
+init_tester = Network(1, "__init__ Test Network", {init_tester_node1.node_id: init_tester_node1,
+                                      init_tester_node2.node_id: init_tester_node2,
+                                      init_tester_node3.node_id: init_tester_node3,
+                                      init_tester_node4.node_id: init_tester_node4,
+                                      init_tester_node5.node_id: init_tester_node5})
+
+print(init_tester.__str__() + '\n\n===============================\n')
