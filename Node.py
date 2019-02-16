@@ -11,7 +11,7 @@ class Node:
         self.adjacency_dict = adjacency_dict
 
     # return bool indicating whether this instance shares an edge with passed node_id
-    def is_neighbor(self, node_id):
+    def is_adjacent(self, node_id):
         if node_id in self.adjacency_dict:
             return True
         else:
