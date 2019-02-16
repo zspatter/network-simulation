@@ -1,5 +1,6 @@
 from Node import Node
 
+
 class Network:
     # need to ensure adjacency lists mirror each other
     def __init__(self, graph_id, label, network_dict = None):
@@ -8,7 +9,6 @@ class Network:
         if network_dict is None:
             network_dict = {}
         self.network_dict = network_dict
-
 
     def is_connected(self, nodes_encountered = None, start_node = None):
         if nodes_encountered is None:
@@ -28,10 +28,8 @@ class Network:
             return True
         return False
 
-
     def nodes(self):
         return list(self.network_dict.keys())
-
 
     def add_node(self, node_id, adjacency_list, label):
         # if node_id is unique, add it to the network
@@ -42,7 +40,6 @@ class Network:
             # (this ensures the edge is represented in both directions)
             for key in adjacency_list:
                 self.network_dict[key].adjacency_list[node_id] = adjacency_list[key]
-
 
     def remove_node(self, node_id):
         # gathers list of adjacent node id's
@@ -56,7 +53,6 @@ class Network:
         del self.network_dict[node_id]
         print(f'Node ID: #{node_id} and all of it\'s edges has been removed')
 
-
     # add edge to both adjacency lists
     def add_edge(self, node_id1, node_id2, weight):
         if node_id2 not in self.network_dict[node_id1].adjacency_list.keys() \
@@ -64,12 +60,9 @@ class Network:
             self.network_dict[node_id1].adjacency_list[node_id2] = weight
             self.network_dict[node_id2].adjacency_list[node_id1] = weight
 
-
     def remove_edge(self, node_id1, node_id2):
         del self.network_dict[node_id1].adjacency_list[node_id2]
         del self.network_dict[node_id2].adjacency_list[node_id1]
-
-
 
     def __str__(self):
         string = str(self.graph_id) + " " + self.label
@@ -90,7 +83,7 @@ node8 = Node(8, {2: 10, 5: 3, 7: 2, 9: 4}, "H")
 node9 = Node(9, {1: 2, 2: 4, 5: 4, 6: 8, 8: 4}, "I")
 node10 = Node(10, {4: 4, 6: 2, 7: 5}, "J")
 
-# create a newtwork consisting of the nodes above
+# create a network consisting of the nodes above
 network = Network(1, 'Sample Network', {node1.node_id: node1,
                                         node2.node_id: node2,
                                         node3.node_id: node3,
