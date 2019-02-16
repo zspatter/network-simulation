@@ -1,6 +1,7 @@
 from Node import Node
 
 class Network:
+    # need to ensure adjacency lists mirror each other
     def __init__(self, graph_id, label, network_dict = None):
         self.graph_id = graph_id
         self.label = label
@@ -58,10 +59,10 @@ class Network:
 
     # add edge to both adjacency lists
     def add_edge(self, node_id1, node_id2, weight):
-        if node2 not in self.network_dict[node1].adjacency_list.keys() \
-                and node1 not in self.network_dict[node2].adjacency_list.keys():
-            self.network_dict[node1].adjacency_list[node2] = weight
-            self.network_dict[node2].adjacency_list[node1] = weight
+        if node_id2 not in self.network_dict[node_id1].adjacency_list.keys() \
+                and node_id1 not in self.network_dict[node_id2].adjacency_list.keys():
+            self.network_dict[node_id1].adjacency_list[node_id2] = weight
+            self.network_dict[node_id2].adjacency_list[node_id1] = weight
 
 
     def remove_edge(self, node_id1, node_id2):
