@@ -1,6 +1,7 @@
 from Node import Node
 
 
+# TODO add support for functions to accept label (rather than just node_id) 
 class Network:
     # a Network instance consists of:
     # graph_id (int)
