@@ -134,16 +134,17 @@ node_9 = Node(9, 'I', {1: 2, 2: 4, 5: 4, 6: 8, 8: 4})
 node_10 = Node(10, 'J', {4: 4, 6: 2, 7: 5})
 
 # create a network consisting of the nodes above
-network_1 = Network(1, 'Sample Network', {node_1.node_id: node_1,
-                                          node_2.node_id: node_2,
-                                          node_3.node_id: node_3,
-                                          node_4.node_id: node_4,
-                                          node_5.node_id: node_5,
-                                          node_6.node_id: node_6,
-                                          node_7.node_id: node_7,
-                                          node_8.node_id: node_8,
-                                          node_9.node_id: node_9,
-                                          node_10.node_id: node_10})
+network_1 = Network(1, 'Sample Network',
+                    {node_1.node_id: node_1,
+                     node_2.node_id: node_2,
+                     node_3.node_id: node_3,
+                     node_4.node_id: node_4,
+                     node_5.node_id: node_5,
+                     node_6.node_id: node_6,
+                     node_7.node_id: node_7,
+                     node_8.node_id: node_8,
+                     node_9.node_id: node_9,
+                     node_10.node_id: node_10})
 
 # demonstrates __str__() function works
 print(network_1.__str__() + '\n\n===============================\n')
@@ -176,7 +177,10 @@ node_b = Node(2, 'B', {3: 1})
 node_c = Node(3, 'C', {1: 2})
 node_d = Node(4, 'D')
 disconnected_network = Network(1, 'Disconnected Network',
-                               {1: node_a, 2: node_b, 3: node_c, 4: node_d})
+                               {1: node_a,
+                                2: node_b, 
+                                3: node_c,
+                                4: node_d})
 
 # prints Disconnected Network and checks if graph is connected
 print('\t---DISCONNECTED GRAPH---\n')
@@ -192,11 +196,13 @@ init_tester_node3 = Node(3, "C", {2: 6, 4: 9})
 init_tester_node4 = Node(4, "D", {3: 8, 2: 4})
 init_tester_node5 = Node(5, "E", {1: 1, 4: 2})
 
-init_tester = Network(1, "__init__ Test Network", {init_tester_node1.node_id: init_tester_node1,
-                                      init_tester_node2.node_id: init_tester_node2,
-                                      init_tester_node3.node_id: init_tester_node3,
-                                      init_tester_node4.node_id: init_tester_node4,
-                                      init_tester_node5.node_id: init_tester_node5})
+init_tester = Network(1, "__init__ Test Network",
+                      {init_tester_node1.node_id: init_tester_node1,
+                       init_tester_node2.node_id: init_tester_node2,
+                       init_tester_node3.node_id: init_tester_node3,
+                       init_tester_node4.node_id: init_tester_node4,
+                       init_tester_node5.node_id: init_tester_node5})
+
 print('\t---ADJACENCY LISTS MIRROR TEST---\n')
 print(init_tester.__str__() + '\n\n===============================\n')
 
