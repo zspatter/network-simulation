@@ -2,8 +2,8 @@ from Node import Node
 import random
 
 
-# TODO add support for functions to accept label (rather than just node_id)
-# TODO ensure generated network is ALWAYS connected initially
+# TODO #1 add support for functions to accept label (rather than just node_id)
+# TODO #2 ensure generated network is ALWAYS connected initially
 class Network:
     # a Network instance consists of:
     # graph_id (int)
