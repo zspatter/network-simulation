@@ -20,12 +20,11 @@ class Node:
     def get_adjacents(self):
         return list(self.adjacency_dict.keys())
 
-    def __del__(self):
-        print(f'Destructor called, Node #{self.node_id}: {self.label} removed.')
-
     def __str__(self):
         string = '\n\nLabel: ' + self.label + '\t(Node ID: ' + str(self.node_id) + ')\nNeighbors:'
         for key in self.adjacency_dict:
             string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key), str(self.adjacency_dict[key]))
         return string
 
+    def __del__(self):
+        print(f'Destructor called, Node #{self.node_id}: {self.label} removed.')

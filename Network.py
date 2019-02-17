@@ -178,7 +178,7 @@ node_c = Node(3, 'C', {1: 2})
 node_d = Node(4, 'D')
 disconnected_network = Network(1, 'Disconnected Network',
                                {1: node_a,
-                                2: node_b, 
+                                2: node_b,
                                 3: node_c,
                                 4: node_d})
 
