@@ -24,8 +24,8 @@ class Node:
         print(f'Destructor called, Node #{self.node_id}: {self.label} removed.')
 
     def __str__(self):
-        string = '\n\nLabel: ' + self.label + '\t(node id: ' + str(self.node_id) + ')\nNeighbors:'
+        string = '\n\nLabel: ' + self.label + '\t(Node ID: ' + str(self.node_id) + ')\nNeighbors:'
         for key in self.adjacency_dict:
-            string += '\n\tNode #' + str(key) + ': weight - ' + str(self.adjacency_dict[key])
+            string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key), str(self.adjacency_dict[key]))
         return string
 
