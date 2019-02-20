@@ -47,20 +47,20 @@ class Network:
             return True
         return False
 
-    # Function to print a BFS of graph
+    # Function check graph connectivity with BFS
     def BFS(self, node_id=None):
-        # Mark all the vertices as not visited
-        # visited = [False] * (len(self.nodes()))
-        nodes_encountered = set()
+        # mark all the nodes as not visited (value is None)
         visited = dict.fromkeys(self.nodes())
+        # empty set for nodes encountered
+        nodes_encountered = set()
 
         # Create a queue for BFS
         queue = []
 
         if not node_id:
             node_id = self.nodes()[0]
-        # Mark the source node as
-        # visited and enqueue it
+
+        # mark the source node as visited and enqueue it
         queue.append(node_id)
         visited[node_id] = True
         nodes_encountered.add(node_id)
@@ -70,12 +70,15 @@ class Network:
             node_id = queue.pop(0)
             nodes_encountered.add(node_id)
 
+            # all adjacents of current node are checked, if the node hasn't been
+            # enqueued previously, node is enqueued and added to nodes_encountered
             for node in self.network_dict[node_id].get_adjacents():
                 if visited[node] is None:
                     queue.append(node)
                     visited[node] = True
                     nodes_encountered.add(node)
 
+        # if size of nodes_encountered equals size of nodes(), return True
         if len(nodes_encountered) == len(self.nodes()):
             return True
         else:
