@@ -1,5 +1,6 @@
 from Node import Node
 import random
+import timeit, time
 
 
 # TODO #1 add support for functions to accept label (rather than just node_id)
@@ -45,6 +46,40 @@ class Network:
         else:
             return True
         return False
+
+    # Function to print a BFS of graph
+    def BFS(self, node_id=None):
+        # Mark all the vertices as not visited
+        # visited = [False] * (len(self.nodes()))
+        nodes_encountered = set()
+        visited = dict.fromkeys(self.nodes())
+
+        # Create a queue for BFS
+        queue = []
+
+        if not node_id:
+            node_id = self.nodes()[0]
+        # Mark the source node as
+        # visited and enqueue it
+        queue.append(node_id)
+        visited[node_id] = True
+        nodes_encountered.add(node_id)
+
+        while queue:
+            # dequeue a node from queue and add to nodes_encountered
+            node_id = queue.pop(0)
+            nodes_encountered.add(node_id)
+
+            for node in self.network_dict[node_id].get_adjacents():
+                if visited[node] is None:
+                    queue.append(node)
+                    visited[node] = True
+                    nodes_encountered.add(node)
+
+        if len(nodes_encountered) == len(self.nodes()):
+            return True
+        else:
+            return False
 
     def nodes(self):
         return list(self.network_dict.keys())
@@ -158,8 +193,8 @@ print(network_1.__str__() + '\n\n===============================\n')
 print('\t---REMOVE NODE---\n')
 network_1.remove_node(3)
 print(network_1.__str__() + '\n\n===============================\n')
-
-# demonstrates the add node function works
+#
+# # demonstrates the add node function works
 print('\t---ADD NODE---\n')
 network_1.add_node(11, 'K', {1: 3, 2: 4, 10: 8})
 print(network_1.__str__() + '\n\n===============================\n')
@@ -170,6 +205,15 @@ if network_1.is_connected():
     print("The network is connected!\n\n===============================\n")
 else:
     print("The network is not connected!\n\n===============================\n")
+start = time.time_ns()
+print('DFS: ' + str(network_1.is_connected()))
+end = time.time_ns()
+print('elapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('BFS: ' + str(network_1.BFS()))
+end = time.time_ns()
+print('elapsed time: ' + str(end - start))
 
 # creates disconnected network to further test is_connected()
 node_a = Node(1, 'A', {2: 1, 3: 2})
@@ -187,6 +231,18 @@ print('\t---DISCONNECTED GRAPH---\n')
 print(disconnected_network.__str__())
 print('The network is connected: ' + str(disconnected_network.is_connected()) +
       '\n\n===============================\n')
+
+print('BFS: ' + str(disconnected_network.BFS()))
+
+start = time.time_ns()
+print('DFS: ' + str(disconnected_network.is_connected()))
+end = time.time_ns()
+print('elapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('BFS: ' + str(disconnected_network.BFS()))
+end = time.time_ns()
+print('elapsed time: ' + str(end - start))
 
 # tests the functionality in __init__ that ensures adjacency lists
 # of separate nodes mirror each other (undirected, weighted edges)
@@ -207,10 +263,22 @@ print('\t---ADJACENCY LISTS MIRROR TEST---\n')
 print(init_tester.__str__() + '\n\n===============================\n')
 
 # tests the generate_network and generate_adjacency_list functions
-generated_network = Network.generate_network(50)
+generated_network = Network.generate_network(1000)
 print('\t---GENERATED RANDOM NETWORK---\n')
 print(generated_network.__str__() + '\n\n===============================\n')
-if generated_network.is_connected():
-    print('Generated Network is connected!\n')
-else:
-    print('Generated Network is not connected!\n')
+# if generated_network.is_connected():
+#     print('Generated Network is connected!\n')
+# else:
+#     print('Generated Network is not connected!\n')
+
+
+# time the DFS and BFS functions for generated_network for comparison
+start = time.time_ns()
+print('DFS: ' + str(generated_network.is_connected()))
+end = time.time_ns()
+print('DFS elapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('BFS: ' + str(generated_network.BFS()))
+end = time.time_ns()
+print('BFS elapsed time: ' + str(end - start))
