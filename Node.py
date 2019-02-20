@@ -9,6 +9,7 @@ class Node:
         if adjacency_dict is None:
             adjacency_dict = {}
         self.adjacency_dict = adjacency_dict
+        self.status = True
 
     # return bool indicating whether this instance shares an edge with passed node_id
     def is_adjacent(self, node_id):
@@ -23,7 +24,7 @@ class Node:
     def __str__(self):
         string = '\n\nLabel: ' + self.label + '\t(Node ID: ' + str(self.node_id) + ')\nNeighbors:'
         for key in self.adjacency_dict:
-            string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key), str(self.adjacency_dict[key]))
+            string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key), str(self.adjacency_dict[key]['weight']))
         return string
 
     # def __del__(self):
