@@ -55,6 +55,7 @@ class Network:
             node = stack.pop()
             if node not in nodes_encountered:
                 nodes_encountered.add(node)
+                # this add all adjacents - this will cause repeat visits
                 stack.extend(self.network_dict[node].get_adjacents())
 
         if len(nodes_encountered) != len(self.nodes()):
