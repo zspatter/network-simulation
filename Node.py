@@ -26,6 +26,3 @@ class Node:
         for key in self.adjacency_dict:
             string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key), str(self.adjacency_dict[key]['weight']))
         return string
-
-    # def __del__(self):
-    #     print(f'Destructor called, Node #{self.node_id}: {self.label} removed.')

@@ -22,11 +22,12 @@ class Network:
         for node in nodes:
             adjacents = network_dict[node].get_adjacents()
             for adjacent in adjacents:
-                if node in self.network_dict[adjacent].get_adjacents():
+                if node in self.network_dict[adjacent].get_adjacents() \
+                        and self.network_dict[adjacent].adjacency_dict[node] \
+                        is self.network_dict[node].adjacency_dict[adjacent]:
                     continue
                 else:
-                    self.network_dict[adjacent].adjacency_dict[node] = \
-                        self.network_dict[node].adjacency_dict[adjacent]
+                    self.network_dict[adjacent].adjacency_dict[node] = self.network_dict[node].adjacency_dict[adjacent]
 
     # determines if the network is connected (path between all nodes)
     def is_connected(self, nodes_encountered=None, start_node=None):
@@ -154,8 +155,8 @@ class Network:
     def add_edge(self, node_id1, node_id2, weight):
         if node_id2 not in self.network_dict[node_id1].get_adjacents() \
                 and node_id1 not in self.network_dict[node_id2].get_adjacents():
-            self.network_dict[node_id1].adjacency_dict[node_id2] = weight
-            self.network_dict[node_id2].adjacency_dict[node_id1] = weight
+            self.network_dict[node_id1].adjacency_dict[node_id2] = {'weight': weight, 'status': True}
+            self.network_dict[node_id2].adjacency_dict[node_id1] = {'weight': weight, 'status': True}
 
     def remove_edge(self, node_id1, node_id2):
         del self.network_dict[node_id1].adjacency_dict[node_id2]
@@ -246,98 +247,123 @@ network_1 = Network(1, 'Sample Network',
 print(network_1.__str__() + '\n\n===============================\n')
 
 # demonstrates remove_edge function works
-# print('\t---REMOVE EDGE---\n')
-# network_1.remove_edge(1, 2)
-# print(network_1.__str__() + '\n\n===============================\n')
-#
-# # demonstrates remove_node function works
-# print('\t---REMOVE NODE---\n')
-# network_1.remove_node(3)
-# print(network_1.__str__() + '\n\n===============================\n')
-# #
-# # # demonstrates the add node function works
-# print('\t---ADD NODE---\n')
-# network_1.add_node(11, 'K', {1: 3, 2: 4, 10: 8})
-# print(network_1.__str__() + '\n\n===============================\n')
-#
-#
-# # demonstrates is_connected() function works
-# if network_1.is_connected():
-#     print("The network is connected!\n\n===============================\n")
-# else:
-#     print("The network is not connected!\n\n===============================\n")
-# start = time.time_ns()
-# print('DFS: ' + str(network_1.is_connected()))
-# end = time.time_ns()
-# print('elapsed time: ' + str(end - start))
-#
-# start = time.time_ns()
-# print('BFS: ' + str(network_1.BFS()))
-# end = time.time_ns()
-# print('elapsed time: ' + str(end - start))
-#
-# # creates disconnected network to further test is_connected()
-# node_a = Node(1, 'A', {2: 1, 3: 2})
-# node_b = Node(2, 'B', {3: 1})
-# node_c = Node(3, 'C', {1: 2})
-# node_d = Node(4, 'D')
-# disconnected_network = Network(1, 'Disconnected Network',
-#                                {1: node_a,
-#                                 2: node_b,
-#                                 3: node_c,
-#                                 4: node_d})
-#
-# # prints Disconnected Network and checks if graph is connected
-# print('\t---DISCONNECTED GRAPH---\n')
-# print(disconnected_network.__str__())
-# print('The network is connected: ' + str(disconnected_network.is_connected()) +
-#       '\n\n===============================\n')
-#
-# start = time.time_ns()
-# print('Recursive DFS: ' + str(disconnected_network.is_connected()))
-# end = time.time_ns()
-# print('\telapsed time: ' + str(end - start))
-#
-# start = time.time_ns()
-# print('\nIterative DFS: ' + str(disconnected_network.DFS()))
-# end = time.time_ns()
-# print('\telapsed time: ' + str(end - start))
-#
-# start = time.time_ns()
-# print('\nIterative BFS: ' + str(disconnected_network.BFS()))
-# end = time.time_ns()
-# print('\telapsed time: ' + str(end - start))
-#
-# # tests the functionality in __init__ that ensures adjacency lists
-# # of separate nodes mirror each other (undirected, weighted edges)
-# init_tester_node1 = Node(1, "A", {2: 3, 3: 5})
-# init_tester_node2 = Node(2, "B", {1: 2, 4: 3})
-# init_tester_node3 = Node(3, "C", {2: 6, 4: 9})
-# init_tester_node4 = Node(4, "D", {3: 8, 2: 4})
-# init_tester_node5 = Node(5, "E", {1: 1, 4: 2})
-#
-# init_tester = Network(1, "__init__ Test Network",
-#                       {init_tester_node1.node_id: init_tester_node1,
-#                        init_tester_node2.node_id: init_tester_node2,
-#                        init_tester_node3.node_id: init_tester_node3,
-#                        init_tester_node4.node_id: init_tester_node4,
-#                        init_tester_node5.node_id: init_tester_node5})
-#
-# print('\t---ADJACENCY LISTS MIRROR TEST---\n')
-# print(init_tester.__str__() + '\n\n===============================\n')
-#
-# # tests the generate_network and generate_adjacency_list functions
-# generated_network = Network.generate_network(50000)
-# print('\t---GENERATED RANDOM NETWORK---\n')
-# print(generated_network.__str__() + '\n\n===============================\n')
-#
-# # times iterative DFS and iterative BFS for comparison
-# start = time.time_ns()
-# print('\nIterative DFS: ' + str(generated_network.DFS()))
-# end = time.time_ns()
-# print('\telapsed time: ' + str(end - start))
-#
-# start = time.time_ns()
-# print('\nIterative BFS: ' + str(generated_network.BFS()))
-# end = time.time_ns()
-# print('\telapsed time: ' + str(end - start))
+print('\t---REMOVE EDGE---\n')
+network_1.remove_edge(1, 2)
+print(network_1.__str__() + '\n\n===============================\n')
+
+# demonstrates remove_node function works
+print('\t---REMOVE NODE---\n')
+network_1.remove_node(3)
+print(network_1.__str__() + '\n\n===============================\n')
+
+# demonstrates add edge function works
+print('\t---ADD EDGE---\n')
+network_1.add_edge(1, 2, 15)
+print(network_1.__str__() + '\n\n===============================\n')
+
+# demonstrates the add node function works
+print('\t---ADD NODE---\n')
+network_1.add_node(11, 'K',
+                   {1: {'weight': 3, 'status': True},
+                    2: {'weight': 4, 'status': True},
+                    10: {'weight': 8, 'status': True}})
+print(network_1.__str__() + '\n\n===============================\n')
+
+
+# demonstrates is_connected() function works
+if network_1.is_connected():
+    print("The network is connected!\n\n===============================\n")
+else:
+    print("The network is not connected!\n\n===============================\n")
+start = time.time_ns()
+print('Recursive DFS: ' + str(network_1.is_connected()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative DFS: ' + str(network_1.DFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative BFS: ' + str(network_1.BFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
+
+# creates disconnected network to further test is_connected()
+node_a = Node(1, 'A',
+              {2: {'weight': 1, 'status': True},
+               3: {'weight': 2, 'status': True}})
+node_b = Node(2, 'B',
+              {3: {'weight': 1, 'status': True}})
+node_c = Node(3, 'C',
+              {1: {'weight': 2, 'status': True}})
+node_d = Node(4, 'D')
+disconnected_network = Network(1, 'Disconnected Network',
+                               {1: node_a,
+                                2: node_b,
+                                3: node_c,
+                                4: node_d})
+
+# prints Disconnected Network and checks if graph is connected
+print('\t---DISCONNECTED GRAPH---\n')
+print(disconnected_network.__str__() + '\n\n===============================\n')
+
+start = time.time_ns()
+print('Recursive DFS: ' + str(disconnected_network.is_connected()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative DFS: ' + str(disconnected_network.DFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative BFS: ' + str(disconnected_network.BFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
+
+# tests the functionality in __init__ that ensures adjacency lists
+# of separate nodes mirror each other (undirected, weighted edges)
+init_tester_node1 = Node(1, "A",
+                         {2: {'weight': 3, 'status': True},
+                          3: {'weight': 5, 'status': True}})
+init_tester_node2 = Node(2, "B",
+                         {1: {'weight': 2, 'status': True},
+                          4: {'weight': 3, 'status': True}})
+init_tester_node3 = Node(3, "C",
+                         {2: {'weight': 6, 'status': True},
+                          4: {'weight': 9, 'status': True}})
+init_tester_node4 = Node(4, "D",
+                         {3: {'weight': 8, 'status': True},
+                          2: {'weight': 4, 'status': True}})
+init_tester_node5 = Node(5, "E",
+                         {1: {'weight': 1, 'status': True},
+                          4: {'weight': 2, 'status': True}})
+
+init_tester = Network(1, "__init__ Test Network",
+                      {init_tester_node1.node_id: init_tester_node1,
+                       init_tester_node2.node_id: init_tester_node2,
+                       init_tester_node3.node_id: init_tester_node3,
+                       init_tester_node4.node_id: init_tester_node4,
+                       init_tester_node5.node_id: init_tester_node5})
+
+print('\t---ADJACENCY LISTS MIRROR TEST---\n')
+print(init_tester.__str__() + '\n\n===============================\n')
+
+# tests the generate_network and generate_adjacency_list functions
+generated_network = Network.generate_network(5000)
+print('\t---GENERATED RANDOM NETWORK---\n')
+print(generated_network.__str__() + '\n\n===============================\n')
+
+# times iterative DFS and iterative BFS for comparison
+start = time.time_ns()
+print('\nIterative DFS: ' + str(generated_network.DFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative BFS: ' + str(generated_network.BFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
