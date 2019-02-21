@@ -13,13 +13,18 @@ class Node:
 
     # return bool indicating whether this instance shares an edge with passed node_id
     def is_adjacent(self, node_id):
-        if node_id in self.adjacency_dict:
+        if node_id in self.adjacency_dict and self.adjacency_dict[node_id]['status']:
             return True
         else:
             return False
 
     def get_adjacents(self):
-        return list(self.adjacency_dict.keys())
+        # return list(self.adjacency_dict.keys())
+        adjacents = list()
+        for key in self.adjacency_dict:
+            if self.adjacency_dict[key]['status']:
+                adjacents.append(key)
+        return adjacents
 
     # if node is active, returns string displaying all of the active edges
     def __str__(self):

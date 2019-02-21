@@ -56,7 +56,7 @@ class Network:
             node = stack.pop()
             if node not in nodes_encountered:
                 nodes_encountered.add(node)
-                # this add all adjacents - this will cause repeat visits
+                # TODO: this adds all adjacents - this will cause repeat visits
                 stack.extend(self.network_dict[node].get_adjacents())
 
         if len(nodes_encountered) != len(self.nodes()):
@@ -70,7 +70,6 @@ class Network:
         visited = dict.fromkeys(self.nodes())
         # empty set for nodes encountered
         nodes_encountered = set()
-
         # Create a queue for BFS
         queue = []
 
@@ -423,6 +422,21 @@ print(init_tester.__str__() + '\n\n===============================\n')
 print('\t---MARK NODE #1 INACTIVE---\n')
 init_tester.mark_node_inactive(1)
 print(init_tester.__str__() + '\n\n===============================\n')
+
+start = time.time_ns()
+print('Recursive DFS: ' + str(init_tester.is_connected()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative DFS: ' + str(init_tester.DFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative BFS: ' + str(init_tester.BFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
 print('\t---MARK NODE #1 ACTIVE---\n')
 init_tester.mark_node_active(1)
