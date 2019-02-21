@@ -162,6 +162,65 @@ class Network:
         del self.network_dict[node_id1].adjacency_dict[node_id2]
         del self.network_dict[node_id2].adjacency_dict[node_id1]
 
+    """
+    The following 4 functions toggle status of nodes and edges
+    
+    We will need to develop functions that check for status before executing
+    for example, our functions that check graph connectivity or paths
+    """
+    # marks all nodes in adjacency list as inactive, then
+    # mirrors that status in the other adjacency list
+    # also marks node's status as inactive
+    def mark_node_inactive(self, node_id):
+        # gathers list of adjacent node id's
+        adjacency_dict = self.network_dict[node_id].get_adjacents()
+
+        # marks all edges of node as inactive, and mirrors
+        # the status on all adjacents edges connected to the node
+        for key in adjacency_dict:
+            self.network_dict[key].adjacency_dict[node_id]['status'] = False
+            self.network_dict[node_id].adjacency_dict[key]['status'] = False
+
+        # marks node status as inactive
+        self.network_dict[node_id].status = False
+
+    """
+    How should we handle status if an edge is explicitly made inactive,
+    then a connected node is made inactive, then eventually active again
+    
+    currently, the edge that was explicitly toggled off would be made active
+    when the connected node is made active
+    
+    should node status take priority over edge status?
+    """
+    # mark all adjacent edges connected with another active node
+    # as active, then mark the passed node_id as active
+    def mark_node_active(self, node_id):
+        # gathers list of adjacent node id's
+        adjacency_dict = self.network_dict[node_id].get_adjacents()
+
+        # marks all edges of node as inactive, and mirrors
+        # the status on all adjacents edges connected to the node
+        for key in adjacency_dict:
+            if self.network_dict[key].status is True:
+                self.network_dict[key].adjacency_dict[node_id]['status'] = True
+                self.network_dict[node_id].adjacency_dict[key]['status'] = True
+
+        # marks node status as inactive
+        self.network_dict[node_id].status = True
+
+    # mark edge as inactive in both adjacency_dicts
+    def mark_edge_inactive(self, node_id1, node_id2):
+        self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = False
+        self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
+
+    # if node_id1 and node_id2 are active, mark edges
+    # as active in both adjacency_dicts
+    def mark_edge_active(self, node_id1, node_id2):
+        if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
+            self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
+            self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
+
     def __str__(self):
         string = 'Graph ID: ' + str(self.graph_id) + ': ' + self.label
         for key in self.network_dict.keys():
