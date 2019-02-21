@@ -21,8 +21,13 @@ class Node:
     def get_adjacents(self):
         return list(self.adjacency_dict.keys())
 
+    # if node is active, returns string displaying all of the active edges
     def __str__(self):
-        string = '\n\nLabel: ' + self.label + '\t(Node ID: ' + str(self.node_id) + ')\nNeighbors:'
-        for key in self.adjacency_dict:
-            string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key), str(self.adjacency_dict[key]['weight']))
-        return string
+        if self.status:
+            string = '\n\nLabel: ' + self.label + '\t(Node ID: ' \
+                     + str(self.node_id) + ')\nNeighbors:'
+            for key in self.adjacency_dict:
+                if self.adjacency_dict[key]['status']:
+                    string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key),
+                                                                       str(self.adjacency_dict[key]['weight']))
+            return string

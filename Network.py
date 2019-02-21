@@ -102,7 +102,12 @@ class Network:
             return False
 
     def nodes(self):
-        return list(self.network_dict.keys())
+        nodes = list(self.network_dict.keys())
+        active_nodes = list()
+        for node in nodes:
+            if self.network_dict[node].status:
+                active_nodes.append(node)
+        return active_nodes
 
     # this function generates a random network with n nodes
     @staticmethod
@@ -331,9 +336,9 @@ print(network_1.__str__() + '\n\n===============================\n')
 
 # demonstrates is_connected() function works
 if network_1.is_connected():
-    print("The network is connected!\n\n===============================\n")
+    print("The network is connected!\n")
 else:
-    print("The network is not connected!\n\n===============================\n")
+    print("The network is not connected!\n")
 start = time.time_ns()
 print('Recursive DFS: ' + str(network_1.is_connected()))
 end = time.time_ns()
@@ -411,18 +416,31 @@ init_tester = Network(1, "__init__ Test Network",
 print('\t---ADJACENCY LISTS MIRROR TEST---\n')
 print(init_tester.__str__() + '\n\n===============================\n')
 
+print('\t---MARK EDGE BETWEEN NODE #1 AND #5 INACTIVE---\n')
+init_tester.mark_edge_inactive(1, 5)
+print(init_tester.__str__() + '\n\n===============================\n')
+
+print('\t---MARK NODE #1 INACTIVE---\n')
+init_tester.mark_node_inactive(1)
+print(init_tester.__str__() + '\n\n===============================\n')
+
+print('\t---MARK NODE #1 ACTIVE---\n')
+init_tester.mark_node_active(1)
+print(init_tester.__str__() + '\n\n===============================\n')
+
+
 # tests the generate_network and generate_adjacency_list functions
-generated_network = Network.generate_network(5000)
-print('\t---GENERATED RANDOM NETWORK---\n')
-print(generated_network.__str__() + '\n\n===============================\n')
-
-# times iterative DFS and iterative BFS for comparison
-start = time.time_ns()
-print('\nIterative DFS: ' + str(generated_network.DFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative BFS: ' + str(generated_network.BFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
+# generated_network = Network.generate_network(5000)
+# print('\t---GENERATED RANDOM NETWORK---\n')
+# print(generated_network.__str__() + '\n\n===============================\n')
+#
+# # times iterative DFS and iterative BFS for comparison
+# start = time.time_ns()
+# print('\nIterative DFS: ' + str(generated_network.DFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative BFS: ' + str(generated_network.BFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
