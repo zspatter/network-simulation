@@ -30,10 +30,8 @@ class Node:
     # if node is active, returns string displaying all of the active edges
     def __str__(self):
         if self.status:
-            string = '\n\nLabel: ' + self.label + '\t(Node ID: ' \
-                     + str(self.node_id) + ')\nNeighbors:'
+            string = '\n\nLabel: ' + self.label + '\t(Node ID: ' + str(self.node_id) + ')\nNeighbors:'
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
-                    string += '\n\tNode {:>4}:\t{:>2} (weight)'.format('#' + str(key),
-                                                                       str(self.adjacency_dict[key]['weight']))
+                    string += '\n\tNode {:>6}:\t{:>2} (weight)'.format('#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string

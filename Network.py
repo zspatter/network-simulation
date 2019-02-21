@@ -187,6 +187,7 @@ class Network:
 
         # marks node status as inactive
         self.network_dict[node_id].status = False
+        print(f'Node ID: #{node_id} and all of it\'s edges has been marked inactive.')
 
     """
     How should we handle status if an edge is explicitly made inactive,
@@ -212,11 +213,14 @@ class Network:
 
         # marks node status as inactive
         self.network_dict[node_id].status = True
+        print(f'Node ID: #{node_id} and all of it\'s edges has been marked active.')
 
     # mark edge as inactive in both adjacency_dicts
     def mark_edge_inactive(self, node_id1, node_id2):
         self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = False
         self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
+
+        print(f'The edge connecting Node ID: #{node_id1} and Node ID: #{node_id2} has been marked inactive.')
 
     # if node_id1 and node_id2 are active, mark edges
     # as active in both adjacency_dicts
@@ -224,6 +228,9 @@ class Network:
         if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
             self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
             self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
+            print(f'The edge connecting Node ID: #{node_id1} and Node ID: #{node_id2} has been marked active.')
+        else:
+            print('One of the connecting nodes is inactive. As a result, this edge must remain inactive.')
 
     def __str__(self):
         string = 'Graph ID: ' + str(self.graph_id) + ': ' + self.label
