@@ -224,24 +224,38 @@ init_tester.mark_edge_active(1, 3)
 init_tester.mark_edge_active(3, 5)
 print('\n' + init_tester.__str__() + '\n\n===============================\n')
 
+print('\t---BREAK CONNECTIVITY VIA STATUS---\n')
+init_tester.mark_edge_inactive(1, 2)
+init_tester.mark_edge_inactive(1, 5)
 
+print('\nDisconnected through inactive edges:')
+print('\tRecursive DFS: ' + str(init_tester.is_connected()))
+print('\tIterative DFS: ' + str(init_tester.DFS()))
+print('\tIterative BFS: ' + str(init_tester.BFS()) + '\n')
+
+init_tester.mark_node_inactive(1)
+
+print('\nDisconnected node made inactive (reconnecting graph):')
+print('\tRecursive DFS: ' + str(init_tester.is_connected()))
+print('\tIterative DFS: ' + str(init_tester.DFS()))
+print('\tIterative BFS: ' + str(init_tester.BFS()))
 """
 The following section briefly tests generated networks and the iterative 
 connectivity algorithms.
 """
 
 # tests the generate_network and generate_adjacency_list functions
-generated_network = Network.generate_network(5000)
-print('\t---GENERATED RANDOM NETWORK---\n')
-print(generated_network.__str__() + '\n\n===============================\n')
-
-# times iterative DFS and iterative BFS for comparison
-start = time.time_ns()
-print('\nIterative DFS: ' + str(generated_network.DFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative BFS: ' + str(generated_network.BFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
+# generated_network = Network.generate_network(5000)
+# print('\t---GENERATED RANDOM NETWORK---\n')
+# print(generated_network.__str__() + '\n\n===============================\n')
+#
+# # times iterative DFS and iterative BFS for comparison
+# start = time.time_ns()
+# print('\nIterative DFS: ' + str(generated_network.DFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative BFS: ' + str(generated_network.BFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
