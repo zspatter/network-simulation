@@ -6,11 +6,21 @@ import time
 # TODO #1 add support for functions to accept label (rather than just node_id)
 # TODO #2 ensure generated network is ALWAYS connected initially
 class Network:
-    # a Network instance consists of:
-    # graph_id (int)
-    # label (string)
-    # network_dict (node_id: Node)
+    """
+    A class representing a network (graph). A network is defined through
+    a collection of nodes (and their adjacency dicts). A network consists
+    of a unique graph ID, label, and network dict that contains all of the
+    nodes contained within the graph.
+    """
+
     def __init__(self, graph_id, label, network_dict=None):
+        """
+        Creates an instance of a Network
+
+        :param int graph_id: unique identifier for a graph
+        :param int/str label: name associated with a graph
+        :param dict network_dict: {int node_id: Node, ...} (None by default)
+        """
         self.graph_id = graph_id
         self.label = label
         if network_dict is None:
@@ -29,8 +39,16 @@ class Network:
                 else:
                     self.network_dict[adjacent].adjacency_dict[node] = self.network_dict[node].adjacency_dict[adjacent]
 
-    # determines if the network is connected (path between all nodes)
     def is_connected(self, nodes_encountered=None, start_node=None):
+        """
+        Returns bool indicating graph connectivity (path between all nodes).
+        This is a recursive DFS.
+
+        :param set nodes_encountered: set of node_id's encountered (None by default)
+        :param int start_node: node_id of start of search (None by default)
+
+        :return: bool
+        """
         if nodes_encountered is None:
             nodes_encountered = set()
         nodes = self.nodes()
@@ -48,6 +66,14 @@ class Network:
         return False
 
     def DFS(self, node_id=None):
+        """
+        Returns bool indicating graph connectivity (path between all nodes).
+        This is an iterative DFS.
+
+        :param int node_id: identifies node where search will start (None by default)
+
+        :return: bool
+        """
         nodes_encountered = set()
         if not node_id:
             node_id = self.nodes()[0]
@@ -64,13 +90,18 @@ class Network:
         else:
             return True
 
-    # Function check graph connectivity with BFS
     def BFS(self, node_id=None):
+        """
+        Returns bool indicating graph connectivity (path between all nodes).
+        This is an iterative BFS.
+
+        :param int node_id: identifies node where search will start (None by default)
+
+        :return: bool
+        """
         # mark all the nodes as not visited (value is None)
         visited = dict.fromkeys(self.nodes())
-        # empty set for nodes encountered
         nodes_encountered = set()
-        # Create a queue for BFS
         queue = []
 
         if not node_id:
@@ -101,6 +132,11 @@ class Network:
             return False
 
     def nodes(self):
+        """
+        Returns list of active nodes within the graph.
+
+        :return: list
+        """
         nodes = list(self.network_dict.keys())
         active_nodes = list()
         for node in nodes:
@@ -108,9 +144,17 @@ class Network:
                 active_nodes.append(node)
         return active_nodes
 
-    # this function generates a random network with n nodes
     @staticmethod
     def generate_network(n, graph_id=1, label='Generic Network'):
+        """
+        Returns randomly generated network with n nodes.
+
+        :param int n: number of nodes generated graph will contain
+        :param int graph_id: unique identifier for a graph (1 by default)
+        :param int/str label: name associated with a graph ('Generic Network' by default)
+
+        :return: network
+        """
         network_dict = {}
         for x in range(1, n + 1):
             adjacency_dict = Network.generate_adjacency_dict(x, n)
@@ -122,6 +166,21 @@ class Network:
     # this function generates an adjacency list consisting of 2-5 adjacencts
     @staticmethod
     def generate_adjacency_dict(node_id, total_nodes):
+        """
+        Returns randomly generated adjacency dict for an instance of a node.
+        The generated adjacency list can contain a connection to any node
+        in the graph (except itself). This will prevent parallel edges from
+        being generated. A random number of edges between 5 and 25 (inclusive)
+        will be generated and a random weight between 1 and 50 (inclusive)
+        will be assigned to each edge.
+        This is called by the generate_network function.
+
+        :param int node_id: unique identifier for the node that the
+            adjacency dict is being generated for
+        :param int total_nodes: total number of nodes present in the generated graph
+
+        :return: dict
+        """
         adjacency_dict = {}
         for n in range(random.randint(5, 25)):
             random_node = random.randint(1, total_nodes)
@@ -134,35 +193,81 @@ class Network:
         return adjacency_dict
 
     def add_node(self, node_id, label, adjacency_dict):
+        """
+        Adds a node with the passed parameters to the graph. If the
+        node_id is already present in the graph, an error message
+        is printed to the console.
+
+        :param int node_id: unique identifier within a given graph
+        :param int/str label: name associated with a node
+        :param dict adjacency_dict: {int node_id: {'weight': int, 'status': bool}, ...}
+        """
         # if node_id is unique, add it to the network
         if node_id not in self.network_dict:
-            # creates new node with pass parameters
             self.network_dict[node_id] = Node(node_id, label, adjacency_dict)
+
             # adds edges to the new node from the nodes in the adjacency list
             # (this ensures the edge is represented in both directions)
             for key in adjacency_dict:
                 self.network_dict[key].adjacency_dict[node_id] = adjacency_dict[key]
+        else:
+            print(f'Node ID: #{node_id} is already present in this network. '
+                  f'Node could not be added.')
 
     def remove_node(self, node_id):
-        # gathers list of adjacent node id's
-        adjacency_dict = self.network_dict[node_id].get_adjacents()
+        """
+        Removes the node with the passed node_id from the graph. If node_id
+        is not present in the graph, an error message is printed to the console.
 
-        # removes edges store on adjacent objects
-        for key in adjacency_dict:
-            del self.network_dict[key].adjacency_dict[node_id]
+        :param int node_id: unique identifier within a given graph
+        """
+        if node_id in self.network_dict:
+            # gathers list of adjacent node id's
+            adjacency_dict = self.network_dict[node_id].get_adjacents()
 
-        # removes node object
-        del self.network_dict[node_id]
-        print(f'Node ID: #{node_id} and all of it\'s edges has been removed')
+            # removes edges store on adjacent objects
+            for key in adjacency_dict:
+                del self.network_dict[key].adjacency_dict[node_id]
+
+            # removes node object
+            del self.network_dict[node_id]
+            print(f'Node ID: #{node_id} and all of it\'s edges has been removed')
+        else:
+            print(f'Node ID: #{node_id} is not present in this network. '
+                  f'Node could not be removed.')
 
     # add edge to both adjacency lists
     def add_edge(self, node_id1, node_id2, weight):
+        """
+        Adds an edge between two nodes with a specified weight. It is
+        assumed that the added edge will be active. If there already
+        exists an edge between the two nodes, an error message is printed
+        to the console.
+
+        :param int node_id1: unique identifier within a given graph
+            (one of the vertices to be connected by the added edge)
+        :param int node_id2: unique identifier within a given graph
+            (one of the vertices to be connected by the added edge)
+        :param int weight: cost associated with the edge
+        """
         if node_id2 not in self.network_dict[node_id1].get_adjacents() \
                 and node_id1 not in self.network_dict[node_id2].get_adjacents():
             self.network_dict[node_id1].adjacency_dict[node_id2] = {'weight': weight, 'status': True}
             self.network_dict[node_id2].adjacency_dict[node_id1] = {'weight': weight, 'status': True}
+        else:
+            print(f'There already exists an edge between Node ID: #{node_1} '
+                  f'and Node ID: #{node_id2}. This edge could not be added.')
 
     def remove_edge(self, node_id1, node_id2):
+        """
+        Removes an edge between two nodes from the graph.
+
+        :param int node_id1: unique identifier within a given graph
+            (one of the vertices connected by the edge to be removed)
+        :param int node_id2: unique identifier within a given graph
+            (one of the vertices connected by the edge to be removed)
+        """
+        # TODO condition if edge (or node) doesn't exist
         del self.network_dict[node_id1].adjacency_dict[node_id2]
         del self.network_dict[node_id2].adjacency_dict[node_id1]
 
@@ -172,10 +277,15 @@ class Network:
     We will need to develop functions that check for status before executing
     for example, our functions that check graph connectivity or paths
     """
-    # marks all nodes in adjacency list as inactive, then
-    # mirrors that status in the other adjacency list
-    # also marks node's status as inactive
+    # TODO verify node exists (already inactive?)
     def mark_node_inactive(self, node_id):
+        """
+        Marks all edges in the adjacency list of the specified node as
+        inactive, then mirrors that status in the other adjacency lists.
+        Finally, the specified node's status is marked as inactive.
+
+        :param int node_id: unique identifier within a given graph
+        """
         # gathers list of adjacent node id's
         adjacency_dict = self.network_dict[node_id].get_adjacents()
 
@@ -198,9 +308,14 @@ class Network:
     
     should node status take priority over edge status?
     """
-    # mark all adjacent edges connected with another active node
-    # as active, then mark the passed node_id as active
+    # TODO verify node exists (already active?)
     def mark_node_active(self, node_id):
+        """
+        Marks all adjacent edges connected with another active node as
+        active, then marks the specified node as active.
+
+        :param int node_id: unique identifier within a given graph
+        """
         # gathers list of adjacent node id's
         adjacency_dict = self.network_dict[node_id].get_adjacents()
 
@@ -215,16 +330,28 @@ class Network:
         self.network_dict[node_id].status = True
         print(f'Node ID: #{node_id} and all of it\'s edges has been marked active.')
 
-    # mark edge as inactive in both adjacency_dicts
+    # TODO verify edge exists (already inactive?)
     def mark_edge_inactive(self, node_id1, node_id2):
+        """
+        Marks the specified edge as inactive in both adjacency lists.
+
+        :param int node_id1: unique identifier within a given graph
+        :param int node_id2: unique identifier within a given graph
+        """
         self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = False
         self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
 
         print(f'The edge connecting Node ID: #{node_id1} and Node ID: #{node_id2} has been marked inactive.')
 
-    # if node_id1 and node_id2 are active, mark edges
-    # as active in both adjacency_dicts
+    # TODO verify edge exists (already active?)
     def mark_edge_active(self, node_id1, node_id2):
+        """
+        Marks the specified edge as active in both adjacency lists iff
+        both connected nodes are active.
+
+        :param int node_id1: unique identifier within a given graph
+        :param int node_id2: unique identifier within a given graph
+        """
         if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
             self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
             self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
@@ -233,6 +360,13 @@ class Network:
             print('One of the connecting nodes is inactive. As a result, this edge must remain inactive.')
 
     def __str__(self):
+        """
+        Returns an easily readable (formatted) string representation of
+        the instance. Only active nodes and edges are represented. This
+        calls the Node.__str__ function.
+
+        :return: str
+        """
         string = 'Graph ID: ' + str(self.graph_id) + ': ' + self.label
         for key in self.network_dict.keys():
             string += f'{self.network_dict[key].__str__()}'
