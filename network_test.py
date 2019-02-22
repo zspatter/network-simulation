@@ -190,34 +190,45 @@ init_tester = Network(1, "__init__ Test Network",
 print('\t---ADJACENCY LISTS MIRROR TEST---\n')
 print(init_tester.__str__() + '\n\n===============================\n')
 
-print('\t---MARK EDGE BETWEEN NODE #1 AND #5 INACTIVE---\n')
-init_tester.mark_edge_inactive(1, 5)
-print(init_tester.__str__() + '\n\n===============================\n')
 
-print('\t---MARK NODE #1 INACTIVE---\n')
+"""
+The following section briefly tests the functions that toggle status
+of nodes/edges. These tests show that each condition can be reached from
+each of the 4 function. These conditions all behave as desired.
+"""
+
+print('\t---MARK NODE INACTIVE TESTS---\n')
 init_tester.mark_node_inactive(1)
-print(init_tester.__str__() + '\n\n===============================\n')
+init_tester.mark_node_inactive(1)
+init_tester.mark_node_inactive(6)
+print('\n' + init_tester.__str__() + '\n\n===============================\n')
 
-
-start = time.time_ns()
-print('Recursive DFS: ' + str(init_tester.is_connected()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative DFS: ' + str(init_tester.DFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative BFS: ' + str(init_tester.BFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
-
-print('\t---MARK NODE #1 ACTIVE---\n')
+print('\t---MARK NODE ACTIVE TESTS---\n')
 init_tester.mark_node_active(1)
-print(init_tester.__str__() + '\n\n===============================\n')
+init_tester.mark_node_active(1)
+init_tester.mark_node_active(6)
+print('\n' + init_tester.__str__() + '\n\n===============================\n')
 
+print('\t---MARK EDGE INACTIVE TESTS---\n')
+init_tester.mark_edge_inactive(1, 5)
+init_tester.mark_edge_inactive(1, 5)
+init_tester.mark_edge_inactive(3, 5)
+init_tester.mark_edge_inactive(1, 6)
+print('\n' + init_tester.__str__() + '\n\n===============================\n')
+
+print('\t---MARK EDGE ACTIVE TESTS---\n')
+init_tester.mark_edge_active(1, 5)
+init_tester.mark_edge_active(1, 5)
+init_tester.mark_node_inactive(3)
+init_tester.mark_edge_active(1, 3)
+init_tester.mark_edge_active(3, 5)
+print('\n' + init_tester.__str__() + '\n\n===============================\n')
+
+
+"""
+The following section briefly tests generated networks and the iterative 
+connectivity algorithms.
+"""
 
 # tests the generate_network and generate_adjacency_list functions
 generated_network = Network.generate_network(5000)
