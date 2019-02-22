@@ -208,6 +208,8 @@ class Network:
             # (this ensures the edge is represented in both directions)
             for key in adjacency_dict:
                 self.network_dict[key].adjacency_dict[node_id] = adjacency_dict[key]
+
+        # if node already exists
         else:
             print(f'Node ID: #{node_id} is already present in this network. '
                   f'Node could not be added.')
@@ -219,6 +221,7 @@ class Network:
 
         :param int node_id: unique identifier within a given graph
         """
+        # if node is present in graph
         if node_id in self.network_dict:
             # gathers list of adjacent node id's
             adjacency_dict = self.network_dict[node_id].get_adjacents()
@@ -230,11 +233,12 @@ class Network:
             # removes node object
             del self.network_dict[node_id]
             print(f'Node ID: #{node_id} and all of it\'s edges has been removed')
+
+        # if node is not present in graph
         else:
             print(f'Node ID: #{node_id} is not present in this network. '
                   f'Node could not be removed.')
 
-    # add edge to both adjacency lists
     def add_edge(self, node_id1, node_id2, weight):
         """
         Adds an edge between two nodes with a specified weight. It is
@@ -248,26 +252,35 @@ class Network:
             (one of the vertices to be connected by the added edge)
         :param int weight: cost associated with the edge
         """
+        # if there is not an edge already connecting node 1 and node 2
         if node_id2 not in self.network_dict[node_id1].get_adjacents() \
                 and node_id1 not in self.network_dict[node_id2].get_adjacents():
             self.network_dict[node_id1].adjacency_dict[node_id2] = {'weight': weight, 'status': True}
             self.network_dict[node_id2].adjacency_dict[node_id1] = {'weight': weight, 'status': True}
         else:
-            print(f'There already exists an edge between Node ID: #{node_1} '
+            print(f'There already exists an edge between Node ID: #{node_id1} '
                   f'and Node ID: #{node_id2}. This edge could not be added.')
 
     def remove_edge(self, node_id1, node_id2):
         """
-        Removes an edge between two nodes from the graph.
+        Removes an edge between two nodes from the graph. If the edge
+        does not exist, an error message is printed to the console
+        indicating that the edge cannot be removed.
 
         :param int node_id1: unique identifier within a given graph
             (one of the vertices connected by the edge to be removed)
         :param int node_id2: unique identifier within a given graph
             (one of the vertices connected by the edge to be removed)
         """
-        # TODO condition if edge (or node) doesn't exist
-        del self.network_dict[node_id1].adjacency_dict[node_id2]
-        del self.network_dict[node_id2].adjacency_dict[node_id1]
+
+        # TODO what if edge is only in one adjacency dict?
+        # if node 1 and node 2 share an edge
+        if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
+                and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
+            del self.network_dict[node_id1].adjacency_dict[node_id2]
+            del self.network_dict[node_id2].adjacency_dict[node_id1]
+        else:
+            print(f'There is no edge connecting Node ID: #{node_id1} and Node ID: #{node_id2}, so there is no edge to remove.')
 
     """
     The following 4 functions toggle status of nodes and edges
@@ -275,27 +288,40 @@ class Network:
     We will need to develop functions that check for status before executing
     for example, our functions that check graph connectivity or paths
     """
-    # TODO verify node exists (already inactive?)
     def mark_node_inactive(self, node_id):
         """
         Marks all edges in the adjacency list of the specified node as
         inactive, then mirrors that status in the other adjacency lists.
-        Finally, the specified node's status is marked as inactive.
+        Finally, the specified node's status is marked as inactive. If
+        the node is already inactive, an error message indicating this
+        prints to the console. If the node is not present in the graph,
+        an error message prints to the console.
 
         :param int node_id: unique identifier within a given graph
         """
-        # gathers list of adjacent node id's
-        adjacency_dict = self.network_dict[node_id].get_adjacents()
+        # if node exists and is active
+        if node_id in self.network_dict and self.network_dict[node_id].status:
+            # gathers list of adjacent node id's
+            adjacency_dict = self.network_dict[node_id].get_adjacents()
 
-        # marks all edges of node as inactive, and mirrors
-        # the status on all adjacents edges connected to the node
-        for key in adjacency_dict:
-            self.network_dict[key].adjacency_dict[node_id]['status'] = False
-            self.network_dict[node_id].adjacency_dict[key]['status'] = False
+            # marks all edges of node as inactive, and mirrors
+            # the status on all adjacents edges connected to the node
+            for key in adjacency_dict:
+                self.network_dict[key].adjacency_dict[node_id]['status'] = False
+                self.network_dict[node_id].adjacency_dict[key]['status'] = False
 
-        # marks node status as inactive
-        self.network_dict[node_id].status = False
-        print(f'Node ID: #{node_id} and all of it\'s edges has been marked inactive.')
+            # marks node status as inactive
+            self.network_dict[node_id].status = False
+            print(f'Node ID: #{node_id} and all of it\'s edges has been marked inactive.')
+
+        # if node exists and is inactive
+        elif node_id in self.network_dict and not self.network_dict[node_id].status:
+            print(f'Node ID: #{node_id} is already inactive!')
+
+        # if node doesn't exist
+        else:
+            print(f'Node ID: #{node_id} is not present in this network. '
+                  f'Node could not be marked inactive.')
 
     """
     How should we handle status if an edge is explicitly made inactive,
@@ -306,27 +332,40 @@ class Network:
     
     should node status take priority over edge status?
     """
-    # TODO verify node exists (already active?)
     def mark_node_active(self, node_id):
         """
         Marks all adjacent edges connected with another active node as
-        active, then marks the specified node as active.
+        active, then marks the specified node as active. If the node is
+        already active, an error message prints to the console. If the
+        node is not present in the graph, an error message prints to the
+        console.
 
         :param int node_id: unique identifier within a given graph
         """
-        # gathers list of adjacent node id's
-        adjacency_dict = self.network_dict[node_id].get_adjacents()
+        # if node exists and is inactive
+        if node_id in self.network_dict and not self.network_dict[node_id].status:
+            # gathers list of adjacent node id's
+            adjacency_dict = self.network_dict[node_id].get_adjacents()
 
-        # marks all edges of node as inactive, and mirrors
-        # the status on all adjacents edges connected to the node
-        for key in adjacency_dict:
-            if self.network_dict[key].status is True:
-                self.network_dict[key].adjacency_dict[node_id]['status'] = True
-                self.network_dict[node_id].adjacency_dict[key]['status'] = True
+            # marks all edges of node as inactive, and mirrors
+            # the status on all adjacents edges connected to the node
+            for key in adjacency_dict:
+                if self.network_dict[key].status is True:
+                    self.network_dict[key].adjacency_dict[node_id]['status'] = True
+                    self.network_dict[node_id].adjacency_dict[key]['status'] = True
 
-        # marks node status as inactive
-        self.network_dict[node_id].status = True
-        print(f'Node ID: #{node_id} and all of it\'s edges has been marked active.')
+            # marks node status as inactive
+            self.network_dict[node_id].status = True
+            print(f'Node ID: #{node_id} and all of it\'s edges has been marked active.')
+
+        # if node exists and is active
+        elif node_id in self.network_dict and self.network_dict[node_id].status:
+            print(f'Node ID: #{node_id} is already active!')
+
+        # if node doesn't exist
+        else:
+            print(f'Node ID: #{node_id} is not present in this network. '
+                  f'Node could not be marked active.')
 
     # TODO verify edge exists (already inactive?)
     def mark_edge_inactive(self, node_id1, node_id2):
@@ -339,9 +378,9 @@ class Network:
         self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = False
         self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
 
-        print(f'The edge connecting Node ID: #{node_id1} and Node ID: #{node_id2} has been marked inactive.')
+        print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
+              f'#{node_id2} has been marked inactive.')
 
-    # TODO verify edge exists (already active?)
     def mark_edge_active(self, node_id1, node_id2):
         """
         Marks the specified edge as active in both adjacency lists iff
@@ -350,12 +389,37 @@ class Network:
         :param int node_id1: unique identifier within a given graph
         :param int node_id2: unique identifier within a given graph
         """
-        if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
-            self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
-            self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
-            print(f'The edge connecting Node ID: #{node_id1} and Node ID: #{node_id2} has been marked active.')
+        # if shared edge exists
+        if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
+                and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
+
+            # if both nodes are active
+            if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
+                # if both edges are inactive
+                if not self.network_dict[node_id1].adjacency_dict[node_id2]['status'] \
+                        and not self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
+
+                    self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
+                    self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
+                    print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
+                          f'#{node_id2} has been marked active.')
+
+                # if the edges are active
+                else:
+                    print(f'The edge connecting Node ID: #{node_id1} '
+                          f'and Node ID: #{node_id2} is already active. '
+                          f'As a result, the edge cannot be marked active.')
+
+            # if at least one node is inactive
+            else:
+                print('One of the connecting nodes is inactive. '
+                      'As a result, this edge must remain inactive.')
+
+        # if shared edge does not exist
         else:
-            print('One of the connecting nodes is inactive. As a result, this edge must remain inactive.')
+            print(f'There is not a shared edge between Node ID: #{node_id1} '
+                  f'and Node ID: #{node_id2}. As a result, the edge cannot '
+                  f'be marked active.')
 
     def __str__(self):
         """
