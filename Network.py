@@ -1,7 +1,7 @@
 from Node import Node
 import random
 import time
-
+# TODO: <<check main with 'from Network import Network' import>>
 
 # TODO #1 add support for functions to accept label (rather than just node_id)
 # TODO #2 ensure generated network is ALWAYS connected initially
