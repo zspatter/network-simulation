@@ -259,3 +259,5 @@ connectivity algorithms.
 # print('\nIterative BFS: ' + str(generated_network.BFS()))
 # end = time.time_ns()
 # print('\telapsed time: ' + str(end - start))
+
+print(network_1.dijkstra(1, 10))

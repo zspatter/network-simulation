@@ -132,6 +132,62 @@ class Network:
         else:
             return False
 
+    def dijkstra(self, initial_node_id, end_node_id):
+        """
+        Returns the shortest path between the initial node and the end node.
+
+        :param int initial_node_id: identifies the source node
+        :param int end_node_id: identifies the destination node
+
+        :return: collection of node ID's that indicate the shortest path
+        :rtype: list
+        """
+        # shortest paths is a dict of nodes
+        # whose value is a tuple of (previous node, weight)
+        shortest_paths = {initial_node_id: (None, 0)}
+        current_node = initial_node_id
+        visited = set()
+
+        while current_node != end_node_id:
+            visited.add(current_node)
+            destinations = self.network_dict[current_node].get_adjacents()
+            weight_to_current_node = shortest_paths[current_node][1]
+
+            # for node in active adjacents
+            for next_node in destinations:
+                weight = self.network_dict[current_node].adjacency_dict[next_node]['weight'] + weight_to_current_node
+
+                # if next node hasn't been stored
+                if next_node not in shortest_paths:
+                    shortest_paths[next_node] = (current_node, weight)
+
+                # if next node has been stored
+                else:
+                    current_shortest_weight = shortest_paths[next_node][1]
+
+                    # if currently stored weight is greater than this path's weight
+                    if current_shortest_weight > weight:
+                        shortest_paths[next_node] = (current_node, weight)
+
+            # next destinations are nodes in shortest paths that haven't been visited
+            next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+            # if next destinations are empty
+            if not next_destinations:
+                return "Route Not Possible"
+
+            # next node is the destination with the lowest weight
+            current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+
+        # Work back through destinations in shortest path
+        path = []
+        while current_node is not None:
+            path.append(current_node)
+            next_node = shortest_paths[current_node][0]
+            current_node = next_node
+        # Reverse path
+        path = path[::-1]
+        return path
+
     def nodes(self):
         """
         Returns list of active nodes within the graph.
