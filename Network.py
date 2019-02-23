@@ -187,7 +187,7 @@ class Network:
         path = []
         cumulative_weight = 0
 
-        while current_node is not None:
+        while current_node:
             path.append(current_node)
             next_node = shortest_paths[current_node][0]
             cumulative_weight += shortest_paths[current_node][1]
