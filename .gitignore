@@ -1,11 +1,5 @@
 
 __pycache__/Node.cpython-37.pyc
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/Network-Simulation.iml
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/dictionaries/Zachary.xml
 __pycache__/Network.cpython-37.pyc
 .DS_Store
+.idea/*
