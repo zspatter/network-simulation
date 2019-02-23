@@ -31,7 +31,9 @@ class Node:
         node_id with an active edge
 
         :param int node_id: unique identifier within a given graph
-        :return: bool
+
+        :return: bool indicating if the passed node is adjacent to the current node
+        :rtype: bool
         """
         if node_id in self.adjacency_dict and self.adjacency_dict[node_id]['status'] and self.status:
             return True
@@ -44,7 +46,8 @@ class Node:
         if they are currently active, and the edge connecting the nodes
         is currently active
 
-        :return: list
+        :return: active adjacent nodes
+        :rtype: list
         """
         adjacents = list()
         if self.status:
@@ -60,7 +63,8 @@ class Node:
         Only active edges are represented. If the node is inactive,
         nothing is returned.
 
-        :return: str
+        :return: easily readable string representation of the node
+        :rtype: str
         """
         if self.status:
             string = '\n\nLabel: ' + self.label + '\t(Node ID: ' + str(self.node_id) + ')\nNeighbors:'

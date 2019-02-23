@@ -45,7 +45,8 @@ class Network:
         :param set nodes_encountered: set of node_id's encountered (None by default)
         :param int start_node: node_id of start of search (None by default)
 
-        :return: bool
+        :return: bool indicating graph connectivity
+        :rtype: bool
         """
         if nodes_encountered is None:
             nodes_encountered = set()
@@ -70,7 +71,8 @@ class Network:
 
         :param int node_id: identifies node where search will start (None by default)
 
-        :return: bool
+        :return: bool indicating graph connectivity
+        :rtype: bool
         """
         nodes_encountered = set()
         if not node_id:
@@ -95,7 +97,8 @@ class Network:
 
         :param int node_id: identifies node where search will start (None by default)
 
-        :return: bool
+        :return: bool indicating graph connectivity
+        :rtype: bool
         """
         # mark all the nodes as not visited (value is None)
         visited = dict.fromkeys(self.nodes())
@@ -133,7 +136,8 @@ class Network:
         """
         Returns list of active nodes within the graph.
 
-        :return: list
+        :return: active nodes in graph
+        :rtype: list
         """
         nodes = list(self.network_dict.keys())
         active_nodes = list()
@@ -151,7 +155,8 @@ class Network:
         :param int graph_id: unique identifier for a graph (1 by default)
         :param int/str label: name associated with a graph ('Generic Network' by default)
 
-        :return: network
+        :return: randomly generated network with N nodes
+        :rtype: Network
         """
         network_dict = {}
         for x in range(1, n + 1):
@@ -177,7 +182,8 @@ class Network:
             adjacency dict is being generated for
         :param int total_nodes: total number of nodes present in the generated graph
 
-        :return: dict
+        :return: randomly generated adjacency_dict
+        :rtype: dict
         """
         adjacency_dict = {}
         for n in range(random.randint(5, 25)):
@@ -455,7 +461,8 @@ class Network:
         the instance. Only active nodes and edges are represented. This
         calls the Node.__str__ function.
 
-        :return: str
+        :return: easily readable string representation of the graph
+        :rtype: str
         """
         string = 'Graph ID: ' + str(self.graph_id) + ': ' + self.label
         for key in self.network_dict.keys():
