@@ -229,8 +229,7 @@ class Network:
         network = Network(network_dict)
         return network
 
-    # this function generates an adjacency list consisting of 2-5 adjacencts
-    # TODO random parameter
+    # TODO random parameter (seed)
     @staticmethod
     def generate_adjacency_dict(node_id, total_nodes):
         """
@@ -266,9 +265,7 @@ class Network:
         node_id is already present in the graph, an error message
         is printed to the console.
 
-        :param int node_id: unique identifier within a given graph
-        :param int/str label: name associated with a node
-        :param dict adjacency_dict: {int node_id: {'weight': int, 'status': bool}, ...}
+        :param Node node: node that will be added to the graph
         """
         # if node_id is unique, add it to the network
         if node.node_id not in self.network_dict:
