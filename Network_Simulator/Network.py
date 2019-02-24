@@ -1,4 +1,4 @@
-from Node import Node
+from Network_Simulator.Node import Node
 import random
 
 
@@ -532,4 +532,4 @@ class Network:
         string = 'Graph ID: ' + str(self.graph_id) + ': ' + self.label
         for key in self.network_dict.keys():
             string += f'{self.network_dict[key].__str__()}'
-        return string
+        return string + '\n\n===============================\n'

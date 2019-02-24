@@ -1,5 +1,5 @@
-from Node import Node
-from Network import Network
+from Network_Simulator.Node import Node
+from Network_Simulator.Network import Network
 import time
 
 """
@@ -78,22 +78,22 @@ network_1 = Network(1, 'Sample Network',
 
 
 # demonstrates __str__() function works
-print(network_1.__str__() + '\n\n===============================\n')
+print(network_1 )
 
 # demonstrates remove_edge function works
 print('\t---REMOVE EDGE---\n')
 network_1.remove_edge(1, 2)
-print(network_1.__str__() + '\n\n===============================\n')
+print(network_1)
 
 # demonstrates remove_node function works
 print('\t---REMOVE NODE---\n')
 network_1.remove_node(3)
-print(network_1.__str__() + '\n\n===============================\n')
+print(network_1)
 
 # demonstrates add edge function works
 print('\t---ADD EDGE---\n')
 network_1.add_edge(1, 2, 15)
-print(network_1.__str__() + '\n\n===============================\n')
+print(network_1)
 
 # demonstrates the add node function works
 print('\t---ADD NODE---\n')
@@ -101,7 +101,7 @@ network_1.add_node(11, 'K',
                    {1: {'weight': 3, 'status': True},
                     2: {'weight': 4, 'status': True},
                     10: {'weight': 8, 'status': True}})
-print(network_1.__str__() + '\n\n===============================\n')
+print(network_1)
 
 
 # demonstrates is_connected() function works
@@ -142,7 +142,7 @@ disconnected_network = Network(1, 'Disconnected Network',
 
 # prints Disconnected Network and checks if graph is connected
 print('\t---DISCONNECTED GRAPH---\n')
-print(disconnected_network.__str__() + '\n\n===============================\n')
+print(disconnected_network)
 
 
 start = time.time_ns()
@@ -188,7 +188,7 @@ init_tester = Network(1, "__init__ Test Network",
 
 
 print('\t---ADJACENCY LISTS MIRROR TEST---\n')
-print(init_tester.__str__() + '\n\n===============================\n')
+print(init_tester)
 
 
 """
@@ -201,20 +201,20 @@ print('\t---MARK NODE INACTIVE TESTS---\n')
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(6)
-print('\n' + init_tester.__str__() + '\n\n===============================\n')
+print(init_tester)
 
 print('\t---MARK NODE ACTIVE TESTS---\n')
 init_tester.mark_node_active(1)
 init_tester.mark_node_active(1)
 init_tester.mark_node_active(6)
-print('\n' + init_tester.__str__() + '\n\n===============================\n')
+print(init_tester)
 
 print('\t---MARK EDGE INACTIVE TESTS---\n')
 init_tester.mark_edge_inactive(1, 5)
 init_tester.mark_edge_inactive(1, 5)
 init_tester.mark_edge_inactive(3, 5)
 init_tester.mark_edge_inactive(1, 6)
-print('\n' + init_tester.__str__() + '\n\n===============================\n')
+print(init_tester)
 
 print('\t---MARK EDGE ACTIVE TESTS---\n')
 init_tester.mark_edge_active(1, 5)
@@ -222,7 +222,7 @@ init_tester.mark_edge_active(1, 5)
 init_tester.mark_node_inactive(3)
 init_tester.mark_edge_active(1, 3)
 init_tester.mark_edge_active(3, 5)
-print('\n' + init_tester.__str__() + '\n\n===============================\n')
+print(init_tester)
 
 print('\t---BREAK CONNECTIVITY VIA STATUS---\n')
 init_tester.mark_edge_inactive(1, 2)
@@ -247,7 +247,7 @@ connectivity algorithms.
 # tests the generate_network and generate_adjacency_list functions
 # generated_network = Network.generate_network(5000)
 # print('\t---GENERATED RANDOM NETWORK---\n')
-# print(generated_network.__str__() + '\n\n===============================\n')
+# print(generated_network)
 #
 # # times iterative DFS and iterative BFS for comparison
 # start = time.time_ns()
