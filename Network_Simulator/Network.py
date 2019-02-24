@@ -286,11 +286,13 @@ class Network:
                 for key in node.adjacency_dict:
                     self.network_dict[key].adjacency_dict[node.node_id] = \
                         node.adjacency_dict[key]
+                print(f'Node ID: #{node.node_id} has been added to this'
+                      f'network!')
 
             # if node already exists
             else:
                 raise NodeAlreadyExistsError(f'Node ID: #{node.node_id} '
-                                             f'is already present in this network. '
+                                             f'is already present in this network! '
                                              f'Node could not be added.')
 
         except NodeAlreadyExistsError as e:
@@ -315,12 +317,12 @@ class Network:
 
                 # removes node object
                 del self.network_dict[node_id]
-                print(f'Node ID: #{node_id} and all of it\'s edges has been removed')
+                print(f'Node ID: #{node_id} and all of it\'s edges has been removed!')
 
             # if node is not present in graph
             else:
                 raise NodeDoesNotExistError(f'Node ID: #{node_id} is not present'
-                                            f' in this network. Node could not be'
+                                            f' in this network! Node could not be'
                                             f' removed.')
 
         except NodeDoesNotExistError as e:
@@ -340,22 +342,47 @@ class Network:
         :param int weight: cost associated with the edge
         """
         try:
-            # if there is not an edge already connecting node 1 and node 2
-            if node_id2 not in self.network_dict[node_id1].get_adjacents() \
-                    and node_id1 not in self.network_dict[node_id2].get_adjacents():
+            # if nodes are in graph
+            if node_id1 in self.network_dict and node_id2 in self.network_dict:
+                # if nodes are active
+                if node_id1 in self.nodes() and node_id2 in self.nodes():
+                    # if there is not an edge already connecting node 1 and node 2
+                    if node_id2 not in self.network_dict[node_id1].get_adjacents() \
+                            and node_id1 not in self.network_dict[node_id2].get_adjacents():
 
-                self.network_dict[node_id1].adjacency_dict[node_id2] = \
-                    {'weight': weight, 'status': True}
-                self.network_dict[node_id2].adjacency_dict[node_id1] = \
-                    {'weight': weight, 'status': True}
+                        self.network_dict[node_id1].adjacency_dict[node_id2] = \
+                            {'weight': weight, 'status': True}
+                        self.network_dict[node_id2].adjacency_dict[node_id1] = \
+                            {'weight': weight, 'status': True}
 
-            # if there is already an edge connecting the nodes
+                        print(f'An edge has been added between Node ID: '
+                              f'#{node_id1} and Node ID: #{node_id2} with'
+                              f'a weight of {weight}!')
+
+                    # if there is already an edge connecting the nodes
+                    else:
+                        raise EdgeAlreadyExistsError(f'There already exists an '
+                                                     f'edge between Node ID: '
+                                                     f'#{node_id1} and Node ID: '
+                                                     f'#{node_id2}! This edge '
+                                                     f'could not be added.')
+                # if node(s) inactive
+                else:
+                    raise ElementInactiveError('One of the connecting nodes '
+                                               'is inactive! As a result, this'
+                                               ' edge cannot be added.')
+            # if node(s) don't exist
             else:
-                raise EdgeAlreadyExistsError(f'There already exists an edge between '
-                                             f'Node ID: #{node_id1} and Node ID: '
-                                             f'#{node_id2}. This edge could not be added.')
+                raise NodeDoesNotExistError(f'One of the passed nodes does '
+                                            f'not exist! As a result, there '
+                                            f'cannot be an edge, so it cannot '
+                                            f'be added.')
 
         except EdgeAlreadyExistsError as e:
+            print(e)
+        except ElementInactiveError as e:
+            print(e)
+        except NodeDoesNotExistError as e:
             print(e)
 
     def remove_edge(self, node_id1, node_id2):
@@ -372,20 +399,35 @@ class Network:
 
         # TODO what if edge is only in one adjacency dict?
         try:
-            # if shared edge exists
-            if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
-                    and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
-                del self.network_dict[node_id1].adjacency_dict[node_id2]
-                del self.network_dict[node_id2].adjacency_dict[node_id1]
+            # if nodes are in graph
+            if node_id1 in self.network_dict and node_id2 in self.network_dict:
 
-            # if shared edge doesn't exist
+                # if shared edge exists
+                if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
+                        and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
+                    del self.network_dict[node_id1].adjacency_dict[node_id2]
+                    del self.network_dict[node_id2].adjacency_dict[node_id1]
+
+                    print(f'The edge between Node ID: #{node_id1} '
+                          f'and Node ID: #{node_id2} has been removed!')
+
+                # if shared edge doesn't exist
+                else:
+                    raise EdgeDoesNotExistError(f'There is no edge connecting '
+                                                f'Node ID: #{node_id1} and Node '
+                                                f'ID: #{node_id2}, so there is '
+                                                f'no edge to remove!')
+
+            # if node(s) doesn't exist
             else:
-                raise EdgeDoesNotExistError(f'There is no edge connecting '
-                                            f'Node ID: #{node_id1} and Node '
-                                            f'ID: #{node_id2}, so there is '
-                                            f'no edge to remove.')
+                raise NodeDoesNotExistError(f'One of the passed nodes does '
+                                            f'not exist! As a result, there '
+                                            f'cannot be an edge, so it cannot '
+                                            f'be marked as inactive.')
 
         except EdgeDoesNotExistError as e:
+            print(e)
+        except NodeDoesNotExistError as e:
             print(e)
 
     def mark_node_inactive(self, node_id):
@@ -414,7 +456,7 @@ class Network:
                 # marks node status as inactive
                 self.network_dict[node_id].status = False
                 print(f'Node ID: #{node_id} and all of it\'s edges has '
-                      f'been marked inactive.')
+                      f'been marked inactive!')
 
             # if node exists and is inactive
             elif node_id in self.network_dict and not self.network_dict[node_id].status:
@@ -424,7 +466,7 @@ class Network:
             # if node doesn't exist
             else:
                 raise NodeDoesNotExistError(f'Node ID: #{node_id} is not present'
-                                            f' in this network. Node could not '
+                                            f' in this network! Node could not '
                                             f'be marked inactive.')
 
         except ElementInactiveError as e:
@@ -467,7 +509,7 @@ class Network:
                 # marks node status as inactive
                 self.network_dict[node_id].status = True
                 print(f'Node ID: #{node_id} and all of it\'s edges has been '
-                      f'marked active.')
+                      f'marked active!')
 
             # if node exists and is active
             elif node_id in self.network_dict and self.network_dict[node_id].status:
@@ -476,7 +518,7 @@ class Network:
             # if node doesn't exist
             else:
                 raise NodeDoesNotExistError(f'Node ID: #{node_id} is not present '
-                                            f'in this network. Node could not be '
+                                            f'in this network! Node could not be '
                                             f'marked active.')
 
         except ElementActiveError as e:
@@ -509,28 +551,28 @@ class Network:
                         self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
 
                         print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
-                              f'#{node_id2} has been marked inactive.')
+                              f'#{node_id2} has been marked inactive!')
 
                     # if the edges are inactive
                     else:
                         raise ElementInactiveError(f'The edge connecting Node'
                                                    f' ID: #{node_id1} and Node'
                                                    f' ID: #{node_id2} is already'
-                                                   f' inactive. As a result, the'
+                                                   f' inactive! As a result, the'
                                                    f' edge cannot be marked inactive.')
 
                 # if a shared edge doesn't exist
                 else:
                     raise EdgeDoesNotExistError(f'There is not a shared edge '
                                                 f'between Node ID: #{node_id1} '
-                                                f'and Node ID: #{node_id2}. As '
+                                                f'and Node ID: #{node_id2}! As '
                                                 f'a result, the edge cannot be '
                                                 f'marked inactive.')
 
             # if node doesn't exist
             else:
                 raise NodeDoesNotExistError(f'One of the passed nodes does '
-                                            f'not exist. As a result, there '
+                                            f'not exist! As a result, there '
                                             f'cannot be an edge, so it cannot '
                                             f'be marked as inactive.')
 
@@ -549,6 +591,7 @@ class Network:
         :param int node_id1: unique identifier within a given graph
         :param int node_id2: unique identifier within a given graph
         """
+        # todo node doesnt exist
         try:
             # if shared edge exists
             if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
@@ -564,28 +607,25 @@ class Network:
                         self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
 
                         print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
-                              f'#{node_id2} has been marked active.')
+                              f'#{node_id2} has been marked active!')
 
                     # if the edges are active
                     else:
-                        # print(f'The edge connecting Node ID: #{node_id1} '
-                        #       f'and Node ID: #{node_id2} is already active. '
-                        #       f'As a result, the edge cannot be marked active.')
                         raise ElementActiveError(f'The edge connecting Node '
                                                  f'ID: #{node_id1} and Node '
                                                  f'ID: #{node_id2} is already '
-                                                 f'active. As a result, the '
+                                                 f'active! As a result, the '
                                                  f'edge cannot be marked active.')
                 # if at least one node is inactive
                 else:
                     raise ElementInactiveError('One of the connecting nodes '
-                                               'is inactive. As a result, this'
-                                               ' edge must remain inactive.')
+                                               'is active! As a result, this'
+                                               ' edge must remain active.')
             # if shared edge does not exist
             else:
                 raise EdgeDoesNotExistError(f'There is not a shared edge '
                                             f'between Node ID: #{node_id1}'
-                                            f' and Node ID: #{node_id2}. As'
+                                            f' and Node ID: #{node_id2}! As'
                                             f' a result, the edge cannot be '
                                             f'marked active.')
 

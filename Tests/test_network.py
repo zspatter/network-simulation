@@ -6,12 +6,16 @@ def test_add_node():
     node1 = n.Node(1)
     test_net = net.Network()
 
+    # add node to empty graph
     assert len(test_net.nodes()) is 0
     test_net.add_node(node1)
     assert len(test_net.nodes()) is 1
     assert node1.node_id in test_net.nodes()
 
+    # attempt to add node that already exists
     test_net.add_node(node1)
+    assert len(test_net.nodes()) is 1
+    assert node1.node_id in test_net.nodes()
 
 
 def test_remove_node():
@@ -19,8 +23,14 @@ def test_remove_node():
     node2 = n.Node(2)
     test_net = net.Network({1: node1, 2: node2})
 
+    # remove an existing node
     assert len(test_net.nodes()) is 2
     test_net.remove_node(1)
+    assert len(test_net.nodes()) is 1
+    assert node2.node_id in test_net.network_dict
+
+    # remove a node that doesn't exist
+    test_net.remove_node(3)
     assert len(test_net.nodes()) is 1
     assert node2.node_id in test_net.network_dict
 
@@ -30,14 +40,17 @@ def test_add_edge():
     node2 = n.Node(2)
     test_net = net.Network()
 
+    # add nodes, but not edges
     test_net.add_node(node1)
     test_net.add_node(node2)
     assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 0
 
+    # add edge to existing nodes
     test_net.add_edge(node1.node_id, node2.node_id, 5)
-
     assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
     assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
+
+
 
 
 def test_remove_edge():
