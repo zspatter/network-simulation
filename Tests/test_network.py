@@ -50,6 +50,22 @@ def test_add_edge():
     assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
     assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
 
+    # attempt to add edge that already exists
+    test_net.add_edge(node1.node_id, node2.node_id, 5)
+    assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
+    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
+
+    # add inactive node
+    node3 = n.Node(3, status=False)
+    test_net.add_node(node3)
+
+    # attempt to add edge to inactive node
+    test_net.add_edge(node1.node_id, node3.node_id, 15)
+    assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
+    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
+
+    #attempts to add edge to node that doesn't exist
+    test_net.add_edge(node1.node_id, node_id2=4, weight=25)
 
 
 
