@@ -102,61 +102,61 @@ network_1.add_node(Node(11, 'K',
                     10: {'weight': 8, 'status': True}}))
 print(network_1)
 
-
-# demonstrates is_connected() function works
-if network_1.is_connected():
-    print("The network is connected!\n")
-else:
-    print("The network is not connected!\n")
-start = time.time_ns()
-print('Recursive DFS: ' + str(network_1.is_connected()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative DFS: ' + str(network_1.DFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative BFS: ' + str(network_1.BFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
-
-
-# creates disconnected network to further test is_connected()
-node_a = Node(1, 'A',
-              {2: {'weight': 1, 'status': True},
-               3: {'weight': 2, 'status': True}})
-node_b = Node(2, 'B',
-              {3: {'weight': 1, 'status': True}})
-node_c = Node(3, 'C',
-              {1: {'weight': 2, 'status': True}})
-node_d = Node(4, 'D')
-disconnected_network = Network({1: node_a,
-                                2: node_b,
-                                3: node_c,
-                                4: node_d})
-
-# prints Disconnected Network and checks if graph is connected
-print('\t---DISCONNECTED GRAPH---')
-print(disconnected_network)
-
-
-start = time.time_ns()
-print('Recursive DFS: ' + str(disconnected_network.is_connected()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative DFS: ' + str(disconnected_network.DFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative BFS: ' + str(disconnected_network.BFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
+#
+# # demonstrates is_connected() function works
+# if network_1.is_connected():
+#     print("The network is connected!\n")
+# else:
+#     print("The network is not connected!\n")
+# start = time.time_ns()
+# print('Recursive DFS: ' + str(network_1.is_connected()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative DFS: ' + str(network_1.DFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative BFS: ' + str(network_1.BFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
+#
+#
+# # creates disconnected network to further test is_connected()
+# node_a = Node(1, 'A',
+#               {2: {'weight': 1, 'status': True},
+#                3: {'weight': 2, 'status': True}})
+# node_b = Node(2, 'B',
+#               {3: {'weight': 1, 'status': True}})
+# node_c = Node(3, 'C',
+#               {1: {'weight': 2, 'status': True}})
+# node_d = Node(4, 'D')
+# disconnected_network = Network({1: node_a,
+#                                 2: node_b,
+#                                 3: node_c,
+#                                 4: node_d})
+#
+# # prints Disconnected Network and checks if graph is connected
+# print('\t---DISCONNECTED GRAPH---')
+# print(disconnected_network)
+#
+#
+# start = time.time_ns()
+# print('Recursive DFS: ' + str(disconnected_network.is_connected()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative DFS: ' + str(disconnected_network.DFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative BFS: ' + str(disconnected_network.BFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
 
 # tests the functionality in __init__ that ensures adjacency lists
@@ -198,6 +198,10 @@ print('\t---MARK NODE INACTIVE TESTS---')
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(6)
+
+
+init_tester.mark_node_inactive(6)
+
 print(init_tester)
 
 print('\t---MARK NODE ACTIVE TESTS---')
@@ -257,4 +261,5 @@ connectivity algorithms.
 # end = time.time_ns()
 # print('\telapsed time: ' + str(end - start))
 
-print('\nShortest path between Node ID: #1 and Node ID: #10\n\t' + str(network_1.dijkstra(1, 10)))
+print('\nShortest path between Node ID: #1 and Node ID: #10\n\t' +
+      str(network_1.dijkstra(1, 10)))

@@ -39,7 +39,7 @@ def test_str():
     node_1 = n.Node(1, 'A', adjacency_dict)
     string = node_1.__str__()
 
-    for key in adjacency_dict:
+    for key in node_1.get_adjacents():
         assert 'Node     #' + str(key) in string
 
 
