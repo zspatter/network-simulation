@@ -64,8 +64,7 @@ node_10 = Node(10, 'J',
                 7: {'weight': 5, 'status': True}})
 
 # create a network consisting of the nodes above
-network_1 = Network(1, 'Sample Network',
-                    {node_1.node_id: node_1,
+network_1 = Network({node_1.node_id: node_1,
                      node_2.node_id: node_2,
                      node_3.node_id: node_3,
                      node_4.node_id: node_4,
@@ -78,29 +77,29 @@ network_1 = Network(1, 'Sample Network',
 
 
 # demonstrates __str__() function works
-print(network_1 )
+print(network_1)
 
 # demonstrates remove_edge function works
-print('\t---REMOVE EDGE---\n')
+print('\t---REMOVE EDGE---')
 network_1.remove_edge(1, 2)
 print(network_1)
 
 # demonstrates remove_node function works
-print('\t---REMOVE NODE---\n')
+print('\t---REMOVE NODE---')
 network_1.remove_node(3)
 print(network_1)
 
 # demonstrates add edge function works
-print('\t---ADD EDGE---\n')
+print('\t---ADD EDGE---')
 network_1.add_edge(1, 2, 15)
 print(network_1)
 
 # demonstrates the add node function works
-print('\t---ADD NODE---\n')
-network_1.add_node(11, 'K',
+print('\t---ADD NODE---')
+network_1.add_node(Node(11, 'K',
                    {1: {'weight': 3, 'status': True},
                     2: {'weight': 4, 'status': True},
-                    10: {'weight': 8, 'status': True}})
+                    10: {'weight': 8, 'status': True}}))
 print(network_1)
 
 
@@ -134,14 +133,13 @@ node_b = Node(2, 'B',
 node_c = Node(3, 'C',
               {1: {'weight': 2, 'status': True}})
 node_d = Node(4, 'D')
-disconnected_network = Network(1, 'Disconnected Network',
-                               {1: node_a,
+disconnected_network = Network({1: node_a,
                                 2: node_b,
                                 3: node_c,
                                 4: node_d})
 
 # prints Disconnected Network and checks if graph is connected
-print('\t---DISCONNECTED GRAPH---\n')
+print('\t---DISCONNECTED GRAPH---')
 print(disconnected_network)
 
 
@@ -179,15 +177,14 @@ init_tester_node5 = Node(5, "E",
                          {1: {'weight': 1, 'status': True},
                           4: {'weight': 2, 'status': True}})
 
-init_tester = Network(1, "__init__ Test Network",
-                      {init_tester_node1.node_id: init_tester_node1,
+init_tester = Network({init_tester_node1.node_id: init_tester_node1,
                        init_tester_node2.node_id: init_tester_node2,
                        init_tester_node3.node_id: init_tester_node3,
                        init_tester_node4.node_id: init_tester_node4,
                        init_tester_node5.node_id: init_tester_node5})
 
 
-print('\t---ADJACENCY LISTS MIRROR TEST---\n')
+print('\t---ADJACENCY LISTS MIRROR TEST---')
 print(init_tester)
 
 
@@ -197,26 +194,26 @@ of nodes/edges. These tests show that each condition can be reached from
 each of the 4 function. These conditions all behave as desired.
 """
 
-print('\t---MARK NODE INACTIVE TESTS---\n')
+print('\t---MARK NODE INACTIVE TESTS---')
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(6)
 print(init_tester)
 
-print('\t---MARK NODE ACTIVE TESTS---\n')
+print('\t---MARK NODE ACTIVE TESTS---')
 init_tester.mark_node_active(1)
 init_tester.mark_node_active(1)
 init_tester.mark_node_active(6)
 print(init_tester)
 
-print('\t---MARK EDGE INACTIVE TESTS---\n')
+print('\t---MARK EDGE INACTIVE TESTS---')
 init_tester.mark_edge_inactive(1, 5)
 init_tester.mark_edge_inactive(1, 5)
 init_tester.mark_edge_inactive(3, 5)
 init_tester.mark_edge_inactive(1, 6)
 print(init_tester)
 
-print('\t---MARK EDGE ACTIVE TESTS---\n')
+print('\t---MARK EDGE ACTIVE TESTS---')
 init_tester.mark_edge_active(1, 5)
 init_tester.mark_edge_active(1, 5)
 init_tester.mark_node_inactive(3)
@@ -224,7 +221,7 @@ init_tester.mark_edge_active(1, 3)
 init_tester.mark_edge_active(3, 5)
 print(init_tester)
 
-print('\t---BREAK CONNECTIVITY VIA STATUS---\n')
+print('\t---BREAK CONNECTIVITY VIA STATUS---')
 init_tester.mark_edge_inactive(1, 2)
 init_tester.mark_edge_inactive(1, 5)
 
@@ -260,4 +257,4 @@ connectivity algorithms.
 # end = time.time_ns()
 # print('\telapsed time: ' + str(end - start))
 
-print(network_1.dijkstra(1, 10))
+print('\nShortest path between Node ID: #1 and Node ID: #10\n\t' + str(network_1.dijkstra(1, 10)))

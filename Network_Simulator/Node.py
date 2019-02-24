@@ -24,7 +24,6 @@ class Node:
             status = True
         self.status = status
 
-    # return bool indicating whether this instance shares an edge with passed node_id
     def is_adjacent(self, node_id):
         """
         Returns bool indicating if this instance is connected to the passed
@@ -56,7 +55,6 @@ class Node:
                     adjacents.append(key)
         return adjacents
 
-    # if node is active, returns string displaying all of the active edges
     def __str__(self):
         """
         Returns an easily readable (formatted) string representation of the instance.
