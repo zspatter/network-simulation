@@ -11,16 +11,13 @@ class Network:
     nodes contained within the graph.
     """
 
-    def __init__(self, graph_id, label, network_dict=None):
+    def __init__(self, network_dict=None):
         """
         Creates an instance of a Network
 
-        :param int graph_id: unique identifier for a graph
-        :param int/str label: name associated with a graph
         :param dict network_dict: {int node_id: Node, ...} (None by default)
         """
-        self.graph_id = graph_id
-        self.label = label
+
         if network_dict is None:
             network_dict = {}
         self.network_dict = network_dict
@@ -64,6 +61,7 @@ class Network:
             return True
         return False
 
+    # todo feed graph, is it connected
     def DFS(self, node_id=None):
         """
         Returns bool indicating graph connectivity (path between all nodes).
@@ -132,6 +130,8 @@ class Network:
         else:
             return False
 
+    # dijkstra's saves all shortest paths from source to struture
+    # gets path and/or weight
     def dijkstra(self, initial_node_id, end_node_id):
         """
         Returns the shortest path between the initial node and the end
@@ -212,13 +212,11 @@ class Network:
         return active_nodes
 
     @staticmethod
-    def generate_network(n, graph_id=1, label='Generic Network'):
+    def generate_network(n):
         """
         Returns randomly generated network with n nodes.
 
         :param int n: number of nodes generated graph will contain
-        :param int graph_id: unique identifier for a graph (1 by default)
-        :param int/str label: name associated with a graph ('Generic Network' by default)
 
         :return: randomly generated network with N nodes
         :rtype: Network
@@ -228,10 +226,11 @@ class Network:
             adjacency_dict = Network.generate_adjacency_dict(x, n)
             node = Node(x, 'Node #' + str(x), adjacency_dict)
             network_dict[x] = node
-        network = Network(graph_id, label, network_dict)
+        network = Network(network_dict)
         return network
 
     # this function generates an adjacency list consisting of 2-5 adjacencts
+    # TODO random parameter
     @staticmethod
     def generate_adjacency_dict(node_id, total_nodes):
         """
@@ -261,7 +260,7 @@ class Network:
             adjacency_dict[random_node] = {'weight': random.randint(1, 50), 'status': True}
         return adjacency_dict
 
-    def add_node(self, node_id, label, adjacency_dict):
+    def add_node(self, node):
         """
         Adds a node with the passed parameters to the graph. If the
         node_id is already present in the graph, an error message
@@ -272,17 +271,17 @@ class Network:
         :param dict adjacency_dict: {int node_id: {'weight': int, 'status': bool}, ...}
         """
         # if node_id is unique, add it to the network
-        if node_id not in self.network_dict:
-            self.network_dict[node_id] = Node(node_id, label, adjacency_dict)
+        if node.node_id not in self.network_dict:
+            self.network_dict[node.node_id] = node
 
             # adds edges to the new node from the nodes in the adjacency list
             # (this ensures the edge is represented in both directions)
-            for key in adjacency_dict:
-                self.network_dict[key].adjacency_dict[node_id] = adjacency_dict[key]
+            for key in node.adjacency_dict:
+                self.network_dict[key].adjacency_dict[node.node_id] = node.adjacency_dict[key]
 
         # if node already exists
         else:
-            print(f'Node ID: #{node_id} is already present in this network. '
+            print(f'Node ID: #{node.node_id} is already present in this network. '
                   f'Node could not be added.')
 
     def remove_node(self, node_id):
@@ -529,7 +528,7 @@ class Network:
         :return: easily readable string representation of the graph
         :rtype: str
         """
-        string = 'Graph ID: ' + str(self.graph_id) + ': ' + self.label
-        for key in self.network_dict.keys():
+        string = ''
+        for key in self.network_dict:
             string += f'{self.network_dict[key].__str__()}'
         return string + '\n\n===============================\n'
