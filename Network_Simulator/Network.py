@@ -593,47 +593,57 @@ class Network:
         """
         # todo node doesnt exist
         try:
-            # if shared edge exists
-            if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
-                    and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
+            # if nodes exist
+            if node_id1 in self.network_dict and node_id2 in self.network_dict:
+                # if shared edge exists
+                if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
+                        and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
 
-                # if both nodes are active
-                if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
-                    # if both edges are inactive
-                    if not self.network_dict[node_id1].adjacency_dict[node_id2]['status'] \
-                            and not self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
+                    # if both nodes are active
+                    if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
+                        # if both edges are inactive
+                        if not self.network_dict[node_id1].adjacency_dict[node_id2]['status'] \
+                                and not self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
 
-                        self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
-                        self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
+                            self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
+                            self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
 
-                        print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
-                              f'#{node_id2} has been marked active!')
+                            print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
+                                  f'#{node_id2} has been marked active!')
 
-                    # if the edges are active
+                        # if the edges are active
+                        else:
+                            raise ElementActiveError(f'The edge connecting Node '
+                                                     f'ID: #{node_id1} and Node '
+                                                     f'ID: #{node_id2} is already '
+                                                     f'active! As a result, the '
+                                                     f'edge cannot be marked active.')
+                    # if at least one node is inactive
                     else:
-                        raise ElementActiveError(f'The edge connecting Node '
-                                                 f'ID: #{node_id1} and Node '
-                                                 f'ID: #{node_id2} is already '
-                                                 f'active! As a result, the '
-                                                 f'edge cannot be marked active.')
-                # if at least one node is inactive
+                        raise ElementInactiveError('One of the connecting nodes '
+                                                   'is active! As a result, this'
+                                                   ' edge must remain active.')
+                # if shared edge does not exist
                 else:
-                    raise ElementInactiveError('One of the connecting nodes '
-                                               'is active! As a result, this'
-                                               ' edge must remain active.')
-            # if shared edge does not exist
+                    raise EdgeDoesNotExistError(f'There is not a shared edge '
+                                                f'between Node ID: #{node_id1}'
+                                                f' and Node ID: #{node_id2}! As'
+                                                f' a result, the edge cannot be '
+                                                f'marked active.')
+            # if node doesn't exist
             else:
-                raise EdgeDoesNotExistError(f'There is not a shared edge '
-                                            f'between Node ID: #{node_id1}'
-                                            f' and Node ID: #{node_id2}! As'
-                                            f' a result, the edge cannot be '
-                                            f'marked active.')
+                raise NodeDoesNotExistError(f'One of the passed nodes does '
+                                            f'not exist! As a result, there '
+                                            f'cannot be an edge, so it cannot '
+                                            f'be marked as inactive.')
 
         except ElementActiveError as e:
             print(e)
         except ElementInactiveError as e:
             print(e)
         except EdgeDoesNotExistError as e:
+            print(e)
+        except NodeDoesNotExistError as e:
             print(e)
 
     def __str__(self):
