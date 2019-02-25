@@ -5,7 +5,6 @@ from Network_Simulator.exceptions import NodeAlreadyExistsError, \
 import random
 
 
-# TODO: add support for functions to accept label (rather than just node_id)
 class Network:
     """
     A class representing a network (graph). A network is defined through
@@ -13,14 +12,12 @@ class Network:
     of a unique graph ID, label, and network dict that contains all of the
     nodes contained within the graph.
     """
-
-    # TODO check that adjacent is a node that exists
-    # maybe check if adjacent exists before adding to dict?
-    # if it doesn't exist, store for later
-    # check dict for adjacent before using parameters
     def __init__(self, network_dict=None):
         """
-        Creates an instance of a Network
+        Creates an instance of a Network. This function ensures that
+        the adjacency dicts of nodes mirror each other (undirected graph).
+        Furthermore, this function ensures nodes present in an adjacency
+        list are present in the graph.
 
         :param dict network_dict: {int node_id: Node, ...} (None by default)
         """
@@ -32,32 +29,45 @@ class Network:
 
         # ensures adjacency lists mirror each other (undirected weighted edges)
         nodes = network_dict.keys()
+        # iterates through all nodes
         for node in nodes:
             adjacents = network_dict[node].adjacency_dict.keys()
+            # iterates through all of the current node's adjacents
             for adjacent in adjacents:
-                # if adjacent node id is in network dict
+
+                # if adjacent node id is present in network
                 if adjacent in network_dict:
                     # if node is key in adjacent's adjacency dict
                     # AND the adjacencies mirror one another
                     if node in network_dict[adjacent].adjacency_dict.keys() \
                             and network_dict[adjacent].adjacency_dict[node] \
                             is network_dict[node].adjacency_dict[adjacent]:
+
                         continue
+
                     # if node isn't present in adjacent's adjacency dict
                     # OR adjacencies differ from one another
                     else:
-                        # todo how to make most recent adjaceny list most more significant
-                        # latest dict is what should be assigned to nodes
-                        network_dict[adjacent].adjacency_dict[node] = \
-                            network_dict[node].adjacency_dict[adjacent]
-                        # network_dict[node].adjacency_dict[adjacent] = \
-                        #     network_dict[adjacent].adjacency_dict[node]
+                        # if edge is represented in both adjacency dicts
+                        # (this prioritizes the latter status/weight values
+                        # if the adjacencies differ)
+                        if node in network_dict[adjacent].adjacency_dict:
+                            network_dict[node].adjacency_dict[adjacent] = \
+                                network_dict[adjacent].adjacency_dict[node]
+
+                        # if edge is only present in node's adjacency dict
+                        else:
+                            network_dict[adjacent].adjacency_dict[node] = \
+                                network_dict[node].adjacency_dict[adjacent]
+
+                # if adjacent node id does not exist in graph
                 else:
                     to_remove.append([node, adjacent])
-                    # del network_dict[node].adjacency_dict[adjacent]
 
+        # remove edges to nodes that don't exist in graph
         for node, adjacent in to_remove:
             del network_dict[node].adjacency_dict[adjacent]
+
         self.network_dict = network_dict
 
     def is_connected(self, nodes_encountered=None, start_node=None):
@@ -87,7 +97,7 @@ class Network:
             return True
         return False
 
-    # todo feed graph, is it connected
+    # todo: feed graph, is it connected?
     def DFS(self, node_id=None):
         """
         Returns bool indicating graph connectivity (path between all nodes).
@@ -156,7 +166,7 @@ class Network:
         else:
             return False
 
-    # dijkstra's saves all shortest paths from source to struture
+    # TODO: dijkstra's saves all shortest paths from source to structure
     # gets path and/or weight
     def dijkstra(self, initial_node_id, end_node_id):
         """
@@ -239,6 +249,7 @@ class Network:
                 active_nodes.append(node)
         return active_nodes
 
+    # TODO random parameter (seed)
     @staticmethod
     def generate_network(n):
         """
@@ -276,6 +287,8 @@ class Network:
         :return: randomly generated adjacency_dict
         :rtype: dict
         """
+        # same seed each run (temporarily for testing consistency)
+        random.seed(1)
         adjacency_dict = {}
         for n in range(random.randint(5, 25)):
             random_node = random.randint(1, total_nodes)
@@ -613,7 +626,6 @@ class Network:
         :param int node_id1: unique identifier within a given graph
         :param int node_id2: unique identifier within a given graph
         """
-        # todo node doesnt exist
         try:
             # if nodes exist
             if node_id1 in self.network_dict and node_id2 in self.network_dict:
