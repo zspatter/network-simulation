@@ -14,6 +14,10 @@ class Network:
     nodes contained within the graph.
     """
 
+    # TODO check that adjacent is a node that exists
+    # maybe check if adjacent exists before adding to dict?
+    # if it doesn't exist, store for later
+    # check dict for adjacent before using parameters
     def __init__(self, network_dict=None):
         """
         Creates an instance of a Network
@@ -23,20 +27,38 @@ class Network:
 
         if network_dict is None:
             network_dict = {}
-        self.network_dict = network_dict
+
+        to_remove = list()
 
         # ensures adjacency lists mirror each other (undirected weighted edges)
         nodes = network_dict.keys()
         for node in nodes:
-            adjacents = network_dict[node].get_adjacents()
+            adjacents = network_dict[node].adjacency_dict.keys()
             for adjacent in adjacents:
-                if node in self.network_dict[adjacent].get_adjacents() \
-                        and self.network_dict[adjacent].adjacency_dict[node] \
-                        is self.network_dict[node].adjacency_dict[adjacent]:
-                    continue
+                # if adjacent node id is in network dict
+                if adjacent in network_dict:
+                    # if node is key in adjacent's adjacency dict
+                    # AND the adjacencies mirror one another
+                    if node in network_dict[adjacent].adjacency_dict.keys() \
+                            and network_dict[adjacent].adjacency_dict[node] \
+                            is network_dict[node].adjacency_dict[adjacent]:
+                        continue
+                    # if node isn't present in adjacent's adjacency dict
+                    # OR adjacencies differ from one another
+                    else:
+                        # todo how to make most recent adjaceny list most more significant
+                        # latest dict is what should be assigned to nodes
+                        network_dict[adjacent].adjacency_dict[node] = \
+                            network_dict[node].adjacency_dict[adjacent]
+                        # network_dict[node].adjacency_dict[adjacent] = \
+                        #     network_dict[adjacent].adjacency_dict[node]
                 else:
-                    self.network_dict[adjacent].adjacency_dict[node] = \
-                        self.network_dict[node].adjacency_dict[adjacent]
+                    to_remove.append([node, adjacent])
+                    # del network_dict[node].adjacency_dict[adjacent]
+
+        for node, adjacent in to_remove:
+            del network_dict[node].adjacency_dict[adjacent]
+        self.network_dict = network_dict
 
     def is_connected(self, nodes_encountered=None, start_node=None):
         """

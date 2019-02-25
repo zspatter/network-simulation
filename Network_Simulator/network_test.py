@@ -263,3 +263,28 @@ connectivity algorithms.
 
 print('\nShortest path between Node ID: #1 and Node ID: #10\n\t' +
       str(network_1.dijkstra(1, 10)))
+
+node1 = Node(1, "A",
+             {2: {'weight': 3, 'status': True},
+              3: {'weight': 5, 'status': True},
+              6: {'weight': 6, 'status': False}})
+              # })
+node2 = Node(2, "B",
+             {1: {'weight': 20, 'status': True},
+              4: {'weight': 3, 'status': True}})
+node3 = Node(3, "C",
+             {2: {'weight': 6, 'status': True},
+              4: {'weight': 9, 'status': True}})
+node4 = Node(4, "D",
+             {3: {'weight': 8, 'status': True},
+              2: {'weight': 4, 'status': True}})
+node5 = Node(5, "E",
+             {1: {'weight': 1, 'status': True},
+              4: {'weight': 2, 'status': True}})
+
+net = Network({node1.node_id: node1,
+               node2.node_id: node2,
+               node3.node_id: node3,
+               node4.node_id: node4,
+               node5.node_id: node5})
+print(net)
