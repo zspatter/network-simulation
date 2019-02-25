@@ -292,6 +292,41 @@ def test_is_connected():
     assert test_net.is_connected()
 
 
+def test_nodes():
+    node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
+    node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
+    test_net = net.Network({1: node1, 2: node2})
+
+    # test graph with 2 active nodes
+    assert len(test_net.nodes()) is 2
+    assert len(test_net.nodes()) is len(test_net.network_dict)
+    assert node1.node_id in test_net.nodes()
+    assert node2.node_id in test_net.nodes()
+
+    # test edge deactivation
+    test_net.mark_edge_inactive(node1.node_id, node2.node_id)
+    assert len(test_net.nodes()) is 2
+    assert len(test_net.nodes()) is len(test_net.network_dict)
+    assert node1.node_id in test_net.nodes()
+    assert node2.node_id in test_net.nodes()
+
+    # deactivate 1 node and test
+    test_net.mark_node_inactive(node1.node_id)
+    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) is not len(test_net.network_dict)
+    assert len(test_net.network_dict) is 2
+    assert node1.node_id not in test_net.nodes()
+    assert node2.node_id in test_net.nodes()
+
+    # deactivate last node
+    test_net.mark_node_inactive(node2.node_id)
+    assert not test_net.nodes()
+    assert len(test_net.nodes()) is not len(test_net.network_dict)
+    assert len(test_net.network_dict) is 2
+    assert node1.node_id not in test_net.nodes()
+    assert node2.node_id not in test_net.nodes()
+
+
 def test_DFS():
     test_net = net.Network()
     test_net.add_node(n.Node(1))
