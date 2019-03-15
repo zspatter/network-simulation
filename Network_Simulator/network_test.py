@@ -102,26 +102,26 @@ network_1.add_node(Node(11, 'K',
                     10: {'weight': 8, 'status': True}}))
 print(network_1)
 
-
-# demonstrates is_connected() function works
-if network_1.is_connected():
-    print("The network is connected!\n")
-else:
-    print("The network is not connected!\n")
-start = time.time_ns()
-print('Recursive DFS: ' + str(network_1.is_connected()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative DFS: ' + str(network_1.DFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative BFS: ' + str(network_1.BFS()))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
+#
+# # demonstrates is_connected() function works
+# if network_1.is_connected():
+#     print("The network is connected!\n")
+# else:
+#     print("The network is not connected!\n")
+# start = time.time_ns()
+# print('Recursive DFS: ' + str(network_1.is_connected()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative DFS: ' + str(network_1.DFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative BFS: ' + str(network_1.BFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
 
 # creates disconnected network to further test is_connected()
@@ -198,6 +198,10 @@ print('\t---MARK NODE INACTIVE TESTS---')
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(6)
+
+
+init_tester.mark_node_inactive(6)
+
 print(init_tester)
 
 print('\t---MARK NODE ACTIVE TESTS---')
@@ -235,26 +239,51 @@ init_tester.mark_node_inactive(1)
 print('\nDisconnected node made inactive (reconnecting graph):')
 print('\tRecursive DFS: ' + str(init_tester.is_connected()))
 print('\tIterative DFS: ' + str(init_tester.DFS()))
-print('\tIterative BFS: ' + str(init_tester.BFS()))
+print('\tIterative BFS: ' + str(init_tester.BFS()) + '\n')
 """
 The following section briefly tests generated networks and the iterative 
 connectivity algorithms.
 """
 
 # tests the generate_network and generate_adjacency_list functions
-# generated_network = Network.generate_network(5000)
-# print('\t---GENERATED RANDOM NETWORK---\n')
-# print(generated_network)
-#
-# # times iterative DFS and iterative BFS for comparison
-# start = time.time_ns()
-# print('\nIterative DFS: ' + str(generated_network.DFS()))
-# end = time.time_ns()
-# print('\telapsed time: ' + str(end - start))
-#
-# start = time.time_ns()
-# print('\nIterative BFS: ' + str(generated_network.BFS()))
-# end = time.time_ns()
-# print('\telapsed time: ' + str(end - start))
+generated_network = Network.generate_network(15000)
+print('\t---GENERATED RANDOM NETWORK---\n')
+print(generated_network)
 
-print('\nShortest path between Node ID: #1 and Node ID: #10\n\t' + str(network_1.dijkstra(1, 10)))
+# times iterative DFS and iterative BFS for comparison
+start = time.time_ns()
+print('\nIterative DFS: ' + str(generated_network.DFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+start = time.time_ns()
+print('\nIterative BFS: ' + str(generated_network.BFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+print('\nShortest path between Node ID: #1 and Node ID: #10\n\t' +
+      str(network_1.dijkstra(1, 10)))
+
+node1 = Node(1, "A",
+             {2: {'weight': 3, 'status': True},
+              3: {'weight': 5, 'status': True},
+              6: {'weight': 6, 'status': False}})
+node2 = Node(2, "B",
+             {1: {'weight': 20, 'status': True},
+              4: {'weight': 3, 'status': True}})
+node3 = Node(3, "C",
+             {2: {'weight': 6, 'status': True},
+              4: {'weight': 9, 'status': True}})
+node4 = Node(4, "D",
+             {3: {'weight': 8, 'status': True},
+              2: {'weight': 4, 'status': True}})
+node5 = Node(5, "E",
+             {1: {'weight': 1, 'status': True},
+              4: {'weight': 2, 'status': True}})
+
+net = Network({node1.node_id: node1,
+               node2.node_id: node2,
+               node3.node_id: node3,
+               node4.node_id: node4,
+               node5.node_id: node5})
+print(net)
