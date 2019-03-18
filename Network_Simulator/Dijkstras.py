@@ -33,7 +33,7 @@ class Dijkstras:
         if len(nodes_encountered) != len(nodes):
             for node in network.network_dict[start_node].get_adjacents():
                 if node not in nodes_encountered:
-                    if network.is_connected(nodes_encountered, node):
+                    if Dijkstras.is_connected(network, nodes_encountered, node):
                         return True
         else:
             return True
