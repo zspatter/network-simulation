@@ -111,7 +111,7 @@ class Network:
                 for key in node.adjacency_dict:
                     self.network_dict[key].adjacency_dict[node.node_id] = \
                         node.adjacency_dict[key]
-                print(f'Node ID: #{node.node_id} has been added to this'
+                print(f'Node ID: #{node.node_id} has been added to this '
                       f'network!')
 
             # if node already exists
