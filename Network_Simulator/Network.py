@@ -4,6 +4,16 @@ from Network_Simulator.exceptions import NodeAlreadyExistsError, \
     ElementActiveError, ElementInactiveError
 import random
 
+"""
+Add capability to represent subnetworks
+
+A network will include nodes which will be represented by a complete
+graph (mesh topology) of nodes objects (network within network)
+
+These subnetworks will represent health systems (IU Health) while the
+overall network will represent all hospitals
+"""
+
 
 class Network:
     """
