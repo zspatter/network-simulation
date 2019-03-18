@@ -38,7 +38,7 @@ class GraphBuilder:
         Returns randomly generated adjacency dict for an instance of a node.
         The generated adjacency list can contain a connection to any node
         in the graph (except itself). This will prevent parallel edges from
-        being generated. A random number of edges between 5 and 25 (inclusive)
+        being generated. A random number of edges between 3 and 10 (inclusive)
         will be generated and a random weight between 1 and 50 (inclusive)
         will be assigned to each edge.
         This is called by the generate_network function.
@@ -50,10 +50,12 @@ class GraphBuilder:
         :return: randomly generated adjacency_dict
         :rtype: dict
         """
+
         # same seed each run (temporarily for testing consistency)
         random.seed(1)
+        
         adjacency_dict = {}
-        for n in range(random.randint(5, 25)):
+        for n in range(random.randint(3, 10)):
             random_node = random.randint(1, total_nodes)
             # ensures node doesn't add itself to adjacency_dict
             # or add a duplicate entry
