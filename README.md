@@ -14,3 +14,5 @@ The network will be represented by a collection of dictionaries.
 1. A graph ID which is a unique identifier.
 2. A label which describes/names the graph.
 3. A dictionary which contains a collection of node ID's that point to the corresponding Node objects.
+## UML Diagram
+![alt text](https://github.com/zspatter/network-simulation/blob/master/UML.png)
