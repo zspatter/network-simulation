@@ -1,7 +1,5 @@
 from Network_Simulator.Node import Node
 from Network_Simulator.Network import Network
-from Network_Simulator.GraphBuilder import GraphBuilder
-from Network_Simulator.Dijkstras import Dijkstras
 import time
 
 """
@@ -104,29 +102,26 @@ network_1.add_node(Node(11, 'K',
                     10: {'weight': 8, 'status': True}}))
 print(network_1)
 
-# create Dijkstras object for connectivity checks
-dijkstras = Dijkstras()
-
-# demonstrates is_connected() function works
-if dijkstras.is_connected(network_1):
-    print("The network is connected!\n")
-else:
-    print("The network is not connected!\n")
-
-start = time.time_ns()
-print('Recursive DFS: ' + str(dijkstras.is_connected(network_1)))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative DFS: ' + str(dijkstras.DFS(network_1)))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start))
-
-start = time.time_ns()
-print('\nIterative BFS: ' + str(dijkstras.BFS(network_1)))
-end = time.time_ns()
-print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
+#
+# # demonstrates is_connected() function works
+# if network_1.is_connected():
+#     print("The network is connected!\n")
+# else:
+#     print("The network is not connected!\n")
+# start = time.time_ns()
+# print('Recursive DFS: ' + str(network_1.is_connected()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative DFS: ' + str(network_1.DFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start))
+#
+# start = time.time_ns()
+# print('\nIterative BFS: ' + str(network_1.BFS()))
+# end = time.time_ns()
+# print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
 
 # creates disconnected network to further test is_connected()
@@ -149,17 +144,17 @@ print(disconnected_network)
 
 
 start = time.time_ns()
-print('Recursive DFS: ' + str(dijkstras.is_connected(disconnected_network)))
+print('Recursive DFS: ' + str(disconnected_network.is_connected()))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative DFS: ' + str(dijkstras.DFS(disconnected_network)))
+print('\nIterative DFS: ' + str(disconnected_network.DFS()))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative BFS: ' + str(dijkstras.BFS(disconnected_network)))
+print('\nIterative BFS: ' + str(disconnected_network.BFS()))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -235,47 +230,40 @@ init_tester.mark_edge_inactive(1, 2)
 init_tester.mark_edge_inactive(1, 5)
 
 print('\nDisconnected through inactive edges:')
-print('\tRecursive DFS: ' + str(dijkstras.is_connected(init_tester)))
-print('\tIterative DFS: ' + str(dijkstras.DFS(init_tester)))
-print('\tIterative BFS: ' + str(dijkstras.BFS(init_tester)) + '\n')
+print('\tRecursive DFS: ' + str(init_tester.is_connected()))
+print('\tIterative DFS: ' + str(init_tester.DFS()))
+print('\tIterative BFS: ' + str(init_tester.BFS()) + '\n')
 
 init_tester.mark_node_inactive(1)
 
 print('\nDisconnected node made inactive (reconnecting graph):')
-print('\tRecursive DFS: ' + str(dijkstras.is_connected(init_tester)))
-print('\tIterative DFS: ' + str(dijkstras.DFS(init_tester)))
-print('\tIterative BFS: ' + str(dijkstras.BFS(init_tester)) + '\n')
-
+print('\tRecursive DFS: ' + str(init_tester.is_connected()))
+print('\tIterative DFS: ' + str(init_tester.DFS()))
+print('\tIterative BFS: ' + str(init_tester.BFS()) + '\n')
 """
 The following section briefly tests generated networks and the iterative 
 connectivity algorithms.
 """
-graphBuilder = GraphBuilder()
 
 # tests the generate_network and generate_adjacency_list functions
-# generated_network = graphBuilder.generate_random_network(75)
-# print('\t---GENERATED RANDOM NETWORK---\n')
-# print(generated_network)
-#
-# # times iterative DFS and iterative BFS for comparison
-# print('Generated random network:')
-# start = time.time_ns()
-# print('\n\tIterative DFS: ' + str(dijkstras.DFS(generated_network)))
-# end = time.time_ns()
-# print('\t\telapsed time: ' + str(end - start))
-#
-# start = time.time_ns()
-# print('\n\tIterative BFS: ' + str(dijkstras.BFS(generated_network)))
-# end = time.time_ns()
-# print('\t\telapsed time: ' + str(end - start))
-#
-# print('\n\tShortest path between Node ID: #1 and Node ID: #10\n\t\t' +
-#       str(dijkstras.dijkstra(network_1, 1, 10)))
+generated_network = Network.generate_network(15000)
+print('\t---GENERATED RANDOM NETWORK---\n')
+print(generated_network)
 
+# times iterative DFS and iterative BFS for comparison
+start = time.time_ns()
+print('\nIterative DFS: ' + str(generated_network.DFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
 
-'''
-Checks how __init__ handles shared edges with differing weights
-'''
+start = time.time_ns()
+print('\nIterative BFS: ' + str(generated_network.BFS()))
+end = time.time_ns()
+print('\telapsed time: ' + str(end - start))
+
+print('\nShortest path between Node ID: #1 and Node ID: #10\n\t' +
+      str(network_1.dijkstra(1, 10)))
+
 node1 = Node(1, "A",
              {2: {'weight': 3, 'status': True},
               3: {'weight': 5, 'status': True},
