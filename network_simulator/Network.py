@@ -2,7 +2,16 @@ from Network_Simulator.Node import Node
 from Network_Simulator.exceptions import NodeAlreadyExistsError, \
     NodeDoesNotExistError, EdgeAlreadyExistsError, EdgeDoesNotExistError, \
     ElementActiveError, ElementInactiveError
-import random
+
+"""
+Add capability to represent subnetworks
+
+A network will include nodes which will be represented by a complete
+graph (mesh topology) of nodes objects (network within network)
+
+These subnetworks will represent health systems (IU Health) while the
+overall network will represent all hospitals
+"""
 
 
 class Network:
@@ -70,171 +79,6 @@ class Network:
 
         self.network_dict = network_dict
 
-    def is_connected(self, nodes_encountered=None, start_node=None):
-        """
-        Returns bool indicating graph connectivity (path between all nodes).
-        This is a recursive DFS.
-
-        :param set nodes_encountered: set of node_id's encountered (None by default)
-        :param int start_node: node_id of start of search (None by default)
-
-        :return: bool indicating graph connectivity
-        :rtype: bool
-        """
-        if nodes_encountered is None:
-            nodes_encountered = set()
-        nodes = self.nodes()
-        if not start_node:
-            # chose a vertex from network as start point
-            start_node = nodes[0]
-        nodes_encountered.add(start_node)
-        if len(nodes_encountered) != len(nodes):
-            for node in self.network_dict[start_node].get_adjacents():
-                if node not in nodes_encountered:
-                    if self.is_connected(nodes_encountered, node):
-                        return True
-        else:
-            return True
-        return False
-
-    # todo: feed graph, is it connected?
-    def DFS(self, node_id=None):
-        """
-        Returns bool indicating graph connectivity (path between all nodes).
-        This is an iterative DFS.
-
-        :param int node_id: identifies node where search will start (None by default)
-
-        :return: bool indicating graph connectivity
-        :rtype: bool
-        """
-        nodes_encountered = set()
-        if not node_id:
-            node_id = self.nodes()[0]
-        stack = [node_id]
-        while stack:
-            node = stack.pop()
-            if node not in nodes_encountered:
-                nodes_encountered.add(node)
-                # TODO: this adds all adjacents - this will cause repeat visits
-                stack.extend(self.network_dict[node].get_adjacents())
-
-        if len(nodes_encountered) != len(self.nodes()):
-            return False
-        else:
-            return True
-
-    def BFS(self, node_id=None):
-        """
-        Returns bool indicating graph connectivity (path between all nodes).
-        This is an iterative BFS.
-
-        :param int node_id: identifies node where search will start (None by default)
-
-        :return: bool indicating graph connectivity
-        :rtype: bool
-        """
-        # mark all the nodes as not visited (value is None)
-        visited = dict.fromkeys(self.nodes())
-        nodes_encountered = set()
-        queue = []
-
-        if not node_id:
-            node_id = self.nodes()[0]
-
-        # mark the source node as visited and enqueue it
-        queue.append(node_id)
-        visited[node_id] = True
-        nodes_encountered.add(node_id)
-
-        while queue:
-            # dequeue a node from queue and add to nodes_encountered
-            node_id = queue.pop(0)
-            nodes_encountered.add(node_id)
-
-            # all adjacents of current node are checked, if the node hasn't been
-            # enqueued previously, node is enqueued and added to nodes_encountered
-            for node in self.network_dict[node_id].get_adjacents():
-                if visited[node] is None:
-                    queue.append(node)
-                    visited[node] = True
-                    nodes_encountered.add(node)
-
-        # if size of nodes_encountered equals size of nodes(), return True
-        if len(nodes_encountered) == len(self.nodes()):
-            return True
-        else:
-            return False
-
-    # TODO: dijkstra's saves all shortest paths from source to structure
-    # gets path and/or weight
-    def dijkstra(self, initial_node_id, end_node_id):
-        """
-        Returns the shortest path between the initial node and the end
-        node as well as the total cost of the path. If there is no
-        path that exists which connects the given nodes, an error message
-        is printed to the console.
-
-        :param int initial_node_id: identifies the source node
-        :param int end_node_id: identifies the destination node
-
-        :return: collection of node ID's that indicate the shortest path
-            and the total cost of the given path
-        :rtype: dict {'path': list, 'weight': int}
-        """
-        # shortest paths is a dict of nodes
-        # whose value is a tuple of (previous node, weight)
-        shortest_paths = {initial_node_id: (None, 0)}
-        current_node = initial_node_id
-        visited = set()
-
-        while current_node != end_node_id:
-            visited.add(current_node)
-            destinations = self.network_dict[current_node].get_adjacents()
-            weight_to_current_node = shortest_paths[current_node][1]
-
-            # for node in active adjacents
-            for next_node in destinations:
-                weight = self.network_dict[current_node].adjacency_dict[next_node]['weight']\
-                         + weight_to_current_node
-
-                # if next node hasn't been stored
-                if next_node not in shortest_paths:
-                    shortest_paths[next_node] = (current_node, weight)
-
-                # if next node has been stored
-                else:
-                    current_shortest_weight = shortest_paths[next_node][1]
-
-                    # if currently stored weight is greater than this path's weight
-                    if current_shortest_weight > weight:
-                        shortest_paths[next_node] = (current_node, weight)
-
-            # next destinations are nodes in shortest paths that haven't been visited
-            next_destinations = {node: shortest_paths[node]
-                                 for node in shortest_paths if node not in visited}
-            # if next destinations are empty
-            if not next_destinations:
-                return f'There is no path connecting Node ID: #{initial_node_id} ' \
-                    f'and Node ID: #{end_node_id}.'
-
-            # next node is the destination with the lowest weight
-            current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
-
-        # Work back through destinations in shortest path
-        path = []
-        cumulative_weight = 0
-
-        while current_node:
-            path.append(current_node)
-            next_node = shortest_paths[current_node][0]
-            cumulative_weight += shortest_paths[current_node][1]
-            current_node = next_node
-        # Reverse path
-        path = path[::-1]
-        shortest_path = {'path': path, 'weight': cumulative_weight}
-        return shortest_path
-
     def nodes(self):
         """
         Returns list of active nodes within the graph.
@@ -248,60 +92,6 @@ class Network:
             if self.network_dict[node].status:
                 active_nodes.append(node)
         return active_nodes
-
-    # TODO random parameter (seed)
-    @staticmethod
-    def generate_network(n):
-        """
-        Returns randomly generated network with n nodes.
-
-        :param int n: number of nodes generated graph will contain
-
-        :return: randomly generated network with N nodes
-        :rtype: Network
-        """
-        network_dict = {}
-        for x in range(1, n + 1):
-            adjacency_dict = Network.generate_adjacency_dict(x, n)
-            node = Node(x, 'Node #' + str(x), adjacency_dict)
-            network_dict[x] = node
-        network = Network(network_dict)
-        return network
-
-    # TODO random parameter (seed)
-    @staticmethod
-    def generate_adjacency_dict(node_id, total_nodes):
-        """
-        Returns randomly generated adjacency dict for an instance of a node.
-        The generated adjacency list can contain a connection to any node
-        in the graph (except itself). This will prevent parallel edges from
-        being generated. A random number of edges between 5 and 25 (inclusive)
-        will be generated and a random weight between 1 and 50 (inclusive)
-        will be assigned to each edge.
-        This is called by the generate_network function.
-
-        :param int node_id: unique identifier for the node that the
-            adjacency dict is being generated for
-        :param int total_nodes: total number of nodes present in the generated graph
-
-        :return: randomly generated adjacency_dict
-        :rtype: dict
-        """
-        # same seed each run (temporarily for testing consistency)
-        random.seed(1)
-        adjacency_dict = {}
-        for n in range(random.randint(5, 25)):
-            random_node = random.randint(1, total_nodes)
-            # ensures node doesn't add itself to adjacency_dict
-            # or add a duplicate entry
-            while node_id == random_node \
-                    or any(random_node == x for x in adjacency_dict.keys()):
-
-                random_node = random.randint(1, total_nodes)
-
-            # updates adjacency dict to new format
-            adjacency_dict[random_node] = {'weight': random.randint(1, 50), 'status': True}
-        return adjacency_dict
 
     def add_node(self, node):
         """
@@ -321,7 +111,7 @@ class Network:
                 for key in node.adjacency_dict:
                     self.network_dict[key].adjacency_dict[node.node_id] = \
                         node.adjacency_dict[key]
-                print(f'Node ID: #{node.node_id} has been added to this'
+                print(f'Node ID: #{node.node_id} has been added to this '
                       f'network!')
 
             # if node already exists
