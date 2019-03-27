@@ -16,10 +16,10 @@ The network will be represented by a collection of dictionaries.
 3. A dictionary which contains a collection of node ID's that point to the corresponding Node objects.
 
 #### Other Objects:
-- GraphBuilder
-- Dijkstras
-- Organ
-- Patient
+- GraphBuilder - builds a random network with N nodes
+- Dijkstras - finds shortest path from a source node in a given graph (also contains some connectivity helper functions)
+- Organ - represent the donated organs (these will be distributed across the system)
+- Patient - represent individuals in need of a transplant
 
 ## UML Diagram
 ![alt text](https://github.com/zspatter/network-simulation/blob/master/UML.png)
