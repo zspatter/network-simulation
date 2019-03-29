@@ -1,5 +1,5 @@
-from Network_Simulator.Node import Node
-from Network_Simulator.exceptions import NodeAlreadyExistsError, \
+from network_simulator.Node import Node
+from network_simulator.exceptions import NodeAlreadyExistsError, \
     NodeDoesNotExistError, EdgeAlreadyExistsError, EdgeDoesNotExistError, \
     ElementActiveError, ElementInactiveError
 

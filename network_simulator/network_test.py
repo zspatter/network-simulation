@@ -1,7 +1,7 @@
-from Network_Simulator.Node import Node
-from Network_Simulator.Network import Network
-from Network_Simulator.GraphBuilder import GraphBuilder
-from Network_Simulator.Dijkstras import Dijkstras
+from network_simulator.Node import Node
+from network_simulator.Network import Network
+from network_simulator.GraphBuilder import GraphBuilder
+from network_simulator.Dijkstras import Dijkstras
 import time
 
 """

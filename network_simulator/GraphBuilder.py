@@ -1,5 +1,5 @@
-from Network_Simulator.Node import Node
-from Network_Simulator.Network import Network
+from network_simulator.Node import Node
+from network_simulator.Network import Network
 import random
 
 
