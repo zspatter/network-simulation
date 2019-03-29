@@ -79,6 +79,9 @@ class Network:
 
         self.network_dict = network_dict
 
+    def __iter__(self):
+        return iter(self.network_dict.values())
+
     def nodes(self):
         """
         Returns list of active nodes within the graph.
