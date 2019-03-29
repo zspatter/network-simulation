@@ -17,7 +17,7 @@ The network will be represented by a collection of dictionaries.
 
 #### Other Objects:
 - <ins>*GraphBuilder*</ins> - builds a random network with N nodes
-- <ins>*Dijkstras*</ins> - finds shortest path from a source node in a given graph (also contains some connectivity helper functions)
+- <ins>*Dijkstras*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
 - <ins>*Organ*</ins> - represent the donated organs (these will be distributed across the system)
 - <ins>*Patient*</ins> - represent individuals in need of a transplant
 
