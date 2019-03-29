@@ -1,3 +1,6 @@
+import heapq
+
+
 class Dijkstras:
     """
     A class which will be used to analyze graphs to determine shortest
@@ -113,7 +116,7 @@ class Dijkstras:
 
     # TODO: dijkstra's saves all shortest paths from source to a structure
     @staticmethod
-    def dijkstra(network, initial_node_id, end_node_id):
+    def broken_dijkstra(network, source, destination):
         """
         Returns the shortest path between the initial node and the end
         node as well as the total cost of the path. If there is no
@@ -121,8 +124,8 @@ class Dijkstras:
         is printed to the console.
 
         :param network: object representing a graph (network)
-        :param int initial_node_id: identifies the source node
-        :param int end_node_id: identifies the destination node
+        :param int source: identifies the source node
+        :param int destination: identifies the destination node
 
         :return: collection of node ID's that indicate the shortest path
             and the total cost of the given path
@@ -130,18 +133,18 @@ class Dijkstras:
         """
         # shortest paths is a dict of nodes
         # whose value is a tuple of (previous node, weight)
-        shortest_paths = {initial_node_id: (None, 0)}
-        current_node = initial_node_id
+        shortest_paths = {source: (None, 0)}
+        current_node = source
         visited = set()
 
-        while current_node != end_node_id:
+        while current_node != destination:
             visited.add(current_node)
             destinations = network.network_dict[current_node].get_adjacents()
             weight_to_current_node = shortest_paths[current_node][1]
 
             # for node in active adjacents
             for next_node in destinations:
-                weight = network.network_dict[current_node].adjacency_dict[next_node]['weight']\
+                weight = network.network_dict[current_node].adjacency_dict[next_node]['weight'] \
                          + weight_to_current_node
 
                 # if next node hasn't been stored
@@ -161,8 +164,8 @@ class Dijkstras:
                                  for node in shortest_paths if node not in visited}
             # if next destinations are empty
             if not next_destinations:
-                return f'There is no path connecting Node ID: #{initial_node_id} ' \
-                    f'and Node ID: #{end_node_id}.'
+                return f'There is no path connecting Node ID: #{source} ' \
+                    f'and Node ID: #{destination}.'
 
             # next node is the destination with the lowest weight
             current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
@@ -180,3 +183,40 @@ class Dijkstras:
         path = path[::-1]
         shortest_path = {'path': path, 'weight': cumulative_weight}
         return shortest_path
+
+    @staticmethod
+    def dijkstra(graph, source):
+        unvisited = graph.nodes()
+        weight = dict.fromkeys(graph.nodes(), float('inf'))
+        previous = dict.fromkeys(graph.nodes(), None)
+        weight[source] = 0
+
+        # while there are nodes which haven't been visited
+        while unvisited:
+            # picks the unvisited node with the shortest weight to visit next
+            current_node = Dijkstras.minimum_unvisited_distance(unvisited, weight)
+            unvisited.remove(current_node)
+
+            # looks at all of the current node's adjacents
+            for adjacent in graph.network_dict[current_node].get_adjacents():
+                alt_weight = weight[current_node] + graph.network_dict[current_node].adjacency_dict[adjacent]['weight']
+                # if this adjacent has a lower weight than currently recorded weight, replace it
+                if alt_weight < weight[adjacent]:
+                    weight[adjacent] = alt_weight
+                    previous[adjacent] = current_node
+
+        return weight, previous
+
+    @staticmethod
+    def minimum_unvisited_distance(unvisited, weight):
+        min_weight = float('inf')
+        min_node = unvisited[0]
+
+        for node in unvisited:
+            if weight[node] < min_weight:
+                min_weight = weight[node]
+                min_node = node
+
+        return min_node
+
+
