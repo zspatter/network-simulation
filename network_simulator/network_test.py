@@ -247,32 +247,38 @@ print('\tIterative DFS: ' + str(dijkstras.DFS(init_tester)))
 print('\tIterative BFS: ' + str(dijkstras.BFS(init_tester)) + '\n')
 
 """
-The following section briefly tests generated networks and the iterative 
+The following section briefly tests generated networks and the iterative
 connectivity algorithms.
 """
 graphBuilder = GraphBuilder()
 
 # tests the generate_network and generate_adjacency_list functions
-# generated_network = graphBuilder.generate_random_network(75)
-# print('\t---GENERATED RANDOM NETWORK---\n')
-# print(generated_network)
-#
-# # times iterative DFS and iterative BFS for comparison
-# print('Generated random network:')
-# start = time.time_ns()
-# print('\n\tIterative DFS: ' + str(dijkstras.DFS(generated_network)))
-# end = time.time_ns()
-# print('\t\telapsed time: ' + str(end - start))
-#
-# start = time.time_ns()
-# print('\n\tIterative BFS: ' + str(dijkstras.BFS(generated_network)))
-# end = time.time_ns()
-# print('\t\telapsed time: ' + str(end - start))
-#
-# print('\n\tShortest path between Node ID: #1 and Node ID: #10\n\t\t' +
-#       str(dijkstras.dijkstra(network_1, 1, 10)))
+generated_network = graphBuilder.generate_random_network(15)
+print('\t---GENERATED RANDOM NETWORK---\n')
+print(generated_network)
 
+# times iterative DFS and iterative BFS for comparison
+print('Generated random network:')
+start = time.time_ns()
+print('\n\tIterative DFS: ' + str(dijkstras.DFS(generated_network)))
+end = time.time_ns()
+print('\t\telapsed time: ' + str(end - start))
 
+start = time.time_ns()
+print('\n\tIterative BFS: ' + str(dijkstras.BFS(generated_network)))
+end = time.time_ns()
+print('\t\telapsed time: ' + str(end - start))
+
+print('\n\tShortest path between Node ID: #1 and Node ID: #10\n\t\t' +
+      str(dijkstras.broken_dijkstra(generated_network, 1, 16)))
+
+for node in network_1.nodes():
+    print(f'Shortest path between Node ID: #1 and Node ID: #{node}\n\t' +
+          str(dijkstras.broken_dijkstra(network_1, 1, node)))
+
+weights, previous = dijkstras.dijkstra(network_1, 1)
+print("weights:\n" + str(weights))
+print("\nprevious:\n" + str(previous))
 '''
 Checks how __init__ handles shared edges with differing weights
 '''
