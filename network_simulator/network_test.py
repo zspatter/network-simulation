@@ -307,8 +307,8 @@ print(net)
 for node in network_1.nodes():
     path, weight = dijkstra.get_shortest_path(node)
     print('The shortest path between Node %s#%d%s and Node %s#%d%s is:'
-          '\n\tPath: %s%s%s'
-          '\n\tWeight: %s%d%s\n'
+          '\n\t%-8s%s%s%s'
+          '\n\t%-8s%s%d%s\n'
           % (ANSI_WHITE, dijkstra.source, ANSI_RESET, ANSI_WHITE, node, ANSI_RESET,
-             ANSI_YELLOW, path, ANSI_RESET,
-             ANSI_YELLOW, weight, ANSI_RESET))
+             'Path: ', ANSI_YELLOW, path, ANSI_RESET,
+             'Weight: ', ANSI_YELLOW, weight, ANSI_RESET))
