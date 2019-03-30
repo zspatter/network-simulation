@@ -49,7 +49,7 @@ class Dijkstra:
 
         return min_node
 
-    def get_shortest_path(self, destination):
+    def shortest_path(self, destination):
         if self.weight[destination] is float('inf'):
             print('No paths (check connectivity to source)')
             return
@@ -67,6 +67,13 @@ class Dijkstra:
         # reverse path and return
         path = path[::-1]
         return path, self.weight[destination]
+
+    def all_shortest_paths(self):
+        for key in self.weight:
+            path, weight = self.shortest_path(key)
+            print(f'The shortest path between Node #{self.source} and Node #{key} is:'
+                  f'\n\tPath:   {path}'
+                  f'\n\tWeight:  {weight}\n')
 
     @staticmethod
     def is_connected(network, nodes_encountered=None, source=None):
