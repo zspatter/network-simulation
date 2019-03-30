@@ -1,5 +1,5 @@
-import Network_Simulator.Node as n
-import Network_Simulator.Network as net
+import network_simulator.Node as n
+import network_simulator.Network as net
 
 
 def test_add_node():

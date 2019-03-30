@@ -1,4 +1,4 @@
-import Network_Simulator.Node as n
+import network_simulator.Node as n
 
 
 def test_is_adjacent():
