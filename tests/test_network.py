@@ -279,19 +279,6 @@ def test_mark_edge_active():
     assert node2.status
 
 
-def test_is_connected():
-    test_net = net.Network()
-    test_net.add_node(n.Node(1))
-
-    assert test_net.is_connected()
-
-    test_net.add_node(n.Node(2))
-    assert not test_net.is_connected()
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert test_net.is_connected()
-
-
 def test_nodes():
     node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
     node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
@@ -326,28 +313,3 @@ def test_nodes():
     assert node1.node_id not in test_net.nodes()
     assert node2.node_id not in test_net.nodes()
 
-
-def test_DFS():
-    test_net = net.Network()
-    test_net.add_node(n.Node(1))
-
-    assert test_net.DFS()
-
-    test_net.add_node(n.Node(2))
-    assert not test_net.DFS()
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert test_net.DFS()
-
-
-def test_BFS():
-    test_net = net.Network()
-    test_net.add_node(n.Node(1))
-
-    assert test_net.BFS()
-
-    test_net.add_node(n.Node(2))
-    assert not test_net.BFS()
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert test_net.BFS()
