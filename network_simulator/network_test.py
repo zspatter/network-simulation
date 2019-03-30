@@ -1,7 +1,7 @@
 from network_simulator.Node import Node
 from network_simulator.Network import Network
 from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.Dijkstras import Dijkstras
+from network_simulator.Dijkstra import Dijkstra
 import time
 
 """
@@ -105,26 +105,26 @@ network_1.add_node(Node(11, 'K',
 print(network_1)
 
 # create Dijkstras object for connectivity checks
-dijkstras = Dijkstras()
+dijkstra = Dijkstra()
 
 # demonstrates is_connected() function works
-if dijkstras.is_connected(network_1):
+if dijkstra.is_connected(network_1):
     print("The network is connected!\n")
 else:
     print("The network is not connected!\n")
 
 start = time.time_ns()
-print('Recursive DFS: ' + str(dijkstras.is_connected(network_1)))
+print('Recursive DFS: ' + str(dijkstra.is_connected(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative DFS: ' + str(dijkstras.DFS(network_1)))
+print('\nIterative DFS: ' + str(dijkstra.DFS(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative BFS: ' + str(dijkstras.BFS(network_1)))
+print('\nIterative BFS: ' + str(dijkstra.BFS(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -149,17 +149,17 @@ print(disconnected_network)
 
 
 start = time.time_ns()
-print('Recursive DFS: ' + str(dijkstras.is_connected(disconnected_network)))
+print('Recursive DFS: ' + str(dijkstra.is_connected(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative DFS: ' + str(dijkstras.DFS(disconnected_network)))
+print('\nIterative DFS: ' + str(dijkstra.DFS(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative BFS: ' + str(dijkstras.BFS(disconnected_network)))
+print('\nIterative BFS: ' + str(dijkstra.BFS(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -235,16 +235,16 @@ init_tester.mark_edge_inactive(1, 2)
 init_tester.mark_edge_inactive(1, 5)
 
 print('\nDisconnected through inactive edges:')
-print('\tRecursive DFS: ' + str(dijkstras.is_connected(init_tester)))
-print('\tIterative DFS: ' + str(dijkstras.DFS(init_tester)))
-print('\tIterative BFS: ' + str(dijkstras.BFS(init_tester)) + '\n')
+print('\tRecursive DFS: ' + str(dijkstra.is_connected(init_tester)))
+print('\tIterative DFS: ' + str(dijkstra.DFS(init_tester)))
+print('\tIterative BFS: ' + str(dijkstra.BFS(init_tester)) + '\n')
 
 init_tester.mark_node_inactive(1)
 
 print('\nDisconnected node made inactive (reconnecting graph):')
-print('\tRecursive DFS: ' + str(dijkstras.is_connected(init_tester)))
-print('\tIterative DFS: ' + str(dijkstras.DFS(init_tester)))
-print('\tIterative BFS: ' + str(dijkstras.BFS(init_tester)) + '\n')
+print('\tRecursive DFS: ' + str(dijkstra.is_connected(init_tester)))
+print('\tIterative DFS: ' + str(dijkstra.DFS(init_tester)))
+print('\tIterative BFS: ' + str(dijkstra.BFS(init_tester)) + '\n')
 
 """
 The following section briefly tests generated networks and the iterative
@@ -260,23 +260,23 @@ print(generated_network)
 # times iterative DFS and iterative BFS for comparison
 print('Generated random network:')
 start = time.time_ns()
-print('\n\tIterative DFS: ' + str(dijkstras.DFS(generated_network)))
+print('\n\tIterative DFS: ' + str(dijkstra.DFS(generated_network)))
 end = time.time_ns()
 print('\t\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\n\tIterative BFS: ' + str(dijkstras.BFS(generated_network)))
+print('\n\tIterative BFS: ' + str(dijkstra.BFS(generated_network)))
 end = time.time_ns()
 print('\t\telapsed time: ' + str(end - start))
 
 print('\n\tShortest path between Node ID: #1 and Node ID: #10\n\t\t' +
-      str(dijkstras.broken_dijkstra(generated_network, 1, 16)))
+      str(dijkstra.broken_dijkstra(generated_network, 1, 16)))
 
 for node in network_1.nodes():
     print(f'Shortest path between Node ID: #1 and Node ID: #{node}\n\t' +
-          str(dijkstras.broken_dijkstra(network_1, 1, node)))
+          str(dijkstra.broken_dijkstra(network_1, 1, node)))
 
-weights, previous = dijkstras.dijkstra(network_1, 1)
+weights, previous = dijkstra.dijkstra(network_1, 1)
 print("weights:\n" + str(weights))
 print("\nprevious:\n" + str(previous))
 '''

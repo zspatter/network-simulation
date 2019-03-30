@@ -1,7 +1,4 @@
-import heapq
-
-
-class Dijkstras:
+class Dijkstra:
     """
     A class which will be used to analyze graphs to determine shortest
     paths between given nodes.
@@ -36,7 +33,7 @@ class Dijkstras:
         if len(nodes_encountered) != len(nodes):
             for node in network.network_dict[start_node].get_adjacents():
                 if node not in nodes_encountered:
-                    if Dijkstras.is_connected(network, nodes_encountered, node):
+                    if Dijkstra.is_connected(network, nodes_encountered, node):
                         return True
         else:
             return True
@@ -194,7 +191,7 @@ class Dijkstras:
         # while there are nodes which haven't been visited
         while unvisited:
             # picks the unvisited node with the shortest weight to visit next
-            current_node = Dijkstras.minimum_unvisited_distance(unvisited, weight)
+            current_node = Dijkstra.minimum_unvisited_distance(unvisited, weight)
             unvisited.remove(current_node)
 
             # looks at all of the current node's adjacents
