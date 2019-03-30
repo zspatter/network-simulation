@@ -69,11 +69,11 @@ class Dijkstra:
         return path, self.weight[destination]
 
     def all_shortest_paths(self):
+        shortest_paths = {}
         for key in self.weight:
-            path, weight = self.shortest_path(key)
-            print(f'The shortest path between Node #{self.source} and Node #{key} is:'
-                  f'\n\tPath:   {path}'
-                  f'\n\tWeight:  {weight}\n')
+            shortest_paths[key] = (self.shortest_path(key))
+
+        return shortest_paths
 
     @staticmethod
     def is_connected(network, nodes_encountered=None, source=None):
