@@ -4,6 +4,11 @@ from network_simulator.GraphBuilder import GraphBuilder
 from network_simulator.Dijkstra import Dijkstra
 import time
 
+# ansi codes to format console output
+ANSI_WHITE = "\033[30m"
+ANSI_YELLOW = '\033[33;1m'
+ANSI_RESET = "\033[0m"
+
 """
 The lines below behave as the main method in Java
 
@@ -298,8 +303,12 @@ net = Network({node1.node_id: node1,
                node5.node_id: node5})
 print(net)
 
+# iterates through all nodes in network_1, finds and prints shortest path and weight
 for node in network_1.nodes():
     path, weight = dijkstra.get_shortest_path(node)
-    print(f'The shortest path between Node #{dijkstra.source} and Node #{node} is:'
-          f'\n\tpath: {path}'
-          f'\n\tweight: {weight}\n')
+    print('The shortest path between Node %s#%d%s and Node %s#%d%s is:'
+          '\n\tPath: %s%s%s'
+          '\n\tWeight: %s%d%s\n'
+          % (ANSI_WHITE, dijkstra.source, ANSI_RESET, ANSI_WHITE, node, ANSI_RESET,
+             ANSI_YELLOW, path, ANSI_RESET,
+             ANSI_YELLOW, weight, ANSI_RESET))
