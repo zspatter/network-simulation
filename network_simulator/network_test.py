@@ -304,11 +304,21 @@ net = Network({node1.node_id: node1,
 print(net)
 
 # iterates through all nodes in network_1, finds and prints shortest path and weight
+# manually calls each destination individually
 for node in network_1.nodes():
-    path, weight = dijkstra.get_shortest_path(node)
+    path, weight = dijkstra.shortest_path(node)
     print('The shortest path between Node %s#%d%s and Node %s#%d%s is:'
           '\n\t%-8s%s%s%s'
           '\n\t%-8s%s%d%s\n'
           % (ANSI_WHITE, dijkstra.source, ANSI_RESET, ANSI_WHITE, node, ANSI_RESET,
              'Path: ', ANSI_YELLOW, path, ANSI_RESET,
              'Weight: ', ANSI_YELLOW, weight, ANSI_RESET))
+
+
+# shortest_paths contains all shortest paths from the source node
+# all paths stored in a single structure
+shortest_paths = dijkstra.all_shortest_paths()
+path, weight = shortest_paths[7]
+print(f'Shortest path from #{dijkstra.source} to #7:'
+      f'\n\tPath: {path}'
+      f'\n\tWeight: {weight}')
