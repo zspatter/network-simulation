@@ -297,3 +297,9 @@ net = Network({node1.node_id: node1,
                node4.node_id: node4,
                node5.node_id: node5})
 print(net)
+
+for node in network_1.nodes():
+    path, weight = dijkstra.get_shortest_path(node)
+    print(f'The shortest path between Node #{dijkstra.source} and Node #{node} is:'
+          f'\n\tpath: {path}'
+          f'\n\tweight: {weight}\n')
