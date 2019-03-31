@@ -6,8 +6,11 @@ class Patient:
     waiting time (priority?), and location ('home' hospital).
     """
 
-    def __init__(self, patient_id, patient_name, illness, organ_needed, wait_time, location):
-        self.patient_id = patient_id
+    patient_count = 0
+
+    def __init__(self, patient_name, illness, organ_needed, wait_time, location):
+        Patient.patient_count = Patient.patient_count + 1
+        self.patient_id = Patient.patient_count
         self.patient_name = patient_name
         self.illness = illness
         self.organ_needed = organ_needed
