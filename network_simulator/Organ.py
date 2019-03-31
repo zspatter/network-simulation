@@ -25,6 +25,14 @@ class Organ:
         self.current_location = location
 
     def move_organ(self, new_location, cost):
+        """
+        This function allows an organ's attributes to be altered to represent it's
+        transportation across the network. This is intended to be used with
+        Dijkstra.shortest_path (this will be the source of the cost parameter)
+
+        :param int new_location: node id representing the destination location
+        :param cost: weight/cost associated with then most efficient path
+        """
         if self.viability < cost:
             print('ERROR: organ no longer viable!')
             return
@@ -34,12 +42,22 @@ class Organ:
 
     @staticmethod
     def organ_category_name(n):
-        organs = {Organ.HEART: 'Heart',
-                  Organ.KIDNEY: 'Kidney',
-                  Organ.LIVER: 'Liver',
-                  Organ.LUNG: 'Lung',
-                  Organ.PANCREAS: 'Pancreas',
-                  Organ.INTESTINE: 'Intestines',
-                  Organ.THYMUS: 'Thymus'}
+        """
+        Returns the string associated with an organ category int
+        This is designed to improve readability with console output
 
-        return organs[n]
+        :param int n: a number between 1-7 (inclusive) as defined with organ constants
+        :return: string representing organ (or None if no match found)
+        """
+        if 0 < n < 8:
+            organs = {Organ.HEART: 'Heart',
+                      Organ.KIDNEY: 'Kidney',
+                      Organ.LIVER: 'Liver',
+                      Organ.LUNG: 'Lung',
+                      Organ.PANCREAS: 'Pancreas',
+                      Organ.INTESTINE: 'Intestines',
+                      Organ.THYMUS: 'Thymus'}
+
+            return organs[n]
+
+        return None
