@@ -2,9 +2,6 @@ class Dijkstra:
     """
     A class which will be used to analyze graphs to determine shortest
     paths between given nodes.
-
-    Eventually this class will determine the shortest path between
-    a source node and ALL other nodes.
     """
 
     def __init__(self, graph, source):
@@ -13,6 +10,23 @@ class Dijkstra:
 
     @staticmethod
     def dijkstra(graph, source):
+        """
+        This function finds the shortest path to all connected nodes
+        from a given source node. The return are two dicts:
+            1) the weight from source to the key
+            2) the node preceding the key
+
+        This function is intended to be used by the initializer when
+        creating and Dijkstra instance. The output will be stored as
+        attributes of the object. These structures can be referenced later
+        to determine the shortest path (and cost) to a given destination
+
+        :param graph: network which will be used for path finding
+        :param source: source node (where all paths will start)
+
+        :return: weight: dict represented as {node_id: <weight>, ...}
+        :return: previous: dict represented as {node_id: <previous_node_id>, ...}
+        """
         unvisited = graph.nodes()
         weight = dict.fromkeys(graph.nodes(), float('inf'))
         previous = dict.fromkeys(graph.nodes(), None)
@@ -37,6 +51,16 @@ class Dijkstra:
 
     @staticmethod
     def minimum_unvisited_distance(unvisited, weight):
+        """
+        Helper method used by dijkstra (function) to determine which
+        node should be traversed next
+        (the node with the lowest weight which hasn't already been visited)
+
+        :param list unvisited: list of node_ids which haven't been visited
+        :param dict weight: dict of weights associated with traveling to each node
+
+        :return: node_id corresponding to the least costly unvisited node
+        """
         min_weight = float('inf')
         min_node = unvisited[0]
 
@@ -48,6 +72,17 @@ class Dijkstra:
         return min_node
 
     def shortest_path(self, destination):
+        """
+        Returns both the shortest path and the cost of said path between
+        this object's source (attribute) and the passed destination.
+
+        If the source and destination are disconnected, the path returned
+        is None and the weight returned is infinity
+
+        :param int destination: represents the destination's node_id
+        :return: list of node_id's which represent the shortest path between
+                    the source and destination and an int representing the  weight
+        """
         if self.weight[destination] == float('inf'):
             print('No paths (check connectivity to source)')
             return None, float('inf')
@@ -67,6 +102,12 @@ class Dijkstra:
         return path, self.weight[destination]
 
     def all_shortest_paths(self):
+        """
+        Harnesses the functionality of shortest_path() to gather all shortest
+        paths and store them in a dictionary
+
+        :return: dict in the form {node_id: ([path], weight), ...} which can easily be unpacked
+        """
         shortest_paths = {}
         for key in self.weight:
             shortest_paths[key] = (self.shortest_path(key))
