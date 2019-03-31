@@ -6,8 +6,7 @@ def test_generate_random_adjacency_dict():
     assert len(test_dict) < 50
 
     for node in test_dict:
-        assert test_dict[node]['weight'] < 50
-        assert test_dict[node]['weight'] > 0
+        assert 0 < test_dict[node]['weight'] < 51
         assert test_dict[node]['status']
 
 
