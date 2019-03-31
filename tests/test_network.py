@@ -311,4 +311,3 @@ def test_nodes():
     assert len(test_net.network_dict) is 2
     assert node1.node_id not in test_net.nodes()
     assert node2.node_id not in test_net.nodes()
-

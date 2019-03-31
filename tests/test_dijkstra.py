@@ -141,5 +141,3 @@ def test_all_shortest_paths():
     assert shortest_paths[3] == ([1, 2, 3], 15)
     assert shortest_paths[4] == ([1, 2, 4], 20)
     assert shortest_paths[5] == ([1, 2, 5], 25)
-
-

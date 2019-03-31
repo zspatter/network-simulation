@@ -41,5 +41,3 @@ def test_str():
 
     for key in node_1.get_adjacents():
         assert 'Node     #' + str(key) in string
-
-
