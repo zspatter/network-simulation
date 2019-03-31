@@ -7,8 +7,8 @@ from network_simulator.exceptions import NodeAlreadyExistsError, \
 class Network:
     """
     A class representing a network (graph). A network is defined through
-    a collection of nodes (and their adjacency dicts). A network consists
-    of a network dict that contains all of the
+    a label and a collection of nodes (and their adjacency dicts).
+    A network consists of a network dict that contains all of the
     nodes contained within the graph.
     """
     def __init__(self, network_dict=None, label='Default network label'):
@@ -70,8 +70,9 @@ class Network:
         self.network_dict = network_dict
         self.label = label
 
+    # allows graphs to be iterated through (via active nodes)
     def __iter__(self):
-        return iter(self.network_dict.values())
+        return iter(self.nodes())
 
     def nodes(self):
         """
