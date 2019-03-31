@@ -14,18 +14,20 @@ class GraphBuilder:
 
     # TODO random parameter (seed)
     @staticmethod
-    def generate_random_network(n):
+    def generate_random_network(n, seed=None):
         """
         Returns randomly generated network with n nodes.
 
         :param int n: number of nodes generated graph will contain
+        :param int seed: optional parameter to control pseudorandom generator
 
         :return: randomly generated network with N nodes
         :rtype: Network
         """
+
         network_dict = {}
         for x in range(1, n + 1):
-            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n)
+            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, seed)
             node = Node(x, 'Node #' + str(x), adjacency_dict)
             network_dict[x] = node
         network = Network(network_dict)
@@ -33,7 +35,7 @@ class GraphBuilder:
 
     # TODO random parameter (seed)
     @staticmethod
-    def generate_random_adjacency_dict(node_id, total_nodes):
+    def generate_random_adjacency_dict(node_id, total_nodes, seed=None):
         """
         Returns randomly generated adjacency dict for an instance of a node.
         The generated adjacency list can contain a connection to any node
@@ -46,17 +48,19 @@ class GraphBuilder:
         :param int node_id: unique identifier for the node that the
             adjacency dict is being generated for
         :param int total_nodes: total number of nodes present in the generated graph
+        :param int seed: optional parameter to control pseudorandom generator
 
         :return: randomly generated adjacency_dict
         :rtype: dict
         """
 
-        # same seed each run (temporarily for testing consistency)
-        # random.seed(1)
-
         # prevents infinite loop resulting from fewer total nodes than randomly generated bound
         adjacent_bound = 10
         bound = total_nodes - 1 if total_nodes < adjacent_bound else adjacent_bound
+
+        # feeds random seed if parameter is passed
+        if seed:
+            random.seed(seed)
         
         adjacency_dict = {}
         for n in range(random.randint(3, bound)):
