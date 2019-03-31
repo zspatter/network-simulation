@@ -11,7 +11,7 @@ class Network:
     of a network dict that contains all of the
     nodes contained within the graph.
     """
-    def __init__(self, network_dict=None):
+    def __init__(self, network_dict=None, label='Default network label'):
         """
         Creates an instance of a Network. This function ensures that
         the adjacency dicts of nodes mirror each other (undirected graph).
@@ -68,6 +68,7 @@ class Network:
             del network_dict[node].adjacency_dict[adjacent]
 
         self.network_dict = network_dict
+        self.label = label
 
     def __iter__(self):
         return iter(self.network_dict.values())
