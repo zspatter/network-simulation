@@ -3,22 +3,12 @@ from network_simulator.exceptions import NodeAlreadyExistsError, \
     NodeDoesNotExistError, EdgeAlreadyExistsError, EdgeDoesNotExistError, \
     ElementActiveError, ElementInactiveError
 
-"""
-Add capability to represent subnetworks
-
-A network will include nodes which will be represented by a complete
-graph (mesh topology) of nodes objects (network within network)
-
-These subnetworks will represent health systems (IU Health) while the
-overall network will represent all hospitals
-"""
-
 
 class Network:
     """
     A class representing a network (graph). A network is defined through
     a collection of nodes (and their adjacency dicts). A network consists
-    of a unique graph ID, label, and network dict that contains all of the
+    of a network dict that contains all of the
     nodes contained within the graph.
     """
     def __init__(self, network_dict=None):
