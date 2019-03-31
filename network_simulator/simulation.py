@@ -4,6 +4,7 @@ import network_simulator.Patient as P
 import network_simulator.Dijkstra as D
 
 
+# builds hospitals (represented as nodes)
 hospital_a = net.Node(1, 'A',
               {2: {'weight': 3, 'status': True},
                3: {'weight': 1, 'status': True},
@@ -57,6 +58,7 @@ hospital_j = net.Node(10, 'J',
                 6: {'weight': 2, 'status': True},
                 7: {'weight': 5, 'status': True}})
 
+# builds hospital network
 hospital_network = net.Network({hospital_a.node_id: hospital_a,
                                 hospital_b.node_id: hospital_b,
                                 hospital_c.node_id: hospital_c,
@@ -91,6 +93,7 @@ harvest_organ_3 = O.Organ(organ_category=O.Organ.LIVER, organ_type='NA',
 harvest_organ_4 = O.Organ(organ_category=O.Organ.LUNG, organ_type='NA',
                           viability=50, location=hospital_a.node_id)
 
+# constructs dijkstra instance (only need 1 as all organs share the same source)
 dijkstra = D.Dijkstra(hospital_network, harvest_organ_1.origin_location)
 
 path, weight = dijkstra.shortest_path(patient_a.location)
