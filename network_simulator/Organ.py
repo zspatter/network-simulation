@@ -13,18 +13,33 @@ class Organ:
     PANCREAS = 5
     INTESTINE = 6
     THYMUS = 7
+    organ_count = 0
 
-    def __init__(self, organ_id, organ_category, organ_type, viability, location):
-        self.organ_id = organ_id
+    def __init__(self, organ_category, organ_type, viability, location):
+        Organ.organ_count = Organ.organ_count + 1
+        self.organ_id = Organ.organ_count
         self.organ_category = organ_category
         self.organ_type = organ_type
         self.viability = viability
-        self.location = location
+        self.origin_location = location
+        self.current_location = location
 
     def move_organ(self, new_location, cost):
         if self.viability < cost:
             print('ERROR: organ no longer viable!')
             return
 
-        self.location = new_location
+        self.current_location = new_location
         self.viability -= cost
+
+    @staticmethod
+    def organ_category_name(n):
+        organs = {Organ.HEART: 'Heart',
+                  Organ.KIDNEY: 'Kidney',
+                  Organ.LIVER: 'Liver',
+                  Organ.LUNG: 'Lung',
+                  Organ.PANCREAS: 'Pancreas',
+                  Organ.INTESTINE: 'Intestines',
+                  Organ.THYMUS: 'Thymus'}
+
+        return organs[n]
