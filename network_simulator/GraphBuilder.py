@@ -52,10 +52,14 @@ class GraphBuilder:
         """
 
         # same seed each run (temporarily for testing consistency)
-        random.seed(1)
+        # random.seed(1)
+
+        # prevents infinite loop resulting from fewer total nodes than randomly generated bound
+        adjacent_bound = 10
+        bound = total_nodes - 1 if total_nodes < adjacent_bound else adjacent_bound
         
         adjacency_dict = {}
-        for n in range(random.randint(3, 10)):
+        for n in range(random.randint(3, bound)):
             random_node = random.randint(1, total_nodes)
             # ensures node doesn't add itself to adjacency_dict
             # or add a duplicate entry
