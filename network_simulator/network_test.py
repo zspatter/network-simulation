@@ -5,7 +5,7 @@ from network_simulator.Dijkstra import Dijkstra
 import time
 
 # ansi codes to format console output
-ANSI_WHITE = "\033[30m"
+ANSI_CYAN = "\033[36m"
 ANSI_YELLOW = '\033[33;1m'
 ANSI_RESET = "\033[0m"
 
@@ -310,7 +310,7 @@ for node in network_1.nodes():
     print('The shortest path between Node %s#%d%s and Node %s#%d%s is:'
           '\n\t%-8s%s%s%s'
           '\n\t%-8s%s%d%s\n'
-          % (ANSI_WHITE, dijkstra.source, ANSI_RESET, ANSI_WHITE, node, ANSI_RESET,
+          % (ANSI_CYAN, dijkstra.source, ANSI_RESET, ANSI_CYAN, node, ANSI_RESET,
              'Path: ', ANSI_YELLOW, path, ANSI_RESET,
              'Weight: ', ANSI_YELLOW, weight, ANSI_RESET))
 
