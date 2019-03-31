@@ -3,6 +3,10 @@ import network_simulator.Organ as O
 import network_simulator.Patient as P
 import network_simulator.Dijkstra as D
 
+# ansi codes to format console output
+ANSI_WHITE = "\033[30m"
+ANSI_YELLOW = '\033[33;1m'
+ANSI_RESET = "\033[0m"
 
 # builds hospitals (represented as nodes)
 hospital_a = net.Node(1, 'A',
@@ -98,36 +102,40 @@ dijkstra = D.Dijkstra(hospital_network, harvest_organ_1.origin_location)
 
 path, weight = dijkstra.shortest_path(patient_a.location)
 harvest_organ_1.move_organ(patient_a.location, weight)
-print(f'Organ: {O.Organ.organ_category_name(harvest_organ_1.organ_category)}'
+print(f'Organ: {ANSI_WHITE}{O.Organ.organ_category_name(harvest_organ_1.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
-      f'{harvest_organ_1.origin_location} to hospital {patient_a.location}.'
-      f'\n\tPath taken: {path}'
-      f'\n\tThis came with a cost of: {weight}'
-      f'\n\tRemaining organ viability is: {harvest_organ_1.viability}\n')
+      f'{ANSI_WHITE}{harvest_organ_1.origin_location}{ANSI_RESET} '
+      f'to hospital {ANSI_WHITE}{patient_a.location}{ANSI_RESET}.'
+      f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
+      f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
+      f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_1.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_b.location)
 harvest_organ_2.move_organ(patient_b.location, weight)
-print(f'Organ: {O.Organ.organ_category_name(harvest_organ_2.organ_category)}'
+print(f'Organ: {ANSI_WHITE}{O.Organ.organ_category_name(harvest_organ_2.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
-      f'{harvest_organ_2.origin_location} to hospital {patient_b.location}.'
-      f'\n\tPath taken: {path}'
-      f'\n\tThis came with a cost of: {weight}'
-      f'\n\tRemaining organ viability is: {harvest_organ_2.viability}\n')
+      f'{ANSI_WHITE}{harvest_organ_2.origin_location}{ANSI_RESET} '
+      f'to hospital {ANSI_WHITE}{patient_b.location}{ANSI_RESET}.'
+      f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
+      f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
+      f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_2.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_c.location)
 harvest_organ_3.move_organ(patient_c.location, weight)
-print(f'Organ: {O.Organ.organ_category_name(harvest_organ_3.organ_category)}'
+print(f'Organ: {ANSI_WHITE}{O.Organ.organ_category_name(harvest_organ_3.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
-      f'{harvest_organ_3.origin_location} to hospital {patient_c.location}.'
-      f'\n\tPath taken: {path}'
-      f'\n\tThis came with a cost of: {weight}'
-      f'\n\tRemaining organ viability is: {harvest_organ_3.viability}\n')
+      f'{ANSI_WHITE}{harvest_organ_3.origin_location}{ANSI_RESET} '
+      f'to hospital {ANSI_WHITE}{patient_c.location}{ANSI_RESET}.'
+      f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
+      f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
+      f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_3.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_d.location)
 harvest_organ_4.move_organ(patient_d.location, weight)
-print(f'Organ: {O.Organ.organ_category_name(harvest_organ_4.organ_category)}'
+print(f'Organ: {ANSI_WHITE}{O.Organ.organ_category_name(harvest_organ_4.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
-      f'{harvest_organ_4.origin_location} to hospital {patient_d.location}.'
-      f'\n\tPath taken: {path}'
-      f'\n\tThis came with a cost of: {weight}'
-      f'\n\tRemaining organ viability is: {harvest_organ_4.viability}\n')
+      f'{ANSI_WHITE}{harvest_organ_4.origin_location}{ANSI_RESET} '
+      f'to hospital {ANSI_WHITE}{patient_d.location}{ANSI_RESET}.'
+      f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
+      f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
+      f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_4.viability}{ANSI_RESET}\n')
