@@ -76,15 +76,15 @@ hospital_network = net.Network({hospital_a.node_id: hospital_a,
                                'Hospital Network')
 
 # creates a handful of patients who need organ (across network)
-patient_a = P.Patient(patient_id=1, patient_name='patient a', illness='diabetes',
+patient_a = P.Patient(patient_name='patient a', illness='diabetes',
                       organ_needed=O.Organ.PANCREAS, wait_time=1, location=hospital_j.node_id)
-patient_b = P.Patient(patient_id=2, patient_name='patient b', illness='heart trouble',
+patient_b = P.Patient(patient_name='patient b', illness='heart trouble',
                       organ_needed=O.Organ.HEART, wait_time=2, location=hospital_i.node_id)
-patient_c = P.Patient(patient_id=3, patient_name='patient c', illness='alcoholism',
+patient_c = P.Patient(patient_name='patient c', illness='alcoholism',
                       organ_needed=O.Organ.LIVER, wait_time=3, location=hospital_h.node_id)
-patient_d = P.Patient(patient_id=4, patient_name='patient d', illness='lung cancer',
+patient_d = P.Patient(patient_name='patient d', illness='lung cancer',
                       organ_needed=O.Organ.LUNG, wait_time=4, location=hospital_g.node_id)
-patient_e = P.Patient(patient_id=5, patient_name='patient e', illness='diabetes',
+patient_e = P.Patient(patient_name='patient e', illness='diabetes',
                       organ_needed=O.Organ.PANCREAS, wait_time=100, location=hospital_b.node_id)
 
 # harvests a handful of organs (single donor, same source location)
@@ -105,7 +105,8 @@ harvest_organ_1.move_organ(patient_a.location, weight)
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_1.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_1.origin_location}{ANSI_RESET} '
-      f'to hospital {ANSI_CYAN}{patient_a.location}{ANSI_RESET}.'
+      f'to hospital {ANSI_CYAN}{patient_a.location}{ANSI_RESET} '
+      f'for patient: {ANSI_CYAN}{patient_a.patient_name}{ANSI_RESET}.'
       f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_1.viability}{ANSI_RESET}\n')
@@ -115,7 +116,8 @@ harvest_organ_2.move_organ(patient_b.location, weight)
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_2.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_2.origin_location}{ANSI_RESET} '
-      f'to hospital {ANSI_CYAN}{patient_b.location}{ANSI_RESET}.'
+      f'to hospital {ANSI_CYAN}{patient_b.location}{ANSI_RESET} '
+      f'for patient: {ANSI_CYAN}{patient_b.patient_name}{ANSI_RESET}.'
       f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_2.viability}{ANSI_RESET}\n')
@@ -125,7 +127,8 @@ harvest_organ_3.move_organ(patient_c.location, weight)
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_3.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_3.origin_location}{ANSI_RESET} '
-      f'to hospital {ANSI_CYAN}{patient_c.location}{ANSI_RESET}.'
+      f'to hospital {ANSI_CYAN}{patient_c.location}{ANSI_RESET} '
+      f'for patient: {ANSI_CYAN}{patient_c.patient_name}{ANSI_RESET}.'
       f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_3.viability}{ANSI_RESET}\n')
@@ -135,7 +138,8 @@ harvest_organ_4.move_organ(patient_d.location, weight)
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_4.organ_category)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_4.origin_location}{ANSI_RESET} '
-      f'to hospital {ANSI_CYAN}{patient_d.location}{ANSI_RESET}.'
+      f'to hospital {ANSI_CYAN}{patient_d.location}{ANSI_RESET} '
+      f'for patient: {ANSI_CYAN}{patient_d.patient_name}{ANSI_RESET}.'
       f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_4.viability}{ANSI_RESET}\n')
