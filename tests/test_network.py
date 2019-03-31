@@ -1,9 +1,8 @@
-import network_simulator.Node as n
 import network_simulator.Network as net
 
 
 def test_add_node():
-    node1 = n.Node(1)
+    node1 = net.Node(1)
     test_net = net.Network()
 
     # add node to empty graph
@@ -19,8 +18,8 @@ def test_add_node():
 
 
 def test_remove_node():
-    node1 = n.Node(1)
-    node2 = n.Node(2)
+    node1 = net.Node(1)
+    node2 = net.Node(2)
     test_net = net.Network({1: node1, 2: node2})
 
     # remove an existing node
@@ -36,8 +35,8 @@ def test_remove_node():
 
 
 def test_add_edge():
-    node1 = n.Node(1)
-    node2 = n.Node(2)
+    node1 = net.Node(1)
+    node2 = net.Node(2)
     test_net = net.Network()
 
     # add nodes, but not edges
@@ -56,7 +55,7 @@ def test_add_edge():
     assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
 
     # add inactive node
-    node3 = n.Node(3, status=False)
+    node3 = net.Node(3, status=False)
     test_net.add_node(node3)
 
     # attempt to add edge to inactive node
@@ -71,9 +70,9 @@ def test_add_edge():
 
 
 def test_remove_edge():
-    node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
-    node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
-    node3 = n.Node(3)
+    node1 = net.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
+    node2 = net.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
+    node3 = net.Node(3)
 
     test_net = net.Network({1: node1, 2: node2})
 
@@ -103,8 +102,8 @@ def test_remove_edge():
 
 
 def test_mark_node_inactive():
-    node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
-    node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
+    node1 = net.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
+    node2 = net.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
     test_net = net.Network({1: node1, 2: node2})
 
     assert len(test_net.network_dict) is len(test_net.nodes())
@@ -140,8 +139,8 @@ def test_mark_node_inactive():
 
 
 def test_mark_node_active():
-    node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}}, status=False)
-    node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}}, status=False)
+    node1 = net.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}}, status=False)
+    node2 = net.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}}, status=False)
     test_net = net.Network({1: node1, 2: node2})
     assert not test_net.nodes()
 
@@ -171,8 +170,8 @@ def test_mark_node_active():
 
 
 def test_mark_edge_inactive():
-    node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
-    node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
+    node1 = net.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
+    node2 = net.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
     test_net = net.Network({1: node1, 2: node2})
 
     # test existing nodes with shared, active edge
@@ -194,7 +193,7 @@ def test_mark_edge_inactive():
     assert len(test_net.network_dict) is len(test_net.nodes())
 
     # test existing nodes with shared, inactive edge
-    test_net.add_node(n.Node(3))
+    test_net.add_node(net.Node(3))
     test_net.mark_edge_inactive(node1.node_id, 3)
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert not node2.adjacency_dict[node1.node_id]['status']
@@ -204,7 +203,7 @@ def test_mark_edge_inactive():
     assert len(test_net.network_dict) is len(test_net.nodes())
 
     # test with nonexistent node
-    test_net.add_node(n.Node(3))
+    test_net.add_node(net.Node(3))
     test_net.mark_edge_inactive(node1.node_id, 4)
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert not node2.adjacency_dict[node1.node_id]['status']
@@ -215,8 +214,8 @@ def test_mark_edge_inactive():
 
 
 def test_mark_edge_active():
-    node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': False}})
-    node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': False}})
+    node1 = net.Node(1, adjacency_dict={2: {'weight': 3, 'status': False}})
+    node2 = net.Node(2, adjacency_dict={1: {'weight': 3, 'status': False}})
     test_net = net.Network({1: node1, 2: node2})
 
     # test existing, active nodes with shared, inactive edge
@@ -250,7 +249,7 @@ def test_mark_edge_active():
     assert node2.status
 
     # test existing nodes without shared edge
-    test_net.add_node(n.Node(3))
+    test_net.add_node(net.Node(3))
     test_net.mark_edge_active(node2.node_id, 3)
     test_net.mark_node_inactive(node1.node_id)
     test_net.mark_edge_active(node1.node_id, node2.node_id)
@@ -265,7 +264,7 @@ def test_mark_edge_active():
 
     # test node that doesn't exist
     test_net.mark_edge_active(node2.node_id, 4)
-    test_net.add_node(n.Node(3))
+    test_net.add_node(net.Node(3))
     test_net.mark_edge_active(node2.node_id, 3)
     test_net.mark_node_inactive(node1.node_id)
     test_net.mark_edge_active(node1.node_id, node2.node_id)
@@ -280,8 +279,8 @@ def test_mark_edge_active():
 
 
 def test_nodes():
-    node1 = n.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
-    node2 = n.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
+    node1 = net.Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
+    node2 = net.Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
     test_net = net.Network({1: node1, 2: node2})
 
     # test graph with 2 active nodes
