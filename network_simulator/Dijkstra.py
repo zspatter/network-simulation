@@ -8,10 +8,8 @@ class Dijkstra:
     """
 
     def __init__(self, graph, source):
-        weight, previous = Dijkstra.dijkstra(graph, source)
         self.source = source
-        self.weight = weight
-        self.previous = previous
+        self.weight, self.previous = Dijkstra.dijkstra(graph, source)
 
     @staticmethod
     def dijkstra(graph, source):
@@ -50,9 +48,9 @@ class Dijkstra:
         return min_node
 
     def shortest_path(self, destination):
-        if self.weight[destination] is float('inf'):
+        if self.weight[destination] == float('inf'):
             print('No paths (check connectivity to source)')
-            return
+            return None, float('inf')
 
         # set current node to destination and add to path (where reverse path starts)
         current = destination
