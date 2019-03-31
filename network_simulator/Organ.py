@@ -5,6 +5,15 @@ class Organ:
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
     """
+    # heart, kidneys, liver, lungs, pancreas, intestine, and thymus.
+    HEART = 1
+    KIDNEY = 2
+    LIVER = 3
+    LUNG = 4
+    PANCREAS = 5
+    INTESTINE = 6
+    THYMUS = 7
+
     def __init__(self, organ_id, organ_category, organ_type, viability, location):
         self.organ_id = organ_id
         self.organ_category = organ_category
