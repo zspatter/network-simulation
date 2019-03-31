@@ -12,8 +12,9 @@ def test_generate_random_adjacency_dict():
 
 
 def test_generate_random_network():
-    graph = gb.GraphBuilder.generate_random_network(5)
-    assert len(graph.network_dict) is 5
-    assert len(graph.nodes()) is 5
-
-
+    n = 5
+    graph = gb.GraphBuilder.generate_random_network(n)
+    assert len(graph.network_dict) is n
+    assert len(graph.nodes()) is n
+    for node in graph.network_dict:
+        assert len(graph.network_dict[node].adjacency_dict) < n
