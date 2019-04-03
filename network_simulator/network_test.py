@@ -82,7 +82,6 @@ network_1 = Network({node_1.node_id: node_1,
                      node_9.node_id: node_9,
                      node_10.node_id: node_10})
 
-
 # demonstrates __str__() function works
 print(network_1)
 
@@ -104,9 +103,9 @@ print(network_1)
 # demonstrates the add node function works
 print('\t---ADD NODE---')
 network_1.add_node(Node(11, 'K',
-                   {1: {'weight': 3, 'status': True},
-                    2: {'weight': 4, 'status': True},
-                    10: {'weight': 8, 'status': True}}))
+                        {1: {'weight': 3, 'status': True},
+                         2: {'weight': 4, 'status': True},
+                         10: {'weight': 8, 'status': True}}))
 print(network_1)
 
 # demonstrates is_connected() function works
@@ -130,7 +129,6 @@ print('\nIterative BFS: ' + str(Dijkstra.BFS(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
-
 # creates disconnected network to further test is_connected()
 node_a = Node(1, 'A',
               {2: {'weight': 1, 'status': True},
@@ -149,7 +147,6 @@ disconnected_network = Network({1: node_a,
 print('\t---DISCONNECTED GRAPH---')
 print(disconnected_network)
 
-
 start = time.time_ns()
 print('Recursive DFS: ' + str(Dijkstra.is_connected(disconnected_network)))
 end = time.time_ns()
@@ -164,7 +161,6 @@ start = time.time_ns()
 print('\nIterative BFS: ' + str(Dijkstra.BFS(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
-
 
 # tests the functionality in __init__ that ensures adjacency lists
 # of separate nodes mirror each other (undirected, weighted edges)
@@ -190,10 +186,8 @@ init_tester = Network({init_tester_node1.node_id: init_tester_node1,
                        init_tester_node4.node_id: init_tester_node4,
                        init_tester_node5.node_id: init_tester_node5})
 
-
 print('\t---ADJACENCY LISTS MIRROR TEST---')
 print(init_tester)
-
 
 """
 The following section briefly tests the functions that toggle status
@@ -205,7 +199,6 @@ print('\t---MARK NODE INACTIVE TESTS---')
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(6)
-
 
 init_tester.mark_node_inactive(6)
 
@@ -313,7 +306,6 @@ for node in network_1.nodes():
           % (ANSI_CYAN, dijkstra.source, ANSI_RESET, ANSI_CYAN, node, ANSI_RESET,
              'Path: ', ANSI_YELLOW, path, ANSI_RESET,
              'Weight: ', ANSI_YELLOW, weight, ANSI_RESET))
-
 
 # shortest_paths contains all shortest paths from the source node
 # all paths stored in a single structure

@@ -61,7 +61,7 @@ class GraphBuilder:
         # feeds random seed if parameter is passed
         if seed:
             random.seed(seed)
-        
+
         adjacency_dict = {}
         for n in range(random.randint(3, bound)):
             random_node = random.randint(1, total_nodes)

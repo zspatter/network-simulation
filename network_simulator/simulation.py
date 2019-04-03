@@ -10,57 +10,57 @@ ANSI_RESET = "\033[0m"
 
 # builds hospitals (represented as nodes)
 hospital_a = net.Node(1, 'A',
-              {2: {'weight': 3, 'status': True},
-               3: {'weight': 1, 'status': True},
-               5: {'weight': 4, 'status': True},
-               9: {'weight': 2, 'status': True}})
+                      {2: {'weight': 3, 'status': True},
+                       3: {'weight': 1, 'status': True},
+                       5: {'weight': 4, 'status': True},
+                       9: {'weight': 2, 'status': True}})
 hospital_b = net.Node(2, 'B',
-              {1: {'weight': 3, 'status': True},
-               4: {'weight': 2, 'status': True},
-               5: {'weight': 3, 'status': True},
-               7: {'weight': 9, 'status': True},
-               8: {'weight': 10, 'status': True},
-               9: {'weight': 4, 'status': True}})
+                      {1: {'weight': 3, 'status': True},
+                       4: {'weight': 2, 'status': True},
+                       5: {'weight': 3, 'status': True},
+                       7: {'weight': 9, 'status': True},
+                       8: {'weight': 10, 'status': True},
+                       9: {'weight': 4, 'status': True}})
 hospital_c = net.Node(3, 'C',
-              {1: {'weight': 1, 'status': True},
-               4: {'weight': 2, 'status': True},
-               6: {'weight': 4, 'status': True},
-               7: {'weight': 3, 'status': True}})
+                      {1: {'weight': 1, 'status': True},
+                       4: {'weight': 2, 'status': True},
+                       6: {'weight': 4, 'status': True},
+                       7: {'weight': 3, 'status': True}})
 hospital_d = net.Node(4, 'D',
-              {2: {'weight': 2, 'status': True},
-               3: {'weight': 2, 'status': True},
-               6: {'weight': 8, 'status': True},
-               10: {'weight': 4, 'status': True}})
+                      {2: {'weight': 2, 'status': True},
+                       3: {'weight': 2, 'status': True},
+                       6: {'weight': 8, 'status': True},
+                       10: {'weight': 4, 'status': True}})
 hospital_e = net.Node(5, 'E',
-              {1: {'weight': 4, 'status': True},
-               2: {'weight': 3, 'status': True},
-               8: {'weight': 3, 'status': True},
-               9: {'weight': 4, 'status': True}})
+                      {1: {'weight': 4, 'status': True},
+                       2: {'weight': 3, 'status': True},
+                       8: {'weight': 3, 'status': True},
+                       9: {'weight': 4, 'status': True}})
 hospital_f = net.Node(6, 'F',
-              {3: {'weight': 4, 'status': True},
-               4: {'weight': 8, 'status': True},
-               9: {'weight': 8, 'status': True},
-               10: {'weight': 2, 'status': True}})
+                      {3: {'weight': 4, 'status': True},
+                       4: {'weight': 8, 'status': True},
+                       9: {'weight': 8, 'status': True},
+                       10: {'weight': 2, 'status': True}})
 hospital_g = net.Node(7, 'G',
-              {2: {'weight': 9, 'status': True},
-               3: {'weight': 3, 'status': True},
-               8: {'weight': 2, 'status': True},
-               10: {'weight': 5, 'status': True}})
+                      {2: {'weight': 9, 'status': True},
+                       3: {'weight': 3, 'status': True},
+                       8: {'weight': 2, 'status': True},
+                       10: {'weight': 5, 'status': True}})
 hospital_h = net.Node(8, 'H',
-              {2: {'weight': 10, 'status': True},
-               5: {'weight': 3, 'status': True},
-               7: {'weight': 2, 'status': True},
-               9: {'weight': 4, 'status': True}})
+                      {2: {'weight': 10, 'status': True},
+                       5: {'weight': 3, 'status': True},
+                       7: {'weight': 2, 'status': True},
+                       9: {'weight': 4, 'status': True}})
 hospital_i = net.Node(9, 'I',
-              {1: {'weight': 2, 'status': True},
-               2: {'weight': 4, 'status': True},
-               5: {'weight': 4, 'status': True},
-               6: {'weight': 8, 'status': True},
-               8: {'weight': 4, 'status': True}})
+                      {1: {'weight': 2, 'status': True},
+                       2: {'weight': 4, 'status': True},
+                       5: {'weight': 4, 'status': True},
+                       6: {'weight': 8, 'status': True},
+                       8: {'weight': 4, 'status': True}})
 hospital_j = net.Node(10, 'J',
-               {4: {'weight': 4, 'status': True},
-                6: {'weight': 2, 'status': True},
-                7: {'weight': 5, 'status': True}})
+                      {4: {'weight': 4, 'status': True},
+                       6: {'weight': 2, 'status': True},
+                       7: {'weight': 5, 'status': True}})
 
 # builds hospital network
 hospital_network = net.Network({hospital_a.node_id: hospital_a,

@@ -5,6 +5,7 @@ class Node:
     neighboring nodes along with the weight associated with the shared
     edge, and a status that marks active/inactive nodes.
     """
+
     def __init__(self, node_id, label='Default node label', adjacency_dict=None, status=None):
         """
         Creates an instance of a Node

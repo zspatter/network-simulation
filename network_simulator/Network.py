@@ -11,6 +11,7 @@ class Network:
     A network consists of a network dict that contains all of the
     nodes contained within the graph.
     """
+
     def __init__(self, network_dict=None, label='Default network label'):
         """
         Creates an instance of a Network. This function ensures that
@@ -303,6 +304,7 @@ class Network:
     
     should node status take priority over edge status?
     """
+
     def mark_node_active(self, node_id):
         """
         Marks all adjacent edges connected with another active node as
@@ -422,7 +424,8 @@ class Network:
                     if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
                         # if both edges are inactive
                         if not self.network_dict[node_id1].adjacency_dict[node_id2]['status'] \
-                                and not self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
+                                and not self.network_dict[node_id2].adjacency_dict[node_id1][
+                            'status']:
 
                             self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
                             self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
