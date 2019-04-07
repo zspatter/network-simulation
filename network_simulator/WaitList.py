@@ -1,3 +1,7 @@
+from network_simulator.Patient import Patient as p
+import heapq
+
+
 class WaitList:
     """
     A class that represents the wait list for all patients waiting on
@@ -8,3 +12,14 @@ class WaitList:
             wait_list = list()
 
         self.wait_list = wait_list
+
+    def prioritize_patients(self, organ_type, blood_type):
+        queue = []
+        heapq.heapify(queue)
+
+        for patient in self.wait_list:
+            if patient.organ_needed is organ_type and \
+                    p.Patient.blood_type_compatibility(blood_type):
+                heapq.heappush(queue, patient)
+
+        return queue
