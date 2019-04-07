@@ -33,14 +33,14 @@ def test_move_organ():
 
 
 def test_organ_category_name():
-    assert o.Organ.organ_category_name(0) is None
-    assert o.Organ.organ_category_name(1) is 'Heart'
-    assert o.Organ.organ_category_name(2) is 'Kidney'
-    assert o.Organ.organ_category_name(3) is 'Liver'
-    assert o.Organ.organ_category_name(4) is 'Lung'
-    assert o.Organ.organ_category_name(5) is 'Pancreas'
-    assert o.Organ.organ_category_name(6) is 'Intestines'
-    assert o.Organ.organ_category_name(7) is 'Thymus'
-    assert o.Organ.organ_category_name(8) is None
+    assert o.Organ.organ_category_name(-1) is None
+    assert o.Organ.organ_category_name(0) is 'Heart'
+    assert o.Organ.organ_category_name(1) is 'Kidney'
+    assert o.Organ.organ_category_name(2) is 'Liver'
+    assert o.Organ.organ_category_name(3) is 'Lung'
+    assert o.Organ.organ_category_name(4) is 'Pancreas'
+    assert o.Organ.organ_category_name(5) is 'Intestines'
+    assert o.Organ.organ_category_name(6) is 'Thymus'
+    assert o.Organ.organ_category_name(7) is None
 
 
