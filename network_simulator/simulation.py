@@ -77,15 +77,20 @@ hospital_network = net.Network({hospital_a.node_id: hospital_a,
 
 # creates a handful of patients who need organ (across network)
 patient_a = P.Patient(patient_name='patient a', illness='diabetes',
-                      organ_needed=O.Organ.PANCREAS, priority=1, location=hospital_j.node_id)
+                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      priority=1, location=hospital_j.node_id)
 patient_b = P.Patient(patient_name='patient b', illness='heart trouble',
-                      organ_needed=O.Organ.HEART, priority=2, location=hospital_i.node_id)
+                      organ_needed=P.Patient.HEART, blood_type=P.Patient.AB_POS,
+                      priority=2, location=hospital_i.node_id)
 patient_c = P.Patient(patient_name='patient c', illness='alcoholism',
-                      organ_needed=O.Organ.LIVER, priority=3, location=hospital_h.node_id)
+                      organ_needed=P.Patient.LIVER, blood_type=P.Patient.AB_POS,
+                      priority=3, location=hospital_h.node_id)
 patient_d = P.Patient(patient_name='patient d', illness='lung cancer',
-                      organ_needed=O.Organ.LUNG, priority=4, location=hospital_g.node_id)
+                      organ_needed=P.Patient.LUNG, blood_type=P.Patient.AB_POS,
+                      priority=4, location=hospital_g.node_id)
 patient_e = P.Patient(patient_name='patient e', illness='diabetes',
-                      organ_needed=O.Organ.PANCREAS, priority=100, location=hospital_b.node_id)
+                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      priority=100, location=hospital_b.node_id)
 
 # harvests a handful of organs (single donor, same source location)
 harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type='NA',
