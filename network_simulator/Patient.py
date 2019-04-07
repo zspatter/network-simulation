@@ -69,3 +69,46 @@ class Patient:
             return organs[n]
 
         return None
+
+    def __eq__(self, other):
+        if self.patient_id is other.patient_id \
+                and self. patient_name is other.patient_name \
+                and self.illness is other.illness \
+                and self.organ_needed is other.organ_needed \
+                and self.blood_type is other.blood_type \
+                and self.priority is other.priority \
+                and self.location is other.location:
+            return True
+        return False
+
+    def __ne__(self, other):
+        if self.patient_id is other.patient_id \
+                and self. patient_name is other.patient_name \
+                and self.illness is other.illness \
+                and self.organ_needed is other.organ_needed \
+                and self.blood_type is other.blood_type \
+                and self.priority is other.priority \
+                and self.location is other.location:
+            return False
+        return True
+
+    def __lt__(self, other):
+        if self.priority < other.priority:
+            return True
+        return False
+
+    def __le__(self, other):
+        if self.priority <= other.priority:
+            return True
+        return False
+
+    def __gt__(self, other):
+        if self.priority > other.priority:
+            return True
+        return False
+
+    def __ge__(self, other):
+        if self.priority >= other.priority:
+            return True
+        return False
+
