@@ -15,11 +15,11 @@ class Organ:
     THYMUS = 7
     organ_count = 0
 
-    def __init__(self, organ_category, organ_type, viability, location):
+    def __init__(self, organ_type, blood_type, viability, location):
         Organ.organ_count = Organ.organ_count + 1
         self.organ_id = Organ.organ_count
-        self.organ_category = organ_category
         self.organ_type = organ_type
+        self.blood_type = blood_type
         self.viability = viability
         self.origin_location = location
         self.current_location = location
