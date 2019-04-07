@@ -16,12 +16,12 @@ def test__init__():
 
 
 def test_organ_category_name():
-    assert p.Patient.organ_category_name(-1) is None
-    assert p.Patient.organ_category_name(0) is 'Heart'
-    assert p.Patient.organ_category_name(1) is 'Kidney'
-    assert p.Patient.organ_category_name(2) is 'Liver'
-    assert p.Patient.organ_category_name(3) is 'Lung'
-    assert p.Patient.organ_category_name(4) is 'Pancreas'
-    assert p.Patient.organ_category_name(5) is 'Intestines'
-    assert p.Patient.organ_category_name(6) is 'Thymus'
-    assert p.Patient.organ_category_name(7) is None
+    assert p.Patient.organ_type_name(-1) is None
+    assert p.Patient.organ_type_name(0) is 'Heart'
+    assert p.Patient.organ_type_name(1) is 'Kidney'
+    assert p.Patient.organ_type_name(2) is 'Liver'
+    assert p.Patient.organ_type_name(3) is 'Lung'
+    assert p.Patient.organ_type_name(4) is 'Pancreas'
+    assert p.Patient.organ_type_name(5) is 'Intestines'
+    assert p.Patient.organ_type_name(6) is 'Thymus'
+    assert p.Patient.organ_type_name(7) is None

@@ -107,7 +107,7 @@ dijkstra = D.Dijkstra(hospital_network, harvest_organ_1.origin_location)
 
 path, weight = dijkstra.shortest_path(patient_a.location)
 harvest_organ_1.move_organ(patient_a.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_1.organ_type)}{ANSI_RESET}'
+print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_1.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_1.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_a.location}{ANSI_RESET} '
@@ -118,7 +118,7 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_1.organ_typ
 
 path, weight = dijkstra.shortest_path(patient_b.location)
 harvest_organ_2.move_organ(patient_b.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_2.organ_type)}{ANSI_RESET}'
+print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_2.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_2.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_b.location}{ANSI_RESET} '
@@ -129,7 +129,7 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_2.organ_typ
 
 path, weight = dijkstra.shortest_path(patient_c.location)
 harvest_organ_3.move_organ(patient_c.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_3.organ_type)}{ANSI_RESET}'
+print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_3.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_3.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_c.location}{ANSI_RESET} '
@@ -140,7 +140,7 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_3.organ_typ
 
 path, weight = dijkstra.shortest_path(patient_d.location)
 harvest_organ_4.move_organ(patient_d.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_category_name(harvest_organ_4.organ_type)}{ANSI_RESET}'
+print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_4.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_4.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_d.location}{ANSI_RESET} '

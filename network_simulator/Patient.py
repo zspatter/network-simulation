@@ -49,7 +49,7 @@ class Patient:
         return False
 
     @staticmethod
-    def organ_category_name(n):
+    def organ_type_name(n):
         """
         Returns the string associated with an organ category int
         This is designed to improve readability with console output
