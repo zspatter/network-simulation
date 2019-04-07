@@ -13,7 +13,7 @@ class WaitList:
 
         self.wait_list = wait_list
 
-    def prioritize_patients(self, organ_type, blood_type):
+    def get_prioritized_patients(self, organ_type, blood_type):
         queue = []
         heapq.heapify(queue)
 
