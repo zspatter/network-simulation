@@ -48,7 +48,6 @@ class Patient:
             return True
         return False
 
-
     @staticmethod
     def organ_category_name(n):
         """
@@ -58,7 +57,7 @@ class Patient:
         :param int n: a number between 1-7 (inclusive) as defined with organ constants
         :return: string representing organ (or None if no match found)
         """
-        if 0 < n < 8:
+        if 0 <= n < 7:
             organs = {Patient.HEART: 'Heart',
                       Patient.KIDNEY: 'Kidney',
                       Patient.LIVER: 'Liver',
