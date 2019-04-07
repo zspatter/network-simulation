@@ -72,7 +72,7 @@ class Patient:
 
     def __eq__(self, other):
         if self.patient_id is other.patient_id \
-                and self. patient_name is other.patient_name \
+                and self.patient_name is other.patient_name \
                 and self.illness is other.illness \
                 and self.organ_needed is other.organ_needed \
                 and self.blood_type is other.blood_type \
@@ -83,7 +83,7 @@ class Patient:
 
     def __ne__(self, other):
         if self.patient_id is other.patient_id \
-                and self. patient_name is other.patient_name \
+                and self.patient_name is other.patient_name \
                 and self.illness is other.illness \
                 and self.organ_needed is other.organ_needed \
                 and self.blood_type is other.blood_type \
@@ -111,4 +111,3 @@ class Patient:
         if self.priority >= other.priority:
             return True
         return False
-

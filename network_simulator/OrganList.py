@@ -3,6 +3,7 @@ class OrganList:
     A class that represents all of the available organs waiting to be
     allocated to compatible recipients. This list accepts all organ types (generic)
     """
+
     def __init__(self, organ_list=None):
         if organ_list is None:
             organ_list = list()

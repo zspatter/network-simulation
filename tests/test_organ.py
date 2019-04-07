@@ -42,5 +42,3 @@ def test_organ_category_name():
     assert o.Organ.organ_type_name(5) is 'Intestines'
     assert o.Organ.organ_type_name(6) is 'Thymus'
     assert o.Organ.organ_type_name(7) is None
-
-
