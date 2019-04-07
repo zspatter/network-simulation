@@ -2,8 +2,8 @@ import network_simulator.Organ as o
 
 
 def test__init__():
-    test_organ1 = o.Organ(organ_category=o.Organ.HEART, organ_type='NA', viability=100, location=1)
-    test_organ2 = o.Organ(organ_category=o.Organ.KIDNEY, organ_type='NA', viability=200, location=2)
+    test_organ1 = o.Organ(organ_type=o.Organ.HEART, blood_type='NA', viability=100, location=1)
+    test_organ2 = o.Organ(organ_type=o.Organ.KIDNEY, blood_type='NA', viability=200, location=2)
 
     assert o.Organ.organ_count is 2
 
@@ -12,7 +12,7 @@ def test__init__():
 
 
 def test_move_organ():
-    test_organ = o.Organ(organ_category=o.Organ.HEART, organ_type='NA', viability=100, location=1)
+    test_organ = o.Organ(organ_type=o.Organ.HEART, blood_type='NA', viability=100, location=1)
 
     # tests initial values
     assert test_organ.current_location is 1
