@@ -20,7 +20,7 @@ class WaitList:
 
         for patient in self.wait_list:
             if patient.organ_needed is organ_type and \
-                    p.Patient.blood_type_compatibility(blood_type):
+                    patient.blood_type_compatibility(blood_type):
                 heapq.heappush(queue, patient)
 
         return queue
