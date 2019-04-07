@@ -6,13 +6,21 @@ class Organ:
     type matching, and a location.
     """
     # heart, kidneys, liver, lungs, pancreas, intestine, and thymus.
-    HEART = 1
-    KIDNEY = 2
-    LIVER = 3
-    LUNG = 4
-    PANCREAS = 5
-    INTESTINE = 6
-    THYMUS = 7
+    HEART = 0
+    KIDNEY = 1
+    LIVER = 2
+    LUNG = 3
+    PANCREAS = 4
+    INTESTINE = 5
+    THYMUS = 6
+    O_NEG = 0
+    O_POS = 1
+    A_NEG = 2
+    A_POS = 3
+    B_NEG = 4
+    B_POS = 5
+    AB_NEG = 6
+    AB_POS = 7
     organ_count = 0
 
     def __init__(self, organ_type, blood_type, viability, location):
