@@ -23,7 +23,7 @@ class Patient:
     AB_POS = 7
     patient_count = 0
 
-    def __init__(self, patient_name, illness, organ_needed, blood_type, priority, location):
+    def __init__(self, patient_name, illness, organ_needed, blood_type, priority, location, wait_list=None):
         Patient.patient_count = Patient.patient_count + 1
         self.patient_id = Patient.patient_count
         self.patient_name = patient_name
@@ -32,6 +32,8 @@ class Patient:
         self.blood_type = blood_type
         self.priority = priority
         self.location = location
+        if wait_list:
+            wait_list.add_patient(self)
 
     def blood_type_compatibility(self, blood_type):
         if self.blood_type is blood_type:
@@ -68,6 +70,20 @@ class Patient:
 
             return organs[n]
 
+        return None
+
+    @staticmethod
+    def blood_type_name(n):
+        if 0 <= n < 8:
+            blood_types = {Patient.O_NEG: 'O-',
+                           Patient.O_POS: 'O+',
+                           Patient.A_NEG: 'A-',
+                           Patient.A_POS: 'A+',
+                           Patient.B_NEG: 'B-',
+                           Patient.B_POS: 'B+',
+                           Patient.AB_NEG: 'AB-',
+                           Patient.AB_POS: 'AB+'}
+            return blood_types[n]
         return None
 
     def __eq__(self, other):
@@ -111,3 +127,13 @@ class Patient:
         if self.priority >= other.priority:
             return True
         return False
+
+    def __str__(self):
+        return f'Patient:\n' \
+            f'\tPatient ID: {self.patient_id}\n' \
+            f'\tPatient name: {self.patient_name}\n' \
+            f'\tIllness: {self.illness}\n' \
+            f'\tOrgan needed: {Patient.organ_type_name(self.organ_needed)}\n' \
+            f'\tBlood type: {Patient.blood_type_name(self.blood_type)}\n' \
+            f'\tPriority: {self.priority}\n' \
+            f'\tNearest hospital: {self.location}\n'
