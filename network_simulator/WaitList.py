@@ -23,3 +23,9 @@ class WaitList:
                 heapq.heappush(queue, patient)
 
         return queue
+
+    def add_patient(self, patient):
+        self.wait_list.append(patient)
+
+    def remove_patient(self, patient):
+        self.wait_list.remove(patient)
