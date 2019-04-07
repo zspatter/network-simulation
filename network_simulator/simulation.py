@@ -2,6 +2,9 @@ import network_simulator.Network as net
 import network_simulator.Organ as O
 import network_simulator.Patient as P
 import network_simulator.Dijkstra as D
+import network_simulator.OrganList as OL
+import network_simulator.WaitList as WL
+
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
@@ -148,3 +151,37 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_4.organ_type)}{
       f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_4.viability}{ANSI_RESET}\n')
+
+wait_list = WL.WaitList()
+organ_list = OL.OrganList()
+
+patient_a = P.Patient(patient_name='patient a', illness='diabetes',
+                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      priority=1, location=hospital_j.node_id, wait_list=wait_list)
+patient_b = P.Patient(patient_name='patient b', illness='heart trouble',
+                      organ_needed=P.Patient.HEART, blood_type=P.Patient.AB_POS,
+                      priority=2, location=hospital_i.node_id, wait_list=wait_list)
+patient_c = P.Patient(patient_name='patient c', illness='alcoholism',
+                      organ_needed=P.Patient.LIVER, blood_type=P.Patient.AB_POS,
+                      priority=3, location=hospital_h.node_id, wait_list=wait_list)
+patient_d = P.Patient(patient_name='patient d', illness='lung cancer',
+                      organ_needed=P.Patient.LUNG, blood_type=P.Patient.AB_POS,
+                      priority=4, location=hospital_g.node_id, wait_list=wait_list)
+patient_e = P.Patient(patient_name='patient e', illness='diabetes',
+                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      priority=100, location=hospital_b.node_id, wait_list=wait_list)
+
+# harvests a handful of organs (single donor, same source location)
+harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type='NA',
+                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type='NA',
+                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type='NA',
+                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type='NA',
+                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+
+priority_patients = wait_list.get_prioritized_patients(P.Patient.PANCREAS, P.Patient.AB_POS)
+for x in priority_patients:
+    print(x)
+
