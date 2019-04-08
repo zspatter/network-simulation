@@ -124,42 +124,42 @@ class Patient:
     def __lt__(self, other):
         """
         Rich comparison returns true if this object's priority attribute
-        is less than other's priority attribute (negated so heapq is max heap)
+        is less than other's priority attribute
 
         :param Patient other: object to compare
         :return: boolean indicating if this object is less than other
         """
-        return not self.priority < other.priority
+        return self.priority < other.priority
 
     def __le__(self, other):
         """
         Rich comparison returns true if this object's priority attribute
-        is less than or equal to other's priority attribute (negated so heapq is max heap)
+        is less than or equal to other's priority attribute
 
         :param Patient other: object to compare
         :return: boolean indicating if this object is less than or equal to other
         """
-        return not self.priority <= other.priority
+        return self.priority <= other.priority
 
     def __gt__(self, other):
         """
         Rich comparison returns true if this object's priority attribute
-        is greater than other's priority attribute (negated so heapq is max heap)
+        is greater than other's priority attribute
 
         :param Patient other: object to compare
         :return: boolean indicating if this object is greater than other
         """
-        return not self.priority > other.priority
+        return self.priority > other.priority
 
     def __ge__(self, other):
         """
         Rich comparison returns true if this object's priority attribute
-        is greater than or equal to other's priority attribute (negated so heapq is max heap)
+        is greater than or equal to other's priority attribute
 
         :param Patient other: object to compare
         :return: boolean indicating if this object is greater than or equal to other
         """
-        return not self.priority >= other.priority
+        return self.priority >= other.priority
 
     def __str__(self):
         """
