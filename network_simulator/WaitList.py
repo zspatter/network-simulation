@@ -1,4 +1,5 @@
 import heapq
+import random
 
 
 class WaitList:
@@ -21,8 +22,7 @@ class WaitList:
 
         The heapq is returned after the entire list has been iterated through
 
-        :param int organ_type: constants declared in the Patient and Organ classes (0-6)
-        :param int blood_type: constants declared in the Patient and Organ classes (0-7)
+        :param Organ organ: object representing a prospective transplant
         :return: heapq (priority queue) with only patients whose needs match that of the parameters
         """
         queue = []
