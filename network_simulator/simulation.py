@@ -192,6 +192,6 @@ harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type=O.Organ.O_NEG,
 harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type=O.Organ.O_NEG,
                           viability=50, location=hospital_a.node_id, organ_list=organ_list)
 
-priority_patients = wait_list.get_prioritized_patients(P.Patient.PANCREAS, P.Patient.AB_POS)
+priority_patients = wait_list.get_prioritized_patients(harvest_organ_1)
 for x in priority_patients:
     print(x)
