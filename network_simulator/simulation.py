@@ -97,13 +97,13 @@ patient_e = P.Patient(patient_name='patient e', illness='diabetes',
 
 # harvests a handful of organs (single donor, same source location)
 harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type='NA',
-                          viability=50, location=hospital_a.node_id)
+                          location=hospital_a.node_id)
 harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type='NA',
-                          viability=50, location=hospital_a.node_id)
+                          location=hospital_a.node_id)
 harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type='NA',
-                          viability=50, location=hospital_a.node_id)
+                          location=hospital_a.node_id)
 harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type='NA',
-                          viability=50, location=hospital_a.node_id)
+                          location=hospital_a.node_id)
 
 # constructs dijkstra instance (only need 1 as all organs share the same source)
 dijkstra = D.Dijkstra(hospital_network, harvest_organ_1.origin_location)
@@ -184,14 +184,18 @@ patient_e = P.Patient(patient_name='patient e', illness='diabetes',
 
 # harvests a handful of organs (single donor, same source location)
 harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type=O.Organ.O_NEG,
-                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+                          location=hospital_a.node_id, organ_list=organ_list)
 harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type=O.Organ.O_NEG,
-                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+                          location=hospital_a.node_id, organ_list=organ_list)
 harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type=O.Organ.O_NEG,
-                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+                          location=hospital_a.node_id, organ_list=organ_list)
 harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type=O.Organ.O_NEG,
-                          viability=50, location=hospital_a.node_id, organ_list=organ_list)
+                          location=hospital_a.node_id, organ_list=organ_list)
 
 priority_patients = wait_list.get_prioritized_patients(harvest_organ_1)
 for x in priority_patients:
+    print(x)
+
+organ_list.generate_organs(hospital_network, 3)
+for x in organ_list.organ_list:
     print(x)
