@@ -26,13 +26,13 @@ class WaitList:
         :return: heapq (priority queue) with only patients whose needs match that of the parameters
         """
         queue = []
-        heapq.heapify(queue)
 
         for patient in self.wait_list:
             if patient.organ_needed is organ_type and \
                     patient.blood_type_compatibility(blood_type):
                 heapq.heappush(queue, patient)
 
+        heapq._heapify_max(queue)
         return queue
 
     def add_patient(self, patient):
