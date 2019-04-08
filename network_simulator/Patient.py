@@ -36,6 +36,13 @@ class Patient:
             wait_list.add_patient(self)
 
     def blood_type_compatibility(self, blood_type):
+        """
+        Determines if the passed parameter is compatible with the patient
+        (as recipient)
+
+        :param int blood_type: constant declared in the Organ and Patient classes (0-7)
+        :return: boolean indicating if this object is compatible with the parameter
+        """
         if self.blood_type is blood_type:
             return True
         if self.blood_type % 2 is 1 and self.blood_type - blood_type is 1:
@@ -53,10 +60,10 @@ class Patient:
     @staticmethod
     def organ_type_name(n):
         """
-        Returns the string associated with an organ category int
+        Returns the string associated with an organ type int
         This is designed to improve readability with console output
 
-        :param int n: a number between 1-7 (inclusive) as defined with organ constants
+        :param int n: a number between 0-6 (inclusive) as defined with organ constants
         :return: string representing organ (or None if no match found)
         """
         if 0 <= n < 7:
@@ -74,6 +81,13 @@ class Patient:
 
     @staticmethod
     def blood_type_name(n):
+        """
+        Returns the string associated with a blood type int
+        This is designed to improve readability with console output
+
+        :param int n: a number between 0-7 (inclusive) as defined with organ and patient constants
+        :return: string representing blood type (or None if no match found)
+        """
         if 0 <= n < 8:
             blood_types = {Patient.O_NEG: 'O-',
                            Patient.O_POS: 'O+',
@@ -87,6 +101,12 @@ class Patient:
         return None
 
     def __eq__(self, other):
+        """
+        Rich comparison returns true iff all attributes are equal
+
+        :param Patient other: object to compare
+        :return: boolean indicating equivalence
+        """
         if self.patient_id is other.patient_id \
                 and self.patient_name is other.patient_name \
                 and self.illness is other.illness \
@@ -98,6 +118,12 @@ class Patient:
         return False
 
     def __ne__(self, other):
+        """
+        Rich comparison returns true if any attributes differ
+
+        :param Patient other: object to compare
+        :return: boolean indicating non-equivalence
+        """
         if self.patient_id is other.patient_id \
                 and self.patient_name is other.patient_name \
                 and self.illness is other.illness \
@@ -109,24 +135,44 @@ class Patient:
         return True
 
     def __lt__(self, other):
-        if self.priority < other.priority:
-            return True
-        return False
+        """
+        Rich comparison returns true if this object's priority attribute
+        is less than other's priority attribute
+
+        :param Patient other: object to compare
+        :return: boolean indicating if this object is less than other
+        """
+        return self.priority < other.priority
 
     def __le__(self, other):
-        if self.priority <= other.priority:
-            return True
-        return False
+        """
+        Rich comparison returns true if this object's priority attribute
+        is less than or equal to other's priority attribute
+
+        :param Patient other: object to compare
+        :return: boolean indicating if this object is less than or equal to other
+        """
+        return self.priority <= other.priority
 
     def __gt__(self, other):
-        if self.priority > other.priority:
-            return True
-        return False
+        """
+        Rich comparison returns true if this object's priority attribute
+        is greater than other's priority attribute
+
+        :param Patient other: object to compare
+        :return: boolean indicating if this object is greater than other
+        """
+        return self.priority > other.priority
 
     def __ge__(self, other):
-        if self.priority >= other.priority:
-            return True
-        return False
+        """
+        Rich comparison returns true if this object's priority attribute
+        is greater than or equal to other's priority attribute
+
+        :param Patient other: object to compare
+        :return: boolean indicating if this object is greater than or equal to other
+        """
+        return self.priority >= other.priority
 
     def __str__(self):
         return f'Patient:\n' \
