@@ -35,9 +35,10 @@ class OrganList:
         # number of patients to harvest from
         for _ in range(harvest_num):
             # number of possible organs to harvest
+            location_id = random.randrange(node_count)
             for x in range(6):
                 # determines if organ is suitable for harvest
                 if random.choice([True, False]):
                     temp = O.Organ(organ_type=x, blood_type=random.randint(0, 7),
-                                   location=random.randrange(node_count),
+                                   location=location_id,
                                    organ_list=self)
