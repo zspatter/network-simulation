@@ -21,8 +21,8 @@ class WaitList:
 
         The heapq is returned after the entire list has been iterated through
 
-        :param organ_type: int constants declared in the Patient and Organ classes (0-6)
-        :param blood_type: int constants declared in the Patient and Organ classes (0-7)
+        :param int organ_type: constants declared in the Patient and Organ classes (0-6)
+        :param int blood_type: constants declared in the Patient and Organ classes (0-7)
         :return: heapq (priority queue) with only patients whose needs match that of the parameters
         """
         queue = []
@@ -39,7 +39,7 @@ class WaitList:
         """
         Adds a patient to the existing wait list
 
-        :param patient: Patient object to be added
+        :param Patient patient: object to be added
         """
         self.wait_list.append(patient)
 
@@ -47,6 +47,6 @@ class WaitList:
         """
         Removes a patient from the existing wait list
 
-        :param patient: Patient object to be removed
+        :param Patient patient: object to be removed
         """
         self.wait_list.remove(patient)
