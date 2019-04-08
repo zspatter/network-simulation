@@ -162,6 +162,11 @@ class Patient:
         return not self.priority >= other.priority
 
     def __str__(self):
+        """
+        Returns an easily readable string representing the patient
+
+        :return: string representing the patient
+        """
         return f'Patient:\n' \
             f'\tPatient ID: {self.patient_id}\n' \
             f'\tPatient name: {self.patient_name}\n' \
