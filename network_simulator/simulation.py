@@ -183,13 +183,13 @@ patient_e = P.Patient(patient_name='patient e', illness='diabetes',
                       priority=100, location=hospital_b.node_id, wait_list=wait_list)
 
 # harvests a handful of organs (single donor, same source location)
-harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type='NA',
+harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type=O.Organ.O_NEG,
                           viability=50, location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type='NA',
+harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type=O.Organ.O_NEG,
                           viability=50, location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type='NA',
+harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type=O.Organ.O_NEG,
                           viability=50, location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type='NA',
+harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type=O.Organ.O_NEG,
                           viability=50, location=hospital_a.node_id, organ_list=organ_list)
 
 priority_patients = wait_list.get_prioritized_patients(P.Patient.PANCREAS, P.Patient.AB_POS)
