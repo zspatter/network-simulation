@@ -152,6 +152,17 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_4.organ_type)}{
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_4.viability}{ANSI_RESET}\n')
 
+
+"""
+This section declares the above patients and organs with the optional
+list parameters passed (WaitList and OrganList)
+
+This was done to test whether or not the initializers function as desired
+with the optional parameters. 
+
+Furthermore, this briefly tests the data structures holding patient/organ 
+information. This also demonstrates how the priority queue functions.
+"""
 wait_list = WL.WaitList()
 organ_list = OL.OrganList()
 
@@ -184,4 +195,3 @@ harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type='NA',
 priority_patients = wait_list.get_prioritized_patients(P.Patient.PANCREAS, P.Patient.AB_POS)
 for x in priority_patients:
     print(x)
-
