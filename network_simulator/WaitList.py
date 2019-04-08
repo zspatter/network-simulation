@@ -1,4 +1,3 @@
-from network_simulator.Patient import Patient as p
 import heapq
 
 
@@ -15,6 +14,17 @@ class WaitList:
         self.wait_list = wait_list
 
     def get_prioritized_patients(self, organ_type, blood_type):
+        """
+        Takes an organ type and blood type as parameters and searches the
+        wait list for matches. All matches are added to a priority queue
+        with the patient's priority attribute determining priority.
+
+        The heapq is returned after the entire list has been iterated through
+
+        :param organ_type: int constants declared in the Patient and Organ classes (0-6)
+        :param blood_type: int constants declared in the Patient and Organ classes (0-7)
+        :return: heapq (priority queue) with only patients whose needs match that of the parameters
+        """
         queue = []
         heapq.heapify(queue)
 
@@ -26,7 +36,17 @@ class WaitList:
         return queue
 
     def add_patient(self, patient):
+        """
+        Adds a patient to the existing wait list
+
+        :param patient: Patient object to be added
+        """
         self.wait_list.append(patient)
 
     def remove_patient(self, patient):
+        """
+        Removes a patient from the existing wait list
+
+        :param patient: Patient object to be removed
+        """
         self.wait_list.remove(patient)
