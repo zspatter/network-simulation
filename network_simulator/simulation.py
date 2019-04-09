@@ -199,3 +199,7 @@ for x in priority_patients:
 organ_list.generate_organs(hospital_network, 3)
 for x in organ_list.organ_list:
     print(x)
+
+wait_list.generate_patients(hospital_network, 10)
+for x in wait_list.wait_list:
+    print(x)
