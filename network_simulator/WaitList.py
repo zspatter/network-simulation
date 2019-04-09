@@ -1,6 +1,7 @@
 import heapq
 import random
 import network_simulator.Patient as P
+import network_simulator.MatchIdentifier as MI
 
 
 class WaitList:
@@ -10,6 +11,12 @@ class WaitList:
     """
 
     def __init__(self, wait_list=None):
+        """
+        Creates a WaitList object. If no wait_list parameter is provided,
+        an empty list is created
+
+        :param list wait_list: optional wait_list parameter (if preexisting list exists)
+        """
         if wait_list is None:
             wait_list = list()
 
@@ -17,7 +24,7 @@ class WaitList:
 
     def get_prioritized_patients(self, organ):
         """
-        Takes an organ type and blood type as parameters and searches the
+        Takes an organ as a parameter and searches the
         wait list for matches. All matches are added to a priority queue
         with the patient's priority attribute determining priority.
 
@@ -30,7 +37,7 @@ class WaitList:
 
         for patient in self.wait_list:
             if patient.organ_needed is organ.organ_type and \
-                    patient.blood_type_compatibility(organ.blood_type):
+                    MI.MatchIdentifier.is_match(patient, organ):
                 heapq.heappush(queue, patient)
 
         heapq._heapify_max(queue)
@@ -53,6 +60,14 @@ class WaitList:
         self.wait_list.remove(patient)
 
     def generate_patients(self, graph, n):
+        """
+        Generates n patients to add to wait list with random combinations of
+        organ needed, blood type, priority, and location
+
+        :param Network graph: network for patients to be allocated to
+        :param int n: number of patients to generate
+        """
+        # list of currently active nodes
         nodes = graph.nodes()
 
         for x in range(n):
