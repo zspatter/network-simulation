@@ -313,5 +313,3 @@ path, weight = shortest_paths[7]
 print(f'Shortest path from #{dijkstra.source} to #7:'
       f'\n\tPath: {path}'
       f'\n\tWeight: {weight}')
-
-

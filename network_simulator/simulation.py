@@ -5,7 +5,6 @@ import network_simulator.Dijkstra as D
 import network_simulator.OrganList as OL
 import network_simulator.WaitList as WL
 
-
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
 ANSI_YELLOW = '\033[33;1m'
@@ -151,7 +150,6 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_4.organ_type)}{
       f'\n\tPath taken: {ANSI_YELLOW}{path}{ANSI_RESET}'
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_4.viability}{ANSI_RESET}\n')
-
 
 """
 This section declares the above patients and organs with the optional

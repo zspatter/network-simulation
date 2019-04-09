@@ -1,6 +1,4 @@
 import heapq
-import random
-import network_simulator.Patient as P
 import network_simulator.MatchIdentifier as MI
 import network_simulator.GeneratePatients as GP
 

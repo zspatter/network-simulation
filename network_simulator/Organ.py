@@ -5,7 +5,6 @@ class Organ:
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
     """
-    # heart, kidneys, liver, lungs, pancreas, intestine, and thymus.
     HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE, THYMUS = 0, 1, 2, 3, 4, 5, 6
     O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     organ_count = 0
@@ -82,6 +81,12 @@ class Organ:
 
     @staticmethod
     def get_viability(organ_type):
+        """
+        Gets viability rating for each organ individually
+
+        :param int organ_type: constant corresponding to an organ type
+        :return: int viability rating (used in __init__())
+        """
         viability = {Organ.HEART: 25,
                      Organ.KIDNEY: 50,
                      Organ.LIVER: 75,
@@ -93,6 +98,11 @@ class Organ:
         return viability[organ_type]
 
     def __str__(self):
+        """
+        Builds an easily readable string representing an organ
+
+        :return: str
+        """
         return f'Organ:\n' \
             f'\tOrgan ID: {self.organ_id}\n' \
             f'\tOrgan type: {Organ.organ_type_name(self.organ_type)}\n' \

@@ -6,7 +6,13 @@ class MatchIdentifier:
 
     @classmethod
     def is_match(cls, patient, organ):
-        # return is_match()
+        """
+        Determines if the organ and patient are a compatible match
+
+        :param Patient patient: patient in need of organ
+        :param Organ organ: donated organ
+        :return:
+        """
 
         if patient.blood_type is organ.blood_type:
             return True
