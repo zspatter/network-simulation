@@ -4,6 +4,7 @@ import network_simulator.Patient as P
 import network_simulator.Dijkstra as D
 import network_simulator.OrganList as OL
 import network_simulator.WaitList as WL
+import network_simulator.GraphBuilder as GB
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
@@ -198,6 +199,12 @@ organ_list.generate_organs(hospital_network, 3)
 for x in organ_list.organ_list:
     print(x)
 
-wait_list.generate_patients(hospital_network, 10)
+wait_list.generate_patients(hospital_network, 5)
 for x in wait_list.wait_list:
     print(x)
+
+# network = GB.GraphBuilder.graph_builder(10)
+# nodes = network.nodes()
+# print(network)
+# print(network.nodes())
+# print(nodes)

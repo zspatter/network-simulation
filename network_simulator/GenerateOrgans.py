@@ -4,8 +4,8 @@ import random
 
 class GenerateOrgans:
 
-    @classmethod
-    def generate_organs(cls, graph, n, organ_list):
+    @staticmethod
+    def generate_organs(graph, n, organ_list):
         """
         Harvests a random number of organs from n patients. Not all organs are harvested
         to represent organs that are not suitable for donation (health condition, etc
