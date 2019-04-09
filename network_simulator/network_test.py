@@ -247,7 +247,7 @@ connectivity algorithms.
 """
 
 # tests the generate_network and generate_adjacency_list functions
-generated_network = GraphBuilder.generate_random_network(15)
+generated_network = GraphBuilder.graph_builder(15)
 print('\t---GENERATED RANDOM NETWORK---\n')
 print(generated_network)
 

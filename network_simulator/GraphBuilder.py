@@ -14,7 +14,7 @@ class GraphBuilder:
 
     # TODO random parameter (seed)
     @classmethod
-    def generate_random_network(cls, n, seed=None):
+    def graph_builder(cls, n, seed=None):
         """
         Returns randomly generated network with n nodes.
 
