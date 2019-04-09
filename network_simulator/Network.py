@@ -1,27 +1,18 @@
-from Network_Simulator.Node import Node
-from Network_Simulator.exceptions import NodeAlreadyExistsError, \
+from network_simulator.Node import Node
+from network_simulator.exceptions import NodeAlreadyExistsError, \
     NodeDoesNotExistError, EdgeAlreadyExistsError, EdgeDoesNotExistError, \
     ElementActiveError, ElementInactiveError
-
-"""
-Add capability to represent subnetworks
-
-A network will include nodes which will be represented by a complete
-graph (mesh topology) of nodes objects (network within network)
-
-These subnetworks will represent health systems (IU Health) while the
-overall network will represent all hospitals
-"""
 
 
 class Network:
     """
     A class representing a network (graph). A network is defined through
-    a collection of nodes (and their adjacency dicts). A network consists
-    of a unique graph ID, label, and network dict that contains all of the
+    a label and a collection of nodes (and their adjacency dicts).
+    A network consists of a network dict that contains all of the
     nodes contained within the graph.
     """
-    def __init__(self, network_dict=None):
+
+    def __init__(self, network_dict=None, label='Default network label'):
         """
         Creates an instance of a Network. This function ensures that
         the adjacency dicts of nodes mirror each other (undirected graph).
@@ -78,6 +69,11 @@ class Network:
             del network_dict[node].adjacency_dict[adjacent]
 
         self.network_dict = network_dict
+        self.label = label
+
+    # allows graphs to be iterated through (via active nodes)
+    def __iter__(self):
+        return iter(self.nodes())
 
     def nodes(self):
         """
@@ -308,6 +304,7 @@ class Network:
     
     should node status take priority over edge status?
     """
+
     def mark_node_active(self, node_id):
         """
         Marks all adjacent edges connected with another active node as

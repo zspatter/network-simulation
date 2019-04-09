@@ -5,9 +5,8 @@ class Node:
     neighboring nodes along with the weight associated with the shared
     edge, and a status that marks active/inactive nodes.
     """
-    # todo handle inactive node (mirrored inactive edges
-    # todo handle adjacents that don't already exist (mirror adjacents in neighbor once built)
-    def __init__(self, node_id, label='Default Node', adjacency_dict=None, status=None):
+
+    def __init__(self, node_id, label='Default node label', adjacency_dict=None, status=None):
         """
         Creates an instance of a Node
 

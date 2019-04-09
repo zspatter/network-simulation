@@ -1,4 +1,4 @@
-import Network_Simulator.Node as n
+import network_simulator.Node as n
 
 
 def test_is_adjacent():
@@ -41,5 +41,3 @@ def test_str():
 
     for key in node_1.get_adjacents():
         assert 'Node     #' + str(key) in string
-
-
