@@ -251,13 +251,6 @@ generated_network = GraphBuilder.graph_builder(15)
 print('\t---GENERATED RANDOM NETWORK---\n')
 print(generated_network)
 
-# times iterative DFS and iterative BFS for comparison
-print('Generated random network:')
-start = time.time_ns()
-print('\n\tIterative DFS: ' + str(Dijkstra.DFS(generated_network)))
-end = time.time_ns()
-print('\t\telapsed time: ' + str(end - start))
-
 start = time.time_ns()
 print('\n\tIterative BFS: ' + str(Dijkstra.BFS(generated_network)))
 end = time.time_ns()
