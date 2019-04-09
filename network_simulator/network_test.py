@@ -245,10 +245,9 @@ print('\tIterative BFS: ' + str(Dijkstra.BFS(init_tester)) + '\n')
 The following section briefly tests generated networks and the iterative
 connectivity algorithms.
 """
-graphBuilder = GraphBuilder()
 
 # tests the generate_network and generate_adjacency_list functions
-generated_network = graphBuilder.generate_random_network(15)
+generated_network = GraphBuilder.generate_random_network(15)
 print('\t---GENERATED RANDOM NETWORK---\n')
 print(generated_network)
 
@@ -314,3 +313,5 @@ path, weight = shortest_paths[7]
 print(f'Shortest path from #{dijkstra.source} to #7:'
       f'\n\tPath: {path}'
       f'\n\tWeight: {weight}')
+
+

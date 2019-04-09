@@ -13,8 +13,8 @@ class GraphBuilder:
         pass
 
     # TODO random parameter (seed)
-    @staticmethod
-    def generate_random_network(n, seed=None):
+    @classmethod
+    def generate_random_network(cls, n, seed=None):
         """
         Returns randomly generated network with n nodes.
 
