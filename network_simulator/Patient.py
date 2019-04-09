@@ -22,28 +22,6 @@ class Patient:
         if wait_list:
             wait_list.add_patient(self)
 
-    def blood_type_compatibility(self, blood_type):
-        """
-        Determines if the passed parameter is compatible with the patient
-        (as recipient)
-
-        :param int blood_type: constant declared in the Organ and Patient classes (0-7)
-        :return: boolean indicating if this object is compatible with the parameter
-        """
-        if self.blood_type is blood_type:
-            return True
-        if self.blood_type % 2 is 1 and self.blood_type - blood_type is 1:
-            return True
-        if self.blood_type is Patient.AB_POS:
-            return True
-        if self.blood_type is Patient.AB_NEG and blood_type % 2 is 0:
-            return True
-        if blood_type is Patient.O_NEG:
-            return True
-        if blood_type is Patient.O_POS and self.blood_type % 2 is 1:
-            return True
-        return False
-
     @staticmethod
     def organ_type_name(n):
         """
