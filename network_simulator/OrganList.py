@@ -41,6 +41,6 @@ class OrganList:
             for x in range(6):
                 # determines if organ is suitable for harvest
                 if random.choice([True, False]):
-                    temp = O.Organ(organ_type=x, blood_type=random.randint(0, 7),
+                    temp = O.Organ(organ_type=x, blood_type=random.randrange(8),
                                    location=location_id,
                                    organ_list=self)
