@@ -9,12 +9,9 @@ class GraphBuilder:
     disconnected, etc.)
     """
 
-    def __init__(self):
-        pass
-
     # TODO random parameter (seed)
-    @classmethod
-    def graph_builder(cls, n, seed=None):
+    @staticmethod
+    def graph_builder(n, seed=None):
         """
         Returns randomly generated network with n nodes.
 
@@ -56,7 +53,7 @@ class GraphBuilder:
 
         # prevents infinite loop resulting from fewer total nodes than randomly generated bound
         adjacent_bound = 10
-        bound = total_nodes - 1 if total_nodes < adjacent_bound else adjacent_bound
+        bound = total_nodes - 1 if total_nodes <= adjacent_bound else adjacent_bound
 
         # feeds random seed if parameter is passed
         if seed:
