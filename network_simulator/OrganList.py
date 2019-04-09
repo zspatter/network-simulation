@@ -1,5 +1,4 @@
-import random
-import network_simulator.Organ as O
+import network_simulator.GenerateOrgans as GO
 
 
 class OrganList:
@@ -38,26 +37,10 @@ class OrganList:
 
     def generate_organs(self, graph, n):
         """
-        Harvests a random number of organs from n patients. Not all organs are harvested
-        to represent organs that are not suitable for donation (health condition, etc
+        Wrapper that calls the GenerateOrgans.generate_organs function
+        This is used to ensure the generated organs are added to the same organ list
 
-        Generates n patients to add to wait list with random combinations of
-        organ needed, blood type, priority, and location
-
-        :param graph:
-        :param n:
-        :return:
+        :param Network graph: network for patients to be allocated to
+        :param int n: number of patients to generate
         """
-        # list of currently active nodes
-        nodes = graph.nodes()
-
-        # number of patients to harvest from
-        for _ in range(n):
-            # number of possible organs to harvest
-            location_id = random.choice(nodes)
-            for x in range(6):
-                # determines if organ is suitable for harvest
-                if random.randrange(4) is not 0:
-                    temp = O.Organ(organ_type=x, blood_type=random.randrange(8),
-                                   location=location_id,
-                                   organ_list=self)
+        GO.GenerateOrgans.generate_organs(graph, n, self)
