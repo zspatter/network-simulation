@@ -1,5 +1,6 @@
 import heapq
 import random
+import network_simulator.Patient as P
 
 
 class WaitList:
@@ -50,3 +51,15 @@ class WaitList:
         :param Patient patient: object to be removed
         """
         self.wait_list.remove(patient)
+
+    def generate_patients(self, graph, n):
+        nodes = graph.nodes()
+
+        for x in range(n):
+            temp = P.Patient(patient_name="generated patient #" + str(x + 1),
+                             illness="N/A",
+                             organ_needed=random.randrange(7),
+                             blood_type=random.randrange(8),
+                             priority=random.randrange(251),
+                             location=random.choice(nodes),
+                             wait_list=self)
