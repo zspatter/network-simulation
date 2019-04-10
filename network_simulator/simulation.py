@@ -9,6 +9,7 @@ import network_simulator.GraphBuilder as GB
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
 ANSI_YELLOW = '\033[33;1m'
+ANSI_RED = '\033[31;1m'
 ANSI_RESET = "\033[0m"
 
 # builds hospitals (represented as nodes)
@@ -165,46 +166,55 @@ information. This also demonstrates how the priority queue functions.
 wait_list = WL.WaitList()
 organ_list = OL.OrganList()
 
-patient_a = P.Patient(patient_name='patient a', illness='diabetes',
-                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
-                      priority=1, location=hospital_j.node_id, wait_list=wait_list)
-patient_b = P.Patient(patient_name='patient b', illness='heart trouble',
-                      organ_needed=P.Patient.HEART, blood_type=P.Patient.AB_POS,
-                      priority=2, location=hospital_i.node_id, wait_list=wait_list)
-patient_c = P.Patient(patient_name='patient c', illness='alcoholism',
-                      organ_needed=P.Patient.LIVER, blood_type=P.Patient.AB_POS,
-                      priority=3, location=hospital_h.node_id, wait_list=wait_list)
-patient_d = P.Patient(patient_name='patient d', illness='lung cancer',
-                      organ_needed=P.Patient.LUNG, blood_type=P.Patient.AB_POS,
-                      priority=4, location=hospital_g.node_id, wait_list=wait_list)
-patient_e = P.Patient(patient_name='patient e', illness='diabetes',
-                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
-                      priority=100, location=hospital_b.node_id, wait_list=wait_list)
+# patient_a = P.Patient(patient_name='patient a', illness='diabetes',
+#                       organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+#                       priority=1, location=hospital_j.node_id, wait_list=wait_list)
+# patient_b = P.Patient(patient_name='patient b', illness='heart trouble',
+#                       organ_needed=P.Patient.HEART, blood_type=P.Patient.AB_POS,
+#                       priority=2, location=hospital_i.node_id, wait_list=wait_list)
+# patient_c = P.Patient(patient_name='patient c', illness='alcoholism',
+#                       organ_needed=P.Patient.LIVER, blood_type=P.Patient.AB_POS,
+#                       priority=3, location=hospital_h.node_id, wait_list=wait_list)
+# patient_d = P.Patient(patient_name='patient d', illness='lung cancer',
+#                       organ_needed=P.Patient.LUNG, blood_type=P.Patient.AB_POS,
+#                       priority=4, location=hospital_g.node_id, wait_list=wait_list)
+# patient_e = P.Patient(patient_name='patient e', illness='diabetes',
+#                       organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+#                       priority=100, location=hospital_b.node_id, wait_list=wait_list)
 
 # harvests a handful of organs (single donor, same source location)
-harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type=O.Organ.O_NEG,
-                          location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type=O.Organ.O_NEG,
-                          location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type=O.Organ.O_NEG,
-                          location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type=O.Organ.O_NEG,
-                          location=hospital_a.node_id, organ_list=organ_list)
+# harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type=O.Organ.O_NEG,
+#                           location=hospital_a.node_id, organ_list=organ_list)
+# harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type=O.Organ.O_NEG,
+#                           location=hospital_a.node_id, organ_list=organ_list)
+# harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type=O.Organ.O_NEG,
+#                           location=hospital_a.node_id, organ_list=organ_list)
+# harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type=O.Organ.O_NEG,
+#                           location=hospital_a.node_id, organ_list=organ_list)
+#
+# priority_patients = wait_list.get_prioritized_patients(harvest_organ_1)
+# for x in priority_patients:
+#     print(x)
+#
+# organ_list.generate_organs(hospital_network, 3)
+# for x in organ_list.organ_list:
+#     print(x)
+#
+# wait_list.generate_patients(hospital_network, 5)
+# for x in wait_list.wait_list:
+#     print(x)
 
-priority_patients = wait_list.get_prioritized_patients(harvest_organ_1)
-for x in priority_patients:
-    print(x)
+network = GB.GraphBuilder.graph_builder(10)
+organ_list.generate_organs(network, 5)
+wait_list.generate_patients(network, 50)
 
-organ_list.generate_organs(hospital_network, 3)
-for x in organ_list.organ_list:
-    print(x)
-
-wait_list.generate_patients(hospital_network, 5)
-for x in wait_list.wait_list:
-    print(x)
-
-# network = GB.GraphBuilder.graph_builder(10)
-# nodes = network.nodes()
-# print(network)
-# print(network.nodes())
-# print(nodes)
+# brief test demonstrating the organs/patients can be automatically generated
+# simple loop makes highest priority match the recipient (doesn't consider weight/location)
+while organ_list.organ_list:
+    organ = organ_list.organ_list.pop()
+    priority_patients = wait_list.get_prioritized_patients(organ)
+    print(organ)
+    if priority_patients:
+        print(priority_patients.pop().__str__())
+    else:
+        print(ANSI_RED + 'No patients are compatible!!' + ANSI_RESET + '\n')
