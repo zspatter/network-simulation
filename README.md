@@ -15,7 +15,7 @@ The network will be represented by a collection of dictionaries.
 2. A label which describes/names the graph.
 3. A dictionary which contains a collection of node ID's that point to the corresponding Node objects.
 
-#### Other Objects:
+#### Other Classes:
 - <ins>*GraphBuilder*</ins> - builds a random network with N nodes
 - <ins>*Dijkstras*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
 - <ins>*Organ*</ins> - represent the donated organs (these will be distributed across the system)
