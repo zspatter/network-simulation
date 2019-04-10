@@ -4,8 +4,8 @@ import network_simulator.Organ as O
 
 class MatchIdentifier:
 
-    @classmethod
-    def is_match(cls, patient, organ):
+    @staticmethod
+    def is_match(patient, organ):
         """
         Determines if the organ and patient are a compatible match
 
