@@ -20,11 +20,11 @@ The network will be represented by a collection of dictionaries.
 - <ins>*Dijkstras*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
 - <ins>*Organ*</ins> - represent the donated organs (these will be distributed across the system)
 - <ins>*Patient*</ins> - represent individuals in need of a transplant
-- <ins>*OrganList*<ins> - represents all donor organs currently available to be allocated to patients
+- <ins>*OrganList*</ins> - represents all donor organs currently available to be allocated to patients
 - <ins>*WaitList*<ins> - represents all patients in need of a transplant
-- <ins>*GenerateOrgans*<ins> - simulates harvesting organs from N patients and adds generated organs to an OrganList
-- <ins>*GeneratePatients*<ins> - generates N patients each with a random organ need, blood type, priority, and location (node)
-- <ins>*MatchIdentifier*<ins> - determines if a given patient and organ combination are compatible (suitable for transplant)
+- <ins>*GenerateOrgans*</ins> - simulates harvesting organs from N patients and adds generated organs to an OrganList
+- <ins>*GeneratePatients*</ins> - generates N patients each with a random organ need, blood type, priority, and location (node)
+- <ins>*MatchIdentifier*</ins> - determines if a given patient and organ combination are compatible (suitable for transplant)
 
 ## UML Diagram
 ![alt text](https://github.com/zspatter/network-simulation/blob/master/UML.png)
