@@ -44,7 +44,7 @@ def main_menu():
         elif menu_option == '5':
             restart()
         elif menu_option == '0':
-            print(f'{ansi_red}Exiting!{ANSI_RESET}')
+            print(f'\n{ansi_red}Exiting!{ANSI_RESET}')
         else:
             print(f'{ANSI_BOLD}Unrecognized menu selection. Try again!{ANSI_RESET}')
 
@@ -66,22 +66,26 @@ def build_network():
             print()
             return
         else:
-            print(f'\n{ANSI_BOLD}Unrecognized selection. Returning to main menu.{ANSI_RESET}\n')
+            print(f'\n{ANSI_BOLD}Unrecognized selection. Returning to '
+                  f'main menu.{ANSI_RESET}\n')
             return
 
-    response = int(input(f'\nEnter the number of hospitals (nodes) you\'d like in the network: '))
+    response = int(input(f'\nEnter the number of hospitals (nodes) '
+                         f'you\'d like in the network: '))
     network = GraphB.GraphBuilder.graph_builder(response)
 
     # network has been generated
     response = input(f'\nA network has been built with {response} nodes.'
-                     f'\nWould you like to print the network to the console? \n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
+                     f'\nWould you like to print the network to the console?'
+                     f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
         print(network)
     elif response.lower() == 'n':
         print()
         return
     else:
-        print(f'\n{ANSI_BOLD}Unrecognized selection. Returning to main menu.\n{ANSI_RESET}')
+        print(f'\n{ANSI_BOLD}Unrecognized selection. Returning to '
+              f'main menu.\n{ANSI_RESET}')
 
 
 def generate_patients():
@@ -92,19 +96,22 @@ def generate_patients():
         response = int(input(f'\nHow many patients would you like to generate? '))
         wait_list.generate_patients(network, response)
     else:
-        print(f'\n{ANSI_BOLD}There is no network - one must be built before patients can be generated!{ANSI_RESET}\n')
+        print(f'\n{ANSI_BOLD}There is no network - one must be built before'
+              f' patients can be generated!{ANSI_RESET}\n')
         return
 
     # patients generated
     response = input(f'\n{response} patients have has been generated. '
-                     f'\nWould you like to print the wait list to the console? \n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
+                     f'\nWould you like to print the wait list to the console?'
+                     f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
         print(f'\n{wait_list.__str__()}')
     elif response.lower() == 'n':
         print()
         return
     else:
-        print(f'\n{ANSI_BOLD}Unrecognized selection. Returning to main menu.{ANSI_RESET}\n')
+        print(f'\n{ANSI_BOLD}Unrecognized selection. Returning to '
+              f'main menu.{ANSI_RESET}\n')
 
 
 def harvest_organs():
@@ -113,7 +120,8 @@ def harvest_organs():
 
     if network:
         if len(wait_list.wait_list) is not 0:
-            response = int(input('\nHow many patients would you like to harvest organs from? '))
+            response = int(input('\nHow many patients would you like '
+                                 'to harvest organs from? '))
             organ_list.generate_organs(network, response)
         else:
             print(f'\n{ANSI_BOLD}There are no patients. Patients must be generated '
@@ -126,7 +134,8 @@ def harvest_organs():
 
     # organs have been harvested
     response = input(f'\nOrgans have been harvested from {response} bodies. '
-                     f'\nWould you like to print the organs to the console? \n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
+                     f'\nWould you like to print the organs to the console?'
+                     f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
         print(f'\n{organ_list.__str__()}')
     elif response.lower() == 'n':
@@ -145,10 +154,13 @@ def allocate_organs():
     input(f'{ANSI_YELLOW}Press ENTER to allocate organs{ANSI_RESET}')
     OA.OrganAllocator.allocate_organs(organ_list, wait_list, network)
     end_patient_num = len(wait_list.wait_list)
-    print(f'\n{ANSI_YELLOW_BOLD}Summary:\n'
-          f'\t{start_patient_num - end_patient_num}{ANSI_YELLOW} organs have been transplanted\n'
-          f'\t{ANSI_YELLOW_BOLD}{organ_num - (start_patient_num - end_patient_num)}{ANSI_YELLOW} organs had no suitable match\n'
-          f'\t{ANSI_YELLOW_BOLD}{end_patient_num}{ANSI_YELLOW} patients remain on the wait list{ANSI_RESET}\n')
+    difference = start_patient_num - end_patient_num
+    print(f'\n{ANSI_YELLOW_BOLD}Summary:'
+          f'\n\t{start_patient_num - end_patient_num}{ANSI_YELLOW} organs '
+          f'have been transplanted\n\t{ANSI_YELLOW_BOLD}'
+          f'{organ_num - difference}{ANSI_YELLOW} organs had no suitable match'
+          f'\n\t{ANSI_YELLOW_BOLD}{end_patient_num}{ANSI_YELLOW} '
+          f'patients remain on the wait list{ANSI_RESET}\n')
 
 
 def reset_network():
@@ -158,7 +170,8 @@ def reset_network():
     organ_list = OL.OrganList()
     wait_list = WL.WaitList()
 
-    print(f'\n{ANSI_BOLD}The network has been reset. There are no patients or organs remaining in the network.{ANSI_RESET}')
+    print(f'\n{ANSI_BOLD}The network has been reset. There are no '
+          f'patients or organs remaining in the network.{ANSI_RESET}')
 
 
 def restart():
@@ -170,7 +183,8 @@ def restart():
     organ_list = OL.OrganList()
     wait_list = WL.WaitList()
 
-    print(f'\n{ANSI_BOLD}The system has been reset. There is no network, patients, or organs.{ANSI_RESET}')
+    print(f'\n{ANSI_BOLD}The system has been reset. There is no network,'
+          f' patients, or organs.{ANSI_RESET}')
 
 
 main_menu()
