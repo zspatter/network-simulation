@@ -163,7 +163,6 @@ class Dijkstra:
             node = stack.pop()
             if node not in nodes_encountered:
                 nodes_encountered.add(node)
-                # TODO: this adds all adjacents - this will cause repeat visits
                 stack.extend(network.network_dict[node].get_adjacents())
 
         if len(nodes_encountered) != len(network.nodes()):

@@ -82,4 +82,5 @@ class Node:
                         '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'
         else:
-            return f'Node ID: #{self.node_id} is inactive and cannot be converted to a string.'
+            return f'Node ID: #{self.node_id} is inactive and cannot ' \
+                f'be converted to a string.'

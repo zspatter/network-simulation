@@ -423,8 +423,8 @@ class Network:
                     # if both nodes are active
                     if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
                         # if both edges are inactive
-                        if not self.network_dict[node_id1].adjacency_dict[node_id2]['status'] \
-                                and not self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
+                        if not self.network_dict[node_id1].adjacency_dict[node_id2]['status'] and \
+                                not self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
 
                             self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
                             self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True

@@ -69,5 +69,6 @@ class GraphBuilder:
                 random_node = random.randint(1, total_nodes)
 
             # updates adjacency dict to new format
-            adjacency_dict[random_node] = {'weight': random.randint(1, 50), 'status': True}
+            adjacency_dict[random_node] = {'weight': random.randint(1, 50),
+                                           'status': True}
         return adjacency_dict
