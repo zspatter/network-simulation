@@ -82,16 +82,18 @@ class Organ:
     def get_viability(organ_type):
         """
         Gets viability rating for each organ individually
+        
+        Viability is represented by hours an organ can be out of body * 10
 
         :param int organ_type: constant corresponding to an organ type
         :return: int viability rating (used in __init__())
         """
-        viability = {Organ.HEART: 100,
-                     Organ.KIDNEY: 120,
-                     Organ.LIVER: 140,
-                     Organ.LUNG: 160,
-                     Organ.PANCREAS: 180,
-                     Organ.INTESTINE: 150}
+        viability = {Organ.HEART: 60,
+                     Organ.KIDNEY: 300,
+                     Organ.LIVER: 120,
+                     Organ.LUNG: 60,
+                     Organ.PANCREAS: 120,
+                     Organ.INTESTINE: 80}
 
         return viability[organ_type]
 
