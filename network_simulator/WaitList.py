@@ -67,3 +67,10 @@ class WaitList:
         :param int n: number of patients to generate
         """
         GP.GeneratePatients.generate_patients(graph, n, self)
+
+    def __str__(self):
+        string = ''
+        for patient in self.wait_list:
+            string += patient.__str__() + '\n'
+
+        return string + '===============================\n'

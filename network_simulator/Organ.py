@@ -5,7 +5,7 @@ class Organ:
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
     """
-    HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE, THYMUS = 0, 1, 2, 3, 4, 5, 6
+    HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE = 0, 1, 2, 3, 4, 5
     O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     organ_count = 0
 
@@ -45,14 +45,13 @@ class Organ:
         :param int n: a number between 1-7 (inclusive) as defined with organ constants
         :return: string representing organ (or None if no match found)
         """
-        if 0 <= n < 7:
+        if 0 <= n < 6:
             organs = {Organ.HEART: 'Heart',
                       Organ.KIDNEY: 'Kidney',
                       Organ.LIVER: 'Liver',
                       Organ.LUNG: 'Lung',
                       Organ.PANCREAS: 'Pancreas',
-                      Organ.INTESTINE: 'Intestines',
-                      Organ.THYMUS: 'Thymus'}
+                      Organ.INTESTINE: 'Intestines'}
 
             return organs[n]
 
@@ -83,17 +82,18 @@ class Organ:
     def get_viability(organ_type):
         """
         Gets viability rating for each organ individually
+        
+        Viability is represented by hours an organ can be out of body * 10
 
         :param int organ_type: constant corresponding to an organ type
         :return: int viability rating (used in __init__())
         """
-        viability = {Organ.HEART: 25,
-                     Organ.KIDNEY: 50,
-                     Organ.LIVER: 75,
-                     Organ.LUNG: 100,
-                     Organ.PANCREAS: 125,
-                     Organ.INTESTINE: 150,
-                     Organ.THYMUS: 175}
+        viability = {Organ.HEART: 60,
+                     Organ.KIDNEY: 300,
+                     Organ.LIVER: 120,
+                     Organ.LUNG: 60,
+                     Organ.PANCREAS: 120,
+                     Organ.INTESTINE: 80}
 
         return viability[organ_type]
 
@@ -104,9 +104,9 @@ class Organ:
         :return: str
         """
         return f'Organ:\n' \
-            f'\tOrgan ID: {self.organ_id}\n' \
+            f'\tOrgan ID: {"{:05d}".format(self.organ_id)}\n' \
             f'\tOrgan type: {Organ.organ_type_name(self.organ_type)}\n' \
             f'\tBlood type: {Organ.blood_type_name(self.blood_type)}\n' \
             f'\tViability: {self.viability}\n' \
             f'\tOrigin location: {self.origin_location}\n' \
-            f'\tCurrent location: {self.current_location}'
+            f'\tCurrent location: {self.current_location}\n'
