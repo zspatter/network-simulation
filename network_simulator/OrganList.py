@@ -50,3 +50,10 @@ class OrganList:
         :param int n: number of patients to generate
         """
         GO.GenerateOrgans.generate_organs(graph, n, self)
+
+    def __str__(self):
+        string = ''
+        for organ in self.organ_list:
+            string += organ.__str__() + '\n'
+
+        return string

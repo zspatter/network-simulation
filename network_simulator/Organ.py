@@ -109,4 +109,4 @@ class Organ:
             f'\tBlood type: {Organ.blood_type_name(self.blood_type)}\n' \
             f'\tViability: {self.viability}\n' \
             f'\tOrigin location: {self.origin_location}\n' \
-            f'\tCurrent location: {self.current_location}'
+            f'\tCurrent location: {self.current_location}\n'
