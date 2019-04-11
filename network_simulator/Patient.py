@@ -145,7 +145,7 @@ class Patient:
         :return: string representing the patient
         """
         return f'Patient:\n' \
-            f'\tPatient ID: {self.patient_id}\n' \
+            f'\tPatient ID: {"{:05d}".format(self.patient_id)}\n' \
             f'\tPatient name: {self.patient_name}\n' \
             f'\tIllness: {self.illness}\n' \
             f'\tOrgan needed: {Patient.organ_type_name(self.organ_needed)}\n' \
