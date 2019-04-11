@@ -35,6 +35,9 @@ class OrganList:
         """
         self.organ_list.remove(organ)
 
+    def empty_list(self):
+        self.organ_list = list()
+
     def generate_organs(self, graph, n):
         """
         Wrapper that calls the GenerateOrgans.generate_organs function
