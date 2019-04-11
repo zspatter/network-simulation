@@ -5,6 +5,15 @@ class OrganAllocator:
 
     @staticmethod
     def allocate_organs(organ_list, wait_list, network):
+        """
+        Allocates organs from an OrganList to patients on a WaitList in a given Network.
+        Organs are  allocated to the patient with the highest priority within a a suitable proximity.
+        The proximity is considered suitable iff  (organ viability) - (cost of travel) >= 10
+
+        :param OrganList organ_list: list of organs available for transplant
+        :param WaitList wait_list: list of patients in need of transplant
+        :param Network network: hospital network patients and organs are present in
+        """
         # ANSI codes to emphasize output
         bold, reset = '\033[1m', '\033[0m'
         source, weights, recipient = None, None, None
@@ -28,6 +37,17 @@ class OrganAllocator:
 
     @staticmethod
     def find_best_match(organ, wait_list, weights):
+        """
+        Finds the most optimal patient match for a given organ. The optimal match
+        is the patient with the highest priority rating of compatible organ_need/blood_type
+        who is within a tolerable distance (for organ viability)
+
+        :param Organ organ: individual organ which is being matched with the optimal patient
+        :param WaitList wait_list: list of patients in need of a transplant
+        :param dict weights: cumulative weights of shortest paths from source node (organ location)
+                                to all other nodes in the network
+        :return: Patient representing the most optimal match
+        """
         # ANSI codes to emphasize output
         bold_red, red, reset = '\033[31;1m', '\033[31m', '\033[0m'
         matches = wait_list.get_prioritized_patients(organ)
