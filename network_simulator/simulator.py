@@ -55,7 +55,7 @@ def main_menu():
 
 def build_network():
     """
-    Builds a network passing console input as GraphBuilder parameters.
+    Builds a network passing console input as GraphBuilder parameters (N nodes).
     If a network already exists, a confirmation message verifies
     the user wants to clear the existing data.
     """
@@ -104,6 +104,11 @@ def build_network():
 
 
 def generate_patients():
+    """
+    Generates N patients in need of organ donations (who are added to the wait list).
+    If there is no network present, an error prints and control is returned to the
+    main menu loop.
+    """
     global network
     global wait_list
 
@@ -114,6 +119,7 @@ def generate_patients():
         except ValueError:
             print(f'\n{ANSI_RED_BOLD}ValueError:{ANSI_RED} valid values '
                   f'are positive ints{ANSI_RESET}\n')
+            return
     else:
         print(f'\n{ANSI_BOLD}There is no network - one must be built before'
               f' patients can be generated!{ANSI_RESET}\n')
@@ -134,6 +140,12 @@ def generate_patients():
 
 
 def harvest_organs():
+    """
+    Harvests organs from N patients assuming there is a network and a
+    wait list of at least 1 patient. These conditions must be met as
+    organs are allocated to patients in need across the network as soon
+    as they are harvested.
+    """
     global network
     global organ_list
 
@@ -170,6 +182,11 @@ def harvest_organs():
 
 
 def allocate_organs():
+    """
+    Allocates organs to the most optimal patient matches. The pause is
+    to separate harvesting of organs from their allocation. A brief summary
+    is printed after all organs have been allocated.
+    """
     global ANSI_YELLOW_BOLD
 
     organ_num = len(organ_list.organ_list)
@@ -180,7 +197,7 @@ def allocate_organs():
 
     end_patient_num = len(wait_list.wait_list)
     difference = start_patient_num - end_patient_num
-    
+
     print(f'\n{ANSI_YELLOW_BOLD}Summary:'
           f'\n\t{start_patient_num - end_patient_num}{ANSI_YELLOW} organs '
           f'have been transplanted\n\t{ANSI_YELLOW_BOLD}'
@@ -190,6 +207,10 @@ def allocate_organs():
 
 
 def reset_network():
+    """
+    Resets the network by clearing the organ list and wait list variables.
+    This leaves an empty network to continue interacting with.
+    """
     global organ_list
     global wait_list
 
@@ -201,6 +222,10 @@ def reset_network():
 
 
 def restart():
+    """
+    Clears all data from the system. This removes the existing network,
+    wait list, and organ list.
+    """
     global network
     global organ_list
     global wait_list
