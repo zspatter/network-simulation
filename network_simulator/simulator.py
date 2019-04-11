@@ -1,4 +1,3 @@
-
 import network_simulator.GraphBuilder as GraphB
 import network_simulator.OrganAllocator as OA
 import network_simulator.WaitList as WL
@@ -83,7 +82,7 @@ def generate_patients():
         response = int(input('\nHow many patients would you like to generate? '))
         wait_list.generate_patients(network, response)
     else:
-        print('\nThere is no network - one must be built before patients can be generated!\n')
+        print('\nThere is no network - one must be built before patients can be generated!')
         return
 
     # patients generated
@@ -107,11 +106,11 @@ def harvest_organs():
             organ_list.generate_organs(network, response)
         else:
             print('\nThere are no patients. Patients must be generated '
-                  'before organs can be harvested/allocated\n.')
+                  'before organs can be harvested/allocated.')
             return
     else:
         print('\nThere is no network. A network must be built and patients '
-              'must be generated before organs can be harvested/allocated\n')
+              'must be generated before organs can be harvested/allocated')
         return
 
     # organs have been harvested
