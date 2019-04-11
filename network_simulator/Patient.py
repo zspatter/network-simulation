@@ -6,7 +6,7 @@ class Patient:
     waiting time (priority?), and location ('home' hospital).
     """
     # heart, kidneys, liver, lungs, pancreas, intestine, and thymus.
-    HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE, THYMUS = 0, 1, 2, 3, 4, 5, 6
+    HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE = 0, 1, 2, 3, 4, 5
     O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     patient_count = 0
 
@@ -37,8 +37,7 @@ class Patient:
                       Patient.LIVER: 'Liver',
                       Patient.LUNG: 'Lung',
                       Patient.PANCREAS: 'Pancreas',
-                      Patient.INTESTINE: 'Intestines',
-                      Patient.THYMUS: 'Thymus'}
+                      Patient.INTESTINE: 'Intestines'}
 
             return organs[n]
 
