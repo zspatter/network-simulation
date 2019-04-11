@@ -479,4 +479,4 @@ class Network:
         string = ''
         for key in self.network_dict:
             string += f'{self.network_dict[key].__str__()}'
-        return string + '\n\n===============================\n'
+        return string + '\n===============================\n'

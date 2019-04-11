@@ -73,13 +73,13 @@ class Node:
         :rtype: str
         """
         if self.status:
-            string = '\n\nLabel: ' + self.label + '\t(Node ID: ' + \
+            string = '\nLabel: ' + self.label + '\t(Node ID: ' + \
                      str(self.node_id) + ')\nNeighbors:'
 
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
                     string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
                         '#' + str(key), str(self.adjacency_dict[key]['weight']))
-            return string
+            return string + '\n'
         else:
             return f'Node ID: #{self.node_id} is inactive and cannot be converted to a string.'

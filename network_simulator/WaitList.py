@@ -73,4 +73,4 @@ class WaitList:
         for patient in self.wait_list:
             string += patient.__str__() + '\n'
 
-        return string
+        return string + '===============================\n'

@@ -56,4 +56,4 @@ class OrganList:
         for organ in self.organ_list:
             string += organ.__str__() + '\n'
 
-        return string
+        return string + '===============================\n'
