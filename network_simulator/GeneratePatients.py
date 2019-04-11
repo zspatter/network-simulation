@@ -22,6 +22,6 @@ class GeneratePatients:
                              illness="N/A",
                              organ_needed=random.randrange(6),
                              blood_type=random.randrange(8),
-                             priority=random.randrange(251),
+                             priority=random.randrange(100 + n),
                              location=random.choice(nodes),
                              wait_list=wait_list)
