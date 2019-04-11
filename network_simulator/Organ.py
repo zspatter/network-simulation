@@ -45,7 +45,7 @@ class Organ:
         :param int n: a number between 1-7 (inclusive) as defined with organ constants
         :return: string representing organ (or None if no match found)
         """
-        if 0 <= n < 7:
+        if 0 <= n < 6:
             organs = {Organ.HEART: 'Heart',
                       Organ.KIDNEY: 'Kidney',
                       Organ.LIVER: 'Liver',
