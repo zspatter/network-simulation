@@ -5,7 +5,7 @@ class Organ:
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
     """
-    HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE, THYMUS = 0, 1, 2, 3, 4, 5, 6
+    HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE = 0, 1, 2, 3, 4, 5
     O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     organ_count = 0
 
@@ -51,8 +51,7 @@ class Organ:
                       Organ.LIVER: 'Liver',
                       Organ.LUNG: 'Lung',
                       Organ.PANCREAS: 'Pancreas',
-                      Organ.INTESTINE: 'Intestines',
-                      Organ.THYMUS: 'Thymus'}
+                      Organ.INTESTINE: 'Intestines'}
 
             return organs[n]
 
@@ -87,13 +86,12 @@ class Organ:
         :param int organ_type: constant corresponding to an organ type
         :return: int viability rating (used in __init__())
         """
-        viability = {Organ.HEART: 25,
-                     Organ.KIDNEY: 50,
-                     Organ.LIVER: 75,
-                     Organ.LUNG: 100,
-                     Organ.PANCREAS: 125,
-                     Organ.INTESTINE: 150,
-                     Organ.THYMUS: 175}
+        viability = {Organ.HEART: 100,
+                     Organ.KIDNEY: 120,
+                     Organ.LIVER: 140,
+                     Organ.LUNG: 160,
+                     Organ.PANCREAS: 180,
+                     Organ.INTESTINE: 150}
 
         return viability[organ_type]
 
