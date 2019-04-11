@@ -36,6 +36,9 @@ class OrganList:
         self.organ_list.remove(organ)
 
     def empty_list(self):
+        """
+        Clears entire organ_list (utility function for the organ allocator)
+        """
         self.organ_list = list()
 
     def generate_organs(self, graph, n):
