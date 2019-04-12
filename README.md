@@ -11,7 +11,7 @@ This project is designed to simulate an organ transplant system. Its aim is to s
 ## Classes
 
 #### <ins>Node</ins>:
-The smallest element within our network is a Node object. Each node represents a specific hospital where both patients and organs can be located. These will represent the 'addresses' of sources and destinations within our graph based on an organ's location and the matched patient's location.
+The smallest element within the network is a Node object. Each node represents a specific hospital where both patients and organs can be located. These will represent the 'addresses' of sources and destinations within the graph based on an organ's location and the matched patient's location.
 
 <ins>Nodes consist of</ins>:
 1. <ins>node ID</ins> - a unique identifier
@@ -34,8 +34,8 @@ The network is a graph that is represented as a collection of nodes. The network
 - <ins>*WaitList*</ins> - represents all patients in need of a transplant
 - <ins>*MatchIdentifier*</ins> - determines if a given patient and organ combination are compatible (suitable for transplant)
 - <ins>*GraphBuilder*</ins> - builds a random network with N nodes
-- <ins>*GenerateOrgans*</ins> - simulates harvesting organs from N patients and adds generated organs to an OrganList
-- <ins>*GeneratePatients*</ins> - generates N patients each with a random organ need, blood type, priority, and location (node)
+- <ins>*GenerateOrgans*</ins> - simulates harvesting organs from N patients where each organ has a 75% of being successfully harvested and adds the generated organs to an OrganList
+- <ins>*GeneratePatients*</ins> - generates N patients each with a random organ need, blood type, priority, and location (node) and adds the generated patients to a WaitList
 - <ins>*OrganAllocator*</ins> - allocates harvested organs (OrganList) to the most optimal matching patient (WaitList)
 
 #### <ins>Simulator</ins>: 
