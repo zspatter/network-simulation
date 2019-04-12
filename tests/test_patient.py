@@ -15,7 +15,7 @@ def test_organ_category_name():
 def test_blood_type_name():
     assert p.Patient.blood_type_name(-1) is None
     assert p.Patient.blood_type_name(0) == 'O-'
-    assert p.Patient.blood_type_name(1)== 'O+'
+    assert p.Patient.blood_type_name(1) == 'O+'
     assert p.Patient.blood_type_name(2) == 'A-'
     assert p.Patient.blood_type_name(3) == 'A+'
     assert p.Patient.blood_type_name(4) == 'B-'

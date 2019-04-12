@@ -36,7 +36,7 @@ def test_organ_type_name():
 def test_blood_type_name():
     assert o.Organ.blood_type_name(-1) is None
     assert o.Organ.blood_type_name(0) == 'O-'
-    assert o.Organ.blood_type_name(1)== 'O+'
+    assert o.Organ.blood_type_name(1) == 'O+'
     assert o.Organ.blood_type_name(2) == 'A-'
     assert o.Organ.blood_type_name(3) == 'A+'
     assert o.Organ.blood_type_name(4) == 'B-'
@@ -53,4 +53,3 @@ def test_get_viability():
     assert o.Organ.get_viability(o.Organ.LUNG) == 60
     assert o.Organ.get_viability(o.Organ.PANCREAS) == 120
     assert o.Organ.get_viability(o.Organ.INTESTINE) == 80
-

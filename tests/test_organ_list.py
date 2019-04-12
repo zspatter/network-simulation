@@ -1,14 +1,14 @@
 import network_simulator.Organ as o
-import network_simulator.OrganList as ol
+import network_simulator.OrganList as oL
 
 
 def test__init__():
-    organ_list = ol.OrganList()
+    organ_list = oL.OrganList()
     assert len(organ_list.organ_list) is 0
 
 
 def test_add_organ():
-    organ_list = ol.OrganList()
+    organ_list = oL.OrganList()
     organ = o.Organ(o.Organ.PANCREAS, o.Organ.O_NEG, 1)
     organ_list.add_organ(organ)
     assert len(organ_list.organ_list) is 1
@@ -19,7 +19,7 @@ def test_add_organ():
 
 
 def test_remove_organ():
-    organ_list = ol.OrganList()
+    organ_list = oL.OrganList()
     organ = o.Organ(o.Organ.PANCREAS, o.Organ.O_NEG, 1, organ_list)
     organ_list.remove_organ(organ)
     assert len(organ_list.organ_list) is 0
@@ -34,7 +34,7 @@ def test_remove_organ():
 
 
 def test_empty_list():
-    organ_list = ol.OrganList()
+    organ_list = oL.OrganList()
     organ = o.Organ(o.Organ.PANCREAS, o.Organ.O_NEG, 1, organ_list)
     organ = o.Organ(o.Organ.PANCREAS, o.Organ.O_NEG, 1, organ_list)
     organ = o.Organ(o.Organ.PANCREAS, o.Organ.O_NEG, 1, organ_list)

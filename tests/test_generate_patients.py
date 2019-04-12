@@ -1,14 +1,14 @@
-import network_simulator.GeneratePatients as gp
+import network_simulator.GeneratePatients as gP
 import network_simulator.Network as net
-import network_simulator.WaitList as wl
+import network_simulator.WaitList as wL
 
 
 def test_generate_patients():
     test_net = net.Network()
     test_net.add_node(net.Node(1))
-    wait_list = wl.WaitList()
+    wait_list = wL.WaitList()
     n = 3
-    gp.GeneratePatients.generate_patients(graph=test_net, n=n, wait_list=wait_list)
+    gP.GeneratePatients.generate_patients(graph=test_net, n=n, wait_list=wait_list)
 
     assert len(wait_list.wait_list) is n
     for patient in wait_list.wait_list:

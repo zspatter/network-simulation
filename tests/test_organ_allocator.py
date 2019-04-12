@@ -1,18 +1,18 @@
 import network_simulator.Organ as o
 import network_simulator.Patient as p
 import network_simulator.Network as net
-import network_simulator.WaitList as wl
-import network_simulator.OrganList as ol
-import network_simulator.OrganAllocator as oa
+import network_simulator.WaitList as wL
+import network_simulator.OrganList as oL
+import network_simulator.OrganAllocator as oA
 import network_simulator.Dijkstra as d
 
 
 def test_allocate_organs():
-    organ_list = ol.OrganList()
+    organ_list = oL.OrganList()
     organ1 = o.Organ(o.Organ.PANCREAS, o.Organ.AB_POS, 3, organ_list)
     organ2 = o.Organ(o.Organ.HEART, o.Organ.O_NEG, 3, organ_list)
 
-    wait_list = wl.WaitList()
+    wait_list = wL.WaitList()
     patient1 = p.Patient('name', 'illness 1', p.Patient.PANCREAS,
                          p.Patient.AB_POS, 100, 1, wait_list)
     patient2 = p.Patient('name', 'illness 2', p.Patient.PANCREAS,
@@ -28,15 +28,15 @@ def test_allocate_organs():
     node3 = net.Node(3, {})
     test_net = net.Network({1: node1, 2: node2, 3: node3})
 
-    oa.OrganAllocator.allocate_organs(organ_list, wait_list, test_net)
+    oA.OrganAllocator.allocate_organs(organ_list, wait_list, test_net)
     assert len(organ_list.organ_list) is 0
-    assert len (wait_list.wait_list) is 2
+    assert len(wait_list.wait_list) is 2
     assert patient2 in wait_list.wait_list
     assert patient4 in wait_list.wait_list
 
 
 def test_find_best_match():
-    wait_list = wl.WaitList()
+    wait_list = wL.WaitList()
     patient1 = p.Patient('name', 'illness 1', p.Patient.PANCREAS,
                          p.Patient.AB_POS, 100, 1, wait_list)
     patient2 = p.Patient('name', 'illness 2', p.Patient.PANCREAS,
@@ -54,7 +54,7 @@ def test_find_best_match():
     test_net = net.Network({1: node1, 2: node2, 3: node3})
     weights, paths = d.Dijkstra.dijkstra(test_net, 1)
 
-    patient = oa.OrganAllocator.find_best_match(organ, wait_list, weights)
+    patient = oA.OrganAllocator.find_best_match(organ, wait_list, weights)
     assert patient is patient2
 
     node1.adjacency_dict[3]['weight'] = 300
@@ -63,6 +63,5 @@ def test_find_best_match():
     weights, paths = d.Dijkstra.dijkstra(test_net, 1)
     assert len(weights) is 2
 
-    patient = oa.OrganAllocator.find_best_match(organ, wait_list, weights)
+    patient = oA.OrganAllocator.find_best_match(organ, wait_list, weights)
     assert patient is patient1
-
