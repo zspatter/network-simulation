@@ -1,4 +1,4 @@
-import network_simulator.GenerateOrgans as GO
+import network_simulator.GenerateOrgans as gO
 
 
 class OrganList:
@@ -55,7 +55,7 @@ class OrganList:
         :param Network graph: network for patients to be allocated to
         :param int n: number of patients to generate
         """
-        GO.GenerateOrgans.generate_organs(graph, n, self)
+        gO.GenerateOrgans.generate_organs(graph, n, self)
 
     def __str__(self):
         string = ''

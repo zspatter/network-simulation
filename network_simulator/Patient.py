@@ -10,7 +10,8 @@ class Patient:
     O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     patient_count = 0
 
-    def __init__(self, patient_name, illness, organ_needed, blood_type, priority, location, wait_list=None):
+    def __init__(self, patient_name, illness, organ_needed, blood_type, priority, location,
+                 wait_list=None):
         Patient.patient_count = Patient.patient_count + 1
         self.patient_id = Patient.patient_count
         self.patient_name = patient_name

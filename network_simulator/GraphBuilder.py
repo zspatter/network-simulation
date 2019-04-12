@@ -9,7 +9,6 @@ class GraphBuilder:
     disconnected, etc.)
     """
 
-    # TODO random parameter (seed)
     @staticmethod
     def graph_builder(n, seed=None):
         """
@@ -30,7 +29,6 @@ class GraphBuilder:
         network = Network(network_dict)
         return network
 
-    # TODO random parameter (seed)
     @staticmethod
     def generate_random_adjacency_dict(node_id, total_nodes, seed=None):
         """

@@ -1,6 +1,6 @@
 import heapq
-import network_simulator.MatchIdentifier as MI
-import network_simulator.GeneratePatients as GP
+import network_simulator.MatchIdentifier as mI
+import network_simulator.GeneratePatients as gP
 
 
 class WaitList:
@@ -36,7 +36,7 @@ class WaitList:
 
         for patient in self.wait_list:
             if patient.organ_needed is organ.organ_type and \
-                    MI.MatchIdentifier.is_match(patient, organ):
+                    mI.MatchIdentifier.is_match(patient, organ):
                 heapq.heappush(queue, patient)
 
         heapq._heapify_max(queue)
@@ -72,7 +72,7 @@ class WaitList:
         :param Network graph: network for patients to be allocated to
         :param int n: number of patients to generate
         """
-        GP.GeneratePatients.generate_patients(graph, n, self)
+        gP.GeneratePatients.generate_patients(graph, n, self)
 
     def __str__(self):
         string = ''

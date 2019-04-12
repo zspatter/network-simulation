@@ -2,10 +2,10 @@ import network_simulator.Network as net
 import network_simulator.Organ as O
 import network_simulator.Patient as P
 import network_simulator.Dijkstra as D
-import network_simulator.OrganList as OL
-import network_simulator.WaitList as WL
-import network_simulator.GraphBuilder as GB
-import network_simulator.OrganAllocator as OA
+import network_simulator.OrganList as oL
+import network_simulator.WaitList as wL
+import network_simulator.GraphBuilder as gB
+import network_simulator.OrganAllocator as oA
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
@@ -164,8 +164,8 @@ with the optional parameters.
 Furthermore, this briefly tests the data structures holding patient/organ 
 information. This also demonstrates how the priority queue functions.
 """
-wait_list = WL.WaitList()
-organ_list = OL.OrganList()
+wait_list = wL.WaitList()
+organ_list = oL.OrganList()
 
 patient_a = P.Patient(patient_name='patient a', illness='diabetes',
                       organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
@@ -205,12 +205,12 @@ harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type=O.Organ.O_NEG,
 # for x in wait_list.wait_list:
 #     print(x)
 
-network = GB.GraphBuilder.graph_builder(10)
+network = gB.GraphBuilder.graph_builder(10)
 organ_list.generate_organs(network, 5)
 wait_list.generate_patients(network, 50)
 
 print(ANSI_CYAN + 'Organs to be allocated: ' + str(len(organ_list.organ_list)) + ANSI_RESET)
 print(ANSI_CYAN + 'Patients on wait list: ' + str(len(wait_list.wait_list)) + ANSI_RESET + '\n')
-OA.OrganAllocator.allocate_organs(organ_list, wait_list, network)
+oA.OrganAllocator.allocate_organs(organ_list, wait_list, network)
 print(ANSI_CYAN + '\n\nOrgans to be allocated: ' + str(len(organ_list.organ_list)) + ANSI_RESET)
 print(ANSI_CYAN + 'Patients on wait list: ' + str(len(wait_list.wait_list)) + ANSI_RESET)

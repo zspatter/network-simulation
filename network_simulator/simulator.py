@@ -1,9 +1,9 @@
 import network_simulator.GraphBuilder as GraphB
-import network_simulator.OrganAllocator as OA
-import network_simulator.WaitList as WL
-import network_simulator.OrganList as OL
+import network_simulator.OrganAllocator as oA
+import network_simulator.WaitList as wL
+import network_simulator.OrganList as oL
 
-network, wait_list, organ_list = None, WL.WaitList(), OL.OrganList()
+network, wait_list, organ_list = None, wL.WaitList(), oL.OrganList()
 ANSI_YELLOW, ANSI_YELLOW_BOLD, ANSI_RED = '\033[33m', '\033[33;1m', '\033[31m'
 ANSI_RED_BOLD, ANSI_BOLD, ANSI_RESET = '\033[31;1m', '\033[1m', '\033[0m'
 
@@ -69,8 +69,8 @@ def build_network():
                          f'(this will clear patient and organ lists as well)\n'
                          f'{ANSI_YELLOW}(y/n): {ANSI_RESET}')
         if response.lower() == 'y':
-            wait_list = WL.WaitList()
-            organ_list = OL.OrganList()
+            wait_list = wL.WaitList()
+            organ_list = oL.OrganList()
         elif response.lower() == 'n':
             print()
             return
@@ -81,8 +81,7 @@ def build_network():
     try:
         response = int(input(f'\nEnter the number of hospitals (nodes) '
                              f'you\'d like in the network: '))
-        if response < 4:
-            raise ValueError
+
         network = GraphB.GraphBuilder.graph_builder(response)
     except ValueError:
         print(f'\n{ANSI_RED_BOLD}ValueError:{ANSI_RED} valid values '
@@ -194,7 +193,7 @@ def allocate_organs():
     start_patient_num = len(wait_list.wait_list)
 
     input(f'{ANSI_YELLOW}Press ENTER to allocate organs{ANSI_RESET}')
-    OA.OrganAllocator.allocate_organs(organ_list, wait_list, network)
+    oA.OrganAllocator.allocate_organs(organ_list, wait_list, network)
 
     end_patient_num = len(wait_list.wait_list)
     difference = start_patient_num - end_patient_num
@@ -217,8 +216,8 @@ def reset_network():
     global organ_list
     global wait_list
 
-    organ_list = OL.OrganList()
-    wait_list = WL.WaitList()
+    organ_list = oL.OrganList()
+    wait_list = wL.WaitList()
 
     print(f'\n{ANSI_BOLD}The network has been reset. There are no '
           f'patients or organs remaining in the network.{ANSI_RESET}')
@@ -234,8 +233,8 @@ def restart():
     global wait_list
 
     network = None
-    organ_list = OL.OrganList()
-    wait_list = WL.WaitList()
+    organ_list = oL.OrganList()
+    wait_list = wL.WaitList()
 
     print(f'\n{ANSI_BOLD}The system has been reset. There is no network,'
           f' patients, or organs.{ANSI_RESET}')
