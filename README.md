@@ -9,14 +9,14 @@ This project is designed to simulate an organ transplant system. Its aim is to s
 4. The optimal match will be the patient who matches the above criteria with the highest priority rating
 
 #### The smallest element within our network is a Node object. <ins>A Node consists of</ins>:
-1. A <ins>node ID</ins> which is a unique identifier. 
-2. A <ins>label</ins> which describes/names the node.
-3. An <ins>adjacency dictionary</ins> where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive).
-4. A <ins>status</ins> which indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well.
+1. <ins>node ID</ins>: a unique identifier
+2. <ins>label</ins>: describes/names the node
+3. <ins>adjacency dictionary</ins>: where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive)
+4. <ins>status</ins>: indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well
 
 #### The network is a graph that is represented as a collection of nodes. <ins>The Network objects will consist of</ins>:
-1. A <ins>network dictionary</ins> which contains a collection of node ID's that point to the corresponding Node objects.
-2. A <ins>label</ins> which describes/names the graph.
+1. <ins>network dictionary</ins>: contains a collection of node ID's that point to their corresponding Node objects
+2. <ins>label</ins>: describes/names the graph
 
 #### Other Classes:
 - <ins>*Dijkstras*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
