@@ -10,16 +10,21 @@ The network will be represented by a collection of dictionaries.
 3. An adjacency dictionary where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive).
 4. A status which indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well.
 
-#### The graph is represented as a collction of nodes. The Network objects will consist of:
+#### The graph is represented as a collection of nodes. The Network objects will consist of:
 1. A graph ID which is a unique identifier.
 2. A label which describes/names the graph.
 3. A dictionary which contains a collection of node ID's that point to the corresponding Node objects.
 
-#### Other Objects:
+#### Other Classes:
 - <ins>*GraphBuilder*</ins> - builds a random network with N nodes
 - <ins>*Dijkstras*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
 - <ins>*Organ*</ins> - represent the donated organs (these will be distributed across the system)
 - <ins>*Patient*</ins> - represent individuals in need of a transplant
+- <ins>*OrganList*</ins> - represents all donor organs currently available to be allocated to patients
+- <ins>*WaitList*</ins> - represents all patients in need of a transplant
+- <ins>*GenerateOrgans*</ins> - simulates harvesting organs from N patients and adds generated organs to an OrganList
+- <ins>*GeneratePatients*</ins> - generates N patients each with a random organ need, blood type, priority, and location (node)
+- <ins>*MatchIdentifier*</ins> - determines if a given patient and organ combination are compatible (suitable for transplant)
 
 ## UML Diagram
 ![alt text](https://github.com/zspatter/network-simulation/blob/master/UML.png)
