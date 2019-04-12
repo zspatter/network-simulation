@@ -25,7 +25,10 @@ class OrganList:
 
         :param Organ organ: object to be added to the organ list
         """
-        self.organ_list.append(organ)
+        if organ not in self.organ_list:
+            self.organ_list.append(organ)
+            return
+        print('This organ is already in the organ list!')
 
     def remove_organ(self, organ):
         """
@@ -33,7 +36,10 @@ class OrganList:
 
         :param Organ organ: object to be removed from the organ list
         """
-        self.organ_list.remove(organ)
+        if organ in self.organ_list:
+            self.organ_list.remove(organ)
+            return
+        print('This organ isn\'t in the organ list!')
 
     def empty_list(self):
         """
