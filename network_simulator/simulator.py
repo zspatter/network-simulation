@@ -91,7 +91,7 @@ def build_network():
 
     # network has been generated
     response = input(f'\nA network has been built with {response} nodes.'
-                     f'\nWould you like to print the network to the console?'
+                     f'Would you like to print the network to the console?'
                      f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
         print(network)
@@ -126,8 +126,8 @@ def generate_patients():
         return
 
     # patients generated
-    response = input(f'\n{response} patients have has been generated. '
-                     f'\nWould you like to print the wait list to the console?'
+    response = input(f'\n{response} patients have been generated. '
+                     f'Would you like to print the wait list to the console?'
                      f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
         print(f'\n{wait_list.__str__()}')
@@ -158,6 +158,7 @@ def harvest_organs():
             except ValueError:
                 print(f'\n{ANSI_RED_BOLD}ValueError:{ANSI_RED} valid values '
                       f'are positive ints{ANSI_RESET}\n')
+                return
         else:
             print(f'\n{ANSI_BOLD}There are no patients. Patients must be generated '
                   f'before organs can be harvested/allocated{ANSI_RESET}\n.')
@@ -169,7 +170,7 @@ def harvest_organs():
 
     # organs have been harvested
     response = input(f'\nOrgans have been harvested from {response} bodies. '
-                     f'\nWould you like to print the organs to the console?'
+                     f'Would you like to print the organs to the console?'
                      f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
         print(f'\n{organ_list.__str__()}')
@@ -198,12 +199,14 @@ def allocate_organs():
     end_patient_num = len(wait_list.wait_list)
     difference = start_patient_num - end_patient_num
 
-    print(f'\n{ANSI_YELLOW_BOLD}Summary:'
-          f'\n\t{start_patient_num - end_patient_num}{ANSI_YELLOW} organs '
-          f'have been transplanted\n\t{ANSI_YELLOW_BOLD}'
-          f'{organ_num - difference}{ANSI_YELLOW} organs had no suitable match'
-          f'\n\t{ANSI_YELLOW_BOLD}{end_patient_num}{ANSI_YELLOW} '
-          f'patients remain on the wait list{ANSI_RESET}\n')
+    print('\n{:s}Summary:'
+          '\n\t{:>3s} organs have been transplanted'
+          '\n\t{:>3s} organs had no suitable match'
+          '\n\t{:>3s} patients remain on the wait list{:s}\n'.format(ANSI_YELLOW,
+                                                                     str(difference),
+                                                                     str(organ_num - difference),
+                                                                     str(end_patient_num),
+                                                                     ANSI_RESET))
 
 
 def reset_network():
