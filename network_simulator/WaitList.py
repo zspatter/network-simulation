@@ -48,7 +48,10 @@ class WaitList:
 
         :param Patient patient: object to be added
         """
-        self.wait_list.append(patient)
+        if patient not in self.wait_list:
+            self.wait_list.append(patient)
+            return
+        print('This patient isn\'t in the wait list!')
 
     def remove_patient(self, patient):
         """
@@ -56,7 +59,10 @@ class WaitList:
 
         :param Patient patient: object to be removed
         """
-        self.wait_list.remove(patient)
+        if patient in self.wait_list:
+            self.wait_list.remove(patient)
+            return
+        print('This patient is already in the wait list!')
 
     def generate_patients(self, graph, n):
         """
