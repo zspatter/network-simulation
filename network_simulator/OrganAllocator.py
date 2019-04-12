@@ -1,4 +1,5 @@
 import network_simulator.Dijkstra as D
+import heapq
 
 
 class OrganAllocator:
@@ -53,7 +54,8 @@ class OrganAllocator:
         matches = wait_list.get_prioritized_patients(organ)
 
         # returns the patient with the highest priority within acceptable proximity
-        for patient in matches:
+        while len(matches) != 0:
+            patient = heapq._heappop_max(matches)
             if organ.viability >= weights[patient.location] - 10:
                 return patient
 
