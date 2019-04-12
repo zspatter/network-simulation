@@ -12,17 +12,17 @@ This project is designed to simulate an organ transplant system. Its aim is to s
 Each node represents a specific hospital where both patients and organs can be located. These will represent the 'addresses' of sources and destinations within our graph based on an organ's location and the matched patient's location.
 
 <ins>Nodes consist of</ins>:
-1. <ins>node ID</ins>: a unique identifier
-2. <ins>label</ins>: describes/names the node
-3. <ins>adjacency dictionary</ins>: where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive)
-4. <ins>status</ins>: indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well
+1. <ins>node ID</ins> - a unique identifier
+2. <ins>label</ins> - describes/names the node
+3. <ins>adjacency dictionary</ins> - where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive)
+4. <ins>status</ins> - indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well
 
 #### The network is a graph that is represented as a collection of nodes
 The network represents the entire network of hospitals. The network will be traversed from node to node to. The weights of individual edges traveled will be added together to represent the total cost of the traveled path.
 
 <ins>Networks consist of</ins>:
-1. <ins>network dictionary</ins>: contains a collection of node ID's that point to their corresponding Node objects
-2. <ins>label</ins>: describes/names the graph
+1. <ins>network dictionary</ins> - contains a collection of node ID's that point to their corresponding Node objects
+2. <ins>label</ins> - describes/names the graph
 
 #### Other Classes:
 - <ins>*Dijkstras*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
