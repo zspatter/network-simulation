@@ -1,8 +1,12 @@
-# Network-Simulation
+# Network Simulation
 
-This project is designed to simulate an organ transplant system. Its aim is to simulate potential problems that may occur while transporting organs from facility to facility. Factors that could affect the system include: the number of vehicles available in circulation, construction (closed roads), the amount of time an organ remains viable out of the human body, traffic, and natural disasters. For the purposes of this simulated model, problems during transport will be represented by removing paths between two given nodes. The system will handle these problems by finding alternative routes between two destinations.
+This project is designed to simulate an organ transplant system. Its aim is to simulate the organ transplant matching process. To accomplish this, there will be a list of patients in need of an organ transplant within a given network of hospitals. After organs are harvested from a deceased organ donor, the system will find the most optimal match by looking at the list of patients, then the organ will be allocated to the matched patient. 
 
-The network will be represented by a collection of dictionaries. 
+The following criteria are used to determine matches:
+1. The patient's need must be of the same organ type (kidney, lungs, heart, etc.)
+2. The patient must be of a compatible blood type (example: patient: AB-, organ: B-)
+3. The organ must be able to be transported to the patient's hospital while remaining viable (organ-specific time limit)
+4. The optimal match will be the patient who matches the above criteria with the highest priority rating
 
 #### The smallest element within our graph is a Node object. A Node consists of:
 1. A node ID which is a unique identifier. 
