@@ -8,8 +8,10 @@ This project is designed to simulate an organ transplant system. Its aim is to s
 3. The organ must be able to be transported to the patient's hospital while remaining viable (organ-specific time limit)
 4. The optimal match will be the patient who matches the above criteria with the highest priority rating
 
-#### The smallest element within our network is a Node object
-Each node represents a specific hospital where both patients and organs can be located. These will represent the 'addresses' of sources and destinations within our graph based on an organ's location and the matched patient's location.
+## Classes
+
+#### <ins>Node</ins>:
+The smallest element within our network is a Node object. Each node represents a specific hospital where both patients and organs can be located. These will represent the 'addresses' of sources and destinations within our graph based on an organ's location and the matched patient's location.
 
 <ins>Nodes consist of</ins>:
 1. <ins>node ID</ins> - a unique identifier
@@ -17,14 +19,14 @@ Each node represents a specific hospital where both patients and organs can be l
 3. <ins>adjacency dictionary</ins> - where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive)
 4. <ins>status</ins> - indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well
 
-#### The network is a graph that is represented as a collection of nodes
-The network represents the entire network of hospitals. The network will be traversed from node to node to. The weights of individual edges traveled will be added together to represent the total cost of the traveled path.
+#### <ins>Network</ins>:
+The network is a graph that is represented as a collection of nodes. The network represents the entire network of hospitals. The network will be traversed from node to node to. The weights of individual edges traveled will be added together to represent the total cost of the traveled path.
 
 <ins>Networks consist of</ins>:
 1. <ins>network dictionary</ins> - contains a collection of node ID's that point to their corresponding Node objects
 2. <ins>label</ins> - describes/names the graph
 
-#### Other Classes:
+#### <ins>Other Classes</ins>:
 - <ins>*Dijkstras*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
 - <ins>*Organ*</ins> - represent the donated organs (these will be distributed across the system)
 - <ins>*Patient*</ins> - represent individuals in need of a transplant
@@ -36,7 +38,7 @@ The network represents the entire network of hospitals. The network will be trav
 - <ins>*GeneratePatients*</ins> - generates N patients each with a random organ need, blood type, priority, and location (node)
 - <ins>*OrganAllocator*</ins> - allocates harvested organs (OrganList) to the most optimal matching patient (WaitList)
 
-#### <ins>Simulator</ins>:
+#### <ins>Simulator</ins>: 
 The simulator allows for an interactive experience through the console by harnessing the functions of the GraphBuilder, GeneratePatients, GenerateOrgans, and OrganAllocator classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
 
 ## UML Diagram
