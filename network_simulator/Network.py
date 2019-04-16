@@ -87,10 +87,7 @@ class Network:
         :rtype: list
         """
         nodes = list(self.network_dict.keys())
-        active_nodes = list()
-        for node in nodes:
-            if self.network_dict[node].status:
-                active_nodes.append(node)
+        active_nodes = [node for node in nodes if self.network_dict[node].status]
         return active_nodes
 
     def add_node(self, node):
