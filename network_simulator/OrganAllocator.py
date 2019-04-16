@@ -17,18 +17,19 @@ class OrganAllocator:
         """
         # ANSI codes to emphasize output
         bold, reset = '\033[1m', '\033[0m'
-        source, weights, recipient = None, None, None
+        source, weights, paths, recipient = None, None, None, None
 
         for organ in organ_list.organ_list:
             if organ.origin_location is source:
-                recipient = OrganAllocator.find_best_match(organ, wait_list, weights)
+                recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)
             else:
                 source = organ.origin_location
-                weights, paths = D.Dijkstra.dijkstra(network, source)
-                recipient = OrganAllocator.find_best_match(organ, wait_list, weights)
+                dijkstra = D.Dijkstra(network, source)
+                recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)
 
             if recipient:
-                organ.move_organ(recipient.location, weights[recipient.location])
+                organ.move_organ(recipient.location, dijkstra.weight[recipient.location],
+                                 dijkstra.shortest_path(recipient.location))
                 wait_list.remove_patient(recipient)
                 print(f'\n{bold}The following pair have been united:{reset}'
                       f'\n{recipient.__str__()}{organ.__str__()}')

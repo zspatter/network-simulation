@@ -112,7 +112,7 @@ harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type='NA',
 dijkstra = D.Dijkstra(hospital_network, harvest_organ_1.origin_location)
 
 path, weight = dijkstra.shortest_path(patient_a.location)
-harvest_organ_1.move_organ(patient_a.location, weight)
+harvest_organ_1.move_organ(patient_a.location, weight, dijkstra.shortest_path(patient_a.location))
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_1.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_1.origin_location}{ANSI_RESET} '
@@ -123,7 +123,7 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_1.organ_type)}{
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_1.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_b.location)
-harvest_organ_2.move_organ(patient_b.location, weight)
+harvest_organ_2.move_organ(patient_b.location, weight, dijkstra.shortest_path(patient_b.location))
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_2.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_2.origin_location}{ANSI_RESET} '
@@ -134,7 +134,7 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_2.organ_type)}{
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_2.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_c.location)
-harvest_organ_3.move_organ(patient_c.location, weight)
+harvest_organ_3.move_organ(patient_c.location, weight, dijkstra.shortest_path(patient_c.location))
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_3.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_3.origin_location}{ANSI_RESET} '
@@ -145,7 +145,7 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_3.organ_type)}{
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_3.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_d.location)
-harvest_organ_4.move_organ(patient_d.location, weight)
+harvest_organ_4.move_organ(patient_d.location, weight, dijkstra.shortest_path(patient_d.location))
 print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_4.organ_type)}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_4.origin_location}{ANSI_RESET} '

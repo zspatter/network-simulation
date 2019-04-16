@@ -20,10 +20,11 @@ class Organ:
         self.viability = Organ.get_viability(self.organ_type)
         self.origin_location = location
         self.current_location = location
+        self.path = [location]
         if organ_list:
             organ_list.add_organ(self)
 
-    def move_organ(self, new_location, cost):
+    def move_organ(self, new_location, cost, shortest_path):
         """
         This function allows an organ's attributes to be altered to represent it's
         transportation across the network. This is intended to be used with
@@ -35,7 +36,8 @@ class Organ:
         if self.viability < cost:
             print('ERROR: organ no longer viable!')
             return
-
+        path, weight = shortest_path
+        self.path = path
         self.current_location = new_location
         self.viability -= cost
 
@@ -112,4 +114,5 @@ class Organ:
             f'\tBlood type: {Organ.blood_type_name(self.blood_type)}\n' \
             f'\tViability: {self.viability}\n' \
             f'\tOrigin location: {self.origin_location}\n' \
-            f'\tCurrent location: {self.current_location}\n'
+            f'\tCurrent location: {self.current_location}\n' \
+            f'\tTransit path: {self.path}\n'
