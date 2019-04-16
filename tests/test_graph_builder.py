@@ -2,7 +2,7 @@ import network_simulator.GraphBuilder as gB
 
 
 def test_generate_random_adjacency_dict():
-    test_dict = gB.GraphBuilder.generate_random_adjacency_dict(1, 50)
+    test_dict = gB.GraphBuilder.generate_random_adjacency_dict(1, 50, 50)
     assert len(test_dict) < 50
 
     for node in test_dict:

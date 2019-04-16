@@ -2,48 +2,6 @@ import network_simulator.Network as net
 import network_simulator.Dijkstra as d
 
 
-def test_is_connected():
-    test_net = net.Network()
-    test_net.add_node(net.Node(1))
-    dijkstra = d.Dijkstra(graph=test_net, source=1)
-
-    assert dijkstra.is_connected(test_net)
-
-    test_net.add_node(net.Node(2))
-    assert not dijkstra.is_connected(test_net)
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert dijkstra.is_connected(test_net)
-
-
-def test_DFS():
-    test_net = net.Network()
-    test_net.add_node(net.Node(1))
-    dijkstra = d.Dijkstra(graph=test_net, source=1)
-
-    assert dijkstra.DFS(test_net)
-
-    test_net.add_node(net.Node(2))
-    assert not dijkstra.DFS(test_net)
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert dijkstra.DFS(test_net)
-
-
-def test_BFS():
-    test_net = net.Network()
-    test_net.add_node(net.Node(1))
-    test_d = d.Dijkstra(graph=test_net, source=1)
-
-    assert test_d.BFS(test_net)
-
-    test_net.add_node(net.Node(2))
-    assert not test_d.BFS(test_net)
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert test_d.BFS(test_net)
-
-
 def test_dijkstra():
     test_node1 = net.Node(node_id=1, adjacency_dict={2: {'weight': 5, 'status': True}})
     test_node2 = net.Node(node_id=2, adjacency_dict={3: {'weight': 5, 'status': True}})
