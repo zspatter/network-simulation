@@ -1,3 +1,5 @@
+
+
 class Organ:
     """
     A class representing a given organ which is available for transplant.
@@ -6,6 +8,7 @@ class Organ:
     type matching, and a location.
     """
     HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE = 0, 1, 2, 3, 4, 5
+    # organ_types = enum()
     O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     organ_count = 0
 

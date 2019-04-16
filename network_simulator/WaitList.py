@@ -72,7 +72,7 @@ class WaitList:
         :param Network graph: network for patients to be allocated to
         :param int n: number of patients to generate
         """
-        gP.GeneratePatients.generate_patients(graph, n, self)
+        gP.PatientGenerator.generate_patients(graph, n, self)
 
     def __str__(self):
         string = ''

@@ -7,6 +7,7 @@ import network_simulator.WaitList as wL
 import network_simulator.GraphBuilder as gB
 import network_simulator.OrganAllocator as oA
 
+
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
 ANSI_YELLOW = '\033[33;1m'
@@ -214,3 +215,4 @@ print(ANSI_CYAN + 'Patients on wait list: ' + str(len(wait_list.wait_list)) + AN
 oA.OrganAllocator.allocate_organs(organ_list, wait_list, network)
 print(ANSI_CYAN + '\n\nOrgans to be allocated: ' + str(len(organ_list.organ_list)) + ANSI_RESET)
 print(ANSI_CYAN + 'Patients on wait list: ' + str(len(wait_list.wait_list)) + ANSI_RESET)
+
