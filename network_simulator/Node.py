@@ -61,6 +61,7 @@ class Node:
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
                     adjacents.append(key)
+            # adjacents = (key for key, value in self.adjacency_dict if self.adjacency_dict[key]['status'])
         return adjacents
 
     def __str__(self):
