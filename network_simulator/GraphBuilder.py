@@ -10,7 +10,7 @@ class GraphBuilder:
     """
 
     @staticmethod
-    def graph_builder(n, seed=None):
+    def graph_builder(n, max_weight=None, seed=None):
         """
         Returns randomly generated network with n nodes.
 
@@ -22,15 +22,18 @@ class GraphBuilder:
         """
 
         network_dict = {}
+        if not max_weight:
+            max_weight = 50
+
         for x in range(1, n + 1):
-            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, seed)
+            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, max_weight, seed)
             node = Node(x, 'Node #' + str(x), adjacency_dict)
             network_dict[x] = node
         network = Network(network_dict)
         return network
 
     @staticmethod
-    def generate_random_adjacency_dict(node_id, total_nodes, seed=None):
+    def generate_random_adjacency_dict(node_id, total_nodes, max_weight, seed=None):
         """
         Returns randomly generated adjacency dict for an instance of a node.
         The generated adjacency list can contain a connection to any node
@@ -67,6 +70,6 @@ class GraphBuilder:
                 random_node = random.randint(1, total_nodes)
 
             # updates adjacency dict to new format
-            adjacency_dict[random_node] = {'weight': random.randint(1, 50),
+            adjacency_dict[random_node] = {'weight': random.randint(1, max_weight),
                                            'status': True}
         return adjacency_dict
