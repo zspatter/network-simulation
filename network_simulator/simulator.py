@@ -188,6 +188,7 @@ def allocate_organs():
     is printed after all organs have been allocated.
     """
     global ANSI_YELLOW_BOLD
+    ansi_cyan = '\033[36m'
 
     organ_num = len(organ_list.organ_list)
     start_patient_num = len(wait_list.wait_list)
@@ -201,7 +202,7 @@ def allocate_organs():
     print('\n{:s}Summary:'
           '\n\t{:>3s} organs have been transplanted'
           '\n\t{:>3s} organs had no suitable match'
-          '\n\t{:>3s} patients remain on the wait list{:s}\n'.format(ANSI_YELLOW,
+          '\n\t{:>3s} patients remain on the wait list{:s}\n'.format(ansi_cyan,
                                                                      str(difference),
                                                                      str(organ_num - difference),
                                                                      str(end_patient_num),
