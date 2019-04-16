@@ -2,7 +2,7 @@ import random
 import network_simulator.Patient as P
 
 
-class GeneratePatients:
+class PatientGenerator:
 
     @staticmethod
     def generate_patients(graph, n, wait_list):

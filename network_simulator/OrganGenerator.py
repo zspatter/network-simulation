@@ -2,7 +2,7 @@ import network_simulator.Organ as O
 import random
 
 
-class GenerateOrgans:
+class OrganGenerator:
 
     @staticmethod
     def generate_organs(graph, n, organ_list):

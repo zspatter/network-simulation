@@ -1,6 +1,6 @@
 import heapq
 import network_simulator.MatchIdentifier as mI
-import network_simulator.GeneratePatients as gP
+import network_simulator.PatientGenerator as gP
 
 
 class WaitList:
