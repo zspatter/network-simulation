@@ -1,4 +1,6 @@
 import network_simulator.Organ as O
+import network_simulator.BloodType as bT
+from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
 import random
 
 
@@ -28,6 +30,8 @@ class OrganGenerator:
             for x in range(6):
                 # determines if organ is suitable for harvest
                 if random.randrange(4) is not 0:
-                    temp = O.Organ(organ_type=x, blood_type=random.randrange(8),
+                    temp = O.Organ(organ_type=x,
+                                   blood_type=bT.BloodType(random.choice(list(BloodTypeLetter)),
+                                                           random.choice(list(BloodTypePolarity))),
                                    location=location_id,
                                    organ_list=organ_list)

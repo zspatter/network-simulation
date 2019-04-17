@@ -111,7 +111,7 @@ class Organ:
         return f'Organ:\n' \
             f'\tOrgan ID: {"{:05d}".format(self.organ_id)}\n' \
             f'\tOrgan type: {Organ.organ_type_name(self.organ_type)}\n' \
-            f'\tBlood type: {Organ.blood_type_name(self.blood_type)}\n' \
+            f'\tBlood type: {self.blood_type}\n' \
             f'\tViability: {self.viability}\n' \
             f'\tOrigin location: {self.origin_location}\n' \
             f'\tCurrent location: {self.current_location}\n' \
