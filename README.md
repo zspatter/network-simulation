@@ -28,11 +28,11 @@ The network is a graph that is represented as a collection of nodes. The network
 
 ### <ins>Other Classes</ins>:
 - <ins>*Dijkstra*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
+- <ins>*BloodType*</ins> - indicates blood type by letter and polarity (also checks for compatibility between donors and recipients)
 - <ins>*Organ*</ins> - represent the donated organs (these will be distributed across the system)
 - <ins>*Patient*</ins> - represent individuals in need of a transplant
 - <ins>*OrganList*</ins> - represents all donor organs currently available to be allocated to patients
 - <ins>*WaitList*</ins> - represents all patients in need of a transplant
-- <ins>*MatchIdentifier*</ins> - determines if a given patient and organ combination are compatible (suitable for transplant)
 - <ins>*GraphBuilder*</ins> - builds a random network with N nodes
 - <ins>*OrganGenerator*</ins> - simulates harvesting organs from N patients where each organ has a 75% of being successfully harvested and adds the generated organs to an OrganList
 - <ins>*PatientGenerator*</ins> - generates N patients each with a random organ need, blood type, priority, and location (node) and adds the generated patients to a WaitList
