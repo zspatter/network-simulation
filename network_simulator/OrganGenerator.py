@@ -27,11 +27,13 @@ class OrganGenerator:
         for _ in range(n):
             # number of possible organs to harvest
             location_id = random.choice(nodes)
+            blood_type = bT.BloodType(BloodTypeLetter.get_blood_type(),
+                                      BloodTypePolarity.get_blood_polarity())
+
             for organ_type in OrganType:
                 # determines if organ is suitable for harvest
                 if random.randrange(4) is not 0:
                     temp = O.Organ(organ_type=organ_type.value,
-                                   blood_type=bT.BloodType(BloodTypeLetter.get_blood_type(),
-                                                           BloodTypePolarity.get_blood_polarity()),
+                                   blood_type=blood_type,
                                    location=location_id,
                                    organ_list=organ_list)
