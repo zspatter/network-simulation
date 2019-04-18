@@ -8,9 +8,6 @@ class Patient:
     Each patient is defined with a name, a unique ID, illness, organ needed,
     waiting time (priority?), and location ('home' hospital).
     """
-    # heart, kidneys, liver, lungs, pancreas, intestine, and thymus.
-    HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE = 0, 1, 2, 3, 4, 5
-    O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     patient_count = 0
 
     def __init__(self, patient_name, illness, organ_needed, blood_type, priority, location,
