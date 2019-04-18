@@ -1,3 +1,6 @@
+from network_simulator.CompatibilityMarkers import OrganType
+
+
 class Patient:
     """
     A class representing a patient in need of an organ transplant.
@@ -22,48 +25,6 @@ class Patient:
         self.location = location
         if wait_list:
             wait_list.add_patient(self)
-
-    @staticmethod
-    def organ_type_name(n):
-        """
-        Returns the string associated with an organ type int
-        This is designed to improve readability with console output
-
-        :param int n: a number between 0-6 (inclusive) as defined with organ constants
-        :return: string representing organ (or None if no match found)
-        """
-        if 0 <= n < 6:
-            organs = {Patient.HEART: 'Heart',
-                      Patient.KIDNEY: 'Kidney',
-                      Patient.LIVER: 'Liver',
-                      Patient.LUNG: 'Lung',
-                      Patient.PANCREAS: 'Pancreas',
-                      Patient.INTESTINE: 'Intestines'}
-
-            return organs[n]
-
-        return None
-
-    @staticmethod
-    def blood_type_name(n):
-        """
-        Returns the string associated with a blood type int
-        This is designed to improve readability with console output
-
-        :param int n: a number between 0-7 (inclusive) as defined with organ and patient constants
-        :return: string representing blood type (or None if no match found)
-        """
-        if 0 <= n < 8:
-            blood_types = {Patient.O_NEG: 'O-',
-                           Patient.O_POS: 'O+',
-                           Patient.A_NEG: 'A-',
-                           Patient.A_POS: 'A+',
-                           Patient.B_NEG: 'B-',
-                           Patient.B_POS: 'B+',
-                           Patient.AB_NEG: 'AB-',
-                           Patient.AB_POS: 'AB+'}
-            return blood_types[n]
-        return None
 
     def __eq__(self, other):
         """
@@ -149,7 +110,7 @@ class Patient:
             f'\tPatient ID: {"{:05d}".format(self.patient_id)}\n' \
             f'\tPatient name: {self.patient_name}\n' \
             f'\tIllness: {self.illness}\n' \
-            f'\tOrgan needed: {Patient.organ_type_name(self.organ_needed)}\n' \
+            f'\tOrgan needed: {OrganType(self.organ_needed).name}\n' \
             f'\tBlood type: {self.blood_type}\n' \
             f'\tPriority: {self.priority}\n' \
             f'\tNearest hospital: {self.location}\n'

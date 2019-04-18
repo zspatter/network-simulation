@@ -1,3 +1,4 @@
+from network_simulator.CompatibilityMarkers import OrganType
 
 
 class Organ:
@@ -32,6 +33,7 @@ class Organ:
 
         :param int new_location: node id representing the destination location
         :param cost: weight/cost associated with then most efficient path
+        :param list shortest_path: transit path taken when moving organ
         """
         if self.viability < cost:
             print('ERROR: organ no longer viable!')
@@ -40,48 +42,6 @@ class Organ:
         self.path = path
         self.current_location = new_location
         self.viability -= cost
-
-    @staticmethod
-    def organ_type_name(n):
-        """
-        Returns the string associated with an organ category int
-        This is designed to improve readability with console output
-
-        :param int n: a number between 1-7 (inclusive) as defined with organ constants
-        :return: string representing organ (or None if no match found)
-        """
-        if 0 <= n < 6:
-            organs = {Organ.HEART: 'Heart',
-                      Organ.KIDNEY: 'Kidney',
-                      Organ.LIVER: 'Liver',
-                      Organ.LUNG: 'Lung',
-                      Organ.PANCREAS: 'Pancreas',
-                      Organ.INTESTINE: 'Intestines'}
-
-            return organs[n]
-
-        return None
-
-    @staticmethod
-    def blood_type_name(n):
-        """
-        Returns the string associated with a blood type int
-        This is designed to improve readability with console output
-
-        :param int n: a number between 0-7 (inclusive) as defined with organ and patient constants
-        :return: string representing blood type (or None if no match found)
-        """
-        if 0 <= n < 8:
-            blood_types = {Organ.O_NEG: 'O-',
-                           Organ.O_POS: 'O+',
-                           Organ.A_NEG: 'A-',
-                           Organ.A_POS: 'A+',
-                           Organ.B_NEG: 'B-',
-                           Organ.B_POS: 'B+',
-                           Organ.AB_NEG: 'AB-',
-                           Organ.AB_POS: 'AB+'}
-            return blood_types[n]
-        return None
 
     @staticmethod
     def get_viability(organ_type):
@@ -110,7 +70,7 @@ class Organ:
         """
         return f'Organ:\n' \
             f'\tOrgan ID: {"{:05d}".format(self.organ_id)}\n' \
-            f'\tOrgan type: {Organ.organ_type_name(self.organ_type)}\n' \
+            f'\tOrgan type: {OrganType(self.organ_type).name}\n' \
             f'\tBlood type: {self.blood_type}\n' \
             f'\tViability: {self.viability}\n' \
             f'\tOrigin location: {self.origin_location}\n' \

@@ -2,7 +2,7 @@ import random
 
 import network_simulator.BloodType as bT
 import network_simulator.Patient as P
-from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
+from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 
 class PatientGenerator:
@@ -23,7 +23,7 @@ class PatientGenerator:
         for x in range(n):
             temp = P.Patient(patient_name="generated patient #" + str(x + 1),
                              illness="N/A",
-                             organ_needed=random.randrange(6),
+                             organ_needed=OrganType.get_organ_type(),
                              blood_type=bT.BloodType(BloodTypeLetter.get_blood_type(),
                                                      BloodTypePolarity.get_blood_polarity()),
                              priority=random.randrange(100 + n),
