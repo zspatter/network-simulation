@@ -37,7 +37,7 @@ class WaitList:
 
         for patient in self.wait_list:
             if patient.organ_needed is organ.organ_type and \
-                    patient.blood_type.is_compatible_donor(organ.blood_type):
+                    patient.blood_type.is_compatible_recipient(organ.blood_type):
                 heapq.heappush(queue, patient)
 
         heapq._heapify_max(queue)
