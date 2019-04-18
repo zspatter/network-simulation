@@ -150,6 +150,6 @@ class Patient:
             f'\tPatient name: {self.patient_name}\n' \
             f'\tIllness: {self.illness}\n' \
             f'\tOrgan needed: {Patient.organ_type_name(self.organ_needed)}\n' \
-            f'\tBlood type: {Patient.blood_type_name(self.blood_type)}\n' \
+            f'\tBlood type: {self.blood_type}\n' \
             f'\tPriority: {self.priority}\n' \
             f'\tNearest hospital: {self.location}\n'

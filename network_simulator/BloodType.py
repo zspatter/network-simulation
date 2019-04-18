@@ -1,7 +1,3 @@
-from network_simulator.CompatibilityMarkers import BloodTypeLetter
-from network_simulator.CompatibilityMarkers import BloodTypePolarity
-
-
 class BloodType:
     def __init__(self, blood_type_letter, blood_type_polarity):
         self.blood_type_letter = blood_type_letter
@@ -29,7 +25,7 @@ class BloodType:
         elif self.blood_type_polarity.value is 1:
             polarity = '+'
 
-        return f"Blood type: {self.blood_type_letter.name}{polarity}"
+        return f'{self.blood_type_letter.name}{polarity}'
 
 
 # patient_blood_type = BloodType(BloodTypeLetter.A, BloodTypePolarity.NEG)

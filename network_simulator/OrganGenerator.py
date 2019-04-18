@@ -31,7 +31,7 @@ class OrganGenerator:
                 # determines if organ is suitable for harvest
                 if random.randrange(4) is not 0:
                     temp = O.Organ(organ_type=x,
-                                   blood_type=bT.BloodType(random.choice(list(BloodTypeLetter)),
-                                                           random.choice(list(BloodTypePolarity))),
+                                   blood_type=bT.BloodType(BloodTypeLetter.get_blood_type(),
+                                                           BloodTypePolarity.get_blood_polarity()),
                                    location=location_id,
                                    organ_list=organ_list)

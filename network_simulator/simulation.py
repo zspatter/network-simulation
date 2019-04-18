@@ -9,6 +9,7 @@ import network_simulator.OrganAllocator as oA
 from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
 import network_simulator.BloodType as bT
 import network_simulator.OrganGenerator as oG
+import network_simulator.PatientGenerator as pG
 
 
 # ansi codes to format console output
@@ -223,3 +224,7 @@ graph = gB.GraphBuilder.graph_builder(15)
 organ_list = oL.OrganList()
 oG.OrganGenerator.generate_organs(graph, 10, organ_list)
 print(organ_list)
+
+wait_list = wL.WaitList()
+pG.PatientGenerator.generate_patients(graph, 15, wait_list)
+print(wait_list)
