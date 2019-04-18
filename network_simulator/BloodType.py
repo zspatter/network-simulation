@@ -1,5 +1,3 @@
-from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
-
 class BloodType:
     def __init__(self, blood_type_letter, blood_type_polarity):
         self.blood_type_letter = blood_type_letter
@@ -28,15 +26,3 @@ class BloodType:
             polarity = '+'
 
         return f'{self.blood_type_letter.name}{polarity}'
-
-
-# patient_blood_type = BloodType(BloodTypeLetter.A, BloodTypePolarity.NEG)
-# print(patient_blood_type)
-#
-# organ_blood_type = BloodType(BloodTypeLetter.AB, BloodTypePolarity.POS)
-# print(organ_blood_type)
-#
-# print(patient_blood_type.is_compatible_recipient(organ_blood_type))
-# print(patient_blood_type.is_compatible_donor(organ_blood_type))
-# print(organ_blood_type.is_compatible_donor(patient_blood_type))
-# print(organ_blood_type.is_compatible_recipient(patient_blood_type))

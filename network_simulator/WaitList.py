@@ -1,7 +1,5 @@
 import heapq
-import network_simulator.MatchIdentifier as mI
 import network_simulator.PatientGenerator as gP
-import network_simulator.BloodType
 
 
 class WaitList:
