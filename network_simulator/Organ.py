@@ -9,7 +9,6 @@ class Organ:
     type matching, and a location.
     """
     HEART, KIDNEY, LIVER, LUNG, PANCREAS, INTESTINE = 0, 1, 2, 3, 4, 5
-    # organ_types = enum()
     O_NEG, O_POS, A_NEG, A_POS, B_NEG, B_POS, AB_NEG, AB_POS = 0, 1, 2, 3, 4, 5, 6, 7
     organ_count = 0
 
@@ -53,14 +52,14 @@ class Organ:
         :param int organ_type: constant corresponding to an organ type
         :return: int viability rating (used in __init__())
         """
-        viability = {Organ.HEART: 60,
-                     Organ.KIDNEY: 300,
-                     Organ.LIVER: 120,
-                     Organ.LUNG: 60,
-                     Organ.PANCREAS: 120,
-                     Organ.INTESTINE: 80}
+        viability = {str(OrganType.Heart.value): 60,
+                     str(OrganType.Kidney.value): 300,
+                     str(OrganType.Liver.value): 120,
+                     str(OrganType.Lungs.value): 60,
+                     str(OrganType.Pancreas.value): 120,
+                     str(OrganType.Intestines.value): 80}
 
-        return viability[organ_type]
+        return viability[str(organ_type)]
 
     def __str__(self):
         """
