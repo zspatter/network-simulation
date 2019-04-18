@@ -89,7 +89,7 @@ def build_network():
         return
 
     # network has been generated
-    response = input(f'\nA network has been built with {response} nodes.'
+    response = input(f'\nA network has been built with {response} nodes. '
                      f'Would you like to print the network to the console?'
                      f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
@@ -218,7 +218,7 @@ def reset_network():
     wait_list = wL.WaitList()
 
     print(f'\n{ANSI_BOLD}The network has been reset. There are no '
-          f'patients or organs remaining in the network.{ANSI_RESET}')
+          f'patients or organs remaining in the network.{ANSI_RESET}\n')
 
 
 def restart():
@@ -235,7 +235,7 @@ def restart():
     wait_list = wL.WaitList()
 
     print(f'\n{ANSI_BOLD}The system has been reset. There is no network,'
-          f' patients, or organs.{ANSI_RESET}')
+          f' patients, or organs.{ANSI_RESET}\n')
 
 
 main_menu()
