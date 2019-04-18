@@ -1,6 +1,7 @@
 import heapq
 import network_simulator.MatchIdentifier as mI
 import network_simulator.PatientGenerator as gP
+import network_simulator.BloodType
 
 
 class WaitList:
@@ -36,7 +37,7 @@ class WaitList:
 
         for patient in self.wait_list:
             if patient.organ_needed is organ.organ_type and \
-                    mI.MatchIdentifier.is_match(patient, organ):
+                    patient.blood_type.is_compatible_donor(organ.blood_type):
                 heapq.heappush(queue, patient)
 
         heapq._heapify_max(queue)

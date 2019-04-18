@@ -1,3 +1,5 @@
+from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
+
 class BloodType:
     def __init__(self, blood_type_letter, blood_type_polarity):
         self.blood_type_letter = blood_type_letter
