@@ -173,11 +173,8 @@ def harvest_organs():
                      f'\n{ANSI_YELLOW}(y/n): {ANSI_RESET}')
     if response.lower() == 'y':
         print(f'\n{organ_list.__str__()}')
-    elif response.lower() == 'n':
-        print()
-        pass
     else:
-        return
+        print()
     allocate_organs()
 
 
