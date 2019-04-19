@@ -15,4 +15,5 @@ def test_generate_organs():
     for organ in organ_list.organ_list:
         assert organ.current_location in test_net.nodes()
         assert 0 <= organ.organ_type <= 5
-        assert 0 <= organ.blood_type <= 7
+        assert 0 <= organ.blood_type.blood_type_letter.value <= 3
+        assert 0 <= organ.blood_type.blood_type_polarity.value <= 1
