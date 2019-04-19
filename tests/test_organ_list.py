@@ -1,7 +1,7 @@
+import network_simulator.BloodType as bT
 import network_simulator.Organ as o
 import network_simulator.OrganList as oL
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
-import network_simulator.BloodType as bT
 
 
 def test__init__():

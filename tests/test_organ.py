@@ -1,5 +1,5 @@
 import network_simulator.Organ as o
-from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.CompatibilityMarkers import OrganType
 
 
 def test_move_organ():
