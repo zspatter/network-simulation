@@ -1,8 +1,9 @@
 import network_simulator.Organ as o
+from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 
 def test_move_organ():
-    test_organ = o.Organ(organ_type=o.Organ.HEART, blood_type='NA', location=1)
+    test_organ = o.Organ(organ_type=OrganType.Heart.value, blood_type='NA', location=1)
 
     # tests initial values
     assert test_organ.current_location is 1
@@ -25,34 +26,10 @@ def test_move_organ():
     assert test_organ.path == [1, 2, 3]
 
 
-def test_organ_type_name():
-    assert o.Organ.organ_type_name(-1) is None
-    assert o.Organ.organ_type_name(0) == 'Heart'
-    assert o.Organ.organ_type_name(1) == 'Kidney'
-    assert o.Organ.organ_type_name(2) == 'Liver'
-    assert o.Organ.organ_type_name(3) == 'Lung'
-    assert o.Organ.organ_type_name(4) == 'Pancreas'
-    assert o.Organ.organ_type_name(5) == 'Intestines'
-    assert o.Organ.organ_type_name(6) is None
-
-
-def test_blood_type_name():
-    assert o.Organ.blood_type_name(-1) is None
-    assert o.Organ.blood_type_name(0) == 'O-'
-    assert o.Organ.blood_type_name(1) == 'O+'
-    assert o.Organ.blood_type_name(2) == 'A-'
-    assert o.Organ.blood_type_name(3) == 'A+'
-    assert o.Organ.blood_type_name(4) == 'B-'
-    assert o.Organ.blood_type_name(5) == 'B+'
-    assert o.Organ.blood_type_name(6) == 'AB-'
-    assert o.Organ.blood_type_name(7) == 'AB+'
-    assert o.Organ.blood_type_name(8) is None
-
-
 def test_get_viability():
-    assert o.Organ.get_viability(o.Organ.HEART) == 60
-    assert o.Organ.get_viability(o.Organ.KIDNEY) == 300
-    assert o.Organ.get_viability(o.Organ.LIVER) == 120
-    assert o.Organ.get_viability(o.Organ.LUNG) == 60
-    assert o.Organ.get_viability(o.Organ.PANCREAS) == 120
-    assert o.Organ.get_viability(o.Organ.INTESTINE) == 80
+    assert o.Organ.get_viability(OrganType.Heart.value) == 60
+    assert o.Organ.get_viability(OrganType.Kidney.value) == 300
+    assert o.Organ.get_viability(OrganType.Liver.value) == 120
+    assert o.Organ.get_viability(OrganType.Lungs.value) == 60
+    assert o.Organ.get_viability(OrganType.Pancreas.value) == 120
+    assert o.Organ.get_viability(OrganType.Intestines.value) == 80
