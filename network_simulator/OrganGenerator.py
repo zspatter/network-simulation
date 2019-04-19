@@ -1,7 +1,8 @@
-import network_simulator.Organ as O
-import network_simulator.BloodType as bT
-from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 import random
+
+import network_simulator.BloodType as bT
+import network_simulator.Organ as O
+from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 
 class OrganGenerator:

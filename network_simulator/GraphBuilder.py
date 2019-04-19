@@ -1,6 +1,7 @@
-from network_simulator.Node import Node
-from network_simulator.Network import Network
 import random
+
+from network_simulator.Network import Network
+from network_simulator.Node import Node
 
 
 class GraphBuilder:
@@ -15,6 +16,7 @@ class GraphBuilder:
         Returns randomly generated network with n nodes.
 
         :param int n: number of nodes generated graph will contain
+        :param int max_weight: optional param that sets a maximum weight for edges
         :param int seed: optional parameter to control pseudorandom generator
 
         :return: randomly generated network with N nodes
@@ -45,6 +47,7 @@ class GraphBuilder:
 
         :param int node_id: unique identifier for the node that the
             adjacency dict is being generated for
+        :param int max_weight: optional param that sets a maximum weight for edges
         :param int total_nodes: total number of nodes present in the generated graph
         :param int seed: optional parameter to control pseudorandom generator
 

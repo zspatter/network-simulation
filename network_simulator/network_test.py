@@ -1,9 +1,10 @@
-from network_simulator.Node import Node
-from network_simulator.Network import Network
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.Dijkstra import Dijkstra
-from network_simulator.ConnectivityChecker import ConnectivityChecker
 import time
+
+from network_simulator.ConnectivityChecker import ConnectivityChecker
+from network_simulator.Dijkstra import Dijkstra
+from network_simulator.GraphBuilder import GraphBuilder
+from network_simulator.Network import Network
+from network_simulator.Node import Node
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
@@ -126,7 +127,8 @@ end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(network_1)))
+print(
+    '\nIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -149,17 +151,20 @@ print('\t---DISCONNECTED GRAPH---')
 print(disconnected_network)
 
 start = time.time_ns()
-print('Recursive depth_first_search: ' + str(ConnectivityChecker.is_connected(disconnected_network)))
+print(
+    'Recursive depth_first_search: ' + str(ConnectivityChecker.is_connected(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(disconnected_network)))
+print('\nIterative depth_first_search: ' + str(
+    ConnectivityChecker.depth_first_search(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(disconnected_network)))
+print('\nIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -233,14 +238,16 @@ init_tester.mark_edge_inactive(1, 5)
 print('\nDisconnected through inactive edges:')
 print('\tRecursive depth_first_search: ' + str(ConnectivityChecker.is_connected(init_tester)))
 print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(init_tester)))
-print('\tIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
+print('\tIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
 init_tester.mark_node_inactive(1)
 
 print('\nDisconnected node made inactive (reconnecting graph):')
 print('\tRecursive depth_first_search: ' + str(ConnectivityChecker.is_connected(init_tester)))
 print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(init_tester)))
-print('\tIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
+print('\tIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
 """
 The following section briefly tests generated networks and the iterative
@@ -253,7 +260,8 @@ print('\t---GENERATED RANDOM NETWORK---\n')
 print(generated_network)
 
 start = time.time_ns()
-print('\n\tIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(generated_network)))
+print('\n\tIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(generated_network)))
 end = time.time_ns()
 print('\t\telapsed time: ' + str(end - start))
 

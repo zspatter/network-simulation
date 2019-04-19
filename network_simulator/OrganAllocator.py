@@ -1,5 +1,6 @@
-import network_simulator.Dijkstra as D
 import heapq
+
+import network_simulator.Dijkstra as D
 
 
 class OrganAllocator:

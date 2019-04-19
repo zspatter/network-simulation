@@ -1,5 +1,5 @@
-from enum import Enum
 import random
+from enum import Enum
 
 
 class OrganType(Enum):
@@ -33,4 +33,3 @@ class BloodTypePolarity(Enum):
     @classmethod
     def get_blood_polarity(cls):
         return random.choice(list(cls.__members__.values()))
-
