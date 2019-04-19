@@ -1,10 +1,10 @@
-import network_simulator.Organ as o
-import network_simulator.Patient as p
-import network_simulator.Network as net
-import network_simulator.WaitList as wL
-import network_simulator.OrganList as oL
-import network_simulator.OrganAllocator as oA
 import network_simulator.Dijkstra as d
+import network_simulator.Network as net
+import network_simulator.Organ as o
+import network_simulator.OrganAllocator as oA
+import network_simulator.OrganList as oL
+import network_simulator.Patient as p
+import network_simulator.WaitList as wL
 
 
 def test_allocate_organs():

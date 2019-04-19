@@ -1,5 +1,5 @@
-import network_simulator.OrganGenerator as gO
 import network_simulator.Network as net
+import network_simulator.OrganGenerator as gO
 import network_simulator.OrganList as oL
 
 

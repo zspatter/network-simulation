@@ -1,5 +1,5 @@
-import network_simulator.PatientGenerator as gP
 import network_simulator.Network as net
+import network_simulator.PatientGenerator as gP
 import network_simulator.WaitList as wL
 
 

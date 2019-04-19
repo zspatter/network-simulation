@@ -1,5 +1,5 @@
-import network_simulator.Network as net
 import network_simulator.ConnectivityChecker as cC
+import network_simulator.Network as net
 
 
 def test_is_connected():

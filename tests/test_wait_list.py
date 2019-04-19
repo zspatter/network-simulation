@@ -1,7 +1,8 @@
-import network_simulator.WaitList as wL
+import heapq
+
 import network_simulator.Organ as o
 import network_simulator.Patient as p
-import heapq
+import network_simulator.WaitList as wL
 
 
 def test__init__():
