@@ -5,22 +5,27 @@ import network_simulator.OrganAllocator as oA
 import network_simulator.OrganList as oL
 import network_simulator.Patient as p
 import network_simulator.WaitList as wL
+from network_simulator.BloodType import BloodType
+from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 
 def test_allocate_organs():
+    ab_pos = BloodType(BloodTypeLetter.AB, BloodTypePolarity.POS)
+    o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
     organ_list = oL.OrganList()
-    organ1 = o.Organ(o.Organ.PANCREAS, o.Organ.AB_POS, 3, organ_list)
-    organ2 = o.Organ(o.Organ.HEART, o.Organ.O_NEG, 3, organ_list)
+
+    organ1 = o.Organ(OrganType.Pancreas.value, ab_pos, 1, organ_list)
+    organ2 = o.Organ(OrganType.Heart.value, o_neg, 1, organ_list)
 
     wait_list = wL.WaitList()
-    patient1 = p.Patient('name', 'illness 1', p.Patient.PANCREAS,
-                         p.Patient.AB_POS, 100, 1, wait_list)
-    patient2 = p.Patient('name', 'illness 2', p.Patient.PANCREAS,
-                         p.Patient.O_NEG, 200, 3, wait_list)
-    patient3 = p.Patient('name', 'illness 3', p.Patient.HEART,
-                         p.Patient.AB_POS, 100, 2, wait_list)
-    patient4 = p.Patient('name', 'illness 4', p.Patient.HEART,
-                         p.Patient.AB_POS, 50, 2, wait_list)
+    patient1 = p.Patient('name', 'illness 1', OrganType.Pancreas.value,
+                         ab_pos, 100, 1, wait_list)
+    patient2 = p.Patient('name', 'illness 2', OrganType.Pancreas.value,
+                         o_neg, 200, 3, wait_list)
+    patient3 = p.Patient('name', 'illness 3', OrganType.Heart.value,
+                         ab_pos, 100, 2, wait_list)
+    patient4 = p.Patient('name', 'illness 4', OrganType.Heart.value,
+                         ab_pos, 50, 2, wait_list)
 
     node1 = net.Node(1, adjacency_dict={2: {'weight': 10, 'status': True},
                                         3: {'weight': 25, 'status': True}})
@@ -36,16 +41,19 @@ def test_allocate_organs():
 
 
 def test_find_best_match():
+    ab_pos = BloodType(BloodTypeLetter.AB, BloodTypePolarity.POS)
+    o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
     wait_list = wL.WaitList()
-    patient1 = p.Patient('name', 'illness 1', p.Patient.PANCREAS,
-                         p.Patient.AB_POS, 100, 1, wait_list)
-    patient2 = p.Patient('name', 'illness 2', p.Patient.PANCREAS,
-                         p.Patient.AB_POS, 250, 3, wait_list)
-    patient3 = p.Patient('name', 'illness 3', p.Patient.PANCREAS,
-                         p.Patient.O_NEG, 400, 2, wait_list)
-    patient4 = p.Patient('name', 'illness 4', p.Patient.HEART,
-                         p.Patient.AB_POS, 500, 2, wait_list)
-    organ = o.Organ(o.Organ.PANCREAS, o.Organ.AB_POS, 1)
+
+    patient1 = p.Patient('name', 'illness 1', OrganType.Pancreas.value,
+                         ab_pos, 100, 1, wait_list)
+    patient2 = p.Patient('name', 'illness 2', OrganType.Pancreas.value,
+                         ab_pos, 250, 3, wait_list)
+    patient3 = p.Patient('name', 'illness 3', OrganType.Pancreas.value,
+                         o_neg, 400, 2, wait_list)
+    patient4 = p.Patient('name', 'illness 4', OrganType.Heart.value,
+                         ab_pos, 500, 2, wait_list)
+    organ = o.Organ(OrganType.Pancreas.value, o_neg, 1)
 
     node1 = net.Node(1, adjacency_dict={2: {'weight': 10, 'status': True},
                                         3: {'weight': 25, 'status': True}})
@@ -55,11 +63,13 @@ def test_find_best_match():
     weights, paths = d.Dijkstra.dijkstra(test_net, 1)
 
     patient = oA.OrganAllocator.find_best_match(organ, wait_list, weights)
-    assert patient is patient2
+    assert patient is patient3
+    assert len(wait_list.wait_list) is 4
 
     node1.adjacency_dict[3]['weight'] = 300
     node3.adjacency_dict[1]['weight'] = 300
     test_net.mark_node_inactive(2)
+    wait_list.remove_patient(patient3)
     weights, paths = d.Dijkstra.dijkstra(test_net, 1)
     assert len(weights) is 2
 
