@@ -1,32 +1,30 @@
-from network_simulator.CompatibilityMarkers import BloodTypeLetter
-
-
 class BloodType:
     def __init__(self, blood_type_letter, blood_type_polarity):
         self.blood_type_letter = blood_type_letter
         self.blood_type_polarity = blood_type_polarity
 
-    def is_compatible_recipient(self, blood_type):
-        if self.blood_type_letter.value is not BloodTypeLetter.B.value:
-            return self.blood_type_letter.value >= blood_type.blood_type_letter.value \
-                   and self.blood_type_polarity.value >= blood_type.blood_type_polarity.value
-        else:
-            if blood_type.blood_type_letter.value in \
-                    (BloodTypeLetter.O.value, BloodTypeLetter.B.value):
-                return self.blood_type_polarity.value >= blood_type.blood_type_polarity.value
-
-        return False
-
     def is_compatible_donor(self, blood_type):
-        if self.blood_type_letter.value is not BloodTypeLetter.B.value:
-            return self.blood_type_letter.value <= blood_type.blood_type_letter.value \
-                   and self.blood_type_polarity.value <= blood_type.blood_type_polarity.value
-        else:
-            if blood_type.blood_type_letter.value in \
-                    (BloodTypeLetter.B.value, BloodTypeLetter.AB.value):
-                return self.blood_type_polarity <= blood_type.blood_type_polarity.value
+        """
+        Determines if this blood type can donate to the parameter's blood type.
+        This simply calls the is_compatible_recipient function on the parameter
+        and passes itself as an argument.
 
-        return False
+        :param BloodType blood_type: blood type of potential recipient
+        :return: bool
+        """
+        return blood_type.is_compatible_recipient(self)
+
+    def is_compatible_recipient(self, blood_type):
+        """
+        Determines if this blood type can receive a donation from the parameter's
+        blood type using bitwise operations
+
+        :param BloodTyp blood_type: blood type of potential donor
+        :return: bool
+        """
+        return ((self.blood_type_letter.value | blood_type.blood_type_letter.value)
+                == self.blood_type_letter.value) \
+               and self.blood_type_polarity.value >= blood_type.blood_type_polarity.value
 
     def __str__(self):
         polarity = ''
