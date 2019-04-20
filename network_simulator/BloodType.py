@@ -27,6 +27,11 @@ class BloodType:
             and self.blood_type_polarity.value >= blood_type.blood_type_polarity.value
 
     def __str__(self):
+        """
+        Builds a string representing blood type (ex: 'AB+')
+
+        :return: str representing blood type
+        """
         polarity = ''
 
         if self.blood_type_polarity.value is 0:
