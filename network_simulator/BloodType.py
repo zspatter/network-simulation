@@ -23,8 +23,8 @@ class BloodType:
         :return: bool
         """
         return ((self.blood_type_letter.value | blood_type.blood_type_letter.value)
-                == self.blood_type_letter.value) \
-               and self.blood_type_polarity.value >= blood_type.blood_type_polarity.value
+                == self.blood_type_letter.value)\
+            and self.blood_type_polarity.value >= blood_type.blood_type_polarity.value
 
     def __str__(self):
         polarity = ''
