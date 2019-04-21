@@ -6,6 +6,9 @@ import network_simulator.Patient as p
 import network_simulator.WaitList as wL
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
+o_neg = bT.BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
+ab_pos = bT.BloodType(BloodTypeLetter.AB, BloodTypePolarity.POS)
+
 
 def test__init__():
     wait_list = wL.WaitList()
@@ -13,9 +16,6 @@ def test__init__():
 
 
 def test_get_prioritized_patients():
-    o_neg = bT.BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
-    ab_pos = bT.BloodType(BloodTypeLetter.AB, BloodTypePolarity.POS)
-
     wait_list = wL.WaitList()
     patient1 = p.Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1,
                          wait_list)
@@ -36,11 +36,10 @@ def test_get_prioritized_patients():
 
 
 def test_add_patient():
-    o_neg = bT.BloodType(BloodTypeLetter.O.value, BloodTypePolarity.NEG.value)
     wait_list = wL.WaitList()
-
     patient = p.Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1)
     wait_list.add_patient(patient)
+
     assert len(wait_list.wait_list) is 1
     wait_list.add_patient(patient)
     assert len(wait_list.wait_list) is 1
@@ -50,11 +49,10 @@ def test_add_patient():
 
 
 def test_remove_patient():
-    o_neg = bT.BloodType(BloodTypeLetter.O.value, BloodTypePolarity.NEG.value)
     wait_list = wL.WaitList()
-
     patient = p.Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
+
     assert len(wait_list.wait_list) is 0
     patient2 = p.Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
