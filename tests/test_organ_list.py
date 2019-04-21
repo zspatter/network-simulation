@@ -3,6 +3,8 @@ import network_simulator.Organ as o
 import network_simulator.OrganList as oL
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
+o_neg = bT.BloodType(BloodTypeLetter.O.value, BloodTypePolarity.NEG.value)
+
 
 def test__init__():
     organ_list = oL.OrganList()
@@ -10,7 +12,6 @@ def test__init__():
 
 
 def test_add_organ():
-    o_neg = bT.BloodType(BloodTypeLetter.O.value, BloodTypePolarity.NEG.value)
     organ_list = oL.OrganList()
     organ = o.Organ(OrganType.Pancreas.value, o_neg, 1)
     organ_list.add_organ(organ)
@@ -22,7 +23,6 @@ def test_add_organ():
 
 
 def test_remove_organ():
-    o_neg = bT.BloodType(BloodTypeLetter.O.value, BloodTypePolarity.NEG.value)
     organ_list = oL.OrganList()
 
     organ = o.Organ(OrganType.Pancreas.value, o_neg, 1, organ_list)
@@ -39,7 +39,6 @@ def test_remove_organ():
 
 
 def test_empty_list():
-    o_neg = bT.BloodType(BloodTypeLetter.O.value, BloodTypePolarity.NEG.value)
     organ_list = oL.OrganList()
 
     organ = o.Organ(OrganType.Pancreas.value, o_neg, 1, organ_list)
