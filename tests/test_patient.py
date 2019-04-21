@@ -1,21 +1,29 @@
+import copy
+
 import network_simulator.BloodType as bT
 import network_simulator.Patient as p
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 blood_type = bT.BloodType(BloodTypeLetter.A, BloodTypePolarity.POS)
-patient1 = p.Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 125, 1)
-patient2 = p.Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 125, 1)
+patient1 = p.Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 200, 1)
+patient2 = p.Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 100, 1)
 patient2.patient_id = patient1.patient_id
 
 
 def test__eq__():
-    assert patient1.__eq__(patient2)
-    assert patient2.__eq__(patient2)
+    patient2_clone = copy.deepcopy(patient2)
+    patient2_clone.patient_id = patient1.patient_id
+    patient2_clone.priority = patient1.priority
+
+    assert patient1.__eq__(patient2_clone)
+    assert patient2_clone.__eq__(patient2_clone)
+    assert not patient2.__eq__(patient2_clone)
 
 
 def test__ne__():
     assert patient1.__ne__(patient2)
     assert patient2.__ne__(patient1)
+    assert not patient1.__ne__(patient1)
 
 
 def test__lt__():
