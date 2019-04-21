@@ -6,7 +6,7 @@ This project is designed to simulate an organ transplant system. Its aim is to s
 1. The patient's need must be of the same organ type (kidney, lungs, heart, etc.)
 2. The patient must be of a compatible blood type (example: patient: AB-, organ: B-)
 3. The organ must be able to be transported to the patient's hospital while remaining viable (organ-specific time limit)
-4. The optimal match will be the patient who matches the above criteria with the highest priority rating
+4. The optimal match will be the patient with the highest priority rating who matches all the above criteria 
 
 ## Classes
 
