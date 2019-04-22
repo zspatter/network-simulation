@@ -6,6 +6,11 @@ from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, B
 
 
 class PatientGenerator:
+    """
+    Generates a variable number of patients in need of a transplant.
+    The generated patients are distributed randomly across the network
+    and are assigned a random blood type and priority value.
+    """
 
     @staticmethod
     def generate_patients(graph, n, wait_list):
