@@ -1,4 +1,10 @@
 class BloodType:
+    """
+    A class representing a given blood type.
+
+    Possible blood types: O-, O+, A-, A+, B-, B+, AB-, AB+
+    """
+
     def __init__(self, blood_type_letter, blood_type_polarity):
         self.blood_type_letter = blood_type_letter
         self.blood_type_polarity = blood_type_polarity
