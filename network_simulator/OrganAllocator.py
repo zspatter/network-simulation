@@ -4,6 +4,12 @@ import network_simulator.Dijkstra as D
 
 
 class OrganAllocator:
+    """
+    A class that automates the allocation process for harvested organs
+
+    Organs are matched to the patient with the highest priority value
+    who is a compatible recipient (blood type)
+    """
 
     @staticmethod
     def allocate_organs(organ_list, wait_list, network):
