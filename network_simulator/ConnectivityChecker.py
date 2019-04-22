@@ -1,4 +1,11 @@
 class ConnectivityChecker:
+    """
+    This class determines whether a given network is connected or not.
+
+    In a connected network, there exists a path between any given node
+    and all other nodes (no nodes exist that cannot be reached)
+    """
+
     @staticmethod
     def is_connected(network, nodes_encountered=None, source=None):
         """
