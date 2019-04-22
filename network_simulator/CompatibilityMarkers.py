@@ -1,6 +1,12 @@
 import random
 from enum import Enum
 
+"""
+These are a collection of enums used to represent organ type and blood type.
+
+These are used to initialize values for various objects throughout the system
+"""
+
 
 class OrganType(Enum):
     """
