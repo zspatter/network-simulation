@@ -6,8 +6,8 @@ from network_simulator.Node import Node
 
 class GraphBuilder:
     """
-    A class that builds various types of networks (random, connected,
-    disconnected, etc.)
+    A class that builds networks with variable number of nodes
+    and random adjacency lists
     """
 
     @staticmethod
