@@ -1,7 +1,9 @@
 class Dijkstra:
     """
-    A class which will be used to analyze graphs to determine shortest
-    paths between given nodes.
+    A class which will be used to analyze graphs. This class determines shortest
+    paths and cumulative weights for various paths.
+
+    This can find all shortest paths from a given source node to all other nodes.
     """
 
     def __init__(self, graph, source):
