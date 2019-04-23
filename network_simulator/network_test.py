@@ -1,8 +1,10 @@
-from network_simulator.Node import Node
-from network_simulator.Network import Network
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.Dijkstra import Dijkstra
 import time
+
+from network_simulator.ConnectivityChecker import ConnectivityChecker
+from network_simulator.Dijkstra import Dijkstra
+from network_simulator.GraphBuilder import GraphBuilder
+from network_simulator.Network import Network
+from network_simulator.Node import Node
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
@@ -109,23 +111,24 @@ network_1.add_node(Node(11, 'K',
 print(network_1)
 
 # demonstrates is_connected() function works
-if Dijkstra.is_connected(network_1):
+if ConnectivityChecker.is_connected(network_1):
     print("The network is connected!\n")
 else:
     print("The network is not connected!\n")
 
 start = time.time_ns()
-print('Recursive DFS: ' + str(Dijkstra.is_connected(network_1)))
+print('Recursive depth_first_search: ' + str(ConnectivityChecker.is_connected(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative DFS: ' + str(Dijkstra.DFS(network_1)))
+print('\nIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative BFS: ' + str(Dijkstra.BFS(network_1)))
+print(
+    '\nIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -148,17 +151,20 @@ print('\t---DISCONNECTED GRAPH---')
 print(disconnected_network)
 
 start = time.time_ns()
-print('Recursive DFS: ' + str(Dijkstra.is_connected(disconnected_network)))
+print(
+    'Recursive depth_first_search: ' + str(ConnectivityChecker.is_connected(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative DFS: ' + str(Dijkstra.DFS(disconnected_network)))
+print('\nIterative depth_first_search: ' + str(
+    ConnectivityChecker.depth_first_search(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
-print('\nIterative BFS: ' + str(Dijkstra.BFS(disconnected_network)))
+print('\nIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -230,16 +236,18 @@ init_tester.mark_edge_inactive(1, 2)
 init_tester.mark_edge_inactive(1, 5)
 
 print('\nDisconnected through inactive edges:')
-print('\tRecursive DFS: ' + str(Dijkstra.is_connected(init_tester)))
-print('\tIterative DFS: ' + str(Dijkstra.DFS(init_tester)))
-print('\tIterative BFS: ' + str(Dijkstra.BFS(init_tester)) + '\n')
+print('\tRecursive depth_first_search: ' + str(ConnectivityChecker.is_connected(init_tester)))
+print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(init_tester)))
+print('\tIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
 init_tester.mark_node_inactive(1)
 
 print('\nDisconnected node made inactive (reconnecting graph):')
-print('\tRecursive DFS: ' + str(Dijkstra.is_connected(init_tester)))
-print('\tIterative DFS: ' + str(Dijkstra.DFS(init_tester)))
-print('\tIterative BFS: ' + str(Dijkstra.BFS(init_tester)) + '\n')
+print('\tRecursive depth_first_search: ' + str(ConnectivityChecker.is_connected(init_tester)))
+print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(init_tester)))
+print('\tIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
 """
 The following section briefly tests generated networks and the iterative
@@ -252,7 +260,8 @@ print('\t---GENERATED RANDOM NETWORK---\n')
 print(generated_network)
 
 start = time.time_ns()
-print('\n\tIterative BFS: ' + str(Dijkstra.BFS(generated_network)))
+print('\n\tIterative breadth_first_search: ' + str(
+    ConnectivityChecker.breadth_first_search(generated_network)))
 end = time.time_ns()
 print('\t\telapsed time: ' + str(end - start))
 
@@ -306,3 +315,5 @@ path, weight = shortest_paths[7]
 print(f'Shortest path from #{dijkstra.source} to #7:'
       f'\n\tPath: {path}'
       f'\n\tWeight: {weight}')
+
+print(node2.get_adjacents())

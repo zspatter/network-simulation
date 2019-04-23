@@ -1,24 +1,22 @@
-from network_simulator.Node import Node
-from network_simulator.Network import Network
 import random
+
+from network_simulator.Network import Network
+from network_simulator.Node import Node
 
 
 class GraphBuilder:
     """
-    A class that builds various types of networks (random, connected,
-    disconnected, etc.)
+    A class that builds networks with variable number of nodes
+    and random adjacency lists
     """
 
-    def __init__(self):
-        pass
-
-    # TODO random parameter (seed)
-    @classmethod
-    def graph_builder(cls, n, seed=None):
+    @staticmethod
+    def graph_builder(n, max_weight=None, seed=None):
         """
         Returns randomly generated network with n nodes.
 
         :param int n: number of nodes generated graph will contain
+        :param int max_weight: optional param that sets a maximum weight for edges
         :param int seed: optional parameter to control pseudorandom generator
 
         :return: randomly generated network with N nodes
@@ -26,16 +24,18 @@ class GraphBuilder:
         """
 
         network_dict = {}
+        if not max_weight:
+            max_weight = 50
+
         for x in range(1, n + 1):
-            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, seed)
+            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, max_weight, seed)
             node = Node(x, 'Node #' + str(x), adjacency_dict)
             network_dict[x] = node
         network = Network(network_dict)
         return network
 
-    # TODO random parameter (seed)
     @staticmethod
-    def generate_random_adjacency_dict(node_id, total_nodes, seed=None):
+    def generate_random_adjacency_dict(node_id, total_nodes, max_weight, seed=None):
         """
         Returns randomly generated adjacency dict for an instance of a node.
         The generated adjacency list can contain a connection to any node
@@ -47,6 +47,7 @@ class GraphBuilder:
 
         :param int node_id: unique identifier for the node that the
             adjacency dict is being generated for
+        :param int max_weight: optional param that sets a maximum weight for edges
         :param int total_nodes: total number of nodes present in the generated graph
         :param int seed: optional parameter to control pseudorandom generator
 
@@ -56,7 +57,7 @@ class GraphBuilder:
 
         # prevents infinite loop resulting from fewer total nodes than randomly generated bound
         adjacent_bound = 10
-        bound = total_nodes - 1 if total_nodes < adjacent_bound else adjacent_bound
+        bound = total_nodes - 1 if total_nodes <= adjacent_bound else adjacent_bound
 
         # feeds random seed if parameter is passed
         if seed:
@@ -72,5 +73,6 @@ class GraphBuilder:
                 random_node = random.randint(1, total_nodes)
 
             # updates adjacency dict to new format
-            adjacency_dict[random_node] = {'weight': random.randint(1, 50), 'status': True}
+            adjacency_dict[random_node] = {'weight': random.randint(1, max_weight),
+                                           'status': True}
         return adjacency_dict

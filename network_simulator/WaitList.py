@@ -1,6 +1,6 @@
 import heapq
-import network_simulator.MatchIdentifier as MI
-import network_simulator.GeneratePatients as GP
+
+import network_simulator.PatientGenerator as gP
 
 
 class WaitList:
@@ -36,7 +36,7 @@ class WaitList:
 
         for patient in self.wait_list:
             if patient.organ_needed is organ.organ_type and \
-                    MI.MatchIdentifier.is_match(patient, organ):
+                    patient.blood_type.is_compatible_recipient(organ.blood_type):
                 heapq.heappush(queue, patient)
 
         heapq._heapify_max(queue)
@@ -48,7 +48,10 @@ class WaitList:
 
         :param Patient patient: object to be added
         """
-        self.wait_list.append(patient)
+        if patient not in self.wait_list:
+            self.wait_list.append(patient)
+            return
+        print('This patient isn\'t in the wait list!')
 
     def remove_patient(self, patient):
         """
@@ -56,7 +59,10 @@ class WaitList:
 
         :param Patient patient: object to be removed
         """
-        self.wait_list.remove(patient)
+        if patient in self.wait_list:
+            self.wait_list.remove(patient)
+            return
+        print('This patient is already in the wait list!')
 
     def generate_patients(self, graph, n):
         """
@@ -66,7 +72,7 @@ class WaitList:
         :param Network graph: network for patients to be allocated to
         :param int n: number of patients to generate
         """
-        GP.GeneratePatients.generate_patients(graph, n, self)
+        gP.PatientGenerator.generate_patients(graph, n, self)
 
     def __str__(self):
         string = ''

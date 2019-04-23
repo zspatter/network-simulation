@@ -1,47 +1,5 @@
-import network_simulator.Network as net
 import network_simulator.Dijkstra as d
-
-
-def test_is_connected():
-    test_net = net.Network()
-    test_net.add_node(net.Node(1))
-    test_dijkstra = d.Dijkstra(graph=test_net, source=1)
-
-    assert test_dijkstra.is_connected(test_net)
-
-    test_net.add_node(net.Node(2))
-    assert not test_dijkstra.is_connected(test_net)
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert test_dijkstra.is_connected(test_net)
-
-
-def test_DFS():
-    test_net = net.Network()
-    test_net.add_node(net.Node(1))
-    test_dijkstra = d.Dijkstra(graph=test_net, source=1)
-
-    assert test_dijkstra.DFS(test_net)
-
-    test_net.add_node(net.Node(2))
-    assert not test_dijkstra.DFS(test_net)
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert test_dijkstra.DFS(test_net)
-
-
-def test_BFS():
-    test_net = net.Network()
-    test_net.add_node(net.Node(1))
-    test_d = d.Dijkstra(graph=test_net, source=1)
-
-    assert test_d.BFS(test_net)
-
-    test_net.add_node(net.Node(2))
-    assert not test_d.BFS(test_net)
-
-    test_net.add_edge(node_id1=1, node_id2=2, weight=5)
-    assert test_d.BFS(test_net)
+import network_simulator.Network as net
 
 
 def test_dijkstra():
@@ -89,7 +47,7 @@ def test_shortest_path():
     test_node3 = net.Node(node_id=3, adjacency_dict={4: {'weight': 3, 'status': True}})
     test_node4 = net.Node(node_id=4, adjacency_dict={1: {'weight': 6, 'status': True}})
     test_node5 = net.Node(node_id=5, adjacency_dict={1: {'weight': 1, 'status': True},
-                                                   3: {'weight': 2, 'status': True}})
+                                                     3: {'weight': 2, 'status': True}})
     test_net = net.Network({test_node1.node_id: test_node1,
                             test_node2.node_id: test_node2,
                             test_node3.node_id: test_node3,
@@ -123,8 +81,8 @@ def test_shortest_path():
 def test_all_shortest_paths():
     test_node1 = net.Node(node_id=1, adjacency_dict={2: {'weight': 10, 'status': True}})
     test_node2 = net.Node(node_id=2, adjacency_dict={3: {'weight': 5, 'status': True},
-                                                   4: {'weight': 10, 'status': True},
-                                                   5: {'weight': 15, 'status': True}})
+                                                     4: {'weight': 10, 'status': True},
+                                                     5: {'weight': 15, 'status': True}})
     test_node3 = net.Node(node_id=3)
     test_node4 = net.Node(node_id=4)
     test_node5 = net.Node(node_id=5)

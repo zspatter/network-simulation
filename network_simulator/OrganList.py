@@ -1,4 +1,4 @@
-import network_simulator.GenerateOrgans as GO
+import network_simulator.OrganGenerator as gO
 
 
 class OrganList:
@@ -25,7 +25,10 @@ class OrganList:
 
         :param Organ organ: object to be added to the organ list
         """
-        self.organ_list.append(organ)
+        if organ not in self.organ_list:
+            self.organ_list.append(organ)
+            return
+        print('This organ is already in the organ list!')
 
     def remove_organ(self, organ):
         """
@@ -33,7 +36,16 @@ class OrganList:
 
         :param Organ organ: object to be removed from the organ list
         """
-        self.organ_list.remove(organ)
+        if organ in self.organ_list:
+            self.organ_list.remove(organ)
+            return
+        print('This organ isn\'t in the organ list!')
+
+    def empty_list(self):
+        """
+        Clears entire organ_list (utility function for the organ allocator)
+        """
+        self.organ_list = list()
 
     def generate_organs(self, graph, n):
         """
@@ -43,4 +55,11 @@ class OrganList:
         :param Network graph: network for patients to be allocated to
         :param int n: number of patients to generate
         """
-        GO.GenerateOrgans.generate_organs(graph, n, self)
+        gO.OrganGenerator.generate_organs(graph, n, self)
+
+    def __str__(self):
+        string = ''
+        for organ in self.organ_list:
+            string += organ.__str__() + '\n'
+
+        return string + '===============================\n'

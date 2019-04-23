@@ -17,9 +17,9 @@ def test_is_adjacent():
 
 def test_get_adjacents():
     adjacency_dict = {2: {'weight': 3, 'status': True},
-                   3: {'weight': 1, 'status': True},
-                   4: {'weight': 4, 'status': True},
-                   5: {'weight': 2, 'status': True}}
+                      3: {'weight': 1, 'status': True},
+                      4: {'weight': 4, 'status': True},
+                      5: {'weight': 2, 'status': True}}
 
     node_1 = n.Node(1, 'A', adjacency_dict)
 

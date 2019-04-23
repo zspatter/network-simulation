@@ -58,9 +58,7 @@ class Node:
         """
         adjacents = list()
         if self.status:
-            for key in self.adjacency_dict:
-                if self.adjacency_dict[key]['status']:
-                    adjacents.append(key)
+            adjacents = [key for key in self.adjacency_dict if self.adjacency_dict[key]['status']]
         return adjacents
 
     def __str__(self):
@@ -82,4 +80,5 @@ class Node:
                         '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'
         else:
-            return f'Node ID: #{self.node_id} is inactive and cannot be converted to a string.'
+            return f'Node ID: #{self.node_id} is inactive and cannot ' \
+                f'be converted to a string.'

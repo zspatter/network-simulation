@@ -1,13 +1,18 @@
+import network_simulator.BloodType as bT
+import network_simulator.Dijkstra as D
+import network_simulator.GraphBuilder as gB
 import network_simulator.Network as net
 import network_simulator.Organ as O
+import network_simulator.OrganAllocator as oA
+import network_simulator.OrganList as oL
 import network_simulator.Patient as P
-import network_simulator.Dijkstra as D
-import network_simulator.OrganList as OL
-import network_simulator.WaitList as WL
+import network_simulator.WaitList as wL
+from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
 ANSI_YELLOW = '\033[33;1m'
+ANSI_RED = '\033[31;1m'
 ANSI_RESET = "\033[0m"
 
 # builds hospitals (represented as nodes)
@@ -79,37 +84,50 @@ hospital_network = net.Network({hospital_a.node_id: hospital_a,
 
 # creates a handful of patients who need organ (across network)
 patient_a = P.Patient(patient_name='patient a', illness='diabetes',
-                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Pancreas, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                               BloodTypePolarity.POS),
                       priority=1, location=hospital_j.node_id)
 patient_b = P.Patient(patient_name='patient b', illness='heart trouble',
-                      organ_needed=P.Patient.HEART, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Heart, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                            BloodTypePolarity.POS),
                       priority=2, location=hospital_i.node_id)
 patient_c = P.Patient(patient_name='patient c', illness='alcoholism',
-                      organ_needed=P.Patient.LIVER, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Liver, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                            BloodTypePolarity.POS),
                       priority=3, location=hospital_h.node_id)
 patient_d = P.Patient(patient_name='patient d', illness='lung cancer',
-                      organ_needed=P.Patient.LUNG, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Lungs, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                            BloodTypePolarity.POS),
                       priority=4, location=hospital_g.node_id)
 patient_e = P.Patient(patient_name='patient e', illness='diabetes',
-                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Pancreas, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                               BloodTypePolarity.POS),
                       priority=100, location=hospital_b.node_id)
 
 # harvests a handful of organs (single donor, same source location)
-harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type='NA',
+harvest_organ_1 = O.Organ(organ_type=OrganType.Pancreas.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.A,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id)
-harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type='NA',
+harvest_organ_2 = O.Organ(organ_type=OrganType.Heart.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.A,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id)
-harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type='NA',
+harvest_organ_3 = O.Organ(organ_type=OrganType.Liver.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.A,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id)
-harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type='NA',
+harvest_organ_4 = O.Organ(organ_type=OrganType.Lungs.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.A,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id)
 
 # constructs dijkstra instance (only need 1 as all organs share the same source)
 dijkstra = D.Dijkstra(hospital_network, harvest_organ_1.origin_location)
 
 path, weight = dijkstra.shortest_path(patient_a.location)
-harvest_organ_1.move_organ(patient_a.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_1.organ_type)}{ANSI_RESET}'
+harvest_organ_1.move_organ(patient_a.location, weight, dijkstra.shortest_path(patient_a.location))
+print(f'Organ: {ANSI_CYAN}{harvest_organ_1.organ_type}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_1.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_a.location}{ANSI_RESET} '
@@ -119,8 +137,8 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_1.organ_type)}{
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_1.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_b.location)
-harvest_organ_2.move_organ(patient_b.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_2.organ_type)}{ANSI_RESET}'
+harvest_organ_2.move_organ(patient_b.location, weight, dijkstra.shortest_path(patient_b.location))
+print(f'Organ: {ANSI_CYAN}{harvest_organ_2.organ_type}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_2.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_b.location}{ANSI_RESET} '
@@ -130,8 +148,8 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_2.organ_type)}{
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_2.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_c.location)
-harvest_organ_3.move_organ(patient_c.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_3.organ_type)}{ANSI_RESET}'
+harvest_organ_3.move_organ(patient_c.location, weight, dijkstra.shortest_path(patient_c.location))
+print(f'Organ: {ANSI_CYAN}{harvest_organ_3.organ_type}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_3.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_c.location}{ANSI_RESET} '
@@ -141,8 +159,8 @@ print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_3.organ_type)}{
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_3.viability}{ANSI_RESET}\n')
 
 path, weight = dijkstra.shortest_path(patient_d.location)
-harvest_organ_4.move_organ(patient_d.location, weight)
-print(f'Organ: {ANSI_CYAN}{O.Organ.organ_type_name(harvest_organ_4.organ_type)}{ANSI_RESET}'
+harvest_organ_4.move_organ(patient_d.location, weight, dijkstra.shortest_path(patient_d.location))
+print(f'Organ: {ANSI_CYAN}{harvest_organ_4.organ_type}{ANSI_RESET}'
       f' has been transported from hospital '
       f'{ANSI_CYAN}{harvest_organ_4.origin_location}{ANSI_RESET} '
       f'to hospital {ANSI_CYAN}{patient_d.location}{ANSI_RESET} '
@@ -156,48 +174,80 @@ This section declares the above patients and organs with the optional
 list parameters passed (WaitList and OrganList)
 
 This was done to test whether or not the initializers function as desired
-with the optional parameters. 
+with the optional parameters.
 
-Furthermore, this briefly tests the data structures holding patient/organ 
+Furthermore, this briefly tests the data structures holding patient/organ
 information. This also demonstrates how the priority queue functions.
 """
-wait_list = WL.WaitList()
-organ_list = OL.OrganList()
+wait_list = wL.WaitList()
+organ_list = oL.OrganList()
 
 patient_a = P.Patient(patient_name='patient a', illness='diabetes',
-                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Pancreas, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                               BloodTypePolarity.POS),
                       priority=1, location=hospital_j.node_id, wait_list=wait_list)
 patient_b = P.Patient(patient_name='patient b', illness='heart trouble',
-                      organ_needed=P.Patient.HEART, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Heart, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                            BloodTypePolarity.POS),
                       priority=2, location=hospital_i.node_id, wait_list=wait_list)
 patient_c = P.Patient(patient_name='patient c', illness='alcoholism',
-                      organ_needed=P.Patient.LIVER, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Liver, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                            BloodTypePolarity.POS),
                       priority=3, location=hospital_h.node_id, wait_list=wait_list)
 patient_d = P.Patient(patient_name='patient d', illness='lung cancer',
-                      organ_needed=P.Patient.LUNG, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Lungs, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                            BloodTypePolarity.POS),
                       priority=4, location=hospital_g.node_id, wait_list=wait_list)
 patient_e = P.Patient(patient_name='patient e', illness='diabetes',
-                      organ_needed=P.Patient.PANCREAS, blood_type=P.Patient.AB_POS,
+                      organ_needed=OrganType.Pancreas, blood_type=bT.BloodType(BloodTypeLetter.AB,
+                                                                               BloodTypePolarity.POS),
                       priority=100, location=hospital_b.node_id, wait_list=wait_list)
 
 # harvests a handful of organs (single donor, same source location)
-harvest_organ_1 = O.Organ(organ_type=O.Organ.PANCREAS, blood_type=O.Organ.O_NEG,
+harvest_organ_1 = O.Organ(organ_type=OrganType.Pancreas.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.O,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_2 = O.Organ(organ_type=O.Organ.HEART, blood_type=O.Organ.O_NEG,
+harvest_organ_2 = O.Organ(organ_type=OrganType.Heart.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.O,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_3 = O.Organ(organ_type=O.Organ.LIVER, blood_type=O.Organ.O_NEG,
+harvest_organ_3 = O.Organ(organ_type=OrganType.Liver.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.O,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_4 = O.Organ(organ_type=O.Organ.LUNG, blood_type=O.Organ.O_NEG,
+harvest_organ_4 = O.Organ(organ_type=OrganType.Lungs.value,
+                          blood_type=bT.BloodType(BloodTypeLetter.O,
+                                                  BloodTypePolarity.NEG),
                           location=hospital_a.node_id, organ_list=organ_list)
 
-priority_patients = wait_list.get_prioritized_patients(harvest_organ_1)
-for x in priority_patients:
-    print(x)
+# priority_patients = wait_list.get_prioritized_patients(harvest_organ_1)
+# for x in priority_patients:
+#     print(x)
+#
+# organ_list.generate_organs(hospital_network, 3)
+# for x in organ_list.organ_list:
+#     print(x)
+#
+# wait_list.generate_patients(hospital_network, 5)
+# for x in wait_list.wait_list:
+#     print(x)
 
-organ_list.generate_organs(hospital_network, 3)
-for x in organ_list.organ_list:
-    print(x)
+network = gB.GraphBuilder.graph_builder(10)
+organ_list.generate_organs(network, 5)
+wait_list.generate_patients(network, 50)
 
-wait_list.generate_patients(hospital_network, 10)
-for x in wait_list.wait_list:
-    print(x)
+print(ANSI_CYAN + 'Organs to be allocated: ' + str(len(organ_list.organ_list)) + ANSI_RESET)
+print(ANSI_CYAN + 'Patients on wait list: ' + str(len(wait_list.wait_list)) + ANSI_RESET + '\n')
+oA.OrganAllocator.allocate_organs(organ_list, wait_list, network)
+print(ANSI_CYAN + '\n\nOrgans to be allocated: ' + str(len(organ_list.organ_list)) + ANSI_RESET)
+print(ANSI_CYAN + 'Patients on wait list: ' + str(len(wait_list.wait_list)) + ANSI_RESET)
+
+# graph = gB.GraphBuilder.graph_builder(15)
+# organ_list = oL.OrganList()
+# oG.OrganGenerator.generate_organs(graph, 10, organ_list)
+# print(organ_list)
+#
+# wait_list = wL.WaitList()
+# pG.PatientGenerator.generate_patients(graph, 15, wait_list)
+# print(wait_list)
