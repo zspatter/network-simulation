@@ -23,7 +23,7 @@ The smallest element within the network is a Node object. Each node represents a
 The network is a graph that is represented as a collection of nodes. The network represents the entire network of hospitals. The network will be traversed from node to node to. The weights of individual edges traveled will be added together to represent the total cost of the traveled path.
 
 **<ins>Networks consist of</ins>:**
-1. <ins>network dictionary</ins> - contains a collection of node ID's that point to their corresponding Node objects
+1. <ins>network dictionary</ins> - contains a collection of node IDs that point to their corresponding Node objects
 2. <ins>label</ins> - describes/names the graph
 
 ### <ins>Other Classes</ins>:
