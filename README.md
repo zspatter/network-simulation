@@ -27,7 +27,7 @@ The network is a graph that is represented as a collection of nodes. The network
 2. <ins>label</ins> - describes/names the graph
 
 ### <ins>Other Classes</ins>:
-- <ins>*Dijkstra*</ins> - finds all shortest paths from a source node in a given graph (also contains some connectivity helper functions)
+- <ins>*Dijkstra*</ins> - finds all shortest paths from a source node in a given graph
 - <ins>*BloodType*</ins> - indicates blood type by letter and polarity (also checks for compatibility between donors and recipients)
 - <ins>*Organ*</ins> - represent the donated organs (these will be distributed across the system)
 - <ins>*Patient*</ins> - represent individuals in need of a transplant
