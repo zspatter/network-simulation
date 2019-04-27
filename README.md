@@ -40,7 +40,7 @@ The network is a graph that is represented as a collection of nodes. The network
 - <ins>*ConnectivityChecker*</ins> - determines if a given graph is connected 
 
 ### <ins>Simulator</ins>: 
-The simulator allows for an interactive experience through the console by harnessing the functions of the GraphBuilder, GeneratePatients, GenerateOrgans, and OrganAllocator classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
+The simulator is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the GraphBuilder, GeneratePatients, GenerateOrgans, and OrganAllocator classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
 
 ## UML Diagram
 ![alt text](https://github.com/zspatter/network-simulation/blob/master/UML.png)
