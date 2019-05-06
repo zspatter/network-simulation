@@ -258,7 +258,7 @@ class Network:
                                         f'ID: #{node_id2}, so there is '
                                         f'no edge to remove!')
 
-    def mark_node_inactive(self, node_id):
+    def mark_node_inactive(self, node_id, feedback=True):
         """
         Marks all edges in the adjacency list of the specified node as
         inactive, then mirrors that status in the other adjacency lists.
@@ -276,8 +276,9 @@ class Network:
 
                 # marks node status as inactive
                 self.network_dict[node_id].status = False
-                print(f'Node ID: #{node_id} and all of it\'s edges has '
-                      f'been marked inactive!')
+                if feedback:
+                    print(f'Node ID: #{node_id} and all of it\'s edges has '
+                          f'been marked inactive!')
 
             # if node exists and is inactive
             elif node_id in self.network_dict and not self.network_dict[node_id].status:
@@ -314,7 +315,7 @@ class Network:
     should node status take priority over edge status?
     """
 
-    def mark_node_active(self, node_id):
+    def mark_node_active(self, node_id, feedback=True):
         """
         Marks all adjacent edges connected with another active node as
         active, then marks the specified node as active. If the node is
@@ -339,8 +340,9 @@ class Network:
 
                 # marks node status as inactive
                 self.network_dict[node_id].status = True
-                print(f'Node ID: #{node_id} and all of it\'s edges has been '
-                      f'marked active!')
+                if feedback:
+                    print(f'Node ID: #{node_id} and all of it\'s edges has been '
+                          f'marked active!')
 
             # if node exists and is active
             elif node_id in self.network_dict and self.network_dict[node_id].status:
@@ -487,5 +489,6 @@ class Network:
         """
         string = ''
         for key in self.network_dict:
-            string += f'{self.network_dict[key].__str__()}'
+            if self.network_dict[key].status:
+                string += f'{self.network_dict[key].__str__()}'
         return string + '\n===============================\n'
