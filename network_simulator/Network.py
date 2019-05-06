@@ -90,13 +90,15 @@ class Network:
         active_nodes = [node for node in nodes if self.network_dict[node].status]
         return active_nodes
 
-    def add_node(self, node):
+    def add_node(self, node, feedback=True):
         """
         Adds a node with the passed parameters to the graph. If the
         node_id is already present in the graph, an error message
         is printed to the console.
 
         :param Node node: node that will be added to the graph
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
         try:
             # if node_id is unique, add it to the network
@@ -108,8 +110,10 @@ class Network:
                 for key in node.adjacency_dict:
                     self.network_dict[key].adjacency_dict[node.node_id] = \
                         node.adjacency_dict[key]
-                print(f'Node ID: #{node.node_id} has been added to this '
-                      f'network!')
+
+                if feedback:
+                    print(f'Node ID: #{node.node_id} has been added to this '
+                          f'network!')
 
             # if node already exists
             else:
@@ -120,12 +124,14 @@ class Network:
         except NodeAlreadyExistsError as e:
             print(e)
 
-    def remove_node(self, node_id):
+    def remove_node(self, node_id, feedback=True):
         """
         Removes the node with the passed node_id from the graph. If node_id
         is not present in the graph, an error message is printed to the console.
 
         :param int node_id: unique identifier within a given graph
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
         try:
             # if node is present in graph
@@ -139,7 +145,8 @@ class Network:
 
                 # removes node object
                 del self.network_dict[node_id]
-                print(f'Node ID: #{node_id} and all of it\'s edges has been removed!')
+                if feedback:
+                    print(f'Node ID: #{node_id} and all of it\'s edges has been removed!')
 
             # if node is not present in graph
             else:
@@ -150,7 +157,7 @@ class Network:
         except NodeDoesNotExistError as e:
             print(e)
 
-    def add_edge(self, node_id1, node_id2, weight):
+    def add_edge(self, node_id1, node_id2, weight, feedback=True):
         """
         Adds an edge between two nodes with a specified weight. It is
         assumed that the added edge will be active. If there already
@@ -162,11 +169,13 @@ class Network:
         :param int node_id2: unique identifier within a given graph
             (one of the vertices to be connected by the added edge)
         :param int weight: cost associated with the edge
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
         try:
             # if nodes are in graph
             if node_id1 in self.network_dict and node_id2 in self.network_dict:
-                self.add_edge_to_dict(node_id1, node_id2, weight)
+                self.add_edge_to_dict(node_id1, node_id2, weight, feedback)
             # if node(s) don't exist
             else:
                 raise NodeDoesNotExistError(f'One of the passed nodes does '
@@ -181,7 +190,7 @@ class Network:
         except NodeDoesNotExistError as e:
             print(e)
 
-    def add_edge_to_dict(self, node_id1, node_id2, weight):
+    def add_edge_to_dict(self, node_id1, node_id2, weight, feedback=True):
         # if nodes are active
         if node_id1 in self.nodes() and node_id2 in self.nodes():
             # if there is not an edge already connecting node 1 and node 2
@@ -193,9 +202,10 @@ class Network:
                 self.network_dict[node_id2].adjacency_dict[node_id1] = \
                     {'weight': weight, 'status': True}
 
-                print(f'An edge has been added between Node ID: '
-                      f'#{node_id1} and Node ID: #{node_id2} with'
-                      f'a weight of {weight}!')
+                if feedback:
+                    print(f'An edge has been added between Node ID: '
+                          f'#{node_id1} and Node ID: #{node_id2} with'
+                          f'a weight of {weight}!')
 
             # if there is already an edge connecting the nodes
             else:
@@ -210,7 +220,7 @@ class Network:
                                        'is inactive! As a result, this'
                                        ' edge cannot be added.')
 
-    def remove_edge(self, node_id1, node_id2):
+    def remove_edge(self, node_id1, node_id2, feedback=True):
         """
         Removes an edge between two nodes from the graph. If the edge
         does not exist, an error message is printed to the console
@@ -220,6 +230,8 @@ class Network:
             (one of the vertices connected by the edge to be removed)
         :param int node_id2: unique identifier within a given graph
             (one of the vertices connected by the edge to be removed)
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
 
         # TODO what if edge is only in one adjacency dict?
@@ -227,7 +239,7 @@ class Network:
             # if nodes are in graph
             if node_id1 in self.network_dict and node_id2 in self.network_dict:
 
-                self.remove_edge_from_dict(node_id1, node_id2)
+                self.remove_edge_from_dict(node_id1, node_id2, feedback)
 
             # if node(s) doesn't exist
             else:
@@ -241,15 +253,16 @@ class Network:
         except NodeDoesNotExistError as e:
             print(e)
 
-    def remove_edge_from_dict(self, node_id1, node_id2):
+    def remove_edge_from_dict(self, node_id1, node_id2, feedback=True):
         # if shared edge exists
         if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
                 and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
             del self.network_dict[node_id1].adjacency_dict[node_id2]
             del self.network_dict[node_id2].adjacency_dict[node_id1]
 
-            print(f'The edge between Node ID: #{node_id1} '
-                  f'and Node ID: #{node_id2} has been removed!')
+            if feedback:
+                print(f'The edge between Node ID: #{node_id1} '
+                      f'and Node ID: #{node_id2} has been removed!')
 
         # if shared edge doesn't exist
         else:
@@ -268,6 +281,8 @@ class Network:
         an error message prints to the console.
 
         :param int node_id: unique identifier within a given graph
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
         try:
             # if node exists and is active
@@ -324,6 +339,8 @@ class Network:
         console.
 
         :param int node_id: unique identifier within a given graph
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
         try:
             # if node exists and is inactive
@@ -359,7 +376,7 @@ class Network:
         except NodeDoesNotExistError as e:
             print(e)
 
-    def mark_edge_inactive(self, node_id1, node_id2):
+    def mark_edge_inactive(self, node_id1, node_id2, feedback=True):
         """
         Marks the specified edge as inactive in both adjacency lists iff
         a shared edge exists and both edges are active. If not, an error
@@ -368,6 +385,8 @@ class Network:
 
         :param int node_id1: unique identifier within a given graph
         :param int node_id2: unique identifier within a given graph
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
         try:
             # if node exists
@@ -383,8 +402,9 @@ class Network:
                         self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = False
                         self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
 
-                        print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
-                              f'#{node_id2} has been marked inactive!')
+                        if feedback:
+                            print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
+                                  f'#{node_id2} has been marked inactive!')
 
                     # if the edges are inactive
                     else:
@@ -416,7 +436,7 @@ class Network:
         except NodeDoesNotExistError as e:
             print(e)
 
-    def mark_edge_active(self, node_id1, node_id2):
+    def mark_edge_active(self, node_id1, node_id2, feedback=True):
         """
         Marks the specified edge as active in both adjacency lists iff
         both connected nodes are active and the edge is inactive.
@@ -440,8 +460,9 @@ class Network:
                             self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
                             self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
 
-                            print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
-                                  f'#{node_id2} has been marked active!')
+                            if feedback:
+                                print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
+                                      f'#{node_id2} has been marked active!')
 
                         # if the edges are active
                         else:
