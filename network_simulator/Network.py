@@ -31,8 +31,7 @@ class Network:
         nodes = network_dict.keys()
         # iterates through all nodes
         for node in nodes:
-            adjacents = network_dict[node].adjacency_dict.keys()
-            Network.mirror_adjacency_dicts(network_dict, adjacents, node, to_remove)
+            Network.mirror_adjacency_dicts(network_dict, node, to_remove)
 
         # remove edges to nodes that don't exist in graph
         for node, adjacent in to_remove:
@@ -42,8 +41,17 @@ class Network:
         self.label = label
 
     @staticmethod
-    def mirror_adjacency_dicts(network_dict, adjacents, node, to_remove):
-        # iterates through all of the current node's adjacents
+    def mirror_adjacency_dicts(network_dict, node, to_remove):
+        """
+
+
+        :param dict network_dict: {int node_id: Node, ...}
+        :param node: current node
+        :param to_remove: list of edges that cannot exist in graph
+            (adjacent node isn't present) and will be removed from dict by caller
+        """
+        adjacents = network_dict[node].adjacency_dict.keys()
+
         for adjacent in adjacents:
 
             # if adjacent node id is present in network
@@ -191,6 +199,18 @@ class Network:
             print(e)
 
     def add_edge_to_dict(self, node_id1, node_id2, weight, feedback=True):
+        """
+        Verifies param node IDs can be added to the graph (and adds them).
+        If there is a comparability issue, an exception is raised.
+
+        :param int node_id1: unique identifier within a given graph
+            (one of the vertices to be connected by the added edge)
+        :param int node_id2: unique identifier within a given graph
+            (one of the vertices to be connected by the added edge)
+        :param int weight: cost associated with the edge
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
+        """
         # if nodes are active
         if node_id1 in self.nodes() and node_id2 in self.nodes():
             # if there is not an edge already connecting node 1 and node 2
@@ -254,6 +274,16 @@ class Network:
             print(e)
 
     def remove_edge_from_dict(self, node_id1, node_id2, feedback=True):
+        """
+        If there is a shared edge between node params, it is removed
+
+        :param int node_id1: unique identifier within a given graph
+            (one of the vertices connected by the edge to be removed)
+        :param int node_id2: unique identifier within a given graph
+            (one of the vertices connected by the edge to be removed)
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
+        """
         # if shared edge exists
         if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
                 and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
@@ -312,6 +342,11 @@ class Network:
             print(e)
 
     def mark_node_edges_inactive(self, node_id):
+        """
+        Marks all of the edges of the passed node inactive
+
+        :param int node_id: unique identifier within a given graph
+        """
         # gathers list of adjacent node id's
         adjacency_dict = self.network_dict[node_id].get_adjacents()
         # marks all edges of node as inactive, and mirrors
@@ -443,6 +478,8 @@ class Network:
 
         :param int node_id1: unique identifier within a given graph
         :param int node_id2: unique identifier within a given graph
+        :param bool feedback: optional param indicating whether feedback
+            should be print to the console
         """
         try:
             # if nodes exist
