@@ -1,7 +1,5 @@
 from network_simulator.Node import Node
-from network_simulator.exceptions import NodeAlreadyExistsError, \
-    NodeDoesNotExistError, EdgeAlreadyExistsError, EdgeDoesNotExistError, \
-    ElementActiveError, ElementInactiveError
+from network_simulator.exceptions import GraphElementError
 
 
 class Network:
@@ -125,11 +123,11 @@ class Network:
 
             # if node already exists
             else:
-                raise NodeAlreadyExistsError(f'Node ID: #{node.node_id} '
-                                             f'is already present in this network! '
-                                             f'Node could not be added.')
+                raise GraphElementError(f'Node ID: #{node.node_id} '
+                                        f'is already present in this network! '
+                                        f'This node could not be added.')
 
-        except NodeAlreadyExistsError as e:
+        except GraphElementError as e:
             print(e)
 
     def remove_node(self, node_id, feedback=True):
@@ -158,11 +156,11 @@ class Network:
 
             # if node is not present in graph
             else:
-                raise NodeDoesNotExistError(f'Node ID: #{node_id} is not present'
-                                            f' in this network! Node could not be'
-                                            f' removed.')
+                raise GraphElementError(f'Node ID: #{node_id} is not present'
+                                        f' in this network! This node does not exist and '
+                                        f'could not be removed.')
 
-        except NodeDoesNotExistError as e:
+        except GraphElementError as e:
             print(e)
 
     def add_edge(self, node_id1, node_id2, weight, feedback=True):
@@ -186,16 +184,12 @@ class Network:
                 self.add_edge_to_dict(node_id1, node_id2, weight, feedback)
             # if node(s) don't exist
             else:
-                raise NodeDoesNotExistError(f'One of the passed nodes does '
-                                            f'not exist! As a result, there '
-                                            f'cannot be an edge, so it cannot '
-                                            f'be added.')
+                raise GraphElementError(f'One of the passed nodes does '
+                                        f'not exist! As a result, there '
+                                        f'cannot be an edge, so it cannot '
+                                        f'be added.')
 
-        except EdgeAlreadyExistsError as e:
-            print(e)
-        except ElementInactiveError as e:
-            print(e)
-        except NodeDoesNotExistError as e:
+        except GraphElementError as e:
             print(e)
 
     def add_edge_to_dict(self, node_id1, node_id2, weight, feedback=True):
@@ -229,16 +223,16 @@ class Network:
 
             # if there is already an edge connecting the nodes
             else:
-                raise EdgeAlreadyExistsError(f'There already exists an '
-                                             f'edge between Node ID: '
-                                             f'#{node_id1} and Node ID: '
-                                             f'#{node_id2}! This edge '
-                                             f'could not be added.')
+                raise GraphElementError(f'There already exists an '
+                                        f'edge between Node ID: '
+                                        f'#{node_id1} and Node ID: '
+                                        f'#{node_id2}! This edge '
+                                        f'could not be added.')
         # if node(s) inactive
         else:
-            raise ElementInactiveError('One of the connecting nodes '
-                                       'is inactive! As a result, this'
-                                       ' edge cannot be added.')
+            raise GraphElementError('One of the connecting nodes '
+                                    'is inactive! As a result, this'
+                                    ' edge cannot be added.')
 
     def remove_edge(self, node_id1, node_id2, feedback=True):
         """
@@ -263,14 +257,12 @@ class Network:
 
             # if node(s) doesn't exist
             else:
-                raise NodeDoesNotExistError(f'One of the passed nodes does '
-                                            f'not exist! As a result, there '
-                                            f'cannot be an edge, so it cannot '
-                                            f'be marked as inactive.')
+                raise GraphElementError(f'One of the passed nodes does '
+                                        f'not exist! As a result, there '
+                                        f'cannot be an edge, so it cannot '
+                                        f'be marked as inactive.')
 
-        except EdgeDoesNotExistError as e:
-            print(e)
-        except NodeDoesNotExistError as e:
+        except GraphElementError as e:
             print(e)
 
     def remove_edge_from_dict(self, node_id1, node_id2, feedback=True):
@@ -296,10 +288,10 @@ class Network:
 
         # if shared edge doesn't exist
         else:
-            raise EdgeDoesNotExistError(f'There is no edge connecting '
-                                        f'Node ID: #{node_id1} and Node '
-                                        f'ID: #{node_id2}, so there is '
-                                        f'no edge to remove!')
+            raise GraphElementError(f'There is no edge connecting '
+                                    f'Node ID: #{node_id1} and Node '
+                                    f'ID: #{node_id2}, so there is '
+                                    f'no edge to remove!')
 
     def mark_node_inactive(self, node_id, feedback=True):
         """
@@ -327,18 +319,16 @@ class Network:
 
             # if node exists and is inactive
             elif node_id in self.network_dict and not self.network_dict[node_id].status:
-                raise ElementInactiveError(f'Node ID: #{node_id} is '
-                                           f'already inactive!')
+                raise GraphElementError(f'Node ID: #{node_id} is '
+                                        f'already inactive!')
 
             # if node doesn't exist
             else:
-                raise NodeDoesNotExistError(f'Node ID: #{node_id} is not present'
-                                            f' in this network! Node could not '
-                                            f'be marked inactive.')
+                raise GraphElementError(f'Node ID: #{node_id} is not present'
+                                        f' in this network! Node could not '
+                                        f'be marked inactive.')
 
-        except ElementInactiveError as e:
-            print(e)
-        except NodeDoesNotExistError as e:
+        except GraphElementError as e:
             print(e)
 
     def mark_node_edges_inactive(self, node_id):
@@ -398,17 +388,16 @@ class Network:
 
             # if node exists and is active
             elif node_id in self.network_dict and self.network_dict[node_id].status:
-                raise ElementActiveError(f'Node ID: #{node_id} is already active!')
+                raise GraphElementError(f'Node ID: #{node_id} is already active! '
+                                        f'This node could not be marked active')
 
             # if node doesn't exist
             else:
-                raise NodeDoesNotExistError(f'Node ID: #{node_id} is not present '
-                                            f'in this network! Node could not be '
-                                            f'marked active.')
+                raise GraphElementError(f'Node ID: #{node_id} is not present '
+                                        f'in this network! Node could not be '
+                                        f'marked active.')
 
-        except ElementActiveError as e:
-            print(e)
-        except NodeDoesNotExistError as e:
+        except GraphElementError as e:
             print(e)
 
     def mark_edge_inactive(self, node_id1, node_id2, feedback=True):
@@ -443,32 +432,28 @@ class Network:
 
                     # if the edges are inactive
                     else:
-                        raise ElementInactiveError(f'The edge connecting Node'
-                                                   f' ID: #{node_id1} and Node'
-                                                   f' ID: #{node_id2} is already'
-                                                   f' inactive! As a result, the'
-                                                   f' edge cannot be marked inactive.')
+                        raise GraphElementError(f'The edge connecting Node'
+                                                f' ID: #{node_id1} and Node'
+                                                f' ID: #{node_id2} is already'
+                                                f' inactive! As a result, the'
+                                                f' edge cannot be marked inactive.')
 
                 # if a shared edge doesn't exist
                 else:
-                    raise EdgeDoesNotExistError(f'There is not a shared edge '
-                                                f'between Node ID: #{node_id1} '
-                                                f'and Node ID: #{node_id2}! As '
-                                                f'a result, the edge cannot be '
-                                                f'marked inactive.')
+                    raise GraphElementError(f'There is not a shared edge '
+                                            f'between Node ID: #{node_id1} '
+                                            f'and Node ID: #{node_id2}! As '
+                                            f'a result, the edge cannot be '
+                                            f'marked inactive.')
 
             # if node doesn't exist
             else:
-                raise NodeDoesNotExistError(f'One of the passed nodes does '
-                                            f'not exist! As a result, there '
-                                            f'cannot be an edge, so it cannot '
-                                            f'be marked as inactive.')
+                raise GraphElementError(f'One of the passed nodes does '
+                                        f'not exist! As a result, there '
+                                        f'cannot be an edge, so it cannot '
+                                        f'be marked as inactive.')
 
-        except ElementInactiveError as e:
-            print(e)
-        except EdgeDoesNotExistError as e:
-            print(e)
-        except NodeDoesNotExistError as e:
+        except GraphElementError as e:
             print(e)
 
     def mark_edge_active(self, node_id1, node_id2, feedback=True):
@@ -503,37 +488,31 @@ class Network:
 
                         # if the edges are active
                         else:
-                            raise ElementActiveError(f'The edge connecting Node '
-                                                     f'ID: #{node_id1} and Node '
-                                                     f'ID: #{node_id2} is already '
-                                                     f'active! As a result, the '
-                                                     f'edge cannot be marked active.')
+                            raise GraphElementError(f'The edge connecting Node '
+                                                    f'ID: #{node_id1} and Node '
+                                                    f'ID: #{node_id2} is already '
+                                                    f'active! As a result, the '
+                                                    f'edge cannot be marked active.')
                     # if at least one node is inactive
                     else:
-                        raise ElementInactiveError('One of the connecting nodes '
-                                                   'is active! As a result, this'
-                                                   ' edge must remain active.')
+                        raise GraphElementError('One of the connecting nodes '
+                                                'is active! As a result, this'
+                                                ' edge must remain active.')
                 # if shared edge does not exist
                 else:
-                    raise EdgeDoesNotExistError(f'There is not a shared edge '
-                                                f'between Node ID: #{node_id1}'
-                                                f' and Node ID: #{node_id2}! As'
-                                                f' a result, the edge cannot be '
-                                                f'marked active.')
+                    raise GraphElementError(f'There is not a shared edge '
+                                            f'between Node ID: #{node_id1}'
+                                            f' and Node ID: #{node_id2}! As'
+                                            f' a result, the edge cannot be '
+                                            f'marked active.')
             # if node doesn't exist
             else:
-                raise NodeDoesNotExistError(f'One of the passed nodes does '
-                                            f'not exist! As a result, there '
-                                            f'cannot be an edge, so it cannot '
-                                            f'be marked as inactive.')
+                raise GraphElementError(f'One of the passed nodes does '
+                                        f'not exist! As a result, there '
+                                        f'cannot be an edge, so it cannot '
+                                        f'be marked as inactive.')
 
-        except ElementActiveError as e:
-            print(e)
-        except ElementInactiveError as e:
-            print(e)
-        except EdgeDoesNotExistError as e:
-            print(e)
-        except NodeDoesNotExistError as e:
+        except GraphElementError as e:
             print(e)
 
     def __str__(self):
