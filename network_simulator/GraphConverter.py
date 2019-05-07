@@ -5,7 +5,7 @@ class GraphConverter:
 
     @staticmethod
     def convert_to_networkx(network):
-        graph = nx.Graph()
+        nx_graph = nx.Graph()
         nodes = network.nodes()
 
         for node in nodes:
@@ -13,6 +13,6 @@ class GraphConverter:
             for adjacent in adjacents:
                 if network.network_dict[node].adjacency_dict[adjacent]['status']:
                     weight = network.network_dict[node].adjacency_dict[adjacent]['weight']
-                    graph.add_edge(node, adjacent, weight=weight)
+                    nx_graph.add_edge(node, adjacent, weight=weight)
 
-        return graph
+        return nx_graph
