@@ -1,7 +1,7 @@
-import network_simulator.GraphBuilder as GraphB
-import network_simulator.OrganAllocator as oA
-import network_simulator.OrganList as oL
-import network_simulator.WaitList as wL
+from network_simulator import GraphBuilder as GraphB
+from network_simulator import OrganAllocator as oA
+from network_simulator import OrganList as oL
+from network_simulator import WaitList as wL
 
 network, wait_list, organ_list = None, wL.WaitList(), oL.OrganList()
 ANSI_YELLOW, ANSI_YELLOW_BOLD, ANSI_RED = '\033[33m', '\033[33;1m', '\033[31m'
