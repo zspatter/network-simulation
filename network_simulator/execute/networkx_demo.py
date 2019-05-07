@@ -1,15 +1,13 @@
-import networkx as nx
 import matplotlib.pyplot as plt
-from network_simulator.Node import Node
-from network_simulator.Network import Network
-from network_simulator.GraphConverter import GraphConverter
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.WaitList import WaitList
-from network_simulator.PatientGenerator import PatientGenerator
-from network_simulator.OrganList import OrganList
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.SubnetworkGenerator import SubnetworkGenerator
+import networkx as nx
 
+from network_simulator.GraphBuilder import GraphBuilder
+from network_simulator.GraphConverter import GraphConverter
+from network_simulator.OrganGenerator import OrganGenerator
+from network_simulator.OrganList import OrganList
+from network_simulator.PatientGenerator import PatientGenerator
+from network_simulator.SubnetworkGenerator import SubnetworkGenerator
+from network_simulator.WaitList import WaitList
 
 # node1 = Node(1, "A",
 #              {2: {'weight': 3, 'status': True},
@@ -48,7 +46,6 @@ organ_list = OrganList()
 OrganGenerator.generate_organs(network, 10, organ_list)
 print(organ_list)
 
-
 # creates subnetworks for patients and organs
 patient_network = SubnetworkGenerator.generate_subnetwork(network, wait_list)
 organ_network = SubnetworkGenerator.generate_subnetwork(network, organ_list)
@@ -58,7 +55,6 @@ graph_nx = GraphConverter.convert_to_networkx(network)
 patient_nx = GraphConverter.convert_to_networkx(patient_network)
 organ_nx = GraphConverter.convert_to_networkx(organ_network)
 
-
 # plots hospital network (overall/global network)
 pos = nx.spring_layout(graph_nx)
 edge_weights = {(u, v,): d['weight'] for u, v, d in graph_nx.edges(data=True)}
@@ -66,14 +62,12 @@ nx.draw(graph_nx, pos=pos, with_labels=True)
 nx.draw_networkx_edge_labels(graph_nx, pos, edge_weights)
 plt.show()
 
-
 # plots patient network
 pos = nx.spring_layout(patient_nx)
 edge_weights = {(u, v,): d['weight'] for u, v, d in patient_nx.edges(data=True)}
 nx.draw(patient_nx, pos=pos, with_labels=True)
 nx.draw_networkx_edge_labels(patient_nx, pos, edge_weights)
 plt.show()
-
 
 # plots organ network
 pos = nx.spring_layout(organ_nx)
