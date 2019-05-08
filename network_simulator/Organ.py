@@ -6,7 +6,6 @@ from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType
 
 
-
 class Organ:
     """
     A class representing a given organ which is available for transplant.

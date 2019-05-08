@@ -3,8 +3,8 @@ from typing import List
 
 from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
-from network_simulator.Organ import Organ
 from network_simulator.Network import Network
+from network_simulator.Organ import Organ
 
 
 class OrganGenerator:

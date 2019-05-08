@@ -2,10 +2,10 @@ import heapq
 from typing import Dict
 
 from network_simulator.Dijkstra import Dijkstra
-from network_simulator.OrganList import OrganList
-from network_simulator.WaitList import WaitList
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
+from network_simulator.OrganList import OrganList
+from network_simulator.WaitList import WaitList
 
 
 class OrganAllocator:
