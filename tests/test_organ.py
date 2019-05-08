@@ -1,9 +1,14 @@
 from network_simulator.CompatibilityMarkers import OrganType
 from network_simulator.Organ import Organ
+from network_simulator.BloodType import BloodType
+from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
+
+
+o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 
 
 def test_move_organ():
-    test_organ = Organ(organ_type=OrganType.Heart.value, blood_type='NA', location=1)
+    test_organ = Organ(organ_type=OrganType.Heart.value, blood_type=o_neg, location=1)
 
     # tests initial values
     assert test_organ.current_location is 1
