@@ -1,5 +1,9 @@
 import heapq
+from typing import List, Optional
 
+from network_simulator.Network import Network
+from network_simulator.Organ import Organ
+from network_simulator.Patient import Patient
 from network_simulator.PatientGenerator import PatientGenerator
 
 
@@ -9,7 +13,7 @@ class WaitList:
     a donation. This list accepts all patients in need of organs (generic)
     """
 
-    def __init__(self, wait_list=None):
+    def __init__(self, wait_list: Optional[List[Patient]] = None):
         """
         Creates a WaitList object. If no wait_list parameter is provided,
         an empty list is created
@@ -21,7 +25,7 @@ class WaitList:
 
         self.wait_list = wait_list
 
-    def get_prioritized_patients(self, organ):
+    def get_prioritized_patients(self, organ: Organ):
         """
         Takes an organ as a parameter and searches the
         wait list for matches. All matches are added to a priority queue
@@ -42,7 +46,7 @@ class WaitList:
         heapq._heapify_max(queue)
         return queue
 
-    def add_patient(self, patient):
+    def add_patient(self, patient: Patient):
         """
         Adds a patient to the existing wait list
 
@@ -53,7 +57,7 @@ class WaitList:
             return
         print('This patient isn\'t in the wait list!')
 
-    def remove_patient(self, patient):
+    def remove_patient(self, patient: Patient):
         """
         Removes a patient from the existing wait list
 
@@ -64,7 +68,7 @@ class WaitList:
             return
         print('This patient is already in the wait list!')
 
-    def generate_patients(self, graph, n):
+    def generate_patients(self, graph: Network, n: int):
         """
         Wrapper that calls the GeneratePatients.generate_patients function
         This is used to ensure the generated patients are added to the same wait list

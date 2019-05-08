@@ -1,7 +1,9 @@
 import random
+from typing import List
 
 from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.Network import Network
 from network_simulator.Patient import Patient
 
 
@@ -13,7 +15,7 @@ class PatientGenerator:
     """
 
     @staticmethod
-    def generate_patients(graph, n, wait_list):
+    def generate_patients(graph: Network, n: int, wait_list: List[Patient]):
         """
         Generates n patients to add to wait list with random combinations of
         organ needed, blood type, priority, and location

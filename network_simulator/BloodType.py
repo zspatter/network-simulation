@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class BloodType:
     """
     A class representing a given blood type.
@@ -9,7 +12,7 @@ class BloodType:
         self.blood_type_letter = blood_type_letter
         self.blood_type_polarity = blood_type_polarity
 
-    def is_compatible_donor(self, blood_type):
+    def is_compatible_donor(self, blood_type: BloodType):
         """
         Determines if this blood type can donate to the parameter's blood type.
         This simply calls the is_compatible_recipient function on the parameter
@@ -20,7 +23,7 @@ class BloodType:
         """
         return blood_type.is_compatible_recipient(self)
 
-    def is_compatible_recipient(self, blood_type):
+    def is_compatible_recipient(self, blood_type: BloodType):
         """
         Determines if this blood type can receive a donation from the parameter's
         blood type using bitwise operations
@@ -54,11 +57,11 @@ class BloodType:
         :param BloodType other: other object to compare
         :return: bool
         """
-        if self.blood_type_letter.value is other.blood_type_letter.value \
-                and self.blood_type_polarity.value is other.blood_type_letter.value:
-            return True
+        if isinstance(other, BloodType):
+            return self.blood_type_letter.value is other.blood_type_letter.value \
+                   and self.blood_type_polarity.value is other.blood_type_letter.value
 
-        return False
+        return NotImplemented
 
     def __ne__(self, other):
         """
@@ -67,8 +70,8 @@ class BloodType:
         :param BloodType other: other object to compare
         :return: bool
         """
-        if self.blood_type_letter.value is other.blood_type_letter.value \
-                and self.blood_type_polarity.value is other.blood_type_letter.value:
-            return False
+        if isinstance(other, BloodType):
+            return not (self.blood_type_letter.value is other.blood_type_letter.value
+                        and self.blood_type_polarity.value is other.blood_type_letter.value)
 
-        return True
+        return NotImplemented

@@ -1,3 +1,8 @@
+from typing import List, Dict
+
+from network_simulator.Network import Network
+
+
 class Dijkstra:
     """
     A class which will be used to analyze graphs. This class determines shortest
@@ -6,12 +11,12 @@ class Dijkstra:
     This can find all shortest paths from a given source node to all other nodes.
     """
 
-    def __init__(self, graph, source):
+    def __init__(self, graph: Network, source: int):
         self.source = source
         self.weight, self.previous = Dijkstra.dijkstra(graph, source)
 
     @staticmethod
-    def dijkstra(graph, source):
+    def dijkstra(graph: Network, source: int):
         """
         This function finds the shortest path to all connected nodes
         from a given source node. The return are two dicts:
@@ -52,7 +57,7 @@ class Dijkstra:
         return weight, previous
 
     @staticmethod
-    def minimum_unvisited_distance(unvisited, weight):
+    def minimum_unvisited_distance(unvisited: List[int], weight: Dict[int, float]):
         """
         Helper method used by dijkstra (function) to determine which
         node should be traversed next
@@ -73,7 +78,7 @@ class Dijkstra:
 
         return min_node
 
-    def shortest_path(self, destination):
+    def shortest_path(self, destination: int):
         """
         Returns both the shortest path and the cost of said path between
         this object's source (attribute) and the passed destination.

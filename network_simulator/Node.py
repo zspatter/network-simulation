@@ -1,3 +1,6 @@
+from typing import Optional, Dict
+
+
 class Node:
     """
     A class representing a given node/vertex. A node is defined through
@@ -6,7 +9,8 @@ class Node:
     edge, and a status that marks active/inactive nodes.
     """
 
-    def __init__(self, node_id, label='Default node label', adjacency_dict=None, status=None):
+    def __init__(self, node_id: int, label: str = 'Default node label',
+                 adjacency_dict: Optional[Dict[int, dict]] = None, status: Optional[bool] = None):
         """
         Creates an instance of a Node
 
@@ -31,7 +35,7 @@ class Node:
             status = True
         self.status = status
 
-    def is_adjacent(self, node_id):
+    def is_adjacent(self, node_id: int):
         """
         Returns bool indicating if this instance is connected to the passed
         node_id with an active edge

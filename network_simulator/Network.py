@@ -1,3 +1,5 @@
+from typing import Optional, Dict, List
+
 from network_simulator.Node import Node
 from network_simulator.exceptions import GraphElementError
 
@@ -10,7 +12,8 @@ class Network:
     nodes contained within the graph.
     """
 
-    def __init__(self, network_dict=None, label='Default network label'):
+    def __init__(self, network_dict: Optional[Dict[int, Node]] = None,
+                 label: str = 'Default network label'):
         """
         Creates an instance of a Network. This function ensures that
         the adjacency dicts of nodes mirror each other (undirected graph).
@@ -39,12 +42,12 @@ class Network:
         self.label = label
 
     @staticmethod
-    def mirror_adjacency_dicts(network_dict, node, to_remove):
+    def mirror_adjacency_dicts(network_dict: Dict[int, Node], node: int, to_remove: List[int]):
         """
 
 
         :param dict network_dict: {int node_id: Node, ...}
-        :param node: current node
+        :param int node: current node
         :param to_remove: list of edges that cannot exist in graph
             (adjacent node isn't present) and will be removed from dict by caller
         """
@@ -96,7 +99,7 @@ class Network:
         active_nodes = [node for node in nodes if self.network_dict[node].status]
         return active_nodes
 
-    def add_node(self, node, feedback=True):
+    def add_node(self, node: Node, feedback: bool = True):
         """
         Adds a node with the passed parameters to the graph. If the
         node_id is already present in the graph, an error message
@@ -130,7 +133,7 @@ class Network:
         except GraphElementError as e:
             print(e)
 
-    def remove_node(self, node_id, feedback=True):
+    def remove_node(self, node_id: int, feedback: bool = True):
         """
         Removes the node with the passed node_id from the graph. If node_id
         is not present in the graph, an error message is printed to the console.
@@ -163,7 +166,7 @@ class Network:
         except GraphElementError as e:
             print(e)
 
-    def add_edge(self, node_id1, node_id2, weight, feedback=True):
+    def add_edge(self, node_id1: int, node_id2: int, weight: int, feedback: bool = True):
         """
         Adds an edge between two nodes with a specified weight. It is
         assumed that the added edge will be active. If there already
@@ -192,7 +195,7 @@ class Network:
         except GraphElementError as e:
             print(e)
 
-    def add_edge_to_dict(self, node_id1, node_id2, weight, feedback=True):
+    def add_edge_to_dict(self, node_id1: int, node_id2: int, weight: int, feedback: bool = True):
         """
         Verifies param node IDs can be added to the graph (and adds them).
         If there is a comparability issue, an exception is raised.
@@ -234,7 +237,7 @@ class Network:
                                     'is inactive! As a result, this'
                                     ' edge cannot be added.')
 
-    def remove_edge(self, node_id1, node_id2, feedback=True):
+    def remove_edge(self, node_id1: int, node_id2: int, feedback: bool = True):
         """
         Removes an edge between two nodes from the graph. If the edge
         does not exist, an error message is printed to the console
@@ -265,7 +268,7 @@ class Network:
         except GraphElementError as e:
             print(e)
 
-    def remove_edge_from_dict(self, node_id1, node_id2, feedback=True):
+    def remove_edge_from_dict(self, node_id1: int, node_id2: int, feedback: bool = True):
         """
         If there is a shared edge between node params, it is removed
 
@@ -293,7 +296,7 @@ class Network:
                                     f'ID: #{node_id2}, so there is '
                                     f'no edge to remove!')
 
-    def mark_node_inactive(self, node_id, feedback=True):
+    def mark_node_inactive(self, node_id: int, feedback: bool = True):
         """
         Marks all edges in the adjacency list of the specified node as
         inactive, then mirrors that status in the other adjacency lists.
@@ -331,7 +334,7 @@ class Network:
         except GraphElementError as e:
             print(e)
 
-    def mark_node_edges_inactive(self, node_id):
+    def mark_node_edges_inactive(self, node_id: int):
         """
         Marks all of the edges of the passed node inactive
 
@@ -355,7 +358,7 @@ class Network:
     should node status take priority over edge status?
     """
 
-    def mark_node_active(self, node_id, feedback=True):
+    def mark_node_active(self, node_id: int, feedback: bool = True):
         """
         Marks all adjacent edges connected with another active node as
         active, then marks the specified node as active. If the node is
@@ -400,7 +403,7 @@ class Network:
         except GraphElementError as e:
             print(e)
 
-    def mark_edge_inactive(self, node_id1, node_id2, feedback=True):
+    def mark_edge_inactive(self, node_id1: int, node_id2: int, feedback: bool = True):
         """
         Marks the specified edge as inactive in both adjacency lists iff
         a shared edge exists and both edges are active. If not, an error
@@ -456,7 +459,7 @@ class Network:
         except GraphElementError as e:
             print(e)
 
-    def mark_edge_active(self, node_id1, node_id2, feedback=True):
+    def mark_edge_active(self, node_id1: int, node_id2: int, feedback: bool = True):
         """
         Marks the specified edge as active in both adjacency lists iff
         both connected nodes are active and the edge is inactive.

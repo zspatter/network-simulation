@@ -1,3 +1,8 @@
+from typing import Optional, Set
+
+from network_simulator.Network import Network
+
+
 class ConnectivityChecker:
     """
     This class determines whether a given network is connected or not.
@@ -7,7 +12,8 @@ class ConnectivityChecker:
     """
 
     @staticmethod
-    def is_connected(network, nodes_encountered=None, source=None):
+    def is_connected(network: Network, nodes_encountered: Optional[Set[int]] = None,
+                     source: Optional[int] = None):
         """
         Returns bool indicating graph connectivity (path between all nodes).
         This is a recursive DFS.
@@ -36,7 +42,7 @@ class ConnectivityChecker:
         return False
 
     @staticmethod
-    def depth_first_search(network, node_id=None):
+    def depth_first_search(network: Network, node_id: Optional[int] = None):
         """
         Returns bool indicating graph connectivity (path between all nodes).
         This is an iterative DFS.
@@ -63,7 +69,7 @@ class ConnectivityChecker:
             return True
 
     @staticmethod
-    def breadth_first_search(network, node_id=None):
+    def breadth_first_search(network: Network, node_id: Optional[int] = None):
         """
         Returns bool indicating graph connectivity (path between all nodes).
         This is an iterative BFS.

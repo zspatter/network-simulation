@@ -1,4 +1,10 @@
+from __future__ import annotations
+
+from typing import Optional, List
+
+from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType
+
 
 
 class Organ:
@@ -10,7 +16,9 @@ class Organ:
     """
     organ_count = 0
 
-    def __init__(self, organ_type, blood_type, location, organ_list=None):
+    # TODO: can't type organ_list?
+    def __init__(self, organ_type: int, blood_type: BloodType,
+                 location: int, organ_list: Optional[List[Organ]] = None):
         Organ.organ_count = Organ.organ_count + 1
         self.organ_id = Organ.organ_count
         self.organ_type = organ_type
@@ -22,7 +30,7 @@ class Organ:
         if organ_list:
             organ_list.add_organ(self)
 
-    def move_organ(self, new_location, cost, shortest_path):
+    def move_organ(self, new_location: int, cost: int, shortest_path: List[int]):
         """
         This function allows an organ's attributes to be altered to represent it's
         transportation across the network. This is intended to be used with
@@ -41,7 +49,7 @@ class Organ:
         self.viability -= cost
 
     @staticmethod
-    def get_viability(organ_type):
+    def get_viability(organ_type: int):
         """
         Gets viability rating for each organ individually
         

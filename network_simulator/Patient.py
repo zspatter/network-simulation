@@ -1,3 +1,8 @@
+from __future__ import annotations
+
+from typing import Optional, List
+
+from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType
 
 
@@ -10,8 +15,9 @@ class Patient:
     """
     patient_count = 0
 
-    def __init__(self, patient_name, illness, organ_needed, blood_type, priority,
-                 location, wait_list=None):
+    def __init__(self, patient_name: str, illness: str, organ_needed: OrganType,
+                 blood_type: BloodType, priority: int, location: int,
+                 wait_list: Optional[List[Patient]] = None):
         Patient.patient_count = Patient.patient_count + 1
         self.patient_id = Patient.patient_count
         self.patient_name = patient_name
@@ -45,15 +51,15 @@ class Patient:
         :param Patient other: object to compare
         :return: boolean indicating equivalence
         """
-        if self.patient_id is other.patient_id \
-                and self.patient_name is other.patient_name \
-                and self.illness is other.illness \
-                and self.organ_needed is other.organ_needed \
-                and self.blood_type == other.blood_type \
-                and self.priority is other.priority \
-                and self.location is other.location:
-            return True
-        return False
+        if isinstance(other, Patient):
+            return self.patient_id is other.patient_id \
+                   and self.patient_name is other.patient_name \
+                   and self.illness is other.illness \
+                   and self.organ_needed is other.organ_needed \
+                   and self.blood_type == other.blood_type \
+                   and self.priority is other.priority \
+                   and self.location is other.location
+        return NotImplemented
 
     def __ne__(self, other):
         """
@@ -62,15 +68,15 @@ class Patient:
         :param Patient other: object to compare
         :return: boolean indicating non-equivalence
         """
-        if self.patient_id is other.patient_id \
-                and self.patient_name is other.patient_name \
-                and self.illness is other.illness \
-                and self.organ_needed is other.organ_needed \
-                and self.blood_type == other.blood_type \
-                and self.priority is other.priority \
-                and self.location is other.location:
-            return False
-        return True
+        if isinstance(other, Patient):
+            return not (self.patient_id is other.patient_id
+                        and self.patient_name is other.patient_name
+                        and self.illness is other.illness
+                        and self.organ_needed is other.organ_needed
+                        and self.blood_type == other.blood_type
+                        and self.priority is other.priority
+                        and self.location is other.location)
+        return NotImplemented
 
     def __lt__(self, other):
         """
@@ -80,7 +86,9 @@ class Patient:
         :param Patient other: object to compare
         :return: boolean indicating if this object is less than other
         """
-        return self.priority < other.priority
+        if isinstance(other, Patient):
+            return self.priority < other.priority
+        return NotImplemented
 
     def __le__(self, other):
         """
@@ -90,7 +98,9 @@ class Patient:
         :param Patient other: object to compare
         :return: boolean indicating if this object is less than or equal to other
         """
-        return self.priority <= other.priority
+        if isinstance(other, Patient):
+            return self.priority <= other.priority
+        return NotImplemented
 
     def __gt__(self, other):
         """
@@ -100,7 +110,9 @@ class Patient:
         :param Patient other: object to compare
         :return: boolean indicating if this object is greater than other
         """
-        return self.priority > other.priority
+        if isinstance(other, Patient):
+            return self.priority > other.priority
+        return NotImplemented
 
     def __ge__(self, other):
         """
@@ -110,4 +122,6 @@ class Patient:
         :param Patient other: object to compare
         :return: boolean indicating if this object is greater than or equal to other
         """
-        return self.priority >= other.priority
+        if isinstance(other, Patient):
+            return self.priority >= other.priority
+        return NotImplemented

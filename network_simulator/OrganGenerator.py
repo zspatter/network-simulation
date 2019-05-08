@@ -1,8 +1,10 @@
 import random
+from typing import List
 
 from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 from network_simulator.Organ import Organ
+from network_simulator.Network import Network
 
 
 class OrganGenerator:
@@ -16,7 +18,7 @@ class OrganGenerator:
     """
 
     @staticmethod
-    def generate_organs(graph, n, organ_list):
+    def generate_organs(graph: Network, n: int, organ_list: List[Organ]):
         """
         Harvests a random number of organs from n patients. Not all organs are harvested
         to represent organs that are not suitable for donation (health condition, etc

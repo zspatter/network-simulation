@@ -1,3 +1,7 @@
+from typing import List, Optional
+
+from network_simulator.Network import Network
+from network_simulator.Organ import Organ
 from network_simulator.OrganGenerator import OrganGenerator
 
 
@@ -7,7 +11,7 @@ class OrganList:
     allocated to compatible recipients. This list accepts all organ types (generic)
     """
 
-    def __init__(self, organ_list=None):
+    def __init__(self, organ_list: Optional[List[Organ]] = None):
         """
         Creates a OrganList object. If no organ_list parameter is provided,
         an empty list is created
@@ -16,10 +20,10 @@ class OrganList:
         """
         if organ_list is None:
             organ_list = list()
-
+        self.status = True
         self.organ_list = organ_list
 
-    def add_organ(self, organ):
+    def add_organ(self, organ: Organ):
         """
         Adds an organ to the existing organ list
 
@@ -30,7 +34,7 @@ class OrganList:
             return
         print('This organ is already in the organ list!')
 
-    def remove_organ(self, organ):
+    def remove_organ(self, organ: Organ):
         """
         Removes an organ from the existing organ list
 
@@ -47,7 +51,7 @@ class OrganList:
         """
         self.organ_list = list()
 
-    def generate_organs(self, graph, n):
+    def generate_organs(self, graph: Network, n: int):
         """
         Wrapper that calls the GenerateOrgans.generate_organs function
         This is used to ensure the generated organs are added to the same organ list

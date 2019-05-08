@@ -11,7 +11,7 @@ class GraphBuilder:
     """
 
     @staticmethod
-    def graph_builder(n, max_weight=None, seed=None):
+    def graph_builder(n: int, max_weight: int = None, seed: int = None):
         """
         Returns randomly generated network with n nodes.
 
@@ -35,7 +35,8 @@ class GraphBuilder:
         return network
 
     @staticmethod
-    def generate_random_adjacency_dict(node_id, total_nodes, max_weight, seed=None):
+    def generate_random_adjacency_dict(node_id: int, total_nodes: int,
+                                       max_weight: int, seed: int = None):
         """
         Returns randomly generated adjacency dict for an instance of a node.
         The generated adjacency list can contain a connection to any node
