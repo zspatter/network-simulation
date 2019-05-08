@@ -1,6 +1,6 @@
 import heapq
 
-import network_simulator.Dijkstra as D
+from network_simulator.Dijkstra import Dijkstra
 
 
 class OrganAllocator:
@@ -31,7 +31,7 @@ class OrganAllocator:
                 recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)
             else:
                 source = organ.origin_location
-                dijkstra = D.Dijkstra(network, source)
+                dijkstra = Dijkstra(network, source)
                 recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)
 
             if recipient:

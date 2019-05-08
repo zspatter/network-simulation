@@ -1,7 +1,7 @@
 import random
 
-import network_simulator.BloodType as bT
-import network_simulator.Patient as P
+from network_simulator.BloodType import BloodType
+from network_simulator.Patient import Patient
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 
@@ -26,11 +26,11 @@ class PatientGenerator:
         nodes = graph.nodes()
 
         for x in range(n):
-            temp = P.Patient(patient_name="generated patient #" + str(x + 1),
-                             illness="N/A",
-                             organ_needed=OrganType.get_organ_type().value,
-                             blood_type=bT.BloodType(BloodTypeLetter.get_blood_type(),
-                                                     BloodTypePolarity.get_blood_polarity()),
-                             priority=random.randrange(100 + n),
-                             location=random.choice(nodes),
-                             wait_list=wait_list)
+            temp = Patient(patient_name="generated patient #" + str(x + 1),
+                           illness="N/A",
+                           organ_needed=OrganType.get_organ_type().value,
+                           blood_type=BloodType(BloodTypeLetter.get_blood_type(),
+                                                BloodTypePolarity.get_blood_polarity()),
+                           priority=random.randrange(100 + n),
+                           location=random.choice(nodes),
+                           wait_list=wait_list)

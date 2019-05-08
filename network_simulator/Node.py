@@ -79,6 +79,3 @@ class Node:
                     string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
                         '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'
-        else:
-            return f'Node ID: #{self.node_id} is inactive and cannot ' \
-                f'be converted to a string.'
