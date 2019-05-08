@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, List
+from typing import List, Tuple
 
 from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType
@@ -17,7 +17,7 @@ class Organ:
 
     # TODO: can't type organ_list?
     def __init__(self, organ_type: int, blood_type: BloodType,
-                 location: int, organ_list: Optional[List[Organ]] = None):
+                 location: int, organ_list: [List[Organ]] = None):
         Organ.organ_count = Organ.organ_count + 1
         self.organ_id = Organ.organ_count
         self.organ_type = organ_type
@@ -29,7 +29,7 @@ class Organ:
         if organ_list:
             organ_list.add_organ(self)
 
-    def move_organ(self, new_location: int, cost: int, shortest_path: List[int]):
+    def move_organ(self, new_location: int, cost: int, shortest_path: Tuple[List[int], int]):
         """
         This function allows an organ's attributes to be altered to represent it's
         transportation across the network. This is intended to be used with
