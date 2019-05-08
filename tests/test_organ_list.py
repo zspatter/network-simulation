@@ -3,7 +3,7 @@ from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, B
 from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
 
-o_neg = BloodType(BloodTypeLetter.value, BloodTypePolarity.NEG.value)
+o_neg = BloodType(BloodTypeLetter.O.value, BloodTypePolarity.NEG.value)
 
 
 def test__init__():
