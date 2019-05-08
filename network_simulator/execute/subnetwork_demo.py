@@ -1,10 +1,9 @@
 from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.PatientGenerator import PatientGenerator
 from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.WaitList import WaitList
 from network_simulator.OrganList import OrganList
+from network_simulator.PatientGenerator import PatientGenerator
 from network_simulator.SubnetworkGenerator import SubnetworkGenerator
-
+from network_simulator.WaitList import WaitList
 
 network = GraphBuilder.graph_builder(20)
 wait_list = WaitList()
@@ -16,7 +15,6 @@ OrganGenerator.generate_organs(network, 5, organ_list)
 print(network)
 print(wait_list)
 print(organ_list)
-
 
 # print(isinstance(wait_list, WaitList), isinstance(organ_list, OrganList))
 # print(type(wait_list), type(organ_list))

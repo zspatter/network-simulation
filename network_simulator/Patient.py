@@ -11,7 +11,7 @@ class Patient:
     patient_count = 0
 
     def __init__(self, patient_name, illness, organ_needed, blood_type, priority,
-            location, wait_list=None):
+                 location, wait_list=None):
         Patient.patient_count = Patient.patient_count + 1
         self.patient_id = Patient.patient_count
         self.patient_name = patient_name

@@ -1,8 +1,8 @@
 import random
 
 from network_simulator.BloodType import BloodType
-from network_simulator.Patient import Patient
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.Patient import Patient
 
 
 class PatientGenerator:

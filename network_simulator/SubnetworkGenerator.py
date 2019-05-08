@@ -1,6 +1,7 @@
-from network_simulator.WaitList import WaitList
-from network_simulator.OrganList import OrganList
 import copy
+
+from network_simulator.OrganList import OrganList
+from network_simulator.WaitList import WaitList
 
 
 class SubnetworkGenerator:
