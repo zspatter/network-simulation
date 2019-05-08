@@ -1,6 +1,6 @@
 import heapq
 
-import network_simulator.PatientGenerator as gP
+from network_simulator.PatientGenerator import PatientGenerator
 
 
 class WaitList:
@@ -72,7 +72,7 @@ class WaitList:
         :param Network graph: network for patients to be allocated to
         :param int n: number of patients to generate
         """
-        gP.PatientGenerator.generate_patients(graph, n, self)
+        PatientGenerator.generate_patients(graph, n, self)
 
     def __str__(self):
         string = ''
