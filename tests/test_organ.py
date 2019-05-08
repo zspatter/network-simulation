@@ -1,9 +1,9 @@
-import network_simulator.Organ as o
 from network_simulator.CompatibilityMarkers import OrganType
+from network_simulator.Organ import Organ
 
 
 def test_move_organ():
-    test_organ = o.Organ(organ_type=OrganType.Heart.value, blood_type='NA', location=1)
+    test_organ = Organ(organ_type=OrganType.Heart.value, blood_type='NA', location=1)
 
     # tests initial values
     assert test_organ.current_location is 1
@@ -27,9 +27,9 @@ def test_move_organ():
 
 
 def test_get_viability():
-    assert o.Organ.get_viability(OrganType.Heart.value) == 60
-    assert o.Organ.get_viability(OrganType.Kidney.value) == 300
-    assert o.Organ.get_viability(OrganType.Liver.value) == 120
-    assert o.Organ.get_viability(OrganType.Lungs.value) == 60
-    assert o.Organ.get_viability(OrganType.Pancreas.value) == 120
-    assert o.Organ.get_viability(OrganType.Intestines.value) == 80
+    assert Organ.get_viability(OrganType.Heart.value) == 60
+    assert Organ.get_viability(OrganType.Kidney.value) == 300
+    assert Organ.get_viability(OrganType.Liver.value) == 120
+    assert Organ.get_viability(OrganType.Lungs.value) == 60
+    assert Organ.get_viability(OrganType.Pancreas.value) == 120
+    assert Organ.get_viability(OrganType.Intestines.value) == 80

@@ -1,4 +1,4 @@
-import network_simulator.Node as n
+from network_simulator.Node import Node
 
 
 def test_is_adjacent():
@@ -8,7 +8,7 @@ def test_is_adjacent():
     assert phase:
     :return:
     """
-    node1 = n.Node(1, 'A', {2: {'weight': 3, 'status': True}})
+    node1 = Node(1, 'A', {2: {'weight': 3, 'status': True}})
 
     assert node1.is_adjacent(2)
     assert not node1.is_adjacent(3)
@@ -21,7 +21,7 @@ def test_get_adjacents():
                       4: {'weight': 4, 'status': True},
                       5: {'weight': 2, 'status': True}}
 
-    node_1 = n.Node(1, 'A', adjacency_dict)
+    node_1 = Node(1, 'A', adjacency_dict)
 
     adjacents = node_1.get_adjacents()
     assert len(adjacents) is len(adjacency_dict)
@@ -36,7 +36,7 @@ def test_str():
                       4: {'weight': 4, 'status': True},
                       5: {'weight': 2, 'status': True}}
 
-    node_1 = n.Node(1, 'A', adjacency_dict)
+    node_1 = Node(1, 'A', adjacency_dict)
     string = node_1.__str__()
 
     for key in node_1.get_adjacents():

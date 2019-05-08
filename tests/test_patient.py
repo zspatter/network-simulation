@@ -1,12 +1,12 @@
 import copy
 
-import network_simulator.BloodType as bT
-import network_simulator.Patient as p
+from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.Patient import Patient
 
-blood_type = bT.BloodType(BloodTypeLetter.A, BloodTypePolarity.POS)
-patient1 = p.Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 200, 1)
-patient2 = p.Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 100, 1)
+blood_type = BloodType(BloodTypeLetter.A, BloodTypePolarity.POS)
+patient1 = Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 200, 1)
+patient2 = Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 100, 1)
 patient2.patient_id = patient1.patient_id
 
 

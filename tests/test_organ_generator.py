@@ -1,14 +1,14 @@
-import network_simulator.Network as net
-import network_simulator.OrganGenerator as gO
-import network_simulator.OrganList as oL
+from network_simulator.Network import Node, Network
+from network_simulator.OrganGenerator import OrganGenerator
+from network_simulator.OrganList import OrganList
 
 
 def test_generate_organs():
-    test_net = net.Network()
-    test_net.add_node(net.Node(1))
-    organ_list = oL.OrganList()
+    test_net = Network()
+    test_net.add_node(Node(1))
+    organ_list = OrganList()
     n = 3
-    gO.OrganGenerator.generate_organs(graph=test_net, n=n, organ_list=organ_list)
+    OrganGenerator.generate_organs(graph=test_net, n=n, organ_list=organ_list)
 
     assert len(organ_list.organ_list) <= n * 6
 
