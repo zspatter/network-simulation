@@ -3,8 +3,10 @@ __pycache__/Node.cpython-37.pyc
 __pycache__/Network.cpython-37.pyc
 *__pycache__/*.pyc
 *.pyc
+.cpython-37.pyc
+network_simulator/__pycache__/*
+network_simulator/execute/__pycache__/*
+tests/__pycache__/*
 
 .DS_Store
 .idea/*
-Network_Simulator/__pycache__/*
-Tests/__pycache__/*
