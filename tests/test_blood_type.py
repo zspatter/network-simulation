@@ -48,11 +48,11 @@ def test_is_compatible_recipient():
 
 def test__eq__():
     assert o_neg == o_neg
-    assert not(o_neg == o_pos)
-    assert not(o_neg == 3.14)
+    assert not o_neg == o_pos
+    assert not o_neg == 3.14
     
 
 def test__ne__():
     assert o_neg != o_pos
-    assert not(o_neg != o_neg)
+    assert not o_neg != o_neg
     assert o_neg != 3.14
