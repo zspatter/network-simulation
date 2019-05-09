@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import List
-
 from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType
 
@@ -16,8 +14,8 @@ class Patient:
     patient_count = 0
 
     def __init__(self, patient_name: str, illness: str, organ_needed: OrganType,
-                 blood_type: BloodType, priority: int, location: int,
-                 wait_list: [List[Patient]] = None):
+            blood_type: BloodType, priority: int, location: int,
+            wait_list: 'WaitList' = None):
         Patient.patient_count = Patient.patient_count + 1
         self.patient_id = Patient.patient_count
         self.patient_name = patient_name
