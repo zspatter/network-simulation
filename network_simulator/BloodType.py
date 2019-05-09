@@ -61,7 +61,7 @@ class BloodType:
         """
         if isinstance(other, BloodType):
             return self.blood_type_letter.value is other.blood_type_letter.value \
-                   and self.blood_type_polarity.value is other.blood_type_letter.value
+                   and self.blood_type_polarity.value is other.blood_type_polarity.value
         
         return NotImplemented
     
@@ -74,6 +74,6 @@ class BloodType:
         """
         if isinstance(other, BloodType):
             return not (self.blood_type_letter.value is other.blood_type_letter.value
-                        and self.blood_type_polarity.value is other.blood_type_letter.value)
+                        and self.blood_type_polarity.value is other.blood_type_polarity.value)
         
         return NotImplemented
