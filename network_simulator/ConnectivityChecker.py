@@ -25,7 +25,7 @@ class ConnectivityChecker:
         :return: bool indicating graph connectivity
         :rtype: bool
         """
-        if nodes_encountered is None:
+        if not nodes_encountered:
             nodes_encountered = set()
         nodes = network.nodes()
         if not source:
@@ -101,7 +101,7 @@ class ConnectivityChecker:
             # all adjacents of current node are checked, if the node hasn't been
             # enqueued previously, node is enqueued and added to nodes_encountered
             for node in network.network_dict[node_id].get_adjacents():
-                if visited[node] is None:
+                if not visited[node]:
                     queue.append(node)
                     visited[node] = True
                     nodes_encountered.add(node)

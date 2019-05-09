@@ -23,7 +23,7 @@ class Network:
         :param dict network_dict: {int node_id: Node, ...} (None by default)
         """
 
-        if network_dict is None:
+        if not network_dict:
             network_dict = {}
 
         to_remove = list()
