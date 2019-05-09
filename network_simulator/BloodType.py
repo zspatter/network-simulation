@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
+
 
 class BloodType:
     """
@@ -8,7 +10,7 @@ class BloodType:
     Possible blood types: O-, O+, A-, A+, B-, B+, AB-, AB+
     """
 
-    def __init__(self, blood_type_letter, blood_type_polarity):
+    def __init__(self, blood_type_letter: BloodTypeLetter, blood_type_polarity: BloodTypePolarity):
         self.blood_type_letter = blood_type_letter
         self.blood_type_polarity = blood_type_polarity
 
