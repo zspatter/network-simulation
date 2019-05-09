@@ -13,7 +13,7 @@ class Network:
     """
 
     def __init__(self, network_dict: Dict[int, Node] = None,
-            label: str = 'Default network label'):
+                 label: str = 'Default network label'):
         """
         Creates an instance of a Network. This function ensures that
         the adjacency dicts of nodes mirror each other (undirected graph).

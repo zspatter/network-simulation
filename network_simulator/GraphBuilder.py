@@ -36,7 +36,7 @@ class GraphBuilder:
 
     @staticmethod
     def generate_random_adjacency_dict(node_id: int, total_nodes: int,
-            max_weight: int, seed: int = None):
+                                       max_weight: int, seed: int = None):
         """
         Returns randomly generated adjacency dict for an instance of a node.
         The generated adjacency list can contain a connection to any node

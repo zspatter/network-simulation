@@ -13,7 +13,7 @@ class ConnectivityChecker:
 
     @staticmethod
     def is_connected(network: Network, nodes_encountered: Set[int] = None,
-            source: int = None):
+                     source: int = None):
         """
         Returns bool indicating graph connectivity (path between all nodes).
         This is a recursive DFS.

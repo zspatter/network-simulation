@@ -16,7 +16,7 @@ class Organ:
     organ_count = 0
 
     def __init__(self, organ_type: int, blood_type: BloodType,
-            location: int, organ_list: 'OrganList' = None):
+                 location: int, organ_list: 'OrganList' = None):
         Organ.organ_count = Organ.organ_count + 1
         self.organ_id = Organ.organ_count
         self.organ_type = organ_type
