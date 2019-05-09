@@ -21,7 +21,7 @@ class SubnetworkGenerator:
                 if x.origin_location not in active_nodes:
                     active_nodes.add(x.origin_location)
         else:
-            return None
+            return NotImplemented
 
         for node in active_nodes:
             subnetwork.mark_node_active(node, feedback=False)
