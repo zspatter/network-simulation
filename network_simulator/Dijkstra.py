@@ -10,14 +10,14 @@ class Dijkstra:
 
     This can find all shortest paths from a given source node to all other nodes.
     """
-
+    
     def __init__(self, graph: Network, source: int):
         self.weight: Dict[int, int]
         self.previous: Dict[int, int]
-
+        
         self.source: int = source
         self.weight, self.previous = Dijkstra.dijkstra(graph, source)
-
+    
     @staticmethod
     def dijkstra(graph: Network, source: int):
         """
@@ -41,13 +41,13 @@ class Dijkstra:
         weight = dict.fromkeys(graph.nodes(), float('inf'))
         previous = dict.fromkeys(graph.nodes(), None)
         weight[source] = 0
-
+        
         # while there are nodes which haven't been visited
         while unvisited:
             # picks the unvisited node with the shortest weight to visit next
             current_node = Dijkstra.minimum_unvisited_distance(unvisited, weight)
             unvisited.remove(current_node)
-
+            
             # looks at all of the current node's adjacents
             for adjacent in graph.network_dict[current_node].get_adjacents():
                 alt_weight = weight[current_node] + \
@@ -56,9 +56,9 @@ class Dijkstra:
                 if alt_weight < weight[adjacent]:
                     weight[adjacent] = alt_weight
                     previous[adjacent] = current_node
-
+        
         return weight, previous
-
+    
     @staticmethod
     def minimum_unvisited_distance(unvisited: List[int], weight: Dict[int, float]):
         """
@@ -73,14 +73,14 @@ class Dijkstra:
         """
         min_weight = float('inf')
         min_node = unvisited[0]
-
+        
         for node in unvisited:
             if weight[node] < min_weight:
                 min_weight = weight[node]
                 min_node = node
-
+        
         return min_node
-
+    
     def shortest_path(self, destination: int):
         """
         Returns both the shortest path and the cost of said path between
@@ -96,21 +96,21 @@ class Dijkstra:
         if self.weight[destination] == float('inf'):
             print('No paths (check connectivity to source)')
             return None, float('inf')
-
+        
         # set current node to destination and add to path (where reverse path starts)
         current = destination
         path = [current]
-
+        
         # while there is a previous node, append previous to path
         while current:
             current = self.previous[current]
             if current:
                 path.append(current)
-
+        
         # reverse path and return
         path = path[::-1]
         return path, self.weight[destination]
-
+    
     def all_shortest_paths(self):
         """
         Harnesses the functionality of shortest_path() to gather all shortest
@@ -121,5 +121,5 @@ class Dijkstra:
         shortest_paths = {}
         for key in self.weight:
             shortest_paths[key] = (self.shortest_path(key))
-
+        
         return shortest_paths

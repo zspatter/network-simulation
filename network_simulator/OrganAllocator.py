@@ -15,7 +15,7 @@ class OrganAllocator:
     Organs are matched to the patient with the highest priority value
     who is a compatible recipient (blood type)
     """
-
+    
     @staticmethod
     def allocate_organs(organ_list: OrganList, wait_list: WaitList, network: Network):
         """
@@ -30,7 +30,7 @@ class OrganAllocator:
         # ANSI codes to emphasize output
         bold, reset = '\033[1m', '\033[0m'
         source, recipient = None, None
-
+        
         for organ in organ_list.organ_list:
             if organ.origin_location is source:
                 recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)
@@ -38,17 +38,17 @@ class OrganAllocator:
                 source = organ.origin_location
                 dijkstra = Dijkstra(network, source)
                 recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)
-
+            
             if recipient:
                 organ.move_organ(recipient.location, dijkstra.weight[recipient.location],
                                  dijkstra.shortest_path(recipient.location))
                 wait_list.remove_patient(recipient)
                 print(f'\n{bold}The following pair have been united:{reset}'
                       f'\n{recipient.__str__()}{organ.__str__()}')
-
+            
             # organ is always removed (either matched, or exceeds max viability)
             organ_list.empty_list()
-
+    
     @staticmethod
     def find_best_match(organ: Organ, wait_list: WaitList, weights: Dict[int, int]):
         """
@@ -65,13 +65,13 @@ class OrganAllocator:
         # ANSI codes to emphasize output
         bold_red, red, reset = '\033[31;1m', '\033[31m', '\033[0m'
         matches = wait_list.get_prioritized_patients(organ)
-
+        
         # returns the patient with the highest priority within acceptable proximity
         while len(matches) != 0:
             patient = heapq._heappop_max(matches)
             if organ.viability >= weights[patient.location] - 10:
                 return patient
-
+        
         # in the event there are no matches
         print(f'\n{bold_red}The following organ has no suitable matches:'
               f'\n{red}{organ.__str__()}{reset}')

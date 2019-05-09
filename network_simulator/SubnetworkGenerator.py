@@ -11,7 +11,7 @@ class SubnetworkGenerator:
         subnetwork = SubnetworkGenerator.copy_network(network)
         SubnetworkGenerator.mark_network_inactive(subnetwork)
         active_nodes = set()
-
+        
         if isinstance(collection, WaitList):
             for x in collection.wait_list:
                 if x.location not in active_nodes:
@@ -22,16 +22,16 @@ class SubnetworkGenerator:
                     active_nodes.add(x.origin_location)
         else:
             return NotImplemented
-
+        
         for node in active_nodes:
             subnetwork.mark_node_active(node, feedback=False)
-
+        
         return subnetwork
-
+    
     @staticmethod
     def copy_network(network: Network):
         return copy.deepcopy(network)
-
+    
     @staticmethod
     def mark_network_inactive(network: Network):
         for node in network.nodes():

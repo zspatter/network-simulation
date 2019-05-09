@@ -14,11 +14,11 @@ class Organ:
     type matching, and a location.
     """
     organ_count = 0
-
+    
     def __init__(self, organ_type: int, blood_type: BloodType,
                  location: int, organ_list: 'OrganList' = None):
         Organ.organ_count = Organ.organ_count + 1
-
+        
         self.organ_id: int = Organ.organ_count
         self.organ_type: int = organ_type
         self.blood_type: BloodType = blood_type
@@ -26,10 +26,10 @@ class Organ:
         self.origin_location: int = location
         self.current_location: int = location
         self.path: List[int] = [location]
-
+        
         if organ_list:
             organ_list.add_organ(self)
-
+    
     def move_organ(self, new_location: int, cost: int, shortest_path: Tuple[List[int], int]):
         """
         This function allows an organ's attributes to be altered to represent it's
@@ -47,7 +47,7 @@ class Organ:
         self.path = path
         self.current_location = new_location
         self.viability -= cost
-
+    
     @staticmethod
     def get_viability(organ_type: int):
         """
@@ -58,15 +58,16 @@ class Organ:
         :param int organ_type: constant corresponding to an organ type
         :return: int viability rating (used in __init__())
         """
-        viability = {str(OrganType.Heart.value): 60,
-                     str(OrganType.Kidney.value): 300,
-                     str(OrganType.Liver.value): 120,
-                     str(OrganType.Lungs.value): 60,
-                     str(OrganType.Pancreas.value): 120,
-                     str(OrganType.Intestines.value): 80}
-
+        viability = {
+            str(OrganType.Heart.value)     : 60,
+            str(OrganType.Kidney.value)    : 300,
+            str(OrganType.Liver.value)     : 120,
+            str(OrganType.Lungs.value)     : 60,
+            str(OrganType.Pancreas.value)  : 120,
+            str(OrganType.Intestines.value): 80}
+        
         return viability[str(organ_type)]
-
+    
     def __str__(self):
         """
         Builds an easily readable string representing an organ

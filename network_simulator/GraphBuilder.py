@@ -9,7 +9,7 @@ class GraphBuilder:
     A class that builds networks with variable number of nodes
     and random adjacency lists
     """
-
+    
     @staticmethod
     def graph_builder(n: int, max_weight: int = None, seed: int = None):
         """
@@ -22,18 +22,18 @@ class GraphBuilder:
         :return: randomly generated network with N nodes
         :rtype: Network
         """
-
+        
         network_dict = {}
         if not max_weight:
             max_weight = 50
-
+        
         for x in range(1, n + 1):
             adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, max_weight, seed)
             node = Node(x, 'Node #' + str(x), adjacency_dict)
             network_dict[x] = node
         network = Network(network_dict)
         return network
-
+    
     @staticmethod
     def generate_random_adjacency_dict(node_id: int, total_nodes: int,
                                        max_weight: int, seed: int = None):
@@ -55,15 +55,15 @@ class GraphBuilder:
         :return: randomly generated adjacency_dict
         :rtype: dict
         """
-
+        
         # prevents infinite loop resulting from fewer total nodes than randomly generated bound
         adjacent_bound = 10
         bound = total_nodes - 1 if total_nodes <= adjacent_bound else adjacent_bound
-
+        
         # feeds random seed if parameter is passed
         if seed:
             random.seed(seed)
-
+        
         adjacency_dict = {}
         for n in range(random.randint(3, bound)):
             random_node = random.randint(1, total_nodes)
@@ -72,8 +72,9 @@ class GraphBuilder:
             while node_id == random_node \
                     or any(random_node == x for x in adjacency_dict.keys()):
                 random_node = random.randint(1, total_nodes)
-
+            
             # updates adjacency dict to new format
-            adjacency_dict[random_node] = {'weight': random.randint(1, max_weight),
-                                           'status': True}
+            adjacency_dict[random_node] = {
+                'weight': random.randint(1, max_weight),
+                'status': True}
         return adjacency_dict
