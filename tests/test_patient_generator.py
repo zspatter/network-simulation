@@ -9,7 +9,7 @@ def test_generate_patients():
     wait_list = WaitList()
     n = 3
     PatientGenerator.generate_patients(graph=test_net, n=n, wait_list=wait_list)
-
+    
     assert len(wait_list.wait_list) is n
     for patient in wait_list.wait_list:
         assert 0 <= patient.organ_needed <= 5

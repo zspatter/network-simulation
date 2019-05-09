@@ -14,7 +14,7 @@ def test__eq__():
     patient2_clone = copy.deepcopy(patient2)
     patient2_clone.patient_id = patient1.patient_id
     patient2_clone.priority = patient1.priority
-
+    
     assert patient1.__eq__(patient2_clone)
     assert patient2_clone.__eq__(patient2_clone)
     assert not patient2.__eq__(patient2_clone)

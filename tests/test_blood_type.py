@@ -33,7 +33,7 @@ invalid_matches = [(o_pos, o_neg), (o_pos, a_neg), (o_pos, b_neg), (o_pos, ab_ne
 def test_is_compatible_donor():
     for donor, recipient in valid_matches:
         assert donor.is_compatible_donor(recipient)
-
+    
     for donor, recipient in invalid_matches:
         assert not donor.is_compatible_donor(recipient)
 
@@ -41,6 +41,6 @@ def test_is_compatible_donor():
 def test_is_compatible_recipient():
     for donor, recipient in valid_matches:
         assert recipient.is_compatible_recipient(donor)
-
+    
     for donor, recipient in invalid_matches:
         assert not recipient.is_compatible_recipient(donor)
