@@ -34,7 +34,7 @@ class Node:
             for key in adjacency_dict:
                 adjacency_dict[key]['status'] = False
         
-        if not status:
+        if status is None:
             status = True
         self.status = status
     
