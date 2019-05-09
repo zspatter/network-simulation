@@ -7,7 +7,7 @@ from network_simulator.WaitList import WaitList
 
 class SubnetworkGenerator:
     @staticmethod
-    def generate_subnetwork(network: Network, collection: list):
+    def generate_subnetwork(network: Network, collection):
         subnetwork = SubnetworkGenerator.copy_network(network)
         SubnetworkGenerator.mark_network_inactive(subnetwork)
         active_nodes = set()
