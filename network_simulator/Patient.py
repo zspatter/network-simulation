@@ -17,13 +17,14 @@ class Patient:
                  blood_type: BloodType, priority: int, location: int,
                  wait_list: 'WaitList' = None):
         Patient.patient_count = Patient.patient_count + 1
-        self.patient_id = Patient.patient_count
-        self.patient_name = patient_name
-        self.illness = illness
-        self.organ_needed = organ_needed
-        self.blood_type = blood_type
-        self.priority = priority
-        self.location = location
+
+        self.patient_id: int = Patient.patient_count
+        self.patient_name: str = patient_name
+        self.illness: str = illness
+        self.organ_needed: OrganType = organ_needed
+        self.blood_type: BloodType = blood_type
+        self.priority: int = priority
+        self.location: int = location
         if wait_list:
             wait_list.add_patient(self)
 

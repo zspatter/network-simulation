@@ -11,8 +11,8 @@ class BloodType:
     """
 
     def __init__(self, blood_type_letter: BloodTypeLetter, blood_type_polarity: BloodTypePolarity):
-        self.blood_type_letter = blood_type_letter
-        self.blood_type_polarity = blood_type_polarity
+        self.blood_type_letter: BloodTypeLetter = blood_type_letter
+        self.blood_type_polarity: BloodTypePolarity = blood_type_polarity
 
     def is_compatible_donor(self, blood_type: BloodType):
         """

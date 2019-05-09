@@ -21,9 +21,12 @@ class Node:
         :param bool status: flag indicating whether a node is active or inactive
             (None by default)
         """
-        self.node_id = node_id
-        self.label = label
-        if adjacency_dict is None:
+        self.node_id: int = node_id
+        self.label: str = label
+        self.adjacency_dict: Dict[int, dict]
+        self.status: bool
+
+        if not adjacency_dict:
             adjacency_dict = {}
         self.adjacency_dict = adjacency_dict
 
@@ -31,7 +34,7 @@ class Node:
             for key in adjacency_dict:
                 adjacency_dict[key]['status'] = False
 
-        if status is None:
+        if not status:
             status = True
         self.status = status
 

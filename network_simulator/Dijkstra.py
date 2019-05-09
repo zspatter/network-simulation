@@ -12,7 +12,10 @@ class Dijkstra:
     """
 
     def __init__(self, graph: Network, source: int):
-        self.source = source
+        self.weight: Dict[int, int]
+        self.previous: Dict[int, int]
+
+        self.source: int = source
         self.weight, self.previous = Dijkstra.dijkstra(graph, source)
 
     @staticmethod

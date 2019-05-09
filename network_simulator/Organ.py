@@ -18,13 +18,15 @@ class Organ:
     def __init__(self, organ_type: int, blood_type: BloodType,
                  location: int, organ_list: 'OrganList' = None):
         Organ.organ_count = Organ.organ_count + 1
-        self.organ_id = Organ.organ_count
-        self.organ_type = organ_type
-        self.blood_type = blood_type
-        self.viability = Organ.get_viability(self.organ_type)
-        self.origin_location = location
-        self.current_location = location
-        self.path = [location]
+
+        self.organ_id: int = Organ.organ_count
+        self.organ_type: int = organ_type
+        self.blood_type: BloodType = blood_type
+        self.viability: int = Organ.get_viability(self.organ_type)
+        self.origin_location: int = location
+        self.current_location: int = location
+        self.path: List[int] = [location]
+
         if organ_list:
             organ_list.add_organ(self)
 

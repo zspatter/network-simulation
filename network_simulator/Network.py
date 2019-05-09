@@ -38,8 +38,8 @@ class Network:
         for node, adjacent in to_remove:
             del network_dict[node].adjacency_dict[adjacent]
 
-        self.network_dict = network_dict
-        self.label = label
+        self.network_dict: Dict[int, Node] = network_dict
+        self.label: str = label
 
     @staticmethod
     def mirror_adjacency_dicts(network_dict: Dict[int, Node], node: int, to_remove: List[int]):

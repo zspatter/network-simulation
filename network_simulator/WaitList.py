@@ -22,6 +22,9 @@ class WaitList:
         :param list wait_list: optional wait_list parameter (if preexisting list exists)
         :param str label: label for the list/collection of patients
         """
+        self.wait_list: list
+        self.label: str
+
         if not wait_list:
             wait_list = list()
 

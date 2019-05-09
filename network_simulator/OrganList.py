@@ -19,6 +19,9 @@ class OrganList:
         :param list organ_list: optional organ_list parameter (if preexisting list exists)
         :param str label: label for the list/collection of organs
         """
+        self.organ_list: list
+        self.label: str
+
         if not organ_list:
             organ_list = list()
 
