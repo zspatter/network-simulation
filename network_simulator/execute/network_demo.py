@@ -37,9 +37,9 @@ node_3 = Node(3, 'C',
                6: {'weight': 4, 'status': True},
                7: {'weight': 3, 'status': True}})
 node_4 = Node(4, 'D',
-              {2: {'weight': 2, 'status': True},
-               3: {'weight': 2, 'status': True},
-               6: {'weight': 8, 'status': True},
+              {2:  {'weight': 2, 'status': True},
+               3:  {'weight': 2, 'status': True},
+               6:  {'weight': 8, 'status': True},
                10: {'weight': 4, 'status': True}})
 node_5 = Node(5, 'E',
               {1: {'weight': 4, 'status': True},
@@ -47,14 +47,14 @@ node_5 = Node(5, 'E',
                8: {'weight': 3, 'status': True},
                9: {'weight': 4, 'status': True}})
 node_6 = Node(6, 'F',
-              {3: {'weight': 4, 'status': True},
-               4: {'weight': 8, 'status': True},
-               9: {'weight': 8, 'status': True},
+              {3:  {'weight': 4, 'status': True},
+               4:  {'weight': 8, 'status': True},
+               9:  {'weight': 8, 'status': True},
                10: {'weight': 2, 'status': True}})
 node_7 = Node(7, 'G',
-              {2: {'weight': 9, 'status': True},
-               3: {'weight': 3, 'status': True},
-               8: {'weight': 2, 'status': True},
+              {2:  {'weight': 9, 'status': True},
+               3:  {'weight': 3, 'status': True},
+               8:  {'weight': 2, 'status': True},
                10: {'weight': 5, 'status': True}})
 node_8 = Node(8, 'H',
               {2: {'weight': 10, 'status': True},
@@ -73,15 +73,15 @@ node_10 = Node(10, 'J',
                 7: {'weight': 5, 'status': True}})
 
 # create a network consisting of the nodes above
-network_1 = Network({node_1.node_id: node_1,
-                     node_2.node_id: node_2,
-                     node_3.node_id: node_3,
-                     node_4.node_id: node_4,
-                     node_5.node_id: node_5,
-                     node_6.node_id: node_6,
-                     node_7.node_id: node_7,
-                     node_8.node_id: node_8,
-                     node_9.node_id: node_9,
+network_1 = Network({node_1.node_id:  node_1,
+                     node_2.node_id:  node_2,
+                     node_3.node_id:  node_3,
+                     node_4.node_id:  node_4,
+                     node_5.node_id:  node_5,
+                     node_6.node_id:  node_6,
+                     node_7.node_id:  node_7,
+                     node_8.node_id:  node_8,
+                     node_9.node_id:  node_9,
                      node_10.node_id: node_10})
 
 # demonstrates __str__() function works
@@ -105,8 +105,8 @@ print(network_1)
 # demonstrates the add node function works
 print('\t---ADD NODE---')
 network_1.add_node(Node(11, 'K',
-                        {1: {'weight': 3, 'status': True},
-                         2: {'weight': 4, 'status': True},
+                        {1:  {'weight': 3, 'status': True},
+                         2:  {'weight': 4, 'status': True},
                          10: {'weight': 8, 'status': True}}))
 print(network_1)
 
@@ -128,7 +128,8 @@ print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
 print(
-    '\nIterative breadth_first_search: ' + str(ConnectivityChecker.breadth_first_search(network_1)))
+        '\nIterative breadth_first_search: ' + str(
+                ConnectivityChecker.breadth_first_search(network_1)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -152,19 +153,20 @@ print(disconnected_network)
 
 start = time.time_ns()
 print(
-    'Recursive depth_first_search: ' + str(ConnectivityChecker.is_connected(disconnected_network)))
+        'Recursive depth_first_search: ' + str(
+                ConnectivityChecker.is_connected(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
 print('\nIterative depth_first_search: ' + str(
-    ConnectivityChecker.depth_first_search(disconnected_network)))
+        ConnectivityChecker.depth_first_search(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start))
 
 start = time.time_ns()
 print('\nIterative breadth_first_search: ' + str(
-    ConnectivityChecker.breadth_first_search(disconnected_network)))
+        ConnectivityChecker.breadth_first_search(disconnected_network)))
 end = time.time_ns()
 print('\telapsed time: ' + str(end - start) + '\n\n===============================\n')
 
@@ -239,7 +241,7 @@ print('\nDisconnected through inactive edges:')
 print('\tRecursive depth_first_search: ' + str(ConnectivityChecker.is_connected(init_tester)))
 print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(init_tester)))
 print('\tIterative breadth_first_search: ' + str(
-    ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
+        ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
 init_tester.mark_node_inactive(1)
 
@@ -247,7 +249,7 @@ print('\nDisconnected node made inactive (reconnecting graph):')
 print('\tRecursive depth_first_search: ' + str(ConnectivityChecker.is_connected(init_tester)))
 print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_search(init_tester)))
 print('\tIterative breadth_first_search: ' + str(
-    ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
+        ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
 """
 The following section briefly tests generated networks and the iterative
@@ -261,7 +263,7 @@ print(generated_network)
 
 start = time.time_ns()
 print('\n\tIterative breadth_first_search: ' + str(
-    ConnectivityChecker.breadth_first_search(generated_network)))
+        ConnectivityChecker.breadth_first_search(generated_network)))
 end = time.time_ns()
 print('\t\telapsed time: ' + str(end - start))
 

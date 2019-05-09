@@ -59,11 +59,11 @@ class Organ:
         :return: int viability rating (used in __init__())
         """
         viability = {
-            str(OrganType.Heart.value)     : 60,
-            str(OrganType.Kidney.value)    : 300,
-            str(OrganType.Liver.value)     : 120,
-            str(OrganType.Lungs.value)     : 60,
-            str(OrganType.Pancreas.value)  : 120,
+            str(OrganType.Heart.value):      60,
+            str(OrganType.Kidney.value):     300,
+            str(OrganType.Liver.value):      120,
+            str(OrganType.Lungs.value):      60,
+            str(OrganType.Pancreas.value):   120,
             str(OrganType.Intestines.value): 80}
         
         return viability[str(organ_type)]
