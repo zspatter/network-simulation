@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import heapq
-from typing import List, Optional
 
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
@@ -13,16 +14,21 @@ class WaitList:
     a donation. This list accepts all patients in need of organs (generic)
     """
 
-    def __init__(self, wait_list: Optional[List[Patient]] = None):
+    def __init__(self, wait_list: WaitList = None, label: str = None):
         """
         Creates a WaitList object. If no wait_list parameter is provided,
         an empty list is created
 
         :param list wait_list: optional wait_list parameter (if preexisting list exists)
+        :param str label: label for the list/collection of patients
         """
-        if wait_list is None:
+        if not wait_list:
             wait_list = list()
 
+        if not label:
+            label = 'Default list of patients'
+
+        self.label = label
         self.wait_list = wait_list
 
     def get_prioritized_patients(self, organ: Organ):
