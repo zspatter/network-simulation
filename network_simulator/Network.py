@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List
+from typing import Dict, List
 
 from network_simulator.Node import Node
 from network_simulator.exceptions import GraphElementError
@@ -12,8 +12,8 @@ class Network:
     nodes contained within the graph.
     """
 
-    def __init__(self, network_dict: Optional[Dict[int, Node]] = None,
-                 label: str = 'Default network label'):
+    def __init__(self, network_dict: Dict[int, Node] = None,
+            label: str = 'Default network label'):
         """
         Creates an instance of a Network. This function ensures that
         the adjacency dicts of nodes mirror each other (undirected graph).

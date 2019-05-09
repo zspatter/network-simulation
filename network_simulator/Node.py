@@ -1,4 +1,4 @@
-from typing import Optional, Dict
+from typing import Dict
 
 
 class Node:
@@ -10,7 +10,7 @@ class Node:
     """
 
     def __init__(self, node_id: int, label: str = 'Default node label',
-                 adjacency_dict: Optional[Dict[int, dict]] = None, status: Optional[bool] = None):
+            adjacency_dict: Dict[int, dict] = None, status: bool = None):
         """
         Creates an instance of a Node
 
