@@ -30,7 +30,7 @@ def test_allocate_organs():
     node1 = Node(1, adjacency_dict={2: {'weight': 10, 'status': True},
                                     3: {'weight': 25, 'status': True}})
     node2 = Node(2, adjacency_dict={3: {'weight': 35, 'status': True}})
-    node3 = Node(3, {})
+    node3 = Node(3)
     test_net = Network({1: node1, 2: node2, 3: node3})
     
     OrganAllocator.allocate_organs(organ_list, wait_list, test_net)
@@ -58,7 +58,7 @@ def test_find_best_match():
     node1 = Node(1, adjacency_dict={2: {'weight': 10, 'status': True},
                                     3: {'weight': 25, 'status': True}})
     node2 = Node(2, adjacency_dict={3: {'weight': 35, 'status': True}})
-    node3 = Node(3, {})
+    node3 = Node(3)
     test_net = Network({1: node1, 2: node2, 3: node3})
     weights, paths = Dijkstra.dijkstra(test_net, 1)
     
