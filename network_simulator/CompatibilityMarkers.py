@@ -22,7 +22,7 @@ class OrganType(Enum):
     Intestines = 5
     
     @classmethod
-    def get_organ_type(cls) -> OrganType:
+    def random_organ_type(cls) -> OrganType:
         return random.choice([OrganType.Heart, OrganType.Kidney, OrganType.Liver,
                               OrganType.Lungs, OrganType.Pancreas, OrganType.Intestines])
 
@@ -37,7 +37,7 @@ class BloodTypeLetter(Enum):
     AB = 3
     
     @classmethod
-    def get_blood_type(cls) -> BloodTypeLetter:
+    def random_blood_type(cls) -> BloodTypeLetter:
         return random.choice([BloodTypeLetter.O, BloodTypeLetter.A,
                               BloodTypeLetter.B, BloodTypeLetter.AB])
 
@@ -50,5 +50,5 @@ class BloodTypePolarity(Enum):
     POS = 1
     
     @classmethod
-    def get_blood_polarity(cls) -> BloodTypePolarity:
+    def random_blood_polarity(cls) -> BloodTypePolarity:
         return random.choice([BloodTypePolarity.NEG, BloodTypePolarity.POS])

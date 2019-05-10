@@ -29,9 +29,9 @@ class PatientGenerator:
         for x in range(n):
             temp = Patient(patient_name="generated patient #" + str(x + 1),
                            illness="N/A",
-                           organ_needed=OrganType.get_organ_type().value,
-                           blood_type=BloodType(BloodTypeLetter.get_blood_type(),
-                                                BloodTypePolarity.get_blood_polarity()),
+                           organ_needed=OrganType.random_organ_type().value,
+                           blood_type=BloodType(BloodTypeLetter.random_blood_type(),
+                                                BloodTypePolarity.random_blood_polarity()),
                            priority=random.randrange(100 + n),
                            location=random.choice(nodes),
                            wait_list=wait_list)
