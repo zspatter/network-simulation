@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List, Tuple, Optional
 
 from network_simulator.BloodType import BloodType
-from network_simulator.CompatibilityMarkers import OrganType
+from network_simulator.compatibility_markers import OrganType
 
 
 class Organ:

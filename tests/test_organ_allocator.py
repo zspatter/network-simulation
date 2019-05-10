@@ -1,5 +1,5 @@
 from network_simulator.BloodType import BloodType
-from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 from network_simulator.Dijkstra import Dijkstra
 from network_simulator.Network import Node, Network
 from network_simulator.Organ import Organ
