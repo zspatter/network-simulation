@@ -1,5 +1,8 @@
 from typing import Dict, Union, List
 
+edge_details = Dict[str, Union[int, bool]]
+adj_dict = Dict[int, edge_details]
+
 
 class Node:
     """
@@ -8,9 +11,6 @@ class Node:
     neighboring nodes along with the weight associated with the shared
     edge, and a status that marks active/inactive nodes.
     """
-    
-    edge_details = Dict[str, Union[int, bool]]
-    adj_dict = Dict[int, edge_details]
     
     def __init__(self, node_id: int, label: str = 'Default node label',
                  adjacency_dict: adj_dict = None, status: bool = None) -> None:
@@ -66,7 +66,7 @@ class Node:
         :return: active adjacent nodes
         :rtype: list
         """
-        adjacents = list()
+        adjacents: List[int] = list()
         if self.status:
             adjacents = [key for key in self.adjacency_dict if self.adjacency_dict[key]['status']]
         return adjacents

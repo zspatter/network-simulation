@@ -5,6 +5,9 @@ from typing import List, Tuple, Optional
 from network_simulator.BloodType import BloodType
 from network_simulator.compatibility_markers import OrganType
 
+path_structure = List[int]
+shortest_path_structure = Tuple[Optional[path_structure], float]
+
 
 class Organ:
     """
@@ -13,8 +16,6 @@ class Organ:
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
     """
-    path_structure = List[int]
-    shortest_path_structure = Tuple[Optional[path_structure], float]
     
     organ_count = 0
     

@@ -4,14 +4,15 @@ from typing import Dict, Union
 from network_simulator.Network import Network
 from network_simulator.Node import Node
 
+edge_details = Dict[str, Union[int, bool]]
+adj_dict = Dict[int, edge_details]
+
 
 class GraphBuilder:
     """
     A class that builds networks with variable number of nodes
     and random adjacency lists
     """
-    edge_details = Dict[str, Union[int, bool]]
-    adj_dict = Dict[int, edge_details]
     
     @staticmethod
     def graph_builder(n: int, max_weight: int = None, seed: int = None) -> Network:

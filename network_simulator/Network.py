@@ -3,6 +3,8 @@ from typing import Dict, List, Iterator
 from network_simulator.Node import Node
 from network_simulator.exceptions import GraphElementError
 
+nodes_to_remove = List[List[int]]
+
 
 class Network:
     """
@@ -11,7 +13,6 @@ class Network:
     A network consists of a network dict that contains all of the
     nodes contained within the graph.
     """
-    nodes_to_remove = List[List[int]]
     
     def __init__(self, network_dict: Dict[int, Node] = None,
                  label: str = 'Default network label') -> None:
@@ -27,7 +28,7 @@ class Network:
         if not network_dict:
             network_dict = {}
         
-        to_remove = list()
+        to_remove: nodes_to_remove = list()
         
         # ensures adjacency lists mirror each other (undirected weighted edges)
         nodes = network_dict.keys()
