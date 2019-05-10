@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity
+from network_simulator.Compatibility_markers import BloodTypeLetter, BloodTypePolarity
 
 
 class BloodType:

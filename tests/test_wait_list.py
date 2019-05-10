@@ -1,7 +1,7 @@
 import heapq
 
 from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.Compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 from network_simulator.Organ import Organ
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
