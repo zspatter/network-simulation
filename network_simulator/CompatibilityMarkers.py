@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 from enum import Enum
 
@@ -20,8 +22,9 @@ class OrganType(Enum):
     Intestines = 5
     
     @classmethod
-    def get_organ_type(cls):
-        return random.choice(list(cls.__members__.values()))
+    def get_organ_type(cls) -> OrganType:
+        return random.choice([OrganType.Heart, OrganType.Kidney, OrganType.Liver,
+                              OrganType.Lungs, OrganType.Pancreas, OrganType.Intestines])
 
 
 class BloodTypeLetter(Enum):
@@ -34,8 +37,9 @@ class BloodTypeLetter(Enum):
     AB = 3
     
     @classmethod
-    def get_blood_type(cls):
-        return random.choice(list(cls.__members__.values()))
+    def get_blood_type(cls) -> BloodTypeLetter:
+        return random.choice([BloodTypeLetter.O, BloodTypeLetter.A,
+                              BloodTypeLetter.B, BloodTypeLetter.AB])
 
 
 class BloodTypePolarity(Enum):
@@ -46,5 +50,5 @@ class BloodTypePolarity(Enum):
     POS = 1
     
     @classmethod
-    def get_blood_polarity(cls):
-        return random.choice(list(cls.__members__.values()))
+    def get_blood_polarity(cls) -> BloodTypePolarity:
+        return random.choice([BloodTypePolarity.NEG, BloodTypePolarity.POS])
