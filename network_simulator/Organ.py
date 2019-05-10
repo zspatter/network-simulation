@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from network_simulator.BloodType import BloodType
 from network_simulator.CompatibilityMarkers import OrganType
@@ -13,10 +13,13 @@ class Organ:
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
     """
+    path_structure = List[int]
+    shortest_path_structure = Tuple[Optional[path_structure], float]
+    
     organ_count = 0
     
     def __init__(self, organ_type: int, blood_type: BloodType,
-                 location: int, organ_list: 'OrganList' = None):
+                 location: int, organ_list: 'OrganList' = None) -> None:
         Organ.organ_count = Organ.organ_count + 1
         
         self.organ_id: int = Organ.organ_count
@@ -30,7 +33,8 @@ class Organ:
         if organ_list:
             organ_list.add_organ(self)
     
-    def move_organ(self, new_location: int, cost: int, shortest_path: Tuple[List[int], int]):
+    def move_organ(self, new_location: int, cost: float,
+                   shortest_path: shortest_path_structure) -> None:
         """
         This function allows an organ's attributes to be altered to represent it's
         transportation across the network. This is intended to be used with
@@ -49,7 +53,7 @@ class Organ:
         self.viability -= cost
     
     @staticmethod
-    def get_viability(organ_type: int):
+    def get_viability(organ_type: int) -> int:
         """
         Gets viability rating for each organ individually
         
@@ -68,7 +72,7 @@ class Organ:
         
         return viability[str(organ_type)]
     
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Builds an easily readable string representing an organ
 

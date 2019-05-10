@@ -1,6 +1,14 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple, Optional
 
 from network_simulator.Network import Network
+
+node_id = int
+weight_structure = Dict[int, float]
+previous_structure = Dict[int, Optional[int]]
+dijkstra_structure = Tuple[weight_structure, previous_structure]
+path_structure = List[int]
+shortest_path_structure = Tuple[Optional[path_structure], float]
+all_paths = Dict[node_id, Tuple[path_structure, float]]
 
 
 class Dijkstra:
@@ -11,15 +19,15 @@ class Dijkstra:
     This can find all shortest paths from a given source node to all other nodes.
     """
     
-    def __init__(self, graph: Network, source: int):
-        self.weight: Dict[int, int]
-        self.previous: Dict[int, int]
+    def __init__(self, graph: Network, source: int) -> None:
+        self.weight: weight_structure
+        self.previous: previous_structure
         
         self.source: int = source
         self.weight, self.previous = Dijkstra.dijkstra(graph, source)
     
     @staticmethod
-    def dijkstra(graph: Network, source: int):
+    def dijkstra(graph: Network, source: int) -> dijkstra_structure:
         """
         This function finds the shortest path to all connected nodes
         from a given source node. The return are two dicts:
@@ -60,7 +68,7 @@ class Dijkstra:
         return weight, previous
     
     @staticmethod
-    def minimum_unvisited_distance(unvisited: List[int], weight: Dict[int, float]):
+    def minimum_unvisited_distance(unvisited: List[int], weight: weight_structure) -> node_id:
         """
         Helper method used by dijkstra (function) to determine which
         node should be traversed next
@@ -81,7 +89,7 @@ class Dijkstra:
         
         return min_node
     
-    def shortest_path(self, destination: int):
+    def shortest_path(self, destination: int) -> shortest_path_structure:
         """
         Returns both the shortest path and the cost of said path between
         this object's source (attribute) and the passed destination.
@@ -111,7 +119,7 @@ class Dijkstra:
         path = path[::-1]
         return path, self.weight[destination]
     
-    def all_shortest_paths(self):
+    def all_shortest_paths(self) -> all_paths:
         """
         Harnesses the functionality of shortest_path() to gather all shortest
         paths and store them in a dictionary

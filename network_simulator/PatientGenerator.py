@@ -14,7 +14,7 @@ class PatientGenerator:
     """
     
     @staticmethod
-    def generate_patients(graph: Network, n: int, wait_list: 'WaitList'):
+    def generate_patients(graph: Network, n: int, wait_list: 'WaitList') -> None:
         """
         Generates n patients to add to wait list with random combinations of
         organ needed, blood type, priority, and location

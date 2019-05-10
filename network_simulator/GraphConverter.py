@@ -6,7 +6,7 @@ from network_simulator.Network import Network
 class GraphConverter:
     
     @staticmethod
-    def convert_to_networkx(network: Network):
+    def convert_to_networkx(network: Network) -> nx.Graph:
         """
         Converts a Network object to a NetworkX graph
 

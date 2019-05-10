@@ -1,4 +1,5 @@
 import random
+from typing import Dict, Union
 
 from network_simulator.Network import Network
 from network_simulator.Node import Node
@@ -9,9 +10,11 @@ class GraphBuilder:
     A class that builds networks with variable number of nodes
     and random adjacency lists
     """
+    edge_details = Dict[str, Union[int, bool]]
+    adj_dict = Dict[int, edge_details]
     
     @staticmethod
-    def graph_builder(n: int, max_weight: int = None, seed: int = None):
+    def graph_builder(n: int, max_weight: int = None, seed: int = None) -> Network:
         """
         Returns randomly generated network with n nodes.
 
@@ -36,7 +39,7 @@ class GraphBuilder:
     
     @staticmethod
     def generate_random_adjacency_dict(node_id: int, total_nodes: int,
-                                       max_weight: int, seed: int = None):
+                                       max_weight: int, seed: int = None) -> adj_dict:
         """
         Returns randomly generated adjacency dict for an instance of a node.
         The generated adjacency list can contain a connection to any node

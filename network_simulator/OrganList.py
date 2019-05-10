@@ -11,7 +11,7 @@ class OrganList:
     allocated to compatible recipients. This list accepts all organ types (generic)
     """
     
-    def __init__(self, organ_list: OrganList = None, label: str = None):
+    def __init__(self, organ_list: OrganList = None, label: str = None) -> None:
         """
         Creates a OrganList object. If no organ_list parameter is provided,
         an empty list is created
@@ -30,7 +30,7 @@ class OrganList:
         self.label = label
         self.organ_list = organ_list
     
-    def add_organ(self, organ: Organ):
+    def add_organ(self, organ: Organ) -> None:
         """
         Adds an organ to the existing organ list
 
@@ -41,7 +41,7 @@ class OrganList:
             return
         print('This organ is already in the organ list!')
     
-    def remove_organ(self, organ: Organ):
+    def remove_organ(self, organ: Organ) -> None:
         """
         Removes an organ from the existing organ list
 
@@ -52,13 +52,13 @@ class OrganList:
             return
         print('This organ isn\'t in the organ list!')
     
-    def empty_list(self):
+    def empty_list(self) -> None:
         """
         Clears entire organ_list (utility function for the organ allocator)
         """
         self.organ_list = list()
     
-    def generate_organs(self, graph: Network, n: int):
+    def generate_organs(self, graph: Network, n: int) -> None:
         """
         Wrapper that calls the GenerateOrgans.generate_organs function
         This is used to ensure the generated organs are added to the same organ list
@@ -68,7 +68,7 @@ class OrganList:
         """
         OrganGenerator.generate_organs(graph, n, self)
     
-    def __str__(self):
+    def __str__(self) -> str:
         string = ''
         for organ in self.organ_list:
             string += organ.__str__() + '\n'

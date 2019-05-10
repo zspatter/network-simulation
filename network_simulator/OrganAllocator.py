@@ -1,10 +1,11 @@
 import heapq
-from typing import Dict
+from typing import Dict, Optional
 
 from network_simulator.Dijkstra import Dijkstra
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
+from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
 
 
@@ -17,7 +18,8 @@ class OrganAllocator:
     """
     
     @staticmethod
-    def allocate_organs(organ_list: OrganList, wait_list: WaitList, network: Network):
+    def allocate_organs(organ_list: OrganList, wait_list: WaitList,
+                        network: Network) -> None:
         """
         Allocates organs from an OrganList to patients on a WaitList in a given Network.
         Organs are  allocated to the patient with the highest priority within a a suitable proximity.
@@ -50,7 +52,8 @@ class OrganAllocator:
             organ_list.empty_list()
     
     @staticmethod
-    def find_best_match(organ: Organ, wait_list: WaitList, weights: Dict[int, int]):
+    def find_best_match(organ: Organ, wait_list: WaitList,
+                        weights: Dict[int, float]) -> Optional[Patient]:
         """
         Finds the most optimal patient match for a given organ. The optimal match
         is the patient with the highest priority rating of compatible organ_need/blood_type

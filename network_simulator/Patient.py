@@ -15,7 +15,7 @@ class Patient:
     
     def __init__(self, patient_name: str, illness: str, organ_needed: OrganType,
                  blood_type: BloodType, priority: int, location: int,
-                 wait_list: 'WaitList' = None):
+                 wait_list: 'WaitList' = None) -> None:
         Patient.patient_count = Patient.patient_count + 1
         
         self.patient_id: int = Patient.patient_count
@@ -28,7 +28,7 @@ class Patient:
         if wait_list:
             wait_list.add_patient(self)
     
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Returns an easily readable string representing the patient
 
@@ -43,7 +43,7 @@ class Patient:
             f'\tPriority: {self.priority}\n' \
             f'\tNearest hospital: {self.location}\n'
     
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """
         Rich comparison returns true iff all attributes are equal
 
@@ -60,7 +60,7 @@ class Patient:
                    and self.location is other.location
         return NotImplemented
     
-    def __ne__(self, other):
+    def __ne__(self, other) -> bool:
         """
         Rich comparison returns true if any attributes differ
 
@@ -77,7 +77,7 @@ class Patient:
                         and self.location is other.location)
         return NotImplemented
     
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute
         is less than other's priority attribute
@@ -89,7 +89,7 @@ class Patient:
             return self.priority < other.priority
         return NotImplemented
     
-    def __le__(self, other):
+    def __le__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute
         is less than or equal to other's priority attribute
@@ -101,7 +101,7 @@ class Patient:
             return self.priority <= other.priority
         return NotImplemented
     
-    def __gt__(self, other):
+    def __gt__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute
         is greater than other's priority attribute
@@ -113,7 +113,7 @@ class Patient:
             return self.priority > other.priority
         return NotImplemented
     
-    def __ge__(self, other):
+    def __ge__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute
         is greater than or equal to other's priority attribute

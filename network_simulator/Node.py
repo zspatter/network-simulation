@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Union, List
 
 
 class Node:
@@ -9,8 +9,11 @@ class Node:
     edge, and a status that marks active/inactive nodes.
     """
     
+    edge_details = Dict[str, Union[int, bool]]
+    adj_dict = Dict[int, edge_details]
+    
     def __init__(self, node_id: int, label: str = 'Default node label',
-                 adjacency_dict: Dict[int, dict] = None, status: bool = None):
+                 adjacency_dict: adj_dict = None, status: bool = None) -> None:
         """
         Creates an instance of a Node
 
@@ -23,7 +26,7 @@ class Node:
         """
         self.node_id: int = node_id
         self.label: str = label
-        self.adjacency_dict: Dict[int, dict]
+        self.adjacency_dict: adj_dict
         self.status: bool
         
         if not adjacency_dict:
@@ -38,7 +41,7 @@ class Node:
             status = True
         self.status = status
     
-    def is_adjacent(self, node_id: int):
+    def is_adjacent(self, node_id: int) -> bool:
         """
         Returns bool indicating if this instance is connected to the passed
         node_id with an active edge
@@ -54,7 +57,7 @@ class Node:
         else:
             return False
     
-    def get_adjacents(self):
+    def get_adjacents(self) -> List[int]:
         """
         Returns list of adjacent nodes. Nodes are only added to the list
         if they are currently active, and the edge connecting the nodes
@@ -68,7 +71,7 @@ class Node:
             adjacents = [key for key in self.adjacency_dict if self.adjacency_dict[key]['status']]
         return adjacents
     
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Returns an easily readable (formatted) string representation of the instance.
         Only active edges are represented. If the node is inactive,

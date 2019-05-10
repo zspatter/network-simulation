@@ -14,7 +14,7 @@ class WaitList:
     a donation. This list accepts all patients in need of organs (generic)
     """
     
-    def __init__(self, wait_list: WaitList = None, label: str = None):
+    def __init__(self, wait_list: WaitList = None, label: str = None) -> None:
         """
         Creates a WaitList object. If no wait_list parameter is provided,
         an empty list is created
@@ -34,7 +34,7 @@ class WaitList:
         self.label = label
         self.wait_list = wait_list
     
-    def get_prioritized_patients(self, organ: Organ):
+    def get_prioritized_patients(self, organ: Organ) -> heapq:
         """
         Takes an organ as a parameter and searches the
         wait list for matches. All matches are added to a priority queue
@@ -55,7 +55,7 @@ class WaitList:
         heapq._heapify_max(queue)
         return queue
     
-    def add_patient(self, patient: Patient):
+    def add_patient(self, patient: Patient) -> None:
         """
         Adds a patient to the existing wait list
 
@@ -66,7 +66,7 @@ class WaitList:
             return
         print('This patient isn\'t in the wait list!')
     
-    def remove_patient(self, patient: Patient):
+    def remove_patient(self, patient: Patient) -> None:
         """
         Removes a patient from the existing wait list
 
@@ -77,7 +77,7 @@ class WaitList:
             return
         print('This patient is already in the wait list!')
     
-    def generate_patients(self, graph: Network, n: int):
+    def generate_patients(self, graph: Network, n: int) -> None:
         """
         Wrapper that calls the GeneratePatients.generate_patients function
         This is used to ensure the generated patients are added to the same wait list
@@ -87,7 +87,7 @@ class WaitList:
         """
         PatientGenerator.generate_patients(graph, n, self)
     
-    def __str__(self):
+    def __str__(self) -> str:
         string = ''
         for patient in self.wait_list:
             string += patient.__str__() + '\n'

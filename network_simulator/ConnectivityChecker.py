@@ -13,7 +13,7 @@ class ConnectivityChecker:
     
     @staticmethod
     def is_connected(network: Network, nodes_encountered: Set[int] = None,
-                     source: int = None):
+                     source: int = None) -> bool:
         """
         Returns bool indicating graph connectivity (path between all nodes).
         This is a recursive DFS.
@@ -42,7 +42,7 @@ class ConnectivityChecker:
         return False
     
     @staticmethod
-    def depth_first_search(network: Network, node_id: int = None):
+    def depth_first_search(network: Network, node_id: int = None) -> bool:
         """
         Returns bool indicating graph connectivity (path between all nodes).
         This is an iterative DFS.
@@ -69,7 +69,7 @@ class ConnectivityChecker:
             return True
     
     @staticmethod
-    def breadth_first_search(network: Network, node_id: int = None):
+    def breadth_first_search(network: Network, node_id: int = None) -> bool:
         """
         Returns bool indicating graph connectivity (path between all nodes).
         This is an iterative BFS.
