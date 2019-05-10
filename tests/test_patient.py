@@ -1,7 +1,7 @@
 import copy
 
 from network_simulator.BloodType import BloodType
-from network_simulator.Compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 from network_simulator.Patient import Patient
 
 blood_type = BloodType(BloodTypeLetter.A, BloodTypePolarity.POS)

@@ -1,5 +1,5 @@
 from network_simulator.BloodType import BloodType
-from network_simulator.Compatibility_markers import BloodTypeLetter, BloodTypePolarity
+from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 o_pos = BloodType(BloodTypeLetter.O, BloodTypePolarity.POS)

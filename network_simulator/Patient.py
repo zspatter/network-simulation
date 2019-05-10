@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from network_simulator.BloodType import BloodType
-from network_simulator.Compatibility_markers import OrganType
+from network_simulator.compatibility_markers import OrganType
 
 
 class Patient:
