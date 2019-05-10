@@ -1,4 +1,5 @@
 import copy
+from typing import Set, Union
 
 from network_simulator.Network import Network
 from network_simulator.OrganList import OrganList
@@ -7,10 +8,10 @@ from network_simulator.WaitList import WaitList
 
 class SubnetworkGenerator:
     @staticmethod
-    def generate_subnetwork(network: Network, collection) -> Network:
+    def generate_subnetwork(network: Network, collection: Union[OrganList, WaitList]) -> Network:
         subnetwork = SubnetworkGenerator.copy_network(network)
         SubnetworkGenerator.mark_network_inactive(subnetwork)
-        active_nodes = set()
+        active_nodes: Set[int] = set()
         
         if isinstance(collection, WaitList):
             for x in collection.wait_list:

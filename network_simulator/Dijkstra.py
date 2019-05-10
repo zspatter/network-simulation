@@ -1,13 +1,13 @@
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Union
 
 from network_simulator.Network import Network
 
 node_id = int
 weight_structure = Dict[int, float]
-previous_structure = Dict[int, Optional[int]]
+previous_structure = Dict[int, Union[int, None]]
 dijkstra_structure = Tuple[weight_structure, previous_structure]
-path_structure = List[int]
-shortest_path_structure = Tuple[Optional[path_structure], float]
+path_structure = Optional[List[Optional[int]]]
+shortest_path_structure = Tuple[path_structure, float]
 all_paths = Dict[node_id, Tuple[path_structure, float]]
 
 
@@ -47,7 +47,7 @@ class Dijkstra:
         """
         unvisited = graph.nodes()
         weight = dict.fromkeys(graph.nodes(), float('inf'))
-        previous = dict.fromkeys(graph.nodes(), None)
+        previous: Dict[int, Union[int, None]] = dict.fromkeys(graph.nodes(), None)
         weight[source] = 0
         
         # while there are nodes which haven't been visited
@@ -106,7 +106,7 @@ class Dijkstra:
             return None, float('inf')
         
         # set current node to destination and add to path (where reverse path starts)
-        current = destination
+        current: Union[int, None] = destination
         path = [current]
         
         # while there is a previous node, append previous to path

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import List
 
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
@@ -11,7 +12,7 @@ class OrganList:
     allocated to compatible recipients. This list accepts all organ types (generic)
     """
     
-    def __init__(self, organ_list: OrganList = None, label: str = None) -> None:
+    def __init__(self, organ_list: List[Organ] = None, label: str = None) -> None:
         """
         Creates a OrganList object. If no organ_list parameter is provided,
         an empty list is created
@@ -19,7 +20,7 @@ class OrganList:
         :param list organ_list: optional organ_list parameter (if preexisting list exists)
         :param str label: label for the list/collection of organs
         """
-        self.organ_list: list
+        self.organ_list: List[Organ]
         self.label: str
         
         if not organ_list:

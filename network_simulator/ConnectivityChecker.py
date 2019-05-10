@@ -53,7 +53,7 @@ class ConnectivityChecker:
         :return: bool indicating graph connectivity
         :rtype: bool
         """
-        nodes_encountered = set()
+        nodes_encountered: Set[int] = set()
         if not node_id:
             node_id = network.nodes()[0]
         stack = [node_id]

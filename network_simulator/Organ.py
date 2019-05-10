@@ -5,8 +5,8 @@ from typing import List, Tuple, Optional
 from network_simulator.BloodType import BloodType
 from network_simulator.compatibility_markers import OrganType
 
-path_structure = List[int]
-shortest_path_structure = Tuple[Optional[path_structure], float]
+path_structure = Optional[List[Optional[int]]]
+shortest_path_structure = Tuple[path_structure, float]
 
 
 class Organ:
@@ -26,10 +26,10 @@ class Organ:
         self.organ_id: int = Organ.organ_count
         self.organ_type: int = organ_type
         self.blood_type: BloodType = blood_type
-        self.viability: int = Organ.get_viability(self.organ_type)
+        self.viability: float = Organ.get_viability(self.organ_type)
         self.origin_location: int = location
         self.current_location: int = location
-        self.path: List[int] = [location]
+        self.path: path_structure = [location]
         
         if organ_list:
             organ_list.add_organ(self)
@@ -54,7 +54,7 @@ class Organ:
         self.viability -= cost
     
     @staticmethod
-    def get_viability(organ_type: int) -> int:
+    def get_viability(organ_type: int) -> float:
         """
         Gets viability rating for each organ individually
         

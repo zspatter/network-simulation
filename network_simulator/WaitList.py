@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import List
 
 import heapq
 
@@ -14,7 +15,7 @@ class WaitList:
     a donation. This list accepts all patients in need of organs (generic)
     """
     
-    def __init__(self, wait_list: WaitList = None, label: str = None) -> None:
+    def __init__(self, wait_list: List[Patient] = None, label: str = None) -> None:
         """
         Creates a WaitList object. If no wait_list parameter is provided,
         an empty list is created
@@ -22,7 +23,7 @@ class WaitList:
         :param list wait_list: optional wait_list parameter (if preexisting list exists)
         :param str label: label for the list/collection of patients
         """
-        self.wait_list: list
+        self.wait_list: List[Patient]
         self.label: str
         
         if not wait_list:
@@ -34,7 +35,7 @@ class WaitList:
         self.label = label
         self.wait_list = wait_list
     
-    def get_prioritized_patients(self, organ: Organ) -> heapq:
+    def get_prioritized_patients(self, organ: Organ) -> List[Patient]:
         """
         Takes an organ as a parameter and searches the
         wait list for matches. All matches are added to a priority queue
@@ -45,7 +46,7 @@ class WaitList:
         :param Organ organ: object representing a prospective transplant
         :return: heapq (priority queue) with only patients whose needs match that of the parameters
         """
-        queue = []
+        queue: List[Patient] = []
         
         for patient in self.wait_list:
             if patient.organ_needed is organ.organ_type and \

@@ -68,7 +68,7 @@ class GraphBuilder:
         if seed:
             random.seed(seed)
         
-        adjacency_dict = {}
+        adjacency_dict: adj_dict = {}
         for n in range(random.randint(3, bound)):
             random_node = random.randint(1, total_nodes)
             # ensures node doesn't add itself to adjacency_dict
