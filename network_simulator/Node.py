@@ -1,3 +1,9 @@
+from typing import Dict, Union, List
+
+edge_details = Dict[str, Union[int, bool]]
+adj_dict = Dict[int, edge_details]
+
+
 class Node:
     """
     A class representing a given node/vertex. A node is defined through
@@ -5,8 +11,9 @@ class Node:
     neighboring nodes along with the weight associated with the shared
     edge, and a status that marks active/inactive nodes.
     """
-
-    def __init__(self, node_id, label='Default node label', adjacency_dict=None, status=None):
+    
+    def __init__(self, node_id: int, label: str = 'Default node label',
+                 adjacency_dict: adj_dict = None, status: bool = None) -> None:
         """
         Creates an instance of a Node
 
@@ -17,21 +24,24 @@ class Node:
         :param bool status: flag indicating whether a node is active or inactive
             (None by default)
         """
-        self.node_id = node_id
-        self.label = label
-        if adjacency_dict is None:
+        self.node_id: int = node_id
+        self.label: str = label
+        self.adjacency_dict: adj_dict
+        self.status: bool
+        
+        if not adjacency_dict:
             adjacency_dict = {}
         self.adjacency_dict = adjacency_dict
-
+        
         if status is False:
             for key in adjacency_dict:
                 adjacency_dict[key]['status'] = False
-
+        
         if status is None:
             status = True
         self.status = status
-
-    def is_adjacent(self, node_id):
+    
+    def is_adjacent(self, node_id: int) -> bool:
         """
         Returns bool indicating if this instance is connected to the passed
         node_id with an active edge
@@ -46,8 +56,8 @@ class Node:
             return True
         else:
             return False
-
-    def get_adjacents(self):
+    
+    def get_adjacents(self) -> List[int]:
         """
         Returns list of adjacent nodes. Nodes are only added to the list
         if they are currently active, and the edge connecting the nodes
@@ -56,12 +66,12 @@ class Node:
         :return: active adjacent nodes
         :rtype: list
         """
-        adjacents = list()
+        adjacents: List[int] = list()
         if self.status:
             adjacents = [key for key in self.adjacency_dict if self.adjacency_dict[key]['status']]
         return adjacents
-
-    def __str__(self):
+    
+    def __str__(self) -> str:
         """
         Returns an easily readable (formatted) string representation of the instance.
         Only active edges are represented. If the node is inactive,
@@ -73,9 +83,9 @@ class Node:
         if self.status:
             string = '\nLabel: ' + self.label + '\t(Node ID: ' + \
                      str(self.node_id) + ')\nNeighbors:'
-
+            
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
                     string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
-                        '#' + str(key), str(self.adjacency_dict[key]['weight']))
+                            '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'

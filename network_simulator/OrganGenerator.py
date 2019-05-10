@@ -1,8 +1,9 @@
 import random
 
 from network_simulator.BloodType import BloodType
+from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.Network import Network
 from network_simulator.Organ import Organ
-from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 
 class OrganGenerator:
@@ -14,9 +15,9 @@ class OrganGenerator:
     (from one harvest to another; all organs harvested from a single
     patient share the same location/blood type)
     """
-
+    
     @staticmethod
-    def generate_organs(graph, n, organ_list):
+    def generate_organs(graph: Network, n: int, organ_list: 'OrganList') -> None:
         """
         Harvests a random number of organs from n patients. Not all organs are harvested
         to represent organs that are not suitable for donation (health condition, etc
@@ -31,14 +32,14 @@ class OrganGenerator:
         """
         # list of currently active nodes
         nodes = graph.nodes()
-
+        
         # number of patients to harvest from
         for _ in range(n):
             # number of possible organs to harvest
             location_id = random.choice(nodes)
-            blood_type = BloodType(BloodTypeLetter.get_blood_type(),
-                                   BloodTypePolarity.get_blood_polarity())
-
+            blood_type = BloodType(BloodTypeLetter.random_blood_type(),
+                                   BloodTypePolarity.random_blood_polarity())
+            
             for organ_type in OrganType:
                 # determines if organ is suitable for harvest
                 if random.randrange(4) is not 0:

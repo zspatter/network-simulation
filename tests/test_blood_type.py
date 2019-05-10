@@ -1,5 +1,5 @@
 from network_simulator.BloodType import BloodType
-from network_simulator.CompatibilityMarkers import BloodTypeLetter, BloodTypePolarity
+from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 o_pos = BloodType(BloodTypeLetter.O, BloodTypePolarity.POS)
@@ -33,7 +33,7 @@ invalid_matches = [(o_pos, o_neg), (o_pos, a_neg), (o_pos, b_neg), (o_pos, ab_ne
 def test_is_compatible_donor():
     for donor, recipient in valid_matches:
         assert donor.is_compatible_donor(recipient)
-
+    
     for donor, recipient in invalid_matches:
         assert not donor.is_compatible_donor(recipient)
 
@@ -41,6 +41,18 @@ def test_is_compatible_donor():
 def test_is_compatible_recipient():
     for donor, recipient in valid_matches:
         assert recipient.is_compatible_recipient(donor)
-
+    
     for donor, recipient in invalid_matches:
         assert not recipient.is_compatible_recipient(donor)
+        
+
+def test__eq__():
+    assert o_neg == o_neg
+    assert not o_neg == o_pos
+    assert not o_neg == 3.14
+    
+
+def test__ne__():
+    assert o_neg != o_pos
+    assert not o_neg != o_neg
+    assert o_neg != 3.14

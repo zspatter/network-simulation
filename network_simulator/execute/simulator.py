@@ -32,11 +32,11 @@ def main_menu():
     global ANSI_RED_BOLD
     global ANSI_RESET
     menu_option = None
-
+    
     while menu_option != '0':
         print_menu()
         menu_option = input(f'Please select an option: ')
-
+        
         if menu_option == '1':
             build_network()
         elif menu_option == '2':
@@ -62,7 +62,7 @@ def build_network():
     global network
     global wait_list
     global organ_list
-
+    
     if network:
         response = input(f'\nThere is already an existing network!\n'
                          f'Would you like to clear the network? '
@@ -81,13 +81,13 @@ def build_network():
     try:
         response = int(input(f'\nEnter the number of hospitals (nodes) '
                              f'you\'d like in the network: '))
-
+        
         network = GraphBuilder.graph_builder(response)
     except ValueError:
         print(f'\n{ANSI_RED_BOLD}ValueError:{ANSI_RED} valid values '
               f'are ints >= 4{ANSI_RESET}\n')
         return
-
+    
     # network has been generated
     response = input(f'\nA network has been built with {response} nodes. '
                      f'Would you like to print the network to the console?'
@@ -110,7 +110,7 @@ def generate_patients():
     """
     global network
     global wait_list
-
+    
     if network:
         try:
             response = int(input(f'\nHow many patients would you like to generate? '))
@@ -123,7 +123,7 @@ def generate_patients():
         print(f'\n{ANSI_BOLD}There is no network - one must be built before'
               f' patients can be generated!{ANSI_RESET}\n')
         return
-
+    
     # patients generated
     response = input(f'\n{response} patients have been generated. '
                      f'Would you like to print the wait list to the console?'
@@ -147,7 +147,7 @@ def harvest_organs():
     """
     global network
     global organ_list
-
+    
     if network:
         if len(wait_list.wait_list) is not 0:
             try:
@@ -166,7 +166,7 @@ def harvest_organs():
         print(f'\n{ANSI_BOLD}There is no network. A network must be built and patients '
               f'must be generated before organs can be harvested/allocated{ANSI_RESET}\n')
         return
-
+    
     # organs have been harvested
     response = input(f'\nOrgans have been harvested from {response} bodies. '
                      f'Would you like to print the organs to the console?'
@@ -186,16 +186,16 @@ def allocate_organs():
     """
     global ANSI_YELLOW_BOLD
     ansi_cyan = '\033[36m'
-
+    
     organ_num = len(organ_list.organ_list)
     start_patient_num = len(wait_list.wait_list)
-
+    
     input(f'{ANSI_YELLOW}Press ENTER to allocate organs{ANSI_RESET}')
     OrganAllocator.allocate_organs(organ_list, wait_list, network)
-
+    
     end_patient_num = len(wait_list.wait_list)
     difference = start_patient_num - end_patient_num
-
+    
     print('\n{:s}Summary:'
           '\n\t{:>3s} organs have been transplanted'
           '\n\t{:>3s} organs had no suitable match'
@@ -213,10 +213,10 @@ def reset_network():
     """
     global organ_list
     global wait_list
-
+    
     organ_list = OrganList()
     wait_list = WaitList()
-
+    
     print(f'\n{ANSI_BOLD}The network has been reset. There are no '
           f'patients or organs remaining in the network.{ANSI_RESET}\n')
 
@@ -229,11 +229,11 @@ def restart():
     global network
     global organ_list
     global wait_list
-
+    
     network = None
     organ_list = OrganList()
     wait_list = WaitList()
-
+    
     print(f'\n{ANSI_BOLD}The system has been reset. There is no network,'
           f' patients, or organs.{ANSI_RESET}\n')
 

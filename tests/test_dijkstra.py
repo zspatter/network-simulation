@@ -11,7 +11,7 @@ def test_dijkstra():
                         test_node2.node_id: test_node2,
                         test_node3.node_id: test_node3,
                         test_node4.node_id: test_node4})
-
+    
     weight, previous = Dijkstra.dijkstra(graph=test_net, source=1)
     assert weight[1] is 0
     assert weight[2] is 5
@@ -26,7 +26,7 @@ def test_dijkstra():
 def test_minimum_unvisited_distance():
     unvisited = [1, 2, 3, 4, 5]
     weight = dict.fromkeys(unvisited, float('inf'))
-
+    
     assert Dijkstra.minimum_unvisited_distance(unvisited, weight) is 1
     weight[2] = 0
     assert Dijkstra.minimum_unvisited_distance(unvisited, weight) is 2
@@ -53,24 +53,24 @@ def test_shortest_path():
                         test_node3.node_id: test_node3,
                         test_node4.node_id: test_node4,
                         test_node5.node_id: test_node5})
-
+    
     dijkstra = Dijkstra(graph=test_net, source=test_node1.node_id)
     path, weight = dijkstra.shortest_path(destination=test_node3.node_id)
     assert path == [1, 5, 3]
     assert weight is 3
-
+    
     test_net.remove_node(test_node5.node_id)
     dijkstra = Dijkstra(graph=test_net, source=test_node1.node_id)
     path, weight = dijkstra.shortest_path(destination=test_node3.node_id)
     assert path == [1, 4, 3]
     assert weight is 9
-
+    
     test_net.remove_node(test_node4.node_id)
     dijkstra = Dijkstra(graph=test_net, source=test_node1.node_id)
     path, weight = dijkstra.shortest_path(destination=test_node3.node_id)
     assert path == [1, 2, 3]
     assert weight is 15
-
+    
     test_net.remove_node(test_node2.node_id)
     dijkstra = Dijkstra(graph=test_net, source=test_node1.node_id)
     path, weight = dijkstra.shortest_path(destination=test_node3.node_id)
@@ -91,7 +91,7 @@ def test_all_shortest_paths():
                         test_node3.node_id: test_node3,
                         test_node4.node_id: test_node4,
                         test_node5.node_id: test_node5})
-
+    
     dijkstra = Dijkstra(graph=test_net, source=test_node1.node_id)
     shortest_paths = dijkstra.all_shortest_paths()
     assert shortest_paths[1] == ([1], 0)

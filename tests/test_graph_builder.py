@@ -5,7 +5,7 @@ def test_generate_random_adjacency_dict():
     test_dict = GraphBuilder.generate_random_adjacency_dict(node_id=1,
                                                             total_nodes=50, max_weight=50)
     assert len(test_dict) < 50
-
+    
     for node in test_dict:
         assert 0 < test_dict[node]['weight'] < 51
         assert test_dict[node]['status']

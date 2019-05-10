@@ -1,7 +1,7 @@
 import heapq
 
 from network_simulator.BloodType import BloodType
-from network_simulator.CompatibilityMarkers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 from network_simulator.Organ import Organ
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
@@ -27,7 +27,7 @@ def test_get_prioritized_patients():
                        wait_list)
     organ = Organ(OrganType.Pancreas.value, ab_pos, 3)
     queue = wait_list.get_prioritized_patients(organ)
-
+    
     assert len(queue) is 3
     assert heapq._heappop_max(queue) is patient4
     assert heapq._heappop_max(queue) is patient3
@@ -39,7 +39,7 @@ def test_add_patient():
     wait_list = WaitList()
     patient = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1)
     wait_list.add_patient(patient)
-
+    
     assert len(wait_list.wait_list) is 1
     wait_list.add_patient(patient)
     assert len(wait_list.wait_list) is 1
@@ -52,7 +52,7 @@ def test_remove_patient():
     wait_list = WaitList()
     patient = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
-
+    
     assert len(wait_list.wait_list) is 0
     patient2 = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
