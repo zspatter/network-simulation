@@ -38,6 +38,8 @@ The network is a graph that is represented as a collection of nodes. The network
 - <ins>*PatientGenerator*</ins> - generates N patients each with a random organ need, blood type, priority, and location (node) and adds the generated patients to a WaitList
 - <ins>*OrganAllocator*</ins> - allocates harvested organs (OrganList) to the most optimal matching patient (WaitList)
 - <ins>*ConnectivityChecker*</ins> - determines if a given graph is connected 
+- <ins>*SubnetworkGenerator*</ins> - takes a Network and a collection (OrganList or WaitList) and creates a subnetwork containing only nodes where elements of the collection are present
+- <ins>*GraphConverter*</ins> - converts a Network to a `NetworkX` (graph library) object 
 
 ### <ins>Simulator</ins>: 
 The simulator is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the GraphBuilder, GeneratePatients, GenerateOrgans, and OrganAllocator classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
