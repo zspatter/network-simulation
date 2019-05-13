@@ -35,7 +35,7 @@ The network is a graph that is represented as a collection of nodes. The network
 - `WaitList` - represents all patients in need of a transplant
 - `GraphBuilder` - builds a random network with N nodes
 - `OrganGenerator` - simulates harvesting organs from N patients where each organ has a 75% of being successfully harvested and adds the generated organs to an `OrganList`
-- `PatientGenerator` - generates N patients each with a random organ need, blood type, priority, and location (`node id`) and adds the generated patients to a `WaitList`
+- `PatientGenerator` - generates N patients each with a random organ need, blood type, priority, and location (`node_id`) and adds the generated patients to a `WaitList`
 - `OrganAllocator` - allocates harvested organs (`OrganList`) to the most optimal matching patient (`WaitList`)
 - `ConnectivityChecker` - determines if a given graph is connected 
 - `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
