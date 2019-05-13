@@ -22,7 +22,7 @@ class BloodType:
         and passes itself as an argument.
 
         :param BloodType blood_type: blood type of potential recipient
-        :return: bool
+        :return: bool indicating whether self can donate to the passed BloodType
         """
         return blood_type.is_compatible_recipient(self)
     
@@ -32,7 +32,7 @@ class BloodType:
         blood type using bitwise operations
 
         :param BloodTyp blood_type: blood type of potential donor
-        :return: bool
+        :return: bool indicating whether self can receive a donation from the passed BloodType
         """
         return ((self.blood_type_letter.value | blood_type.blood_type_letter.value)
                 == self.blood_type_letter.value) \
@@ -58,7 +58,7 @@ class BloodType:
         Rich comparison returns true iff all attributes are equal
 
         :param BloodType other: other object to compare
-        :return: bool
+        :return: bool indicating if the objects are equivalent
         """
         if isinstance(other, BloodType):
             return self.blood_type_letter.value is other.blood_type_letter.value \
@@ -71,7 +71,7 @@ class BloodType:
         Rich comparison returns true if any of the attributes differ
 
         :param BloodType other: other object to compare
-        :return: bool
+        :return: bool indicating if the objects are not equivalent
         """
         if isinstance(other, BloodType):
             return not (self.blood_type_letter.value is other.blood_type_letter.value

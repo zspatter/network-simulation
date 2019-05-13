@@ -23,6 +23,11 @@ class OrganType(Enum):
     
     @classmethod
     def random_organ_type(cls) -> OrganType:
+        """
+        Returns a random OrganType
+        
+        :return: OrganType
+        """
         return random.choice(list(OrganType.__iter__()))
 
 
@@ -37,6 +42,11 @@ class BloodTypeLetter(Enum):
     
     @classmethod
     def random_blood_type(cls) -> BloodTypeLetter:
+        """
+        Returns a random BloodTypeLetter
+        
+        :return: BloodTypeLetter
+        """
         return random.choice(list(BloodTypeLetter.__iter__()))
 
 
@@ -49,4 +59,9 @@ class BloodTypePolarity(Enum):
     
     @classmethod
     def random_blood_polarity(cls) -> BloodTypePolarity:
+        """
+        Returns a random BloodTypePolarity
+
+        :return: BloodTypePolarity
+        """
         return random.choice(list(BloodTypePolarity.__iter__()))
