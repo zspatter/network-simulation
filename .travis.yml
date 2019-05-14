@@ -9,3 +9,4 @@ install:
   - pip install mypy
 script:
   - pytest
+  - pytest --cov
