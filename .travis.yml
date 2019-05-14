@@ -10,4 +10,4 @@ install:
   - pip install pytest-cov
 script:
   - pytest
-  - pytest --cov
+  - pytest --cov=network-simulation tests/
