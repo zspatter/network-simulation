@@ -71,7 +71,7 @@ class Node:
             adjacents = [key for key in self.adjacency_dict if self.adjacency_dict[key]['status']]
         return adjacents
 
-    def __str__(self) -> Optional[str]:
+    def __str__(self) -> str:
         """
         Returns an easily readable (formatted) string representation of the instance.
         Only active edges are represented. If the node is inactive,
@@ -89,4 +89,4 @@ class Node:
                     string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
                             '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'
-        return None
+        return ''
