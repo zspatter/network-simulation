@@ -9,5 +9,4 @@ install:
   - pip install mypy
   - pip install pytest-cov
 script:
-  - pytest
   - pytest --cov=network_simulator/
