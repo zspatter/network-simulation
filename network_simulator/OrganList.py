@@ -51,7 +51,7 @@ class OrganList:
 
         :param Organ organ: object to be removed from the organ list
         """
-        if organ in self.organ_list:
+        if isinstance(organ, Organ) and organ in self.organ_list:
             self.organ_list.remove(organ)
             return
         print('This organ isn\'t in the organ list!')

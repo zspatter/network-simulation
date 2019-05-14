@@ -75,10 +75,10 @@ class WaitList:
 
         :param Patient patient: object to be removed
         """
-        if patient in self.wait_list:
+        if isinstance(patient, Patient) and patient in self.wait_list:
             self.wait_list.remove(patient)
             return
-        print('This patient is already in the wait list!')
+        print('This patient isn\'t in the wait list!')
     
     def __str__(self) -> str:
         string = ''
