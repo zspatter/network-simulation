@@ -25,11 +25,11 @@ o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 wait_list = WaitList()
 organ_list = OrganList()
 
-patient_a = Patient('name1', 'N/A', OrganType.Lungs.value, o_neg, 1, node_a.node_id, wait_list)
-patient_b = Patient('name2', 'N/A', OrganType.Kidney.value, o_neg, 1, node_b.node_id, wait_list)
+patient_a = Patient('name1', 'N/A', OrganType.Lungs, o_neg, 1, node_a.node_id, wait_list)
+patient_b = Patient('name2', 'N/A', OrganType.Kidney, o_neg, 1, node_b.node_id, wait_list)
 
-organ_c = Organ(OrganType.Liver.value, o_neg, node_c.node_id, organ_list)
-organ_d = Organ(OrganType.Heart.value, o_neg, node_d.node_id, organ_list)
+organ_c = Organ(OrganType.Liver, o_neg, node_c.node_id, organ_list)
+organ_d = Organ(OrganType.Heart, o_neg, node_d.node_id, organ_list)
 
 
 def test_generate_subnetwork():

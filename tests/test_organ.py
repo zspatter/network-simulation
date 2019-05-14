@@ -6,7 +6,7 @@ o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 
 
 def test_move_organ():
-    test_organ = Organ(organ_type=OrganType.Heart.value, blood_type=o_neg, location=1)
+    test_organ = Organ(organ_type=OrganType.Heart, blood_type=o_neg, location=1)
     
     # tests initial values
     assert test_organ.current_location is 1
