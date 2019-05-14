@@ -42,7 +42,7 @@ The network is a graph that is represented as a collection of nodes. The network
 - `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object 
 
 ### <ins>Simulator</ins>: 
-The `Simulator` is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `GeneratePatients`, `GenerateOrgans`, and `OrganAllocator` classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
+The `Simulator` is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `OrganAllocator` classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
 
 ## UML Diagram
 ![alt text](https://github.com/zspatter/network-simulation/blob/master/UML.png)
