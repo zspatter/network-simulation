@@ -1,14 +1,16 @@
 from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 from network_simulator.Dijkstra import Dijkstra
 from network_simulator.GraphBuilder import GraphBuilder
 from network_simulator.Network import Network
 from network_simulator.Node import Node
 from network_simulator.Organ import Organ
 from network_simulator.OrganAllocator import OrganAllocator
+from network_simulator.OrganGenerator import OrganGenerator
 from network_simulator.OrganList import OrganList
 from network_simulator.Patient import Patient
+from network_simulator.PatientGenerator import PatientGenerator
 from network_simulator.WaitList import WaitList
+from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"
@@ -106,19 +108,19 @@ patient_e = Patient(patient_name='patient e', illness='diabetes',
                     priority=100, location=hospital_b.node_id)
 
 # harvests a handful of organs (single donor, same source location)
-harvest_organ_1 = Organ(organ_type=OrganType.Pancreas.value,
+harvest_organ_1 = Organ(organ_type=OrganType.Pancreas,
                         blood_type=BloodType(BloodTypeLetter.A,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id)
-harvest_organ_2 = Organ(organ_type=OrganType.Heart.value,
+harvest_organ_2 = Organ(organ_type=OrganType.Heart,
                         blood_type=BloodType(BloodTypeLetter.A,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id)
-harvest_organ_3 = Organ(organ_type=OrganType.Liver.value,
+harvest_organ_3 = Organ(organ_type=OrganType.Liver,
                         blood_type=BloodType(BloodTypeLetter.A,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id)
-harvest_organ_4 = Organ(organ_type=OrganType.Lungs.value,
+harvest_organ_4 = Organ(organ_type=OrganType.Lungs,
                         blood_type=BloodType(BloodTypeLetter.A,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id)
@@ -205,19 +207,19 @@ patient_e = Patient(patient_name='patient e', illness='diabetes',
                     priority=100, location=hospital_b.node_id, wait_list=wait_list)
 
 # harvests a handful of organs (single donor, same source location)
-harvest_organ_1 = Organ(organ_type=OrganType.Pancreas.value,
+harvest_organ_1 = Organ(organ_type=OrganType.Pancreas,
                         blood_type=BloodType(BloodTypeLetter.O,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_2 = Organ(organ_type=OrganType.Heart.value,
+harvest_organ_2 = Organ(organ_type=OrganType.Heart,
                         blood_type=BloodType(BloodTypeLetter.O,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_3 = Organ(organ_type=OrganType.Liver.value,
+harvest_organ_3 = Organ(organ_type=OrganType.Liver,
                         blood_type=BloodType(BloodTypeLetter.O,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id, organ_list=organ_list)
-harvest_organ_4 = Organ(organ_type=OrganType.Lungs.value,
+harvest_organ_4 = Organ(organ_type=OrganType.Lungs,
                         blood_type=BloodType(BloodTypeLetter.O,
                                              BloodTypePolarity.NEG),
                         location=hospital_a.node_id, organ_list=organ_list)
@@ -235,8 +237,9 @@ harvest_organ_4 = Organ(organ_type=OrganType.Lungs.value,
 #     print(x)
 
 network = GraphBuilder.graph_builder(10)
-organ_list.generate_organs(network, 5)
-wait_list.generate_patients(network, 50)
+
+OrganGenerator.generate_organs_to_list(network, 5, organ_list)
+PatientGenerator.generate_patients_to_list(network, 50, wait_list)
 
 print(ANSI_CYAN + 'Organs to be allocated: ' + str(len(organ_list.organ_list)) + ANSI_RESET)
 print(ANSI_CYAN + 'Patients on wait list: ' + str(len(wait_list.wait_list)) + ANSI_RESET + '\n')

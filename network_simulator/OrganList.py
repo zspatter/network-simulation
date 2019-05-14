@@ -36,7 +36,7 @@ class OrganList:
 
         :param Organ organ: object to be added to the organ list
         """
-        if organ not in self.organ_list:
+        if isinstance(organ, Organ) and organ not in self.organ_list:
             self.organ_list.append(organ)
             return
         print('This organ is already in the organ list!')

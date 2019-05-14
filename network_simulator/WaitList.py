@@ -60,7 +60,7 @@ class WaitList:
 
         :param Patient patient: object to be added
         """
-        if patient not in self.wait_list:
+        if isinstance(patient, Patient) and patient not in self.wait_list:
             self.wait_list.append(patient)
             return
         print('This patient is already in the wait list!')

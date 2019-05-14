@@ -38,12 +38,12 @@ network = GraphBuilder.graph_builder(20)
 
 # creates patient list
 wait_list = WaitList()
-PatientGenerator.generate_patients(network, 10, wait_list)
+PatientGenerator.generate_patients_to_list(network, 10, wait_list)
 print(wait_list)
 
 # creates organ list
 organ_list = OrganList()
-OrganGenerator.generate_organs(network, 10, organ_list)
+OrganGenerator.generate_organs_to_list(network, 10, organ_list)
 print(organ_list)
 
 # creates subnetworks for patients and organs
