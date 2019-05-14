@@ -89,4 +89,4 @@ class Node:
                     string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
                             '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'
-        return
+        return None
