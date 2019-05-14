@@ -12,13 +12,13 @@ class Patient:
     waiting time (priority?), and location ('home' hospital).
     """
     patient_count = 0
-    
+
     def __init__(self, patient_name: str, illness: str, organ_needed: OrganType,
                  blood_type: BloodType, priority: int, location: int,
                  wait_list: 'WaitList' = None) -> None:
-        
+
         Patient.patient_count = Patient.patient_count + 1
-        
+
         self.patient_id: int = Patient.patient_count
         self.patient_name: str = patient_name
         self.illness: str = illness
@@ -28,7 +28,7 @@ class Patient:
         self.location: int = location
         if wait_list:
             wait_list.add_patient(self)
-    
+
     def __str__(self) -> str:
         """
         Returns an easily readable string representing the patient
@@ -43,7 +43,7 @@ class Patient:
             f'\tBlood type: {self.blood_type}\n' \
             f'\tPriority: {self.priority}\n' \
             f'\tNearest hospital: {self.location}\n'
-    
+
     def __eq__(self, other) -> bool:
         """
         Rich comparison returns true iff all attributes are equal
@@ -60,7 +60,7 @@ class Patient:
                    and self.priority is other.priority \
                    and self.location is other.location
         return NotImplemented
-    
+
     def __ne__(self, other) -> bool:
         """
         Rich comparison returns true if any attributes differ
@@ -77,7 +77,7 @@ class Patient:
                         and self.priority is other.priority
                         and self.location is other.location)
         return NotImplemented
-    
+
     def __lt__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute
@@ -89,7 +89,7 @@ class Patient:
         if isinstance(other, Patient):
             return self.priority < other.priority
         return NotImplemented
-    
+
     def __le__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute
@@ -101,7 +101,7 @@ class Patient:
         if isinstance(other, Patient):
             return self.priority <= other.priority
         return NotImplemented
-    
+
     def __gt__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute
@@ -113,7 +113,7 @@ class Patient:
         if isinstance(other, Patient):
             return self.priority > other.priority
         return NotImplemented
-    
+
     def __ge__(self, other) -> bool:
         """
         Rich comparison returns true if this object's priority attribute

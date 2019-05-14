@@ -17,7 +17,7 @@ class OrganGenerator:
     (from one harvest to another; all organs harvested from a single
     patient share the same location/blood type)
     """
-    
+
     @staticmethod
     def generate_organs(graph: Network, n: int) -> List[Organ]:
         """
@@ -27,22 +27,21 @@ class OrganGenerator:
         Generates n patients to add to wait list with random combinations of
         organ needed, blood type, priority, and location
 
-        :param Network graph:
-        :param int n:
-        :return:
+        :param Network graph: network where organs can be generated
+        :param int n: number of of bodies to harvest organs from
         """
-        
+
         # list of currently active nodes
         nodes = graph.nodes()
         organs: List[Organ] = list()
-        
+
         # number of patients to harvest from
         for _ in range(n):
             # number of possible organs to harvest
             location_id = random.choice(nodes)
             blood_type = BloodType(BloodTypeLetter.random_blood_type(),
                                    BloodTypePolarity.random_blood_polarity())
-            
+
             for organ_type in OrganType:
                 # determines if organ is suitable for harvest
                 if random.randrange(4) is not 0:
@@ -50,7 +49,14 @@ class OrganGenerator:
                                         blood_type=blood_type,
                                         location=location_id))
         return organs
-    
+
     @staticmethod
     def generate_organs_to_list(graph: Network, n: int, organ_list: OrganList) -> None:
+        """
+        Generates N organs and adds all generated organs to an OrganList
+
+        :param Network graph: network where organs can be generated
+        :param int n: number of bodies to harvest organs from
+        :param OrganList organ_list: list of organs to add harvested organs to
+        """
         organ_list.add_organs(OrganGenerator.generate_organs(graph, n))
