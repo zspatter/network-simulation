@@ -19,7 +19,7 @@ class ConnectivityChecker:
         This is a recursive DFS.
 
         :param network: object representing a graph (network)
-        :param set nodes_encountered: set of node_id's encountered (None by default)
+        :param Set[int] nodes_encountered: set of node_id's encountered (None by default)
         :param int source: node_id of start of search (None by default)
 
         :return: bool indicating graph connectivity

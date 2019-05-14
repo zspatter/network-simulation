@@ -19,12 +19,12 @@ class Organ:
     
     organ_count = 0
     
-    def __init__(self, organ_type: int, blood_type: BloodType,
+    def __init__(self, organ_type: OrganType, blood_type: BloodType,
                  location: int, organ_list: 'OrganList' = None) -> None:
         Organ.organ_count = Organ.organ_count + 1
         
         self.organ_id: int = Organ.organ_count
-        self.organ_type: int = organ_type
+        self.organ_type: OrganType = organ_type
         self.blood_type: BloodType = blood_type
         self.viability: float = Organ.get_viability(self.organ_type)
         self.origin_location: int = location
@@ -54,7 +54,7 @@ class Organ:
         self.viability -= cost
     
     @staticmethod
-    def get_viability(organ_type: int) -> float:
+    def get_viability(organ_type: OrganType) -> float:
         """
         Gets viability rating for each organ individually
         
@@ -64,14 +64,14 @@ class Organ:
         :return: int viability rating (used in __init__())
         """
         viability = {
-            str(OrganType.Heart.value):      60,
-            str(OrganType.Kidney.value):     300,
-            str(OrganType.Liver.value):      120,
-            str(OrganType.Lungs.value):      60,
-            str(OrganType.Pancreas.value):   120,
-            str(OrganType.Intestines.value): 80}
+            OrganType.Heart.value:      60,
+            OrganType.Kidney.value:     300,
+            OrganType.Liver.value:      120,
+            OrganType.Lungs.value:      60,
+            OrganType.Pancreas.value:   120,
+            OrganType.Intestines.value: 80}
         
-        return viability[str(organ_type)]
+        return viability[organ_type.value]
     
     def __str__(self) -> str:
         """

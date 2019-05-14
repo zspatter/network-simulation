@@ -6,7 +6,7 @@ o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 
 
 def test_move_organ():
-    test_organ = Organ(organ_type=OrganType.Heart.value, blood_type=o_neg, location=1)
+    test_organ = Organ(organ_type=OrganType.Heart, blood_type=o_neg, location=1)
     
     # tests initial values
     assert test_organ.current_location is 1
@@ -30,9 +30,9 @@ def test_move_organ():
 
 
 def test_get_viability():
-    assert Organ.get_viability(OrganType.Heart.value) == 60
-    assert Organ.get_viability(OrganType.Kidney.value) == 300
-    assert Organ.get_viability(OrganType.Liver.value) == 120
-    assert Organ.get_viability(OrganType.Lungs.value) == 60
-    assert Organ.get_viability(OrganType.Pancreas.value) == 120
-    assert Organ.get_viability(OrganType.Intestines.value) == 80
+    assert Organ.get_viability(OrganType.Heart) == 60
+    assert Organ.get_viability(OrganType.Kidney) == 300
+    assert Organ.get_viability(OrganType.Liver) == 120
+    assert Organ.get_viability(OrganType.Lungs) == 60
+    assert Organ.get_viability(OrganType.Pancreas) == 120
+    assert Organ.get_viability(OrganType.Intestines) == 80

@@ -1,6 +1,8 @@
 from network_simulator.GraphBuilder import GraphBuilder
 from network_simulator.OrganAllocator import OrganAllocator
+from network_simulator.OrganGenerator import OrganGenerator
 from network_simulator.OrganList import OrganList
+from network_simulator.PatientGenerator import PatientGenerator
 from network_simulator.WaitList import WaitList
 
 network, wait_list, organ_list = None, WaitList(), OrganList()
@@ -114,7 +116,8 @@ def generate_patients():
     if network:
         try:
             response = int(input(f'\nHow many patients would you like to generate? '))
-            wait_list.generate_patients(network, response)
+            PatientGenerator.generate_patients_to_list(network, response, wait_list)
+        
         except ValueError:
             print(f'\n{ANSI_RED_BOLD}ValueError:{ANSI_RED} valid values '
                   f'are positive ints{ANSI_RESET}\n')
@@ -153,7 +156,8 @@ def harvest_organs():
             try:
                 response = int(input('\nHow many patients would you like '
                                      'to harvest organs from? '))
-                organ_list.generate_organs(network, response)
+                OrganGenerator.generate_organs_to_list(network, response, organ_list)
+            
             except ValueError:
                 print(f'\n{ANSI_RED_BOLD}ValueError:{ANSI_RED} valid values '
                       f'are positive ints{ANSI_RESET}\n')

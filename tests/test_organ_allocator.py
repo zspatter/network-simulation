@@ -14,17 +14,17 @@ def test_allocate_organs():
     o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
     organ_list = OrganList()
     
-    organ1 = Organ(OrganType.Pancreas.value, ab_pos, 1, organ_list)
-    organ2 = Organ(OrganType.Heart.value, o_neg, 1, organ_list)
+    organ1 = Organ(OrganType.Pancreas, ab_pos, 1, organ_list)
+    organ2 = Organ(OrganType.Heart, o_neg, 1, organ_list)
     
     wait_list = WaitList()
-    patient1 = Patient('name', 'illness 1', OrganType.Pancreas.value,
+    patient1 = Patient('name', 'illness 1', OrganType.Pancreas,
                        ab_pos, 100, 1, wait_list)
-    patient2 = Patient('name', 'illness 2', OrganType.Pancreas.value,
+    patient2 = Patient('name', 'illness 2', OrganType.Pancreas,
                        o_neg, 200, 3, wait_list)
-    patient3 = Patient('name', 'illness 3', OrganType.Heart.value,
+    patient3 = Patient('name', 'illness 3', OrganType.Heart,
                        ab_pos, 100, 2, wait_list)
-    patient4 = Patient('name', 'illness 4', OrganType.Heart.value,
+    patient4 = Patient('name', 'illness 4', OrganType.Heart,
                        ab_pos, 50, 2, wait_list)
     
     node1 = Node(1, adjacency_dict={2: {'weight': 10, 'status': True},
@@ -45,15 +45,15 @@ def test_find_best_match():
     o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
     wait_list = WaitList()
     
-    patient1 = Patient('name', 'illness 1', OrganType.Pancreas.value,
+    patient1 = Patient('name', 'illness 1', OrganType.Pancreas,
                        ab_pos, 100, 1, wait_list)
-    patient2 = Patient('name', 'illness 2', OrganType.Pancreas.value,
+    patient2 = Patient('name', 'illness 2', OrganType.Pancreas,
                        ab_pos, 250, 3, wait_list)
-    patient3 = Patient('name', 'illness 3', OrganType.Pancreas.value,
+    patient3 = Patient('name', 'illness 3', OrganType.Pancreas,
                        o_neg, 400, 2, wait_list)
-    patient4 = Patient('name', 'illness 4', OrganType.Heart.value,
+    patient4 = Patient('name', 'illness 4', OrganType.Heart,
                        ab_pos, 500, 2, wait_list)
-    organ = Organ(OrganType.Pancreas.value, o_neg, 1)
+    organ = Organ(OrganType.Pancreas, o_neg, 1)
     
     node1 = Node(1, adjacency_dict={2: {'weight': 10, 'status': True},
                                     3: {'weight': 25, 'status': True}})

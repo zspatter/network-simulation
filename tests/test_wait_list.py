@@ -17,15 +17,15 @@ def test__init__():
 
 def test_get_prioritized_patients():
     wait_list = WaitList()
-    patient1 = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1,
+    patient1 = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1,
                        wait_list)
-    patient2 = Patient('name2', 'illness2', OrganType.Pancreas.value, ab_pos, 200, 1,
+    patient2 = Patient('name2', 'illness2', OrganType.Pancreas, ab_pos, 200, 1,
                        wait_list)
-    patient3 = Patient('name3', 'illness3', OrganType.Pancreas.value, ab_pos, 300, 1,
+    patient3 = Patient('name3', 'illness3', OrganType.Pancreas, ab_pos, 300, 1,
                        wait_list)
-    patient4 = Patient('name4', 'illness4', OrganType.Pancreas.value, ab_pos, 400, 1,
+    patient4 = Patient('name4', 'illness4', OrganType.Pancreas, ab_pos, 400, 1,
                        wait_list)
-    organ = Organ(OrganType.Pancreas.value, ab_pos, 3)
+    organ = Organ(OrganType.Pancreas, ab_pos, 3)
     queue = wait_list.get_prioritized_patients(organ)
     
     assert len(queue) is 3
@@ -37,24 +37,40 @@ def test_get_prioritized_patients():
 
 def test_add_patient():
     wait_list = WaitList()
-    patient = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1)
+    patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1)
     wait_list.add_patient(patient)
     
     assert len(wait_list.wait_list) is 1
     wait_list.add_patient(patient)
     assert len(wait_list.wait_list) is 1
-    patient = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1)
+    patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1)
     wait_list.add_patient(patient)
+    assert len(wait_list.wait_list) is 2
+    wait_list.add_patient(1)
     assert len(wait_list.wait_list) is 2
 
 
+def test_add_patients():
+    wait_list = WaitList()
+    assert len(wait_list.wait_list) == 0
+    
+    patients = list()
+    patients.append(Patient('name', 'N/A', OrganType.random_organ_type(), o_neg, 150, 1))
+    patients.append(Patient('name', 'N/A', OrganType.random_organ_type(), o_neg, 150, 1))
+    patients.append(Patient('name', 'N/A', OrganType.random_organ_type(), o_neg, 150, 1))
+    wait_list.add_patients(patients)
+    assert len(wait_list.wait_list) == 3
+    
+    for patient in patients:
+        assert patient in wait_list.wait_list
+
 def test_remove_patient():
     wait_list = WaitList()
-    patient = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1, wait_list)
+    patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
     
     assert len(wait_list.wait_list) is 0
-    patient2 = Patient('name1', 'illness1', OrganType.Pancreas.value, o_neg, 500, 1, wait_list)
+    patient2 = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
     assert len(wait_list.wait_list) is 1
     wait_list.remove_patient(patient2)

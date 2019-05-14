@@ -1,12 +1,10 @@
 from __future__ import annotations
-from typing import List
 
 import heapq
+from typing import List
 
-from network_simulator.Network import Network
 from network_simulator.Organ import Organ
 from network_simulator.Patient import Patient
-from network_simulator.PatientGenerator import PatientGenerator
 
 
 class WaitList:
@@ -62,10 +60,14 @@ class WaitList:
 
         :param Patient patient: object to be added
         """
-        if patient not in self.wait_list:
+        if isinstance(patient, Patient) and patient not in self.wait_list:
             self.wait_list.append(patient)
             return
-        print('This patient isn\'t in the wait list!')
+        print('This patient is already in the wait list!')
+    
+    def add_patients(self, patients: List[Patient]) -> None:
+        for patient in patients:
+            self.add_patient(patient)
     
     def remove_patient(self, patient: Patient) -> None:
         """
@@ -73,20 +75,10 @@ class WaitList:
 
         :param Patient patient: object to be removed
         """
-        if patient in self.wait_list:
+        if isinstance(patient, Patient) and patient in self.wait_list:
             self.wait_list.remove(patient)
             return
-        print('This patient is already in the wait list!')
-    
-    def generate_patients(self, graph: Network, n: int) -> None:
-        """
-        Wrapper that calls the GeneratePatients.generate_patients function
-        This is used to ensure the generated patients are added to the same wait list
-
-        :param Network graph: network for patients to be allocated to
-        :param int n: number of patients to generate
-        """
-        PatientGenerator.generate_patients(graph, n, self)
+        print('This patient isn\'t in the wait list!')
     
     def __str__(self) -> str:
         string = ''

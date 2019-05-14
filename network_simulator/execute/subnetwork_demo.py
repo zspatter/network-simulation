@@ -9,8 +9,8 @@ network = GraphBuilder.graph_builder(20)
 wait_list = WaitList()
 organ_list = OrganList()
 
-PatientGenerator.generate_patients(network, 10, wait_list)
-OrganGenerator.generate_organs(network, 5, organ_list)
+PatientGenerator.generate_patients_to_list(network, 10, wait_list)
+OrganGenerator.generate_organs_to_list(network, 5, organ_list)
 
 print(network)
 print(wait_list)
