@@ -29,9 +29,9 @@ class Node:
         self.adjacency_dict: adj_dict
         self.status: bool
 
-        if not adjacency_dict:
-            adjacency_dict = {}
-        self.adjacency_dict = adjacency_dict
+        # if not adjacency_dict:
+        #     adjacency_dict = {}
+        # self.adjacency_dict = adjacency_dict
 
         if status is False:
             for key in adjacency_dict:
