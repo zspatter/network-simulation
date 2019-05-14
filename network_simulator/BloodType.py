@@ -46,9 +46,9 @@ class BloodType:
         """
         polarity = ''
 
-        if self.blood_type_polarity.value is 0:
+        if self.blood_type_polarity.value == 0:
             polarity = '-'
-        elif self.blood_type_polarity.value is 1:
+        elif self.blood_type_polarity.value == 1:
             polarity = '+'
 
         return f'{self.blood_type_letter.name}{polarity}'
