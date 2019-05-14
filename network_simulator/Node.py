@@ -1,4 +1,4 @@
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Optional
 
 edge_details = Dict[str, Union[int, bool]]
 adj_dict = Dict[int, edge_details]
@@ -11,7 +11,7 @@ class Node:
     neighboring nodes along with the weight associated with the shared
     edge, and a status that marks active/inactive nodes.
     """
-    
+
     def __init__(self, node_id: int, label: str = 'Default node label',
                  adjacency_dict: adj_dict = None, status: bool = None) -> None:
         """
@@ -28,19 +28,19 @@ class Node:
         self.label: str = label
         self.adjacency_dict: adj_dict
         self.status: bool
-        
+
         if not adjacency_dict:
             adjacency_dict = {}
         self.adjacency_dict = adjacency_dict
-        
+
         if status is False:
             for key in adjacency_dict:
                 adjacency_dict[key]['status'] = False
-        
+
         if status is None:
             status = True
         self.status = status
-    
+
     def is_adjacent(self, node_id: int) -> bool:
         """
         Returns bool indicating if this instance is connected to the passed
@@ -56,7 +56,7 @@ class Node:
             return True
         else:
             return False
-    
+
     def get_adjacents(self) -> List[int]:
         """
         Returns list of adjacent nodes. Nodes are only added to the list
@@ -70,7 +70,7 @@ class Node:
         if self.status:
             adjacents = [key for key in self.adjacency_dict if self.adjacency_dict[key]['status']]
         return adjacents
-    
+
     def __str__(self) -> str:
         """
         Returns an easily readable (formatted) string representation of the instance.
@@ -83,9 +83,10 @@ class Node:
         if self.status:
             string = '\nLabel: ' + self.label + '\t(Node ID: ' + \
                      str(self.node_id) + ')\nNeighbors:'
-            
+
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
                     string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
                             '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'
+        return ''

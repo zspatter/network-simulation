@@ -1,11 +1,11 @@
 from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
 from network_simulator.Network import Node, Network
 from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
 from network_simulator.Patient import Patient
 from network_simulator.SubnetworkGenerator import SubnetworkGenerator
 from network_simulator.WaitList import WaitList
+from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
 
 node_a = Node(1, 'A',
               {2: {'weight': 1, 'status': True},
@@ -35,10 +35,10 @@ organ_d = Organ(OrganType.Heart, o_neg, node_d.node_id, organ_list)
 def test_generate_subnetwork():
     patient_network = SubnetworkGenerator.generate_subnetwork(network, wait_list)
     organ_network = SubnetworkGenerator.generate_subnetwork(network, organ_list)
-    
+
     patient_nodes = patient_network.nodes()
     organ_nodes = organ_network.nodes()
-    
+
     assert len(network.nodes()) == 4
     assert len(patient_network.nodes()) == 2
     assert len(organ_network.nodes()) == 2
@@ -46,9 +46,9 @@ def test_generate_subnetwork():
     assert node_b.node_id in patient_nodes
     assert node_c.node_id in organ_nodes
     assert node_d.node_id in organ_nodes
-    
+
     for node in patient_nodes:
         assert node in network.nodes()
-    
+
     for node in organ_nodes:
         assert node in network.nodes()

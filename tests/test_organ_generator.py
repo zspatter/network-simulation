@@ -9,7 +9,7 @@ n = 3
 
 def test_generate_organs():
     organs = OrganGenerator.generate_organs(graph=test_net, n=n)
-    
+
     assert len(organs) <= n * 6
     for organ in organs:
         assert organ.current_location in test_net.nodes()
@@ -21,7 +21,7 @@ def test_generate_organs():
 def test_generate_organs_to_list():
     organ_list = OrganList()
     OrganGenerator.generate_organs_to_list(graph=test_net, n=n, organ_list=organ_list)
-    
+
     # assert len(organ_list.organ_list) <= n * 6
     for organ in organ_list.organ_list:
         assert organ.current_location in test_net.nodes()

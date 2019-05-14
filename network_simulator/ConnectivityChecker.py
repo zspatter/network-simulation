@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Set, Optional
 
 from network_simulator.Network import Network
 
@@ -10,9 +10,9 @@ class ConnectivityChecker:
     In a connected network, there exists a path between any given node
     and all other nodes (no nodes exist that cannot be reached)
     """
-    
+
     @staticmethod
-    def is_connected(network: Network, nodes_encountered: Set[int] = None,
+    def is_connected(network: Network, nodes_encountered: Set[Optional[int]] = None,
                      source: int = None) -> bool:
         """
         Returns bool indicating graph connectivity (path between all nodes).
@@ -40,7 +40,7 @@ class ConnectivityChecker:
         else:
             return True
         return False
-    
+
     @staticmethod
     def depth_first_search(network: Network, node_id: int = None) -> bool:
         """
@@ -53,7 +53,7 @@ class ConnectivityChecker:
         :return: bool indicating graph connectivity
         :rtype: bool
         """
-        nodes_encountered: Set[int] = set()
+        nodes_encountered: Set[Optional[int]] = set()
         if not node_id:
             node_id = network.nodes()[0]
         stack = [node_id]
@@ -62,12 +62,12 @@ class ConnectivityChecker:
             if node not in nodes_encountered:
                 nodes_encountered.add(node)
                 stack.extend(network.network_dict[node].get_adjacents())
-        
+
         if len(nodes_encountered) != len(network.nodes()):
             return False
         else:
             return True
-    
+
     @staticmethod
     def breadth_first_search(network: Network, node_id: int = None) -> bool:
         """
@@ -84,20 +84,20 @@ class ConnectivityChecker:
         visited = dict.fromkeys(network.nodes())
         nodes_encountered = set()
         queue = []
-        
+
         if not node_id:
             node_id = network.nodes()[0]
-        
+
         # mark the source node as visited and enqueue it
         queue.append(node_id)
         visited[node_id] = True
         nodes_encountered.add(node_id)
-        
+
         while queue:
             # dequeue a node from queue and add to nodes_encountered
             node_id = queue.pop(0)
             nodes_encountered.add(node_id)
-            
+
             # all adjacents of current node are checked, if the node hasn't been
             # enqueued previously, node is enqueued and added to nodes_encountered
             for node in network.network_dict[node_id].get_adjacents():
@@ -105,7 +105,7 @@ class ConnectivityChecker:
                     queue.append(node)
                     visited[node] = True
                     nodes_encountered.add(node)
-        
+
         # if size of nodes_encountered equals size of nodes(), return True
         if len(nodes_encountered) == len(network.nodes()):
             return True

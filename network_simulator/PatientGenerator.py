@@ -14,7 +14,7 @@ class PatientGenerator:
     The generated patients are distributed randomly across the network
     and are assigned a random blood type and priority value.
     """
-    
+
     @staticmethod
     def generate_patients(graph: Network, n: int) -> List[Patient]:
         """
@@ -23,12 +23,11 @@ class PatientGenerator:
 
         :param Network graph: network for patients to be allocated to
         :param int n: number of patients to generate
-
         """
         # list of currently active nodes
         nodes = graph.nodes()
         patients: List[Patient] = list()
-        
+
         for x in range(n):
             patients.append(Patient(patient_name="generated patient #" + str(x + 1),
                                     illness="N/A",
@@ -41,4 +40,12 @@ class PatientGenerator:
 
     @staticmethod
     def generate_patients_to_list(graph: Network, n: int, wait_list: WaitList) -> None:
+        """
+        Generates N patients and add all generated patients to a WaitList
+
+
+        :param Network graph: network where patients can be generated
+        :param int n: number of patients to generate
+        :param WaitList wait_list: list of patients to add generated patients to
+        """
         wait_list.add_patients(PatientGenerator.generate_patients(graph, n))
