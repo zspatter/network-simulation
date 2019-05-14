@@ -46,7 +46,23 @@ def test_add_patient():
     patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1)
     wait_list.add_patient(patient)
     assert len(wait_list.wait_list) is 2
+    wait_list.add_patient(1)
+    assert len(wait_list.wait_list) is 2
 
+
+def test_add_patients():
+    wait_list = WaitList()
+    assert len(wait_list.wait_list) == 0
+    
+    patients = list()
+    patients.append(Patient('name', 'N/A', OrganType.random_organ_type(), o_neg, 150, 1))
+    patients.append(Patient('name', 'N/A', OrganType.random_organ_type(), o_neg, 150, 1))
+    patients.append(Patient('name', 'N/A', OrganType.random_organ_type(), o_neg, 150, 1))
+    wait_list.add_patients(patients)
+    assert len(wait_list.wait_list) == 3
+    
+    for patient in patients:
+        assert patient in wait_list.wait_list
 
 def test_remove_patient():
     wait_list = WaitList()
