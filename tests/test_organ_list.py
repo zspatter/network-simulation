@@ -28,21 +28,21 @@ def test_add_organ():
 def test_add_organs():
     organ_list = OrganList()
     assert len(organ_list.organ_list) == 0
-    
+
     organs = list()
     organs.append(Organ(OrganType.random_organ_type(), o_neg, 1))
     organs.append(Organ(OrganType.random_organ_type(), o_neg, 1))
     organs.append(Organ(OrganType.random_organ_type(), o_neg, 1))
     organ_list.add_organs(organs)
     assert len(organ_list.organ_list) == 3
-    
+
     for organ in organs:
         assert organ in organ_list.organ_list
 
 
 def test_remove_organ():
     organ_list = OrganList()
-    
+
     organ = Organ(OrganType.Pancreas, o_neg, 1)
     organ_list.remove_organ(organ)
     assert len(organ_list.organ_list) is 0
@@ -58,7 +58,7 @@ def test_remove_organ():
 
 def test_empty_list():
     organ_list = OrganList()
-    
+
     organ = Organ(OrganType.Pancreas, o_neg, 1, organ_list)
     organ = Organ(OrganType.Pancreas, o_neg, 1, organ_list)
     organ = Organ(OrganType.Pancreas, o_neg, 1, organ_list)

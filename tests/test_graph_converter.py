@@ -25,15 +25,15 @@ def test_graph_converter():
     network_x = GraphConverter.convert_to_networkx(network)
     nodes = network.nodes()
     nx_nodes = list(network_x.nodes)
-    
+
     for node in nodes:
         assert node in nx_nodes
         adjacents = network.network_dict[node].get_adjacents()
-        
+
         for adjacent in adjacents:
             assert (node, adjacent) or (adjacent, node) in network_x.edges
             edge_weight = network.network_dict[node].adjacency_dict[adjacent]['weight']
             assert edge_weight == network_x[node][adjacent]['weight']
-    
+
     for node in nx_nodes:
         assert node in nodes
