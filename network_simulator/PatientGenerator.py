@@ -31,7 +31,7 @@ class PatientGenerator:
         for x in range(n):
             patients.append(Patient(patient_name="generated patient #" + str(x + 1),
                                     illness="N/A",
-                                    organ_needed=OrganType.random_organ_type().value,
+                                    organ_needed=OrganType.random_organ_type(),
                                     blood_type=BloodType(BloodTypeLetter.random_blood_type(),
                                                          BloodTypePolarity.random_blood_polarity()),
                                     priority=random.randrange(100 + n),
