@@ -5,6 +5,7 @@ from network_simulator.BloodType import BloodType
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
 from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
+from network_simulator.OrganList import OrganList
 
 
 class OrganGenerator:
@@ -49,3 +50,7 @@ class OrganGenerator:
                                         blood_type=blood_type,
                                         location=location_id))
         return organs
+    
+    @staticmethod
+    def generate_organs_to_list(graph: Network, n: int, organ_list: OrganList) -> None:
+        organ_list.add_organs(OrganGenerator.generate_organs(graph, n))
