@@ -40,7 +40,7 @@ class OrganList:
             self.organ_list.append(organ)
             return
         print('This organ is already in the organ list!')
-        
+    
     def add_organs(self, organs: List[Organ]) -> None:
         for organ in organs:
             self.add_organ(organ)
