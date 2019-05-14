@@ -1,9 +1,8 @@
 from __future__ import annotations
+
 from typing import List
 
-from network_simulator.Network import Network
 from network_simulator.Organ import Organ
-from network_simulator.OrganGenerator import OrganGenerator
 
 
 class OrganList:
@@ -41,6 +40,10 @@ class OrganList:
             self.organ_list.append(organ)
             return
         print('This organ is already in the organ list!')
+        
+    def add_organs(self, organs: List[Organ]) -> None:
+        for organ in organs:
+            self.add_organ(organ)
     
     def remove_organ(self, organ: Organ) -> None:
         """
@@ -58,16 +61,6 @@ class OrganList:
         Clears entire organ_list (utility function for the organ allocator)
         """
         self.organ_list = list()
-    
-    def generate_organs(self, graph: Network, n: int) -> None:
-        """
-        Wrapper that calls the GenerateOrgans.generate_organs function
-        This is used to ensure the generated organs are added to the same organ list
-
-        :param Network graph: network for patients to be allocated to
-        :param int n: number of patients to generate
-        """
-        OrganGenerator.generate_organs(graph, n, self)
     
     def __str__(self) -> str:
         string = ''
