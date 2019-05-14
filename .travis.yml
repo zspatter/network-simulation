@@ -1,0 +1,12 @@
+dist: xenial   # required for Python >= 3.7
+language: python
+python:
+  - "3.7"
+  - "nightly"  # nightly build
+install:
+  - pip install networkx
+#  - pip install matplotlib
+  - pip install mypy
+  - pip install pytest-cov
+script:
+  - pytest --cov=network_simulator/

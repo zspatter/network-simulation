@@ -44,7 +44,7 @@ class OrganGenerator:
 
             for organ_type in OrganType:
                 # determines if organ is suitable for harvest
-                if random.randrange(4) is not 0:
+                if random.randrange(4) != 0:
                     organs.append(Organ(organ_type=organ_type,
                                         blood_type=blood_type,
                                         location=location_id))
