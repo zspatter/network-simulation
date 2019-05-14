@@ -30,9 +30,9 @@ def test_move_organ():
 
 
 def test_get_viability():
-    assert Organ.get_viability(OrganType.Heart.value) == 60
-    assert Organ.get_viability(OrganType.Kidney.value) == 300
-    assert Organ.get_viability(OrganType.Liver.value) == 120
-    assert Organ.get_viability(OrganType.Lungs.value) == 60
-    assert Organ.get_viability(OrganType.Pancreas.value) == 120
-    assert Organ.get_viability(OrganType.Intestines.value) == 80
+    assert Organ.get_viability(OrganType.Heart) == 60
+    assert Organ.get_viability(OrganType.Kidney) == 300
+    assert Organ.get_viability(OrganType.Liver) == 120
+    assert Organ.get_viability(OrganType.Lungs) == 60
+    assert Organ.get_viability(OrganType.Pancreas) == 120
+    assert Organ.get_viability(OrganType.Intestines) == 80
