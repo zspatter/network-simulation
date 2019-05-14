@@ -157,7 +157,7 @@ def harvest_organs():
                 response = int(input('\nHow many patients would you like '
                                      'to harvest organs from? '))
                 OrganGenerator.generate_organs_to_list(network, response, organ_list)
-            
+
             except ValueError:
                 print(f'\n{ANSI_RED_BOLD}ValueError:{ANSI_RED} valid values '
                       f'are positive ints{ANSI_RESET}\n')
