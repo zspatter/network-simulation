@@ -5,8 +5,10 @@ python:
   - "nightly"  # nightly build
 install:
   - pip install networkx
-#  - pip install matplotlib
   - pip install mypy
   - pip install pytest-cov
+  - pip install coveralls
 script:
   - pytest --cov=network_simulator/
+after_success:
+  - coveralls
