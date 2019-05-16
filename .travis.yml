@@ -15,6 +15,6 @@ after_success:
 notifications:
   email:
     recipients:
-      - localhost@zspatter.com
+      - localhost@zspatter.dev
     on_success: always
     on_failure: always
