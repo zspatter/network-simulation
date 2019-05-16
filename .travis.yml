@@ -7,7 +7,7 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - pytest --cov=network_simulator/
+  - pytest --cov-report term-missing --cov=network_simulator/
 after_success:
   - coveralls
 notifications:
