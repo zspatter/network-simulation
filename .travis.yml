@@ -2,7 +2,6 @@ dist: xenial   # required for Python >= 3.7
 language: python
 # python versions to use during the tests
 python:
-  - "3.6"
   - "3.7"
   - "nightly"
 # command to install dependencies
