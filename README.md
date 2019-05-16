@@ -1,4 +1,6 @@
 # Network Simulation
+[![Python Version](https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg)](https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg)
+<br>
 [![Build Status](https://travis-ci.com/zspatter/network-simulation.svg?branch=master)](https://travis-ci.com/zspatter/network-simulation)
 [![Coverage Status](https://coveralls.io/repos/github/zspatter/network-simulation/badge.svg?branch=master)](https://coveralls.io/github/zspatter/network-simulation?branch=master)
 
