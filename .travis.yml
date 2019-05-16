@@ -1,14 +1,20 @@
 dist: xenial   # required for Python >= 3.7
 language: python
+# python versions to use during the tests
 python:
+  - "3.6"
   - "3.7"
-  - "nightly"  # nightly build
+  - "nightly"
+# command to install dependencies
 install:
-  - pip install networkx
-  - pip install mypy
-  - pip install pytest-cov
-  - pip install coveralls
+  - pip install -r requirements.txt
 script:
   - pytest --cov=network_simulator/
 after_success:
   - coveralls
+notifications:
+  email:
+    recipients:
+      - localhost@zspatter.com
+    on_success: always
+    on_failure: always
