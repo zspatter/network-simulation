@@ -3,12 +3,6 @@ from __future__ import annotations
 import random
 from enum import Enum
 
-"""
-These are a collection of enums used to represent organ type and blood type.
-
-These are used to initialize values for various objects throughout the system
-"""
-
 
 class OrganType(Enum):
     """
@@ -20,7 +14,7 @@ class OrganType(Enum):
     Lungs: int = 3
     Pancreas: int = 4
     Intestines: int = 5
-    
+
     @classmethod
     def random_organ_type(cls) -> OrganType:
         """
@@ -39,7 +33,7 @@ class BloodTypeLetter(Enum):
     A: int = 1
     B: int = 2
     AB: int = 3
-    
+
     @classmethod
     def random_blood_type(cls) -> BloodTypeLetter:
         """

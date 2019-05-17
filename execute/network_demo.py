@@ -251,11 +251,6 @@ print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_s
 print('\tIterative breadth_first_search: ' + str(
         ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
-"""
-The following section briefly tests generated networks and the iterative
-connectivity algorithms.
-"""
-
 # tests the generate_network and generate_adjacency_list functions
 generated_network = GraphBuilder.graph_builder(15)
 print('\t---GENERATED RANDOM NETWORK---\n')
@@ -272,9 +267,7 @@ dijkstra = Dijkstra(network_1, 1)
 weights, previous = dijkstra.dijkstra(network_1, 1)
 print("weights:\n" + str(weights))
 print("\nprevious:\n" + str(previous))
-'''
-Checks how __init__ handles shared edges with differing weights
-'''
+
 node1 = Node(1, "A",
              {2: {'weight': 3, 'status': True},
               3: {'weight': 5, 'status': True},
