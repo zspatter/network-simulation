@@ -57,7 +57,7 @@ class Organ:
     def get_viability(organ_type: OrganType) -> float:
         """
         Gets viability rating for each organ individually
-        
+
         Viability is represented by hours an organ can be out of body * 10
 
         :param int organ_type: constant corresponding to an organ type

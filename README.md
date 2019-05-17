@@ -34,19 +34,19 @@ The network is a graph that is represented as a collection of nodes. The network
 2. `label` - describes/names the graph
 
 ### <ins>Other Classes</ins>
-- `Dijkstra`- finds all shortest paths from a source node in a given graph
-- `BloodType` - indicates blood type by letter and polarity (also checks for compatibility between donors and recipients)
-- `Organ` - represents a donated organ available for transplant (these will be distributed across the system)
-- `Patient` - represents an individual in need of a transplant
-- `OrganList` - represents all donor organs currently available to be allocated to patients
-- `WaitList` - represents all patients in need of a transplant
-- `GraphBuilder` - builds a random network with N nodes
-- `OrganGenerator` - simulates harvesting organs from N patients where each organ has a 75% of being successfully harvested and adds the generated organs to an `OrganList`
-- `PatientGenerator` - generates N patients each with a random organ need, blood type, priority, and location (`node_id`) and adds the generated patients to a `WaitList`
-- `OrganAllocator` - allocates harvested organs (`OrganList`) to the most optimal matching patient (`WaitList`)
-- `ConnectivityChecker` - determines if a given graph is connected 
-- `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
-- `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object 
+-  `Dijkstra` - finds all shortest paths from a source node in a given graph
+-  `BloodType` - indicates blood type by letter and polarity (also checks for compatibility between donors and recipients)
+-  `Organ` - represents a donated organ available for transplant (these will be distributed across the system)
+-  `Patient` - represents an individual in need of a transplant
+-  `OrganList` - represents all donor organs currently available to be allocated to patients
+-  `WaitList` - represents all patients in need of a transplant
+-  `GraphBuilder` - builds a random network with N nodes
+-  `OrganGenerator` - simulates harvesting organs from N patients where each organ has a 75% of being successfully harvested and adds the generated organs to an `OrganList`
+-  `PatientGenerator` - generates N patients each with a random organ need, blood type, priority, and location (`node_id`) and adds the generated patients to a `WaitList`
+-  `OrganAllocator` - allocates harvested organs (`OrganList`) to the most optimal matching patient (`WaitList`)
+-  `ConnectivityChecker` - determines if a given graph is connected 
+-  `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
+-  `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object 
 
 ### <ins>Simulator</ins>
 The `Simulator` is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `OrganAllocator` classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.

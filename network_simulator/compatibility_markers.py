@@ -56,7 +56,7 @@ class BloodTypePolarity(Enum):
     """
     NEG: int = 0
     POS: int = 1
-    
+
     @classmethod
     def random_blood_polarity(cls) -> BloodTypePolarity:
         """

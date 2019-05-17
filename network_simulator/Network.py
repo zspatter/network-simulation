@@ -530,7 +530,7 @@ class Network:
         
         except GraphElementError as e:
             print(e)
-    
+
     def __str__(self) -> str:
         """
         Returns an easily readable (formatted) string representation of

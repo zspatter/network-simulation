@@ -76,7 +76,7 @@ class GraphBuilder:
             while node_id == random_node \
                     or any(random_node == x for x in adjacency_dict.keys()):
                 random_node = random.randint(1, total_nodes)
-            
+
             # updates adjacency dict to new format
             adjacency_dict[random_node] = {
                 'weight': random.randint(1, max_weight),
