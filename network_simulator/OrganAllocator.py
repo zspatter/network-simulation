@@ -35,7 +35,8 @@ class OrganAllocator:
 
         for organ in organ_list.organ_list:
             if organ.origin_location is source:
-                recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)
+                recipient = OrganAllocator.find_best_match(organ, wait_list,
+                                                           dijkstra.weight)  # type: ignore
             else:
                 source = organ.origin_location
                 dijkstra = Dijkstra(network, source)
@@ -71,7 +72,7 @@ class OrganAllocator:
 
         # returns the patient with the highest priority within acceptable proximity
         while len(matches) != 0:
-            patient = heapq._heappop_max(matches)
+            patient = heapq._heappop_max(matches)  # type: ignore
             if organ.viability >= weights[patient.location] - 10:
                 return patient
 

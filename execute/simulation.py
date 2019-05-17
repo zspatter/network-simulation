@@ -201,10 +201,6 @@ patient_d = Patient(patient_name='patient d', illness='lung cancer',
                     organ_needed=OrganType.Lungs, blood_type=BloodType(BloodTypeLetter.AB,
                                                                        BloodTypePolarity.POS),
                     priority=4, location=hospital_g.node_id, wait_list=wait_list)
-patient_e = Patient(patient_name='patient e', illness='diabetes',
-                    organ_needed=OrganType.Pancreas, blood_type=BloodType(BloodTypeLetter.AB,
-                                                                          BloodTypePolarity.POS),
-                    priority=100, location=hospital_b.node_id, wait_list=wait_list)
 
 # harvests a handful of organs (single donor, same source location)
 harvest_organ_1 = Organ(organ_type=OrganType.Pancreas,

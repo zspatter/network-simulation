@@ -1,4 +1,4 @@
-from typing import Dict, Union, List, Optional
+from typing import Dict, Union, List
 
 edge_details = Dict[str, Union[int, bool]]
 adj_dict = Dict[int, edge_details]

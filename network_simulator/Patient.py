@@ -15,7 +15,7 @@ class Patient:
 
     def __init__(self, patient_name: str, illness: str, organ_needed: OrganType,
                  blood_type: BloodType, priority: int, location: int,
-                 wait_list: 'WaitList' = None) -> None:
+                 wait_list: 'WaitList' = None) -> None:  # type: ignore
 
         Patient.patient_count = Patient.patient_count + 1
 
