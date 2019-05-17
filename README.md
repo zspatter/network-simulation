@@ -1,4 +1,5 @@
 # Network Simulation
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8bf69efc47fb47558c9e28a2ba99f487)](https://app.codacy.com/app/localhost_2/network-simulation?utm_source=github.com&utm_medium=referral&utm_content=zspatter/network-simulation&utm_campaign=Badge_Grade_Settings)
 [![Python Version](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <br>
