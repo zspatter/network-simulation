@@ -5,8 +5,8 @@
 [![Build Status](https://travis-ci.com/zspatter/network-simulation.svg?branch=master)](https://travis-ci.com/zspatter/network-simulation)
 [![Coverage Status](https://coveralls.io/repos/github/zspatter/network-simulation/badge.svg?branch=master)](https://coveralls.io/github/zspatter/network-simulation?branch=master)
 <br>
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/context:python)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/context:python)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/85d142fb6e544882b1a56c1787544225)](https://www.codacy.com/app/localhost_2/network-simulation?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zspatter/network-simulation&amp;utm_campaign=Badge_Grade)
 
 This project is designed to simulate an organ transplant system. Its aim is to simulate the organ transplant matching process. To accomplish this, there will be a list of patients in need of an organ transplant within a given network of hospitals. After organs are harvested from a deceased organ donor, the system will find the most optimal match by looking at the list of patients, then the organ will be allocated to the matched patient. 
