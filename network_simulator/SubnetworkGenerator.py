@@ -27,9 +27,9 @@ class SubnetworkGenerator:
                 if x.location not in active_nodes:
                     active_nodes.add(x.location)
         elif isinstance(collection, OrganList):
-            for x in collection.organ_list:
-                if x.origin_location not in active_nodes:
-                    active_nodes.add(x.origin_location)
+            for x in collection.organ_list:  # type: ignore
+                if x.origin_location not in active_nodes:  # type: ignore
+                    active_nodes.add(x.origin_location)  # type: ignore
         else:
             return NotImplemented
 

@@ -1,4 +1,4 @@
-import networkx as nx
+import networkx as nx  # type: ignore
 
 from network_simulator.Network import Network
 

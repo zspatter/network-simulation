@@ -51,7 +51,7 @@ class WaitList:
                     patient.blood_type.is_compatible_recipient(organ.blood_type):
                 heapq.heappush(queue, patient)
 
-        heapq._heapify_max(queue)
+        heapq._heapify_max(queue)  # type: ignore
         return queue
 
     def add_patient(self, patient: Patient) -> None:
