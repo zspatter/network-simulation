@@ -43,7 +43,7 @@ class SubnetworkGenerator:
         """
         Takes a Network object and returns a deep copy of the network
         (this is what the subnetwork is built upon)
-        
+
         :param Network network: network to be copied (global network)
         :return: Network copy
         """

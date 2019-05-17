@@ -38,7 +38,7 @@ class BloodTypeLetter(Enum):
     def random_blood_type(cls) -> BloodTypeLetter:
         """
         Returns a random BloodTypeLetter
-        
+
         :return: BloodTypeLetter
         """
         return random.choice(list(BloodTypeLetter.__iter__()))

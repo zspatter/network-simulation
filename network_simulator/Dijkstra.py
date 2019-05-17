@@ -118,7 +118,7 @@ class Dijkstra:
         # reverse path and return
         path = path[::-1]
         return path, self.weight[destination]
-    
+
     def all_shortest_paths(self) -> all_paths:
         """
         Harnesses the functionality of shortest_path() to gather all shortest
