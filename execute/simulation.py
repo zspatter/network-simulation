@@ -172,16 +172,6 @@ print(f'Organ: {ANSI_CYAN}{harvest_organ_4.organ_type}{ANSI_RESET}'
       f'\n\tThis came with a cost of: {ANSI_YELLOW}{weight}{ANSI_RESET}'
       f'\n\tRemaining organ viability is: {ANSI_YELLOW}{harvest_organ_4.viability}{ANSI_RESET}\n')
 
-"""
-This section declares the above patients and organs with the optional
-list parameters passed (WaitList and OrganList)
-
-This was done to test whether or not the initializers function as desired
-with the optional parameters.
-
-Furthermore, this briefly tests the data structures holding patient/organ
-information. This also demonstrates how the priority queue functions.
-"""
 wait_list = WaitList()
 organ_list = OrganList()
 

@@ -13,7 +13,7 @@ class OrganGenerator:
     Generates organs from a variable number of patients. Each organ has
     a 75% chance of being successfully harvested.
 
-    The harvested organs are distributed randomly across the network 
+    The harvested organs are distributed randomly across the network
     (from one harvest to another; all organs harvested from a single
     patient share the same location/blood type)
     """

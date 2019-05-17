@@ -43,7 +43,7 @@ class SubnetworkGenerator:
         """
         Takes a Network object and returns a deep copy of the network
         (this is what the subnetwork is built upon)
-        
+
         :param Network network: network to be copied (global network)
         :return: Network copy
         """
@@ -54,7 +54,7 @@ class SubnetworkGenerator:
         """
         Marks all nodes in a given network inactive
         (this is the starting point for the subnetwork)
-        
+
         :param Network network: graph that is the foundation for subnetworks
         """
         for node in network.nodes():

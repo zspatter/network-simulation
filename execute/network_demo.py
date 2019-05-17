@@ -197,12 +197,6 @@ init_tester = Network({init_tester_node1.node_id: init_tester_node1,
 print('\t---ADJACENCY LISTS MIRROR TEST---')
 print(init_tester)
 
-"""
-The following section briefly tests the functions that toggle status
-of nodes/edges. These tests show that each condition can be reached from
-each of the 4 function. These conditions all behave as desired.
-"""
-
 print('\t---MARK NODE INACTIVE TESTS---')
 init_tester.mark_node_inactive(1)
 init_tester.mark_node_inactive(1)
@@ -251,11 +245,6 @@ print('\tIterative depth_first_search: ' + str(ConnectivityChecker.depth_first_s
 print('\tIterative breadth_first_search: ' + str(
         ConnectivityChecker.breadth_first_search(init_tester)) + '\n')
 
-"""
-The following section briefly tests generated networks and the iterative
-connectivity algorithms.
-"""
-
 # tests the generate_network and generate_adjacency_list functions
 generated_network = GraphBuilder.graph_builder(15)
 print('\t---GENERATED RANDOM NETWORK---\n')
@@ -272,9 +261,7 @@ dijkstra = Dijkstra(network_1, 1)
 weights, previous = dijkstra.dijkstra(network_1, 1)
 print("weights:\n" + str(weights))
 print("\nprevious:\n" + str(previous))
-'''
-Checks how __init__ handles shared edges with differing weights
-'''
+
 node1 = Node(1, "A",
              {2: {'weight': 3, 'status': True},
               3: {'weight': 5, 'status': True},
