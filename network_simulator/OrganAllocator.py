@@ -35,7 +35,8 @@ class OrganAllocator:
 
         for organ in organ_list.organ_list:
             if organ.origin_location is source:
-                recipient = OrganAllocator.find_best_match(organ, wait_list, dijkstra.weight)  # type: ignore
+                recipient = OrganAllocator.find_best_match(organ, wait_list,
+                                                           dijkstra.weight)  # type: ignore
             else:
                 source = organ.origin_location
                 dijkstra = Dijkstra(network, source)
