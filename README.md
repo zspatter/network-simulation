@@ -4,6 +4,7 @@
 <br>
 [![Build Status](https://travis-ci.com/zspatter/network-simulation.svg?branch=master)](https://travis-ci.com/zspatter/network-simulation)
 [![Coverage Status](https://coveralls.io/repos/github/zspatter/network-simulation/badge.svg?branch=master)](https://coveralls.io/github/zspatter/network-simulation?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6411a44b799e13d3b3ee/maintainability)](https://codeclimate.com/github/zspatter/network-simulation/maintainability)
 <br>
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/context:python)
