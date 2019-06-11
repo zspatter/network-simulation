@@ -17,7 +17,7 @@ def generate_random_graphs():
     for x in range(1, 4):
         with shelve.open(f'random_networks{x}') as db:
             db.clear()
-            network = GraphBuilder.graph_builder(n=150, max_weight=25, seed=x)
+            network = GraphBuilder.graph_builder(n=150, max_weight=25)
 
             patients = WaitList()
             PatientGenerator.generate_patients_to_list(graph=network, n=300, wait_list=patients)
