@@ -5,19 +5,6 @@ import openpyxl
 from network_simulator.Network import Network
 from network_simulator.Node import Node
 
-# special case for hawaii?
-neighbor_regions = {1:  [9],
-                    2:  [9, 10, 11],
-                    3:  [4, 8, 11],  # 3 -> 8?
-                    4:  [3, 5, 8],
-                    5:  [4, 6, 8],
-                    6:  [5, 7, 8],
-                    7:  [6, 8, 10],  # 7 -> 11?
-                    8:  [3, 4, 5, 6, 7],  # 8 -> 11?
-                    9:  [1, 2],
-                    10: [2, 7, 11],
-                    11: [2, 3, 10]}  # 11 -> 7/8?
-
 
 def set_default_indices():
     """
@@ -104,6 +91,19 @@ def get_adjacent_weight(node, adjacent, weight=float('inf')):
     :param float weight: default max weight
     :return: weight
     """
+    # special case for hawaii?
+    neighbor_regions = {1:  [9],
+                        2:  [9, 10, 11],
+                        3:  [4, 8, 11],  # 3 -> 8?
+                        4:  [3, 5, 8],
+                        5:  [4, 6, 8],
+                        6:  [5, 7, 8],
+                        7:  [6, 8, 10],  # 7 -> 11?
+                        8:  [3, 4, 5, 6, 7],  # 8 -> 11?
+                        9:  [1, 2],
+                        10: [2, 7, 11],
+                        11: [2, 3, 10]}  # 11 -> 7/8?
+
     if node.region == adjacent.region:
         if node.city == adjacent.city and node.state == adjacent.state:
             weight = 1
