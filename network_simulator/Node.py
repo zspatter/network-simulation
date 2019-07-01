@@ -41,7 +41,8 @@ class Node:
         :param bool status: flag indicating whether a node is active or inactive
             (None by default)
         :param int region: US organ network region (1-11)
-        :param str location: string representation of location (city/state)
+        :param str city: string representation of city
+        :param str state: string representation of state
         """
         self.node_id: int = node_id
         self.label: str = label
