@@ -3,21 +3,6 @@ from typing import Dict, Union, List, Optional
 edge_details = Dict[str, Union[int, bool]]
 adj_dict = Dict[int, edge_details]
 
-neighbor_regions = {1:  [9],
-                    2:  [9, 10, 11],
-                    3:  [4, 8, 11],  # 3 -> 8?
-                    4:  [3, 5, 8],
-                    5:  [4, 6, 8],
-                    6:  [5, 7, 8],
-                    7:  [6, 8, 10],  # 7 -> 11?
-                    8:  [3, 4, 5, 6, 7],  # 8 -> 11?
-                    9:  [1, 2],
-                    10: [2, 7, 11],
-                    11: [2, 3, 10]}  # 11 -> 7/8?
-
-
-# Hawaii and Alaska handling?
-
 
 class Node:
     """
@@ -27,7 +12,7 @@ class Node:
     edge, and a status that marks active/inactive nodes.
     """
 
-    def __init__(self, node_id: int, label: str = 'Default node label',
+    def __init__(self, node_id: int, hospital_name: str = 'Default Name',
                  adjacency_dict: adj_dict = None, status: bool = None,
                  region: Optional[int] = None, city: Optional[str] = None,
                  state: Optional[str] = None) -> None:
@@ -35,7 +20,7 @@ class Node:
         Creates an instance of a Node
 
         :param int node_id: unique identifier within a given graph
-        :param int/str label: name associated with a node
+        :param int/str hospital_name: name associated with a node
         :param dict adjacency_dict: {int node_id: {'weight': int, 'status': bool}, ...}
             (None by default)
         :param bool status: flag indicating whether a node is active or inactive
@@ -45,7 +30,7 @@ class Node:
         :param str state: string representation of state
         """
         self.node_id: int = node_id
-        self.label: str = label
+        self.label: str = hospital_name
         self.adjacency_dict: adj_dict
         self.status: bool
         self.region: Optional[int] = region
@@ -105,15 +90,15 @@ class Node:
         """
         if self.status:
 
-            string = f"\n{'Node ID:':<10}{self.node_id:05d}" \
-                f"\n{'Label:':<10}{self.label}" \
-                f"\n{'Region:':<10}{self.region}" \
-                f"\n{'Location:':<10}{self.city}, {self.state}" \
+            string = f"\n{'Node ID:':<15}{self.node_id:05d}" \
+                f"\n{'Hospital Name:':<15}{self.label}" \
+                f"\n{'Region:':<15}{self.region}" \
+                f"\n{'Location:':<15}{self.city}, {self.state}" \
                 f"\nNeighbors:"
 
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
-                    string += f"\n\tNode {'#' + str(key):>6}:" \
-                        f"\t{self.adjacency_dict[key]['weight']:>2}"
+                    string += f"\n\tNode {'#' + str(key):>6}:  " \
+                        f"{self.adjacency_dict[key]['weight']:^5}"
             return string + '\n'
         return ''
