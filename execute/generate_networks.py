@@ -13,9 +13,8 @@ from network_simulator.SubnetworkGenerator import SubnetworkGenerator
 from network_simulator.WaitList import WaitList
 
 
-def generate_random_graphs(path):
+def generate_random_graphs(path='.'):
     for x in range(1, 4):
-
         with shelve.open(join(path, f'random_networks{x}')) as db:
             db.clear()
             network = GraphBuilder.graph_builder(n=150, max_weight=25)
