@@ -1,5 +1,6 @@
 import csv
 import random
+from os.path import abspath, join
 
 
 def write_tsv(path='edge_list.tsv'):
@@ -12,4 +13,4 @@ def write_tsv(path='edge_list.tsv'):
 
 
 if __name__ == '__main__':
-    write_tsv()
+    write_tsv(path=join(abspath('.'), 'import', 'edge_lists', 'edge_list.tsv'))
