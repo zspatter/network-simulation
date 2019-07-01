@@ -102,7 +102,7 @@ class Network:
         :return: active nodes in graph
         :rtype: list
         """
-        nodes = list(self.network_dict.keys())
+        nodes = set(self.network_dict.keys())
         active_nodes = [node for node in nodes if self.network_dict[node].status]
         return active_nodes
 
@@ -138,7 +138,8 @@ class Network:
                                         f'This node could not be added.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def remove_node(self, node_id: int, feedback: bool = True) -> None:
         """
@@ -171,7 +172,8 @@ class Network:
                                         f'could not be removed.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def add_edge(self, node_id1: int, node_id2: int, weight: int,
                  feedback: bool = True) -> None:
@@ -201,7 +203,8 @@ class Network:
                                         f'be added.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def add_edge_to_dict(self, node_id1: int, node_id2: int, weight: int,
                          feedback: bool = True) -> None:
@@ -276,7 +279,8 @@ class Network:
                                         f'be marked as inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def remove_edge_from_dict(self, node_id1: int, node_id2: int,
                               feedback: bool = True) -> None:
@@ -343,7 +347,8 @@ class Network:
                                         f'be marked inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def mark_node_edges_inactive(self, node_id: int) -> None:
         """
@@ -402,7 +407,8 @@ class Network:
                                         f'marked active.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def mark_edge_inactive(self, node_id1: int, node_id2: int,
                            feedback: bool = True) -> None:
@@ -459,7 +465,8 @@ class Network:
                                         f'be marked as inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def mark_edge_active(self, node_id1: int, node_id2: int,
                          feedback: bool = True) -> None:
@@ -519,7 +526,8 @@ class Network:
                                         f'be marked as inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def __str__(self) -> str:
         """
