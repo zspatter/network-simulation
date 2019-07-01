@@ -3,6 +3,21 @@ from typing import Dict, Union, List, Optional
 edge_details = Dict[str, Union[int, bool]]
 adj_dict = Dict[int, edge_details]
 
+neighbor_regions = {1:  [9],
+                    2:  [9, 10, 11],
+                    3:  [4, 8, 11],  # 3 -> 8?
+                    4:  [3, 5, 8],
+                    5:  [4, 6, 8],
+                    6:  [5, 7, 8],
+                    7:  [6, 8, 10],  # 7 -> 11?
+                    8:  [3, 4, 5, 6, 7],  # 8 -> 11?
+                    9:  [1, 2],
+                    10: [2, 7, 11],
+                    11: [2, 3, 10]}  # 11 -> 7/8?
+
+
+# Hawaii and Alaska handling?
+
 
 class Node:
     """
