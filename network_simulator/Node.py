@@ -29,7 +29,8 @@ class Node:
 
     def __init__(self, node_id: int, label: str = 'Default node label',
                  adjacency_dict: adj_dict = None, status: bool = None,
-                 region: Optional[int] = None, location: Optional[str] = None) -> None:
+                 region: Optional[int] = None, city: Optional[str] = None,
+                 state: Optional[str] = None) -> None:
         """
         Creates an instance of a Node
 
@@ -47,7 +48,8 @@ class Node:
         self.adjacency_dict: adj_dict
         self.status: bool
         self.region: Optional[int] = region
-        self.location: Optional[str] = location
+        self.city: Optional[str] = city
+        self.state: Optional[str] = state
 
         if not adjacency_dict:
             adjacency_dict = {}
@@ -102,10 +104,10 @@ class Node:
         """
         if self.status:
 
-            string = f"\n{'Node ID:':<9}{self.node_id}" \
-                f"\n{'Label:':<9}{self.label}" \
-                f"\n{'Region:':<9}{self.region}" \
-                f"\n{'Location:':<9}{self.location}" \
+            string = f"\n{'Node ID:':<10}{self.node_id:05d}" \
+                f"\n{'Label:':<10}{self.label}" \
+                f"\n{'Region:':<10}{self.region}" \
+                f"\n{'Location:':<10}{self.city}, {self.state}" \
                 f"\nNeighbors:"
 
             for key in self.adjacency_dict:
