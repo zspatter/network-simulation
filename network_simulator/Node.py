@@ -101,8 +101,12 @@ class Node:
         :rtype: str
         """
         if self.status:
-            string = '\nLabel: ' + self.label + '\t(Node ID: ' + \
-                     str(self.node_id) + ')\nNeighbors:'
+
+            string = f"\n{'Node ID:':<9}{self.node_id}" \
+                f"\n{'Label:':<9}{self.label}" \
+                f"\n{'Region:':<9}{self.region}" \
+                f"\n{'Location:':<9}{self.location}" \
+                f"\nNeighbors:"
 
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
