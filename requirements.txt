@@ -2,3 +2,4 @@ pytest-cov
 coveralls
 networkx
 mypy
+openpyxl
