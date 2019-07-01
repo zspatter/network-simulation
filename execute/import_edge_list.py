@@ -1,7 +1,8 @@
 import csv
-from network_simulator.Node import Node
-from network_simulator.Network import Network
 from os.path import abspath, join
+
+from network_simulator.Network import Network
+from network_simulator.Node import Node
 
 
 def import_edge_list(path, delimiter='\t'):
