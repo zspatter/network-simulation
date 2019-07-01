@@ -112,7 +112,7 @@ class Node:
 
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
-                    string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
-                        '#' + str(key), str(self.adjacency_dict[key]['weight']))
+                    string += f"\n\tNode {'#' + str(key):>6}:" \
+                        f"\t{self.adjacency_dict[key]['weight']:>2}"
             return string + '\n'
         return ''
