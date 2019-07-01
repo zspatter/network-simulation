@@ -1,4 +1,4 @@
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Optional
 
 edge_details = Dict[str, Union[int, bool]]
 adj_dict = Dict[int, edge_details]
@@ -13,7 +13,8 @@ class Node:
     """
 
     def __init__(self, node_id: int, label: str = 'Default node label',
-                 adjacency_dict: adj_dict = None, status: bool = None) -> None:
+                 adjacency_dict: adj_dict = None, status: bool = None,
+                 region: Optional[int] = None, location: Optional[str] = None) -> None:
         """
         Creates an instance of a Node
 
@@ -23,11 +24,15 @@ class Node:
             (None by default)
         :param bool status: flag indicating whether a node is active or inactive
             (None by default)
+        :param int region: US organ network region (1-11)
+        :param str location: string representation of location (city/state)
         """
         self.node_id: int = node_id
         self.label: str = label
         self.adjacency_dict: adj_dict
         self.status: bool
+        self.region: Optional[int] = region
+        self.location: Optional[str] = location
 
         if not adjacency_dict:
             adjacency_dict = {}
@@ -87,6 +92,6 @@ class Node:
             for key in self.adjacency_dict:
                 if self.adjacency_dict[key]['status']:
                     string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
-                            '#' + str(key), str(self.adjacency_dict[key]['weight']))
+                        '#' + str(key), str(self.adjacency_dict[key]['weight']))
             return string + '\n'
         return ''
