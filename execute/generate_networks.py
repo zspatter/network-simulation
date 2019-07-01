@@ -13,9 +13,10 @@ from network_simulator.SubnetworkGenerator import SubnetworkGenerator
 from network_simulator.WaitList import WaitList
 
 
-def generate_random_graphs():
+def generate_random_graphs(path):
     for x in range(1, 4):
-        with shelve.open(f'random_networks{x}') as db:
+
+        with shelve.open(join(path, f'random_networks{x}')) as db:
             db.clear()
             network = GraphBuilder.graph_builder(n=150, max_weight=25)
 
@@ -43,12 +44,12 @@ def export_gexf(path='.'):
     filenames = ('random_networks1', 'random_networks2', 'random_networks3')
 
     for filename in filenames:
-        with shelve.open(filename) as db:
+        with shelve.open(join(path, 'shelve', filename)) as db:
             for key in db.keys():
                 nx = GraphConverter.convert_to_networkx(db[key])
-                networkx.write_gexf(G=nx, path=join(path, f'{key}.gexf'))
+                networkx.write_gexf(G=nx, path=join(path, 'gexf', f'{key}.gexf'))
 
 
 if __name__ == '__main__':
-    generate_random_graphs()
-    export_gexf(join('.', 'export'))
+    generate_random_graphs(path=join(abspath('.'), 'export', 'shelve'))
+    export_gexf(path=join(abspath('.'), 'export'))
