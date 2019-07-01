@@ -89,14 +89,20 @@ class Node:
         :rtype: str
         """
         if self.status:
+            # if region/location fields aren't filled, they are omitted from __str__
+            region = f"\n{'Region:':<15}{self.region}" if self.region else ''
+            location = f"\n{'Location:':<15}{self.city}, {self.state}" \
+                if self.city and self.state else ''
 
+            # builds header
             string = f"\n{'Node ID:':<15}{self.node_id:05d}" \
                 f"\n{'Hospital Name:':<15}{self.label}" \
-                f"\n{'Region:':<15}{self.region}" \
-                f"\n{'Location:':<15}{self.city}, {self.state}" \
+                f"{region}" \
+                f"{location}" \
                 f"\nNeighbors:"
 
-            for key in self.adjacency_dict:
+            # adds neighbors in ascending order
+            for key in sorted(self.adjacency_dict):
                 if self.adjacency_dict[key]['status']:
                     string += f"\n\tNode {'#' + str(key):>6}:  " \
                         f"{self.adjacency_dict[key]['weight']:^5}"
