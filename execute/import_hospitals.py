@@ -75,13 +75,14 @@ def generate_distance_vector(network):
         for adjacent_id in set(network.nodes()) - {node_id}:
             adjacent = network.network_dict[adjacent_id]
             weight = get_adjacent_weight(node=node, adjacent=adjacent)
-            network.add_edge(node_id1=node_id,
-                             node_id2=adjacent_id,
-                             weight=weight,
-                             feedback=False)
+            if weight:
+                network.add_edge(node_id1=node_id,
+                                 node_id2=adjacent_id,
+                                 weight=weight,
+                                 feedback=False)
 
 
-def get_adjacent_weight(node, adjacent, weight=float('inf')):
+def get_adjacent_weight(node, adjacent, weight=None):
     """
     Calculates weight based up on city, state, and region fields for
     both the node and adjacent
@@ -121,7 +122,7 @@ def get_adjacent_weight(node, adjacent, weight=float('inf')):
 
 
 if __name__ == '__main__':
-    path = join(abspath('.'), 'workbooks', 'National_Transplant_Hospitals.xlsx')
+    path = join(abspath('.'), 'import', 'workbooks', 'National_Transplant_Hospitals.xlsx')
     workbook = openpyxl.load_workbook(filename=path)
     sheet = workbook.active
 
