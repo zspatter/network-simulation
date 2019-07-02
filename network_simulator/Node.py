@@ -90,13 +90,13 @@ class Node:
         """
         if self.status:
             # if region/location fields aren't filled, they are omitted from __str__
-            region = f"\n{'Region:':<15}{self.region}" if self.region else ''
-            location = f"\n{'Location:':<15}{self.city}, {self.state}" \
+            region = f"\n{'Region:':<16}{self.region}" if self.region else ''
+            location = f"\n{'Location:':<16}{self.city}, {self.state}" \
                 if self.city and self.state else ''
 
             # builds header
-            string = f"\n{'Node ID:':<15}{self.node_id:05d}" \
-                f"\n{'Hospital Name:':<15}{self.label}" \
+            string = f"\n{'Node ID:':<16}{self.node_id:05d}" \
+                f"\n{'Hospital Name:':<16}{self.label}" \
                 f"{region}" \
                 f"{location}" \
                 f"\nNeighbors:"
