@@ -131,23 +131,26 @@ def set_default_distances(locations):
         adjacents = dict()
         for destination_city, destination_state, region in locations:
             if region == origin_region or region in neighbor_regions[origin_region]:
-                # adjacents[(city, state, region)]
                 adjacents.setdefault((destination_city, destination_state, region), None)
         distance_vector[location] = adjacents
     return distance_vector
 
 
 def get_distances(distance_vector):
-    for location in distance_vector:
-        source_city, source_state, source_region = location
-        source_region = location[2]
-        for destination in distance_vector[location]:
+    for source in distance_vector:
+        source_city, source_state, source_region = source
+        source_region = source[2]
+        for destination in distance_vector[source]:
             destination_city, destination_state, destination_region = destination
+            # if city/state are same for source and destination
+            if source == destination:
+                distance_vector[source][destination] = 1
+                distance_vector[destination][source] = 1
             # verify source/destiantion are adjacent regions and distance
             # values are not already set
-            if destination_region in neighbor_regions[source_region] \
-                    and not (distance_vector[location][destination]
-                             or distance_vector[destination][location]):
+            elif destination_region in neighbor_regions[source_region] \
+                    and not (distance_vector[source][destination]
+                             or distance_vector[destination][source]):
                 distance = get_distance(source_city=source_city,
                                         source_state=source_state,
                                         destination_city=destination_city,
@@ -156,8 +159,8 @@ def get_distances(distance_vector):
                 if distance:
                     print(f"{f'{source_city}, {source_state}':<30}"
                           f"{f'{destination_city}, {destination_state}':<30}{f'{distance:,} miles':>12}")
-                    distance_vector[location][destination] = distance
-                    distance_vector[destination][location] = distance
+                    distance_vector[source][destination] = distance
+                    distance_vector[destination][source] = distance
 
     pprint.pprint(distance_vector)
 
