@@ -51,6 +51,11 @@ The network is a graph that is represented as a collection of nodes. The network
 -  `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
 -  `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object 
 
+### <ins>Scripts</ins>
+- `generate_networks.py` - creates, serializes, and exports random graph
+- `make_tsv.py` - gnerates random edge list in TSV format (for IO)
+- `import_edge_list.py` - converts edge list format to `Network`
+
 ### <ins>Simulator</ins>
 The `Simulator` is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `OrganAllocator` classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
 
