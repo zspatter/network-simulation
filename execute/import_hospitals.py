@@ -126,29 +126,18 @@ def get_adjacent_weight(node, adjacent, weight=None):
     return weight
 
 
-def get_cities_distance_vector(worksheet):
-    neighbor_regions = {1:  [9],
-                        2:  [9, 10, 11],
-                        3:  [4, 8, 11],  # 3 -> 8?
-                        4:  [3, 5, 8],
-                        5:  [4, 6, 8],
-                        6:  [5, 7, 8],
-                        7:  [6, 8, 10],  # 7 -> 11?
-                        8:  [3, 4, 5, 6, 7],  # 8 -> 11?
-                        9:  [1, 2],
-                        10: [2, 7, 11],
-                        11: [2, 3, 10]}  # 11 -> 7/8?
-
+def get_unique_locations(worksheet):
     # creates a set of unique locations
     locations = set()
     for x in range(2, worksheet.max_row + 1):
         locations.add((worksheet.cell(row=x, column=column_indices['city']).value,
                        worksheet.cell(row=x, column=column_indices['state']).value,
                        int(worksheet.cell(row=x, column=column_indices['region']).value)))
+    return locations
 
-    #
+
+def set_default_distances(locations):
     distance_vector = dict()
-
     for location in locations:
         origin_city, origin_state, origin_region = location
         adjacents = dict()
@@ -157,7 +146,10 @@ def get_cities_distance_vector(worksheet):
                 # adjacents[(city, state, region)]
                 adjacents.setdefault((destination_city, destination_state, region), None)
         distance_vector[location] = adjacents
+    return distance_vector
 
+
+def get_distances(distance_vector):
     for location in distance_vector:
         source_city, source_state, source_region = location
         source_region = location[2]
@@ -165,7 +157,7 @@ def get_cities_distance_vector(worksheet):
             destination_city, destination_state, destination_region = destination
             # verify source/destiantion are adjacent regions and distance
             # values are not already set
-            if destination_region in neighbor_regions[source_region]\
+            if destination_region in neighbor_regions[source_region] \
                     and not (distance_vector[location][destination]
                              or distance_vector[destination][location]):
                 distance = get_distance(source_city=source_city,
@@ -215,6 +207,18 @@ def sort_locations(locations):
 
 
 if __name__ == '__main__':
+    neighbor_regions = {1:  [9],
+                        2:  [9, 10, 11],
+                        3:  [4, 8, 11],  # 3 -> 8?
+                        4:  [3, 5, 8],
+                        5:  [4, 6, 8],
+                        6:  [5, 7, 8],
+                        7:  [6, 8, 10],  # 7 -> 11?
+                        8:  [3, 4, 5, 6, 7],  # 8 -> 11?
+                        9:  [1, 2],
+                        10: [2, 7, 11],
+                        11: [2, 3, 10]}  # 11 -> 7/8?
+
     path = join(abspath('.'), 'import', 'workbooks', 'National_Transplant_Hospitals.xlsx')
     workbook = openpyxl.load_workbook(filename=path)
     sheet = workbook.active
@@ -224,4 +228,7 @@ if __name__ == '__main__':
     # imported_nodes = import_nodes(worksheet=sheet)
     #
     # print(imported_nodes)
-    get_cities_distance_vector(worksheet=sheet)
+
+    cities = get_unique_locations(worksheet=sheet)
+    distance_matrix = set_default_distances(locations=cities)
+    distance_matrix = get_distances(distance_vector=distance_matrix)
