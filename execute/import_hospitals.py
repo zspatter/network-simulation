@@ -1,6 +1,9 @@
+import pprint
 from os.path import abspath, join
 
 import openpyxl
+import requests
+from bs4 import BeautifulSoup
 
 from network_simulator.Network import Network
 from network_simulator.Node import Node
@@ -69,6 +72,8 @@ def generate_distance_vector(network):
 
     :param Network network:
     """
+    distance_dict = dict()
+
     for node_id in network.nodes():
         node = network.network_dict[node_id]
 
@@ -121,6 +126,94 @@ def get_adjacent_weight(node, adjacent, weight=None):
     return weight
 
 
+def get_cities_distance_vector(worksheet):
+    neighbor_regions = {1:  [9],
+                        2:  [9, 10, 11],
+                        3:  [4, 8, 11],  # 3 -> 8?
+                        4:  [3, 5, 8],
+                        5:  [4, 6, 8],
+                        6:  [5, 7, 8],
+                        7:  [6, 8, 10],  # 7 -> 11?
+                        8:  [3, 4, 5, 6, 7],  # 8 -> 11?
+                        9:  [1, 2],
+                        10: [2, 7, 11],
+                        11: [2, 3, 10]}  # 11 -> 7/8?
+
+    # creates a set of unique locations
+    locations = set()
+    for x in range(2, worksheet.max_row + 1):
+        locations.add((worksheet.cell(row=x, column=column_indices['city']).value,
+                       worksheet.cell(row=x, column=column_indices['state']).value,
+                       int(worksheet.cell(row=x, column=column_indices['region']).value)))
+
+    #
+    distance_vector = dict()
+
+    for location in locations:
+        origin_city, origin_state, origin_region = location
+        adjacents = dict()
+        for destination_city, destination_state, region in locations:
+            if region == origin_region or region in neighbor_regions[origin_region]:
+                # adjacents[(city, state, region)]
+                adjacents.setdefault((destination_city, destination_state, region), None)
+        distance_vector[location] = adjacents
+
+    for location in distance_vector:
+        source_city, source_state, source_region = location
+        source_region = location[2]
+        for destination in distance_vector[location]:
+            destination_city, destination_state, destination_region = destination
+            # verify source/destiantion are adjacent regions and distance
+            # values are not already set
+            if destination_region in neighbor_regions[source_region]\
+                    and not (distance_vector[location][destination]
+                             or distance_vector[destination][location]):
+                distance = get_distance(source_city=source_city,
+                                        source_state=source_state,
+                                        destination_city=destination_city,
+                                        destination_state=destination_state)
+                # verify distance value
+                if distance:
+                    print(f"{f'{source_city}, {source_state}':<30}"
+                          f"{f'{destination_city}, {destination_state}':<30}{f'{distance:,} miles':>12}")
+                    distance_vector[location][destination] = distance
+                    distance_vector[destination][location] = distance
+
+    pprint.pprint(distance_vector)
+
+    # for city, state, region in sorted(sorted(locations, key=lambda tup: tup[1]), key=lambda tup: tup[2]):
+    # for city, state, region in sort_locations(locations):
+    #     print(f'{city:<18}{state:<16} {f"(region: {region})":>12}')
+
+    # for node in network.nodes():
+    #     for adjacent in network.network_dict[node].get_adjacents():
+
+
+def get_distance(source_city, source_state, destination_city, destination_state):
+    url = f'https://www.distance-cities.com/searchbd' \
+        f'?from={source_city}%2C{source_state}' \
+        f'&to={destination_city}%2C{destination_state}'
+
+    try:
+        res = requests.get(url=url, headers={"Accept": "text/html"})
+        res.raise_for_status()
+
+        soup = BeautifulSoup(res.content, features='lxml')
+        distance_elem = soup.select('#sud')
+        if distance_elem:
+            value = int(distance_elem[0].text.split()[0].replace(',', ''))
+            return value
+    except requests.exceptions.HTTPError as e:
+        print(f'Error downloading webpage {url}', e)
+
+
+def sort_locations(locations):
+    sorted_locations = sorted(locations, key=lambda tup: tup[0])
+    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[1])
+    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[2])
+    return sorted_locations
+
+
 if __name__ == '__main__':
     path = join(abspath('.'), 'import', 'workbooks', 'National_Transplant_Hospitals.xlsx')
     workbook = openpyxl.load_workbook(filename=path)
@@ -128,6 +221,7 @@ if __name__ == '__main__':
 
     column_indices = set_default_indices()
     get_column_indices(worksheet=sheet, columns=column_indices)
-    imported_nodes = import_nodes(worksheet=sheet)
-
-    print(imported_nodes)
+    # imported_nodes = import_nodes(worksheet=sheet)
+    #
+    # print(imported_nodes)
+    get_cities_distance_vector(worksheet=sheet)
