@@ -194,6 +194,7 @@ def get_distance(source_city, source_state, destination_city, destination_state)
 
         soup = BeautifulSoup(res.content, features='lxml')
         distance_elem = soup.select('#sud')
+        # #rkm
         if distance_elem:
             value = int(distance_elem[0].text.split()[0].replace(',', ''))
             return value
