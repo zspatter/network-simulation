@@ -1,4 +1,4 @@
-import pprint
+import shelve
 from os.path import abspath, join
 
 import openpyxl
@@ -38,7 +38,7 @@ def get_column_indices(worksheet, columns):
             columns[cell] = x
 
 
-def import_nodes(worksheet):
+def import_nodes(worksheet, distance_vector):
     """
     Imports node from each row and adds it to the network. These nodes
     only contain the following fields: node_id, hospital_name, region,
@@ -65,50 +65,65 @@ def import_nodes(worksheet):
     return network
 
 
-def generate_distance_vector(network):
+def generate_distance_vector(network, distance_vector):
     """
     Finds weight from any given node to all other given node in the
     network using the city, state, and region parameters
 
     :param Network network:
     """
-    distance_dict = dict()
+    for source, adjacent in node_pair_generator(network=network):
+        weight = lookup_weight(source=source, adjacent=adjacent, distance_vector=distance_vector)
+        regional_weight = get_adjacent_regional_weight(source=source, adjacent=adjacent)
 
+        if weight and regional_weight:
+            network.add_edge(node_id1=source.node_id,
+                             node_id2=adjacent.node_id,
+                             weight=weight,
+                             regional_weight=regional_weight,
+                             feedback=False)
+
+
+def lookup_weight(source, adjacent, distance_vector):
+    source_location = (source.city, source.state, source.region)
+    adjacent_location = (adjacent.city, adjacent.state, adjacent.region)
+
+    if source_location in distance_matrix and adjacent_location in distance_matrix[source_location]:
+        return distance_matrix[source_location][adjacent_location]
+
+
+def node_pair_generator(network):
     for node_id in network.nodes():
-        node = network.network_dict[node_id]
+        source = network.network_dict[node_id]
 
         for adjacent_id in set(network.nodes()) - {node_id}:
             adjacent = network.network_dict[adjacent_id]
-            weight = get_adjacent_weight(node=node, adjacent=adjacent)
-            if weight:
-                network.add_edge(node_id1=node_id,
-                                 node_id2=adjacent_id,
-                                 weight=weight,
-                                 feedback=False)
+
+            yield source, adjacent
 
 
-def get_adjacent_weight(node, adjacent, weight=None):
+def get_adjacent_regional_weight(source, adjacent, weight=None):
     """
     Calculates weight based up on city, state, and region fields for
     both the node and adjacent
 
-    :param Node node: current source node
+    :param Node source: current source node
     :param Node adjacent: current destination node
     :param float weight: default max weight
     :return: weight
     """
 
-    if node.region == adjacent.region:
-        if node.city == adjacent.city and node.state == adjacent.state:
+    if source.region == adjacent.region:
+        if source.city == adjacent.city and source.state == adjacent.state:
             weight = 1
-        elif node.state == adjacent.state and node.city != adjacent.city:
+        elif source.state == adjacent.state and source.city != adjacent.city:
             weight = 2
-        elif node.state != adjacent.state:
+        elif source.state != adjacent.state:
             weight = 3
     # condition for Virginia
-    elif node.state == adjacent.state:
+    elif source.state == adjacent.state:
         weight = 3
-    elif adjacent.region in neighbor_regions[node.region]:
+    elif adjacent.region in neighbor_regions[source.region]:
         weight = 4
 
     return weight
@@ -162,14 +177,12 @@ def get_distances(distance_vector):
                     distance_vector[source][destination] = distance
                     distance_vector[destination][source] = distance
 
-    pprint.pprint(distance_vector)
+    # pprint.pprint(distance_vector)
+    return distance_vector
 
     # for city, state, region in sorted(sorted(locations, key=lambda tup: tup[1]), key=lambda tup: tup[2]):
     # for city, state, region in sort_locations(locations):
     #     print(f'{city:<18}{state:<16} {f"(region: {region})":>12}')
-
-    # for node in network.nodes():
-    #     for adjacent in network.network_dict[node].get_adjacents():
 
 
 def get_distance(source_city, source_state, destination_city, destination_state):
@@ -216,10 +229,14 @@ if __name__ == '__main__':
 
     column_indices = set_default_indices()
     get_column_indices(worksheet=sheet, columns=column_indices)
-    # imported_nodes = import_nodes(worksheet=sheet)
-    #
-    # print(imported_nodes)
 
     cities = get_unique_locations(worksheet=sheet)
     distance_matrix = set_default_distances(locations=cities)
     distance_matrix = get_distances(distance_vector=distance_matrix)
+
+    export_root = join(abspath('.'), 'export', 'shelve')
+    with shelve.open(join(export_root, 'distance_vector')) as db:
+        db['distance_vector'] = distance_matrix
+
+    imported_nodes = import_nodes(worksheet=sheet, distance_vector=distance_matrix)
+    print(imported_nodes)
