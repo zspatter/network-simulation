@@ -176,7 +176,7 @@ class Network:
                 print(e)
 
     def add_edge(self, node_id1: int, node_id2: int, weight: int,
-                 feedback: bool = True) -> None:
+                 regional_weight: int = None, feedback: bool = True) -> None:
         """
         Adds an edge between two nodes with a specified weight. It is
         assumed that the added edge will be active. If there already
@@ -194,7 +194,8 @@ class Network:
         try:
             # if nodes are in graph
             if node_id1 in self.network_dict and node_id2 in self.network_dict:
-                self.add_edge_to_dict(node_id1, node_id2, weight, feedback)
+                self.add_edge_to_dict(node_id1, node_id2, weight,
+                                      regional_weight, feedback)
             # if node(s) don't exist
             else:
                 raise GraphElementError(f'One of the passed nodes does '
@@ -207,7 +208,7 @@ class Network:
                 print(e)
 
     def add_edge_to_dict(self, node_id1: int, node_id2: int, weight: int,
-                         feedback: bool = True) -> None:
+                         regional_weight: int = None, feedback: bool = True) -> None:
         """
         Verifies param node IDs can be added to the graph (and adds them).
         If there is a comparability issue, an exception is raised.
@@ -230,6 +231,12 @@ class Network:
                     {'weight': weight, 'status': True}
                 self.network_dict[node_id2].adjacency_dict[node_id1] = \
                     {'weight': weight, 'status': True}
+
+                if regional_weight:
+                    self.network_dict[node_id1].adjacency_dict[node_id2] \
+                        ['regional weight'] = regional_weight
+                    self.network_dict[node_id2].adjacency_dict[node_id1] \
+                        ['regional weight'] = regional_weight
 
                 if feedback:
                     print(f'An edge has been added between Node ID: '
