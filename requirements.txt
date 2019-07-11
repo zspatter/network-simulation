@@ -3,3 +3,5 @@ coveralls
 networkx
 mypy
 openpyxl
+bs4
+requests
