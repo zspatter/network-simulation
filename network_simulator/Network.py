@@ -233,10 +233,8 @@ class Network:
                     {'weight': weight, 'status': True}
 
                 if regional_weight:
-                    self.network_dict[node_id1].adjacency_dict[node_id2] \
-                        ['regional weight'] = regional_weight
-                    self.network_dict[node_id2].adjacency_dict[node_id1] \
-                        ['regional weight'] = regional_weight
+                    self.network_dict[node_id1].adjacency_dict[node_id2]['regional weight'] = regional_weight
+                    self.network_dict[node_id2].adjacency_dict[node_id1]['regional weight'] = regional_weight
 
                 if feedback:
                     print(f'An edge has been added between Node ID: '
