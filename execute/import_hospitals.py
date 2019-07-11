@@ -17,7 +17,9 @@ def set_default_indices():
               'hospital name',
               'city',
               'state',
-              'region')
+              'region',
+              'latitude',
+              'longitude')
     columns = {}
     for field in fields:
         columns.setdefault(field, None)
@@ -32,7 +34,7 @@ def get_column_indices(worksheet, columns):
     :param Worksheet worksheet: worksheet to read
     :param dict columns: expected columns to store indices
     """
-    for x in range(1, 7):
+    for x in range(1, 9):
         cell = worksheet.cell(row=1, column=x).value.lower()
         if cell in columns:
             columns[cell] = x
@@ -51,17 +53,14 @@ def import_nodes(worksheet, distance_vector):
     network = Network()
     for x in range(2, worksheet.max_row + 1):
         network.add_node(
-                node=Node(
-                        node_id=int(
-                                worksheet.cell(row=x, column=column_indices['unique id']).value),
-                        hospital_name=worksheet.cell(row=x,
-                                                     column=column_indices['hospital name']).value,
-                        region=int(worksheet.cell(row=x, column=column_indices['region']).value),
-                        city=worksheet.cell(row=x, column=column_indices['city']).value,
-                        state=worksheet.cell(row=x, column=column_indices['state']).value),
+                node=Node(node_id=int(worksheet.cell(row=x, column=column_indices['unique id']).value),
+                          hospital_name=worksheet.cell(row=x, column=column_indices['hospital name']).value,
+                          region=int(worksheet.cell(row=x, column=column_indices['region']).value),
+                          city=worksheet.cell(row=x, column=column_indices['city']).value,
+                          state=worksheet.cell(row=x, column=column_indices['state']).value),
                 feedback=False)
 
-    generate_distance_vector(network=network)
+    generate_distance_vector(network=network, distance_vector=distance_vector)
     return network
 
 
@@ -88,8 +87,9 @@ def lookup_weight(source, adjacent, distance_vector):
     source_location = (source.city, source.state, source.region)
     adjacent_location = (adjacent.city, adjacent.state, adjacent.region)
 
-    if source_location in distance_matrix and adjacent_location in distance_matrix[source_location]:
-        return distance_matrix[source_location][adjacent_location]
+    if source_location in distance_vector \
+            and adjacent_location in distance_vector[source_location]:
+        return distance_vector[source_location][adjacent_location]
 
 
 def node_pair_generator(network):
@@ -173,16 +173,12 @@ def get_distances(distance_vector):
                 # verify distance value
                 if distance:
                     print(f"{f'{source_city}, {source_state}':<30}"
-                          f"{f'{destination_city}, {destination_state}':<30}{f'{distance:,} miles':>12}")
+                          f"{f'{destination_city}, {destination_state}':<30}"
+                          f"{f'{distance:,} miles':>12}")
                     distance_vector[source][destination] = distance
                     distance_vector[destination][source] = distance
 
-    # pprint.pprint(distance_vector)
     return distance_vector
-
-    # for city, state, region in sorted(sorted(locations, key=lambda tup: tup[1]), key=lambda tup: tup[2]):
-    # for city, state, region in sort_locations(locations):
-    #     print(f'{city:<18}{state:<16} {f"(region: {region})":>12}')
 
 
 def get_distance(source_city, source_state, destination_city, destination_state):
@@ -230,13 +226,13 @@ if __name__ == '__main__':
     column_indices = set_default_indices()
     get_column_indices(worksheet=sheet, columns=column_indices)
 
-    cities = get_unique_locations(worksheet=sheet)
-    distance_matrix = set_default_distances(locations=cities)
-    distance_matrix = get_distances(distance_vector=distance_matrix)
+    # cities = get_unique_locations(worksheet=sheet)
+    # distance_matrix = set_default_distances(locations=cities)
+    # distance_matrix = get_distances(distance_vector=distance_matrix)
 
     export_root = join(abspath('.'), 'export', 'shelve')
-    with shelve.open(join(export_root, 'distance_vector')) as db:
-        db['distance_vector'] = distance_matrix
+    db = shelve.open(join(export_root, 'distance_vector'))
+    distance_matrix = db['distance_vector']
 
     imported_nodes = import_nodes(worksheet=sheet, distance_vector=distance_matrix)
     print(imported_nodes)
