@@ -14,8 +14,8 @@ class Node:
 
     def __init__(self, node_id: int, hospital_name: str = 'Default Name',
                  adjacency_dict: adj_dict = None, status: bool = None,
-                 region: Optional[int] = None, city: Optional[str] = None,
-                 state: Optional[str] = None) -> None:
+                 region: int = None, city: str = None,
+                 state: str = None) -> None:
         """
         Creates an instance of a Node
 
