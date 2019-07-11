@@ -105,7 +105,7 @@ class Node:
             for key in sorted(self.adjacency_dict):
                 if self.adjacency_dict[key]['status']:
                     regional_weight = self.adjacency_dict[key]['regional weight'] if \
-                        self.adjacency_dict[key]['regional weight'] else ''
+                        'regional_weight' in self.adjacency_dict[key] else ''
 
                     string += f"\n\tNode {'#' + str(key):>6}:  " \
                         f"{self.adjacency_dict[key]['weight']:^5}" \
