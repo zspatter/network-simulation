@@ -40,7 +40,7 @@ def get_column_indices(worksheet, columns):
             columns[cell] = x
 
 
-def import_nodes(worksheet, distance_vector):
+def import_nodes(worksheet):
     """
     Imports node from each row and adds it to the network. These nodes
     only contain the following fields: node_id, hospital_name, region,
@@ -60,11 +60,11 @@ def import_nodes(worksheet, distance_vector):
                           state=worksheet.cell(row=x, column=column_indices['state']).value),
                 feedback=False)
 
-    generate_distance_vector(network=network, distance_vector=distance_vector)
+    generate_distance_vector(network=network)
     return network
 
 
-def generate_distance_vector(network, distance_vector):
+def generate_distance_vector(network):
     """
     Finds weight from any given node to all other given node in the
     network using the city, state, and region parameters
@@ -72,8 +72,10 @@ def generate_distance_vector(network, distance_vector):
     :param Network network:
     """
     for source, adjacent in node_pair_generator(network=network):
-        weight = lookup_weight(source=source, adjacent=adjacent, distance_vector=distance_vector)
-        regional_weight = get_adjacent_regional_weight(source=source, adjacent=adjacent)
+        weight = lookup_weight(source=source,
+                               adjacent=adjacent)
+        regional_weight = get_adjacent_regional_weight(source=source,
+                                                       adjacent=adjacent)
 
         if weight and regional_weight:
             network.add_edge(node_id1=source.node_id,
@@ -83,13 +85,13 @@ def generate_distance_vector(network, distance_vector):
                              feedback=False)
 
 
-def lookup_weight(source, adjacent, distance_vector):
+def lookup_weight(source, adjacent):
     source_location = (source.city, source.state, source.region)
     adjacent_location = (adjacent.city, adjacent.state, adjacent.region)
 
-    if source_location in distance_vector \
-            and adjacent_location in distance_vector[source_location]:
-        return distance_vector[source_location][adjacent_location]
+    if source_location in distance_matrix \
+            and adjacent_location in distance_matrix[source_location]:
+        return distance_matrix[source_location][adjacent_location]
 
 
 def node_pair_generator(network):
@@ -140,15 +142,15 @@ def get_unique_locations(worksheet):
 
 
 def set_default_distances(locations):
-    distance_vector = dict()
+    distance_dict = dict()
     for location in locations:
         origin_city, origin_state, origin_region = location
         adjacents = dict()
         for destination_city, destination_state, region in locations:
             if region == origin_region or region in neighbor_regions[origin_region]:
                 adjacents.setdefault((destination_city, destination_state, region), None)
-        distance_vector[location] = adjacents
-    return distance_vector
+        distance_dict[location] = adjacents
+    return distance_dict
 
 
 def get_distances(distance_vector):
@@ -199,13 +201,6 @@ def get_distance(source_city, source_state, destination_city, destination_state)
         print(f'Error downloading webpage {url}', e)
 
 
-def sort_locations(locations):
-    sorted_locations = sorted(locations, key=lambda tup: tup[0])
-    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[1])
-    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[2])
-    return sorted_locations
-
-
 if __name__ == '__main__':
     neighbor_regions = {1:  [9],
                         2:  [9, 10, 11],
@@ -219,7 +214,8 @@ if __name__ == '__main__':
                         10: [2, 7, 11],
                         11: [2, 3, 10]}  # 11 -> 7/8?
 
-    path = join(abspath('.'), 'import', 'workbooks', 'National_Transplant_Hospitals.xlsx')
+    path = join(abspath('.'), 'import', 'workbooks',
+                'National_Transplant_Hospitals_coordinates.xlsx')
     workbook = openpyxl.load_workbook(filename=path)
     sheet = workbook.active
 
@@ -234,5 +230,5 @@ if __name__ == '__main__':
     db = shelve.open(join(export_root, 'distance_vector'))
     distance_matrix = db['distance_vector']
 
-    imported_nodes = import_nodes(worksheet=sheet, distance_vector=distance_matrix)
+    imported_nodes = import_nodes(worksheet=sheet)
     print(imported_nodes)
