@@ -104,7 +104,11 @@ class Node:
             # adds neighbors in ascending order
             for key in sorted(self.adjacency_dict):
                 if self.adjacency_dict[key]['status']:
+                    regional_weight = self.adjacency_dict[key]['regional weight'] if \
+                        self.adjacency_dict[key]['regional weight'] else ''
+                    
                     string += f"\n\tNode {'#' + str(key):>6}:  " \
-                        f"{self.adjacency_dict[key]['weight']:^5}"
+                        f"{self.adjacency_dict[key]['weight']:^5}" \
+                        f"{regional_weight:>3}"
             return string + '\n'
         return ''
