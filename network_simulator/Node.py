@@ -108,7 +108,7 @@ class Node:
                         'regional weight' in self.adjacency_dict[key] else ''
 
                     string += f"\n\tNode {'#' + str(key):>6}:  " \
-                        f"{self.adjacency_dict[key]['weight']:>6,d}" \
+                        f"{self.adjacency_dict[key]['weight']:>9,.2f}" \
                         f"{regional_weight:>4}"
             return string + '\n'
         return ''
