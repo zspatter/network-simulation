@@ -188,6 +188,8 @@ class Network:
         :param int node_id2: unique identifier within a given graph
             (one of the vertices to be connected by the added edge)
         :param int weight: cost associated with the edge
+        :param int regional_weight: optional regional weight which can
+                be included in the adjacency dicts
         :param bool feedback: optional param indicating whether feedback
             should be print to the console
         """
@@ -218,6 +220,8 @@ class Network:
         :param int node_id2: unique identifier within a given graph
             (one of the vertices to be connected by the added edge)
         :param int weight: cost associated with the edge
+        :param int regional_weight: optional regional weight which can
+                be included in the adjacency dicts
         :param bool feedback: optional param indicating whether feedback
             should be print to the console
         """
