@@ -232,4 +232,5 @@ if __name__ == '__main__':
     distance_matrix = db['distance_vector']
 
     hospital_network = import_nodes(worksheet=sheet)
+    db['hospital_network'] = hospital_network
     print(hospital_network)
