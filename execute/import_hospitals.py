@@ -53,12 +53,12 @@ def import_nodes(worksheet):
     network = Network()
     for x in range(2, worksheet.max_row + 1):
         network.add_node(
-                node=Node(node_id=int(worksheet.cell(row=x, column=column_indices['unique id']).value),
-                          hospital_name=worksheet.cell(row=x, column=column_indices['hospital name']).value,
-                          region=int(worksheet.cell(row=x, column=column_indices['region']).value),
-                          city=worksheet.cell(row=x, column=column_indices['city']).value,
-                          state=worksheet.cell(row=x, column=column_indices['state']).value),
-                feedback=False)
+            node=Node(node_id=int(worksheet.cell(x, column_indices['unique id']).value),
+                      hospital_name=worksheet.cell(x, column_indices['hospital name']).value,
+                      region=int(worksheet.cell(x, column_indices['region']).value),
+                      city=worksheet.cell(x, column_indices['city']).value,
+                      state=worksheet.cell(x, column_indices['state']).value),
+            feedback=False)
 
     generate_distance_vector(network=network)
     return network
@@ -176,7 +176,7 @@ def get_distances(distance_vector):
                 if distance:
                     print(f"{f'{source_city}, {source_state}':<30}"
                           f"{f'{destination_city}, {destination_state}':<30}"
-                          f"{f'{distance:,} miles':>12}")
+                          f"{f'{distance:,} km':>12}")
                     distance_vector[source][destination] = distance
                     distance_vector[destination][source] = distance
 
@@ -193,10 +193,10 @@ def get_distance(source_city, source_state, destination_city, destination_state)
         res.raise_for_status()
 
         soup = BeautifulSoup(res.content, features='lxml')
-        distance_elem = soup.select('#sud')
-        # #rkm
+        distance_elem = soup.select('#rkm')
+
         if distance_elem:
-            value = int(distance_elem[0].text.split()[0].replace(',', ''))
+            value = float(distance_elem[0].text.split()[0].replace(',', ''))
             return value
     except requests.exceptions.HTTPError as e:
         print(f'Error downloading webpage {url}', e)
@@ -227,9 +227,9 @@ if __name__ == '__main__':
     # distance_matrix = set_default_distances(locations=cities)
     # distance_matrix = get_distances(distance_vector=distance_matrix)
 
-    export_root = join(abspath('.'), 'export', 'shelve')
-    db = shelve.open(join(export_root, 'distance_vector'))
+    root = join(abspath('.'), 'export', 'shelve')
+    db = shelve.open(join(root, 'distance_vector'))
     distance_matrix = db['distance_vector']
 
-    imported_nodes = import_nodes(worksheet=sheet)
-    print(imported_nodes)
+    hospital_network = import_nodes(worksheet=sheet)
+    print(hospital_network)
