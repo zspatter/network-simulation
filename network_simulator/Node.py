@@ -1,4 +1,4 @@
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Optional
 
 edge_details = Dict[str, Union[int, bool]]
 adj_dict = Dict[int, edge_details]
@@ -12,22 +12,30 @@ class Node:
     edge, and a status that marks active/inactive nodes.
     """
 
-    def __init__(self, node_id: int, label: str = 'Default node label',
-                 adjacency_dict: adj_dict = None, status: bool = None) -> None:
+    def __init__(self, node_id: int, hospital_name: str = 'Default Name',
+                 adjacency_dict: adj_dict = None, status: bool = None,
+                 region: int = None, city: str = None,
+                 state: str = None) -> None:
         """
         Creates an instance of a Node
 
         :param int node_id: unique identifier within a given graph
-        :param int/str label: name associated with a node
+        :param int/str hospital_name: name associated with a node
         :param dict adjacency_dict: {int node_id: {'weight': int, 'status': bool}, ...}
             (None by default)
         :param bool status: flag indicating whether a node is active or inactive
             (None by default)
+        :param int region: US organ network region (1-11)
+        :param str city: string representation of city
+        :param str state: string representation of state
         """
         self.node_id: int = node_id
-        self.label: str = label
+        self.label: str = hospital_name
         self.adjacency_dict: adj_dict
         self.status: bool
+        self.region: Optional[int] = region
+        self.city: Optional[str] = city
+        self.state: Optional[str] = state
 
         if not adjacency_dict:
             adjacency_dict = {}
@@ -81,12 +89,26 @@ class Node:
         :rtype: str
         """
         if self.status:
-            string = '\nLabel: ' + self.label + '\t(Node ID: ' + \
-                     str(self.node_id) + ')\nNeighbors:'
+            # if region/location fields aren't filled, they are omitted from __str__
+            region = f"\n{'Region:':<16}{self.region}" if self.region else ''
+            location = f"\n{'Location:':<16}{self.city}, {self.state}" \
+                if self.city and self.state else ''
 
-            for key in self.adjacency_dict:
+            # builds header
+            string = f"\n{'Node ID:':<16}{self.node_id:05d}" \
+                f"\n{'Hospital Name:':<16}{self.label}" \
+                f"{region}" \
+                f"{location}" \
+                f"\nNeighbors:"
+
+            # adds neighbors in ascending order
+            for key in sorted(self.adjacency_dict):
                 if self.adjacency_dict[key]['status']:
-                    string += '\n\tNode {:>6}:\t{:>2} (weight)'.format(
-                            '#' + str(key), str(self.adjacency_dict[key]['weight']))
+                    regional_weight = self.adjacency_dict[key]['regional weight'] if \
+                        'regional weight' in self.adjacency_dict[key] else ''
+
+                    string += f"\n\tNode {'#' + str(key):>6}:  " \
+                        f"{self.adjacency_dict[key]['weight']:>9,.2f}" \
+                        f"{regional_weight:>4}"
             return string + '\n'
         return ''

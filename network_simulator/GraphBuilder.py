@@ -32,7 +32,7 @@ class GraphBuilder:
             max_weight = 50
         
         for x in range(1, n + 1):
-            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, max_weight, seed)
+            adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, max_weight)
             node = Node(x, 'Node #' + str(x), adjacency_dict)
             network_dict[x] = node
         network = Network(network_dict)
@@ -61,7 +61,7 @@ class GraphBuilder:
         """
         
         # prevents infinite loop resulting from fewer total nodes than randomly generated bound
-        adjacent_bound = 10
+        adjacent_bound = 8
         bound = total_nodes - 1 if total_nodes <= adjacent_bound else adjacent_bound
         
         # feeds random seed if parameter is passed
@@ -71,8 +71,7 @@ class GraphBuilder:
         adjacency_dict: adj_dict = {}
         for _ in range(random.randint(3, bound)):
             random_node = random.randint(1, total_nodes)
-            # ensures node doesn't add itself to adjacency_dict
-            # or add a duplicate entry
+            # ensures node doesn't add itself or add a duplicate entry to adjacency_dict
             while node_id == random_node \
                     or any(random_node == x for x in adjacency_dict.keys()):
                 random_node = random.randint(1, total_nodes)

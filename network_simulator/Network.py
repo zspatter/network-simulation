@@ -102,7 +102,7 @@ class Network:
         :return: active nodes in graph
         :rtype: list
         """
-        nodes = list(self.network_dict.keys())
+        nodes = set(self.network_dict.keys())
         active_nodes = [node for node in nodes if self.network_dict[node].status]
         return active_nodes
 
@@ -138,7 +138,8 @@ class Network:
                                         f'This node could not be added.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def remove_node(self, node_id: int, feedback: bool = True) -> None:
         """
@@ -171,10 +172,11 @@ class Network:
                                         f'could not be removed.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def add_edge(self, node_id1: int, node_id2: int, weight: int,
-                 feedback: bool = True) -> None:
+                 regional_weight: int = None, feedback: bool = True) -> None:
         """
         Adds an edge between two nodes with a specified weight. It is
         assumed that the added edge will be active. If there already
@@ -186,13 +188,16 @@ class Network:
         :param int node_id2: unique identifier within a given graph
             (one of the vertices to be connected by the added edge)
         :param int weight: cost associated with the edge
+        :param int regional_weight: optional regional weight which can
+                be included in the adjacency dicts
         :param bool feedback: optional param indicating whether feedback
             should be print to the console
         """
         try:
             # if nodes are in graph
             if node_id1 in self.network_dict and node_id2 in self.network_dict:
-                self.add_edge_to_dict(node_id1, node_id2, weight, feedback)
+                self.add_edge_to_dict(node_id1, node_id2, weight,
+                                      regional_weight, feedback)
             # if node(s) don't exist
             else:
                 raise GraphElementError(f'One of the passed nodes does '
@@ -201,10 +206,11 @@ class Network:
                                         f'be added.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def add_edge_to_dict(self, node_id1: int, node_id2: int, weight: int,
-                         feedback: bool = True) -> None:
+                         regional_weight: int = None, feedback: bool = True) -> None:
         """
         Verifies param node IDs can be added to the graph (and adds them).
         If there is a comparability issue, an exception is raised.
@@ -214,6 +220,8 @@ class Network:
         :param int node_id2: unique identifier within a given graph
             (one of the vertices to be connected by the added edge)
         :param int weight: cost associated with the edge
+        :param int regional_weight: optional regional weight which can
+                be included in the adjacency dicts
         :param bool feedback: optional param indicating whether feedback
             should be print to the console
         """
@@ -227,6 +235,10 @@ class Network:
                     {'weight': weight, 'status': True}
                 self.network_dict[node_id2].adjacency_dict[node_id1] = \
                     {'weight': weight, 'status': True}
+
+                if regional_weight:
+                    self.network_dict[node_id1].adjacency_dict[node_id2]['regional weight'] = regional_weight
+                    self.network_dict[node_id2].adjacency_dict[node_id1]['regional weight'] = regional_weight
 
                 if feedback:
                     print(f'An edge has been added between Node ID: '
@@ -276,7 +288,8 @@ class Network:
                                         f'be marked as inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def remove_edge_from_dict(self, node_id1: int, node_id2: int,
                               feedback: bool = True) -> None:
@@ -343,7 +356,8 @@ class Network:
                                         f'be marked inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def mark_node_edges_inactive(self, node_id: int) -> None:
         """
@@ -402,7 +416,8 @@ class Network:
                                         f'marked active.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def mark_edge_inactive(self, node_id1: int, node_id2: int,
                            feedback: bool = True) -> None:
@@ -459,7 +474,8 @@ class Network:
                                         f'be marked as inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def mark_edge_active(self, node_id1: int, node_id2: int,
                          feedback: bool = True) -> None:
@@ -519,7 +535,8 @@ class Network:
                                         f'be marked as inactive.')
 
         except GraphElementError as e:
-            print(e)
+            if feedback:
+                print(e)
 
     def __str__(self) -> str:
         """

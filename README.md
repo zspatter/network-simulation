@@ -1,9 +1,10 @@
 # Network Simulation
-[![Python Version](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/getit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <br>
 [![Build Status](https://travis-ci.com/zspatter/network-simulation.svg?branch=master)](https://travis-ci.com/zspatter/network-simulation)
 [![Coverage Status](https://coveralls.io/repos/github/zspatter/network-simulation/badge.svg?branch=master)](https://coveralls.io/github/zspatter/network-simulation?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6411a44b799e13d3b3ee/maintainability)](https://codeclimate.com/github/zspatter/network-simulation/maintainability)
 <br>
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/context:python)
@@ -50,8 +51,13 @@ The network is a graph that is represented as a collection of nodes. The network
 -  `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
 -  `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object 
 
+### <ins>Scripts</ins>
+- `generate_networks.py` - creates, serializes, and exports random graph
+- `make_tsv.py` - gnerates random edge list in TSV format (for IO)
+- `import_edge_list.py` - converts edge list format to `Network`
+
 ### <ins>Simulator</ins>
 The `Simulator` is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `OrganAllocator` classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
 
 ## UML Diagram
-![alt text](https://github.com/zspatter/network-simulation/blob/master/UML.png)
+![UML diagram](./UML.png)
