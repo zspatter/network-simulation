@@ -144,7 +144,7 @@ def get_unique_locations(worksheet):
 def set_default_distances(locations):
     distance_dict = dict()
     for location in locations:
-        origin_city, origin_state, origin_region = location
+        _, _, origin_region = location
         adjacents = dict()
         for destination_city, destination_state, region in locations:
             if region == origin_region or region in neighbor_regions[origin_region]:
@@ -163,7 +163,7 @@ def get_distances(distance_vector):
             if source == destination:
                 distance_vector[source][destination] = 1
                 distance_vector[destination][source] = 1
-            # verify source/destiantion are adjacent regions and distance
+            # verify source/destination are adjacent regions and distance
             # values are not already set
             elif destination_region in neighbor_regions[source_region] \
                     and not (distance_vector[source][destination]
