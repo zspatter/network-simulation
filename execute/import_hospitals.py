@@ -185,8 +185,8 @@ def get_distances(distance_vector):
 
 def get_distance(source_city, source_state, destination_city, destination_state):
     url = f'https://www.distance-cities.com/searchbd' \
-        f'?from={source_city}%2C{source_state}' \
-        f'&to={destination_city}%2C{destination_state}'
+          f'?from={source_city}%2C{source_state}' \
+          f'&to={destination_city}%2C{destination_state}'
 
     try:
         res = requests.get(url=url, headers={"Accept": "text/html"})
@@ -229,6 +229,7 @@ if __name__ == '__main__':
 
     root = join(abspath('.'), 'export', 'shelve')
     db = shelve.open(join(root, 'distance_vector'))
+
     distance_matrix = db['distance_vector']
 
     hospital_network = import_nodes(worksheet=sheet)
