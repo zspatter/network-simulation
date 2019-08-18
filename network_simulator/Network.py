@@ -104,7 +104,7 @@ class Network:
         """
         nodes = set(self.network_dict.keys())
         active_nodes = [node for node in nodes if self.network_dict[node].status]
-        return active_nodes
+        return sorted(active_nodes)
 
     def add_node(self, node: Node, feedback: bool = True) -> None:
         """
@@ -237,8 +237,10 @@ class Network:
                     {'weight': weight, 'status': True}
 
                 if regional_weight:
-                    self.network_dict[node_id1].adjacency_dict[node_id2]['regional weight'] = regional_weight
-                    self.network_dict[node_id2].adjacency_dict[node_id1]['regional weight'] = regional_weight
+                    self.network_dict[node_id1].adjacency_dict[node_id2][
+                        'regional weight'] = regional_weight
+                    self.network_dict[node_id2].adjacency_dict[node_id1][
+                        'regional weight'] = regional_weight
 
                 if feedback:
                     print(f'An edge has been added between Node ID: '
