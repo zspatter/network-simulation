@@ -5,6 +5,7 @@ from os.path import abspath, join
 import openpyxl
 import requests
 from bs4 import BeautifulSoup
+from requests_html import HTMLSession
 
 from network_simulator.Network import Network
 from network_simulator.Node import Node
@@ -54,12 +55,12 @@ def import_nodes(worksheet):
     network = Network()
     for x in range(2, worksheet.max_row + 1):
         network.add_node(
-            node=Node(node_id=int(worksheet.cell(x, column_indices['unique id']).value),
-                      hospital_name=worksheet.cell(x, column_indices['hospital name']).value,
-                      region=int(worksheet.cell(x, column_indices['region']).value),
-                      city=worksheet.cell(x, column_indices['city']).value,
-                      state=worksheet.cell(x, column_indices['state']).value),
-            feedback=False)
+                node=Node(node_id=int(worksheet.cell(x, column_indices['unique id']).value),
+                          hospital_name=worksheet.cell(x, column_indices['hospital name']).value,
+                          region=int(worksheet.cell(x, column_indices['region']).value),
+                          city=worksheet.cell(x, column_indices['city']).value,
+                          state=worksheet.cell(x, column_indices['state']).value),
+                feedback=False)
 
     generate_distance_vector(network=network)
     return network
@@ -177,7 +178,7 @@ def get_distances(distance_vector):
                 if distance:
                     print(f"{f'{source_city}, {source_state}':<30}"
                           f"{f'{destination_city}, {destination_state}':<30}"
-                          f"{f'{distance:,} km':>12}")
+                          f"{f'{distance:,.2f} km':>12}")
                     distance_vector[source][destination] = distance
                     distance_vector[destination][source] = distance
 
@@ -190,8 +191,19 @@ def get_distance(source_city, source_state, destination_city, destination_state)
           f'&to={destination_city}%2C{destination_state}'
     url = url.replace(' ', '%2C')
 
+    islands = ['Puerto Rico', 'Hawaii']
+    if source_state in islands or destination_state in islands:
+        logging.info(msg=f'{source_city}, {source_state} '
+                         f'--> {destination_city}, {destination_state}: '
+                         f'\t{url}')
+
     try:
-        res = requests.get(url=url, headers={"Accept": "text/html"})
+        headers = {'Accept':     'text/html',
+                   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) "
+                                 "AppleWebKit/537.36 (KHTML, like Gecko) "
+                                 "Chrome/72.0.3626.121 Safari/537.36"}
+
+        res = requests.get(url=url, headers=headers)
         res.raise_for_status()
 
         soup = BeautifulSoup(res.content, features='lxml')
@@ -200,42 +212,65 @@ def get_distance(source_city, source_state, destination_city, destination_state)
         if distance_elem:
             value = float(distance_elem[0].text.split()[0].replace(',', ''))
             return value
+        # if #rkm isn't found, must retrieve straight distance (no driving distance available)
+        # this requires retrieval of JS vars, so requests_html is used
         else:
-            straight_distance = soup.select('#kmslinearecta')
-            print(straight_distance[0])
-            if straight_distance and straight_distance[0].content:
-                miles = float(straight_distance[0].text.split()[0].replace(',', ''))
-                km = miles_to_km(miles)
-                print(km)
-                return km
-        logging.debug(msg=f'failed {source_city}, {source_state} '
-                          f'--> {destination_city}, {destination_state}'
-                          f'\n\t{url}')
+            session = HTMLSession()
+            r = session.get(url)
+            r.html.render(retries=50, timeout=120)
+            straight_distance = r.html.find('#straightkm', first=True)
+            logging.info(msg=f'{source_city}, {source_state} '
+                             f'--> {destination_city}, {destination_state}: '
+                             f'\t{straight_distance.text} km')
+            if straight_distance.text:
+                return float(straight_distance.text.replace(',', ''))
+
+        logging.warning(msg=f'failed {source_city}, {source_state} '
+                            f'--> {destination_city}, {destination_state}'.upper())
     except requests.exceptions.HTTPError as e:
         print(f'Error downloading webpage {url}', e)
+        logging.warning(msg=f'Error downloading webpage {url}')
+        logging.exception(msg=e)
 
 
-def miles_to_km(miles):
-    return miles * 1.609344
-
-
-if __name__ == '__main__':
+def logger_config():
+    logger = logging.getLogger('my-logger')
     logging.basicConfig(filename='scrape_distances.log',
-                        level=logging.DEBUG,
+                        level=logging.INFO,
                         format=' %(asctime)s.%(msecs)03d - %(levelname)s - '
                                '<%(funcName)s>: %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
     logging.getLogger('requests').propagate = False
     logging.getLogger("urllib3").propagate = False
+    logging.getLogger("pyppeteer").setLevel(logging.ERROR)
 
-    print(get_distance(source_city='Hato Rey',
-                       source_state='Puerto Rico',
-                       destination_city='Miami',
-                       destination_state='Florida'))
-    print(get_distance(source_city='Honolulu',
-                       source_state='Hawaii',
-                       destination_city='Seattle',
-                       destination_state='Washington'))
+
+def patch_pyppeteer():
+    """
+    Disables pyppeteer's timeout (terminates at 20 seconds otherwise)
+    """
+    import pyppeteer.connection
+    original_method = pyppeteer.connection.websockets.client.connect
+
+    def new_method(*args, **kwargs):
+        kwargs['ping_interval'] = None
+        kwargs['ping_timeout'] = None
+        return original_method(*args, **kwargs)
+
+    pyppeteer.connection.websockets.client.connect = new_method
+
+
+if __name__ == '__main__':
+    logger_config()
+    patch_pyppeteer()
+    # print(get_distance(source_city='Hato Rey',
+    #                    source_state='Puerto Rico',
+    #                    destination_city='Miami',
+    #                    destination_state='Florida'))
+    # print(get_distance(source_city='Honolulu',
+    #                    source_state='Hawaii',
+    #                    destination_city='Seattle',
+    #                    destination_state='Washington'))
     neighbor_regions = {1:  [9],
                         2:  [9, 10, 11],
                         3:  [4, 8, 11],  # 3 -> 8?
@@ -264,8 +299,8 @@ if __name__ == '__main__':
     distance_matrix = get_distances(distance_vector=distance_matrix)
     db['distance_vector2'] = distance_matrix
 
-    distance_matrix = db['distance_vector']
+    # distance_matrix = db['distance_vector']
 
     hospital_network = import_nodes(worksheet=sheet)
-    db['hospital_network'] = hospital_network
+    db['hospital_network2'] = hospital_network
     print(hospital_network)
