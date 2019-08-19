@@ -1,3 +1,4 @@
+import logging
 import shelve
 from os.path import abspath, join
 
@@ -198,11 +199,42 @@ def get_distance(source_city, source_state, destination_city, destination_state)
         if distance_elem:
             value = float(distance_elem[0].text.split()[0].replace(',', ''))
             return value
+        else:
+            straight_distance = soup.select('#kmslinearecta')
+            print(straight_distance[0])
+            if straight_distance and straight_distance[0].content:
+                miles = float(straight_distance[0].text.split()[0].replace(',', ''))
+                km = miles_to_km(miles)
+                print(km)
+                return km
+        logging.debug(msg=f'failed {source_city}, {source_state} '
+                          f'--> {destination_city}, {destination_state}'
+                          f'\n\t{url}')
     except requests.exceptions.HTTPError as e:
         print(f'Error downloading webpage {url}', e)
 
 
+def miles_to_km(miles):
+    return miles * 1.609344
+
+
 if __name__ == '__main__':
+    logging.basicConfig(filename='scrape_distances.log',
+                        level=logging.DEBUG,
+                        format=' %(asctime)s.%(msecs)03d - %(levelname)s - '
+                               '<%(funcName)s>: %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S')
+    logging.getLogger('requests').propagate = False
+    logging.getLogger("urllib3").propagate = False
+
+    print(get_distance(source_city='Hato Rey',
+                       source_state='Puerto Rico',
+                       destination_city='Miami',
+                       destination_state='Florida'))
+    print(get_distance(source_city='Honolulu',
+                       source_state='Hawaii',
+                       destination_city='Seattle',
+                       destination_state='Washington'))
     neighbor_regions = {1:  [9],
                         2:  [9, 10, 11],
                         3:  [4, 8, 11],  # 3 -> 8?
@@ -215,6 +247,9 @@ if __name__ == '__main__':
                         10: [2, 7, 11],
                         11: [2, 3, 10]}  # 11 -> 7/8?
 
+    root = join(abspath('.'), 'export', 'shelve')
+    db = shelve.open(join(root, 'distance_vector'))
+
     path = join(abspath('.'), 'import', 'workbooks',
                 'National_Transplant_Hospitals_coordinates.xlsx')
     workbook = openpyxl.load_workbook(filename=path)
@@ -223,12 +258,10 @@ if __name__ == '__main__':
     column_indices = set_default_indices()
     get_column_indices(worksheet=sheet, columns=column_indices)
 
-    # cities = get_unique_locations(worksheet=sheet)
-    # distance_matrix = set_default_distances(locations=cities)
-    # distance_matrix = get_distances(distance_vector=distance_matrix)
-
-    root = join(abspath('.'), 'export', 'shelve')
-    db = shelve.open(join(root, 'distance_vector'))
+    cities = get_unique_locations(worksheet=sheet)
+    distance_matrix = set_default_distances(locations=cities)
+    distance_matrix = get_distances(distance_vector=distance_matrix)
+    db['distance_vector2'] = distance_matrix
 
     distance_matrix = db['distance_vector']
 
