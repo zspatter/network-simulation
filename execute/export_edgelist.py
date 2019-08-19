@@ -18,6 +18,6 @@ def generate_edgelist(network, output_path=Path('edgelist.txt')):
 
 if __name__ == '__main__':
     db = shelve.open(str(Path('./export/shelve/distance_vector')))
-    hospital_network = db['hospital_network']
+    hospital_network = db['hospital_network2']
     generate_edgelist(network=hospital_network,
-                      output_path=Path('./export/edgelist/hospital_edgelist'))
+                      output_path=Path('./export/edgelist/hospital_edgelist2'))
