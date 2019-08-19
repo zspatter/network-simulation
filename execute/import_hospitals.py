@@ -19,9 +19,7 @@ def set_default_indices():
               'hospital name',
               'city',
               'state',
-              'region',
-              'latitude',
-              'longitude')
+              'region')
     columns = {}
     for field in fields:
         columns.setdefault(field, None)
@@ -141,12 +139,12 @@ def get_unique_locations(worksheet):
                        worksheet.cell(row=x, column=column_indices['state']).value,
                        int(worksheet.cell(row=x, column=column_indices['region']).value)))
 
-    return sort_unque_locations(locations)
+    return sort_locations(list(locations))
 
 
-def sort_unque_locations(locations):
-    # sorts collection by region/state/city
-    sorted_locations = sorted(list(locations), key=lambda tup: tup[0])
+def sort_locations(locations):
+    # sorts collection by region/state/city in ascending order
+    sorted_locations = sorted(locations, key=lambda tup: tup[0])
     sorted_locations = sorted(sorted_locations, key=lambda tup: tup[1])
     sorted_locations = sorted(sorted_locations, key=lambda tup: tup[2])
 
@@ -166,7 +164,7 @@ def set_default_distances(locations):
 
 
 def get_distances(distance_vector):
-    for source in distance_vector:
+    for source in sort_locations(distance_vector.keys()):
         source_city, source_state, source_region = source
         for destination in distance_vector[source]:
             destination_city, destination_state, destination_region = destination
@@ -296,7 +294,7 @@ if __name__ == '__main__':
     db = shelve.open(join(root, 'distance_vector'))
 
     path = join(abspath('.'), 'import', 'workbooks',
-                'National_Transplant_Hospitals_coordinates.xlsx')
+                'National_Transplant_Hospitals.xlsx')
     workbook = openpyxl.load_workbook(filename=path)
     sheet = workbook.active
 
@@ -304,7 +302,6 @@ if __name__ == '__main__':
     get_column_indices(worksheet=sheet, columns=column_indices)
 
     cities = get_unique_locations(worksheet=sheet)
-    # print('\n'.join(map(str, cities)))
     distance_matrix = set_default_distances(locations=cities)
     distance_matrix = get_distances(distance_vector=distance_matrix)
     db['distance_vector2'] = distance_matrix
