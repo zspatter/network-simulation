@@ -188,6 +188,7 @@ def get_distance(source_city, source_state, destination_city, destination_state)
     url = f'https://www.distance-cities.com/searchbd' \
           f'?from={source_city}%2C{source_state}' \
           f'&to={destination_city}%2C{destination_state}'
+    url = url.replace(' ', '%2C')
 
     try:
         res = requests.get(url=url, headers={"Accept": "text/html"})
