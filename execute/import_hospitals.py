@@ -140,7 +140,17 @@ def get_unique_locations(worksheet):
         locations.add((worksheet.cell(row=x, column=column_indices['city']).value,
                        worksheet.cell(row=x, column=column_indices['state']).value,
                        int(worksheet.cell(row=x, column=column_indices['region']).value)))
-    return locations
+
+    return sort_unque_locations(locations)
+
+
+def sort_unque_locations(locations):
+    # sorts collection by region/state/city
+    sorted_locations = sorted(list(locations), key=lambda tup: tup[0])
+    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[1])
+    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[2])
+
+    return sorted_locations
 
 
 def set_default_distances(locations):
@@ -158,7 +168,6 @@ def set_default_distances(locations):
 def get_distances(distance_vector):
     for source in distance_vector:
         source_city, source_state, source_region = source
-        source_region = source[2]
         for destination in distance_vector[source]:
             destination_city, destination_state, destination_region = destination
             # if city/state are same for source and destination
@@ -295,6 +304,7 @@ if __name__ == '__main__':
     get_column_indices(worksheet=sheet, columns=column_indices)
 
     cities = get_unique_locations(worksheet=sheet)
+    # print('\n'.join(map(str, cities)))
     distance_matrix = set_default_distances(locations=cities)
     distance_matrix = get_distances(distance_vector=distance_matrix)
     db['distance_vector2'] = distance_matrix
