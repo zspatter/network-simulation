@@ -550,7 +550,7 @@ class Network:
         :rtype: str
         """
         string = ''
-        for key in self.network_dict:
-            if self.network_dict[key].status:
-                string += f'{self.network_dict[key].__str__()}'
+        for node_id in self.nodes():
+            # if self.network_dict[key].status:
+            string += f'{self.network_dict[node_id].__str__()}'
         return string + '\n===============================\n'

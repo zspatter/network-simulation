@@ -102,13 +102,13 @@ class Node:
                      f"\nNeighbors:"
 
             # adds neighbors in ascending order
-            for key in sorted(self.adjacency_dict):
-                if self.adjacency_dict[key]['status']:
-                    regional_weight = self.adjacency_dict[key]['regional weight'] if \
-                        'regional weight' in self.adjacency_dict[key] else ''
+            for node_id in self.get_adjacents():
+                if self.adjacency_dict[node_id]['status']:
+                    regional_weight = self.adjacency_dict[node_id]['regional weight'] if \
+                        'regional weight' in self.adjacency_dict[node_id] else ''
 
-                    string += f"\n\tNode {'#' + str(key):>6}:  " \
-                              f"{self.adjacency_dict[key]['weight']:>9,.2f}" \
+                    string += f"\n\tNode {'#' + str(node_id):>6}:  " \
+                              f"{self.adjacency_dict[node_id]['weight']:>9,.2f}" \
                               f"{regional_weight:>4}"
             return string + '\n'
         return ''
