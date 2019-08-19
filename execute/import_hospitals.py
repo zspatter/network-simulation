@@ -5,6 +5,7 @@ from os.path import abspath, join
 import openpyxl
 import requests
 from bs4 import BeautifulSoup
+from openpyxl.utils import get_column_letter
 from requests_html import HTMLSession
 
 from network_simulator.Network import Network
@@ -35,9 +36,9 @@ def get_column_indices(worksheet, columns):
     :param dict columns: expected columns to store indices
     """
     for x in range(1, 9):
-        cell = worksheet.cell(row=1, column=x).value.lower()
-        if cell in columns:
-            columns[cell] = x
+        cell = worksheet[f'{get_column_letter(x)}1'].value
+        if cell and cell.lower() in columns:
+            columns[cell.lower()] = get_column_letter(x)
 
 
 def import_nodes(worksheet):
@@ -53,11 +54,11 @@ def import_nodes(worksheet):
     network = Network()
     for x in range(2, worksheet.max_row + 1):
         network.add_node(
-                node=Node(node_id=int(worksheet.cell(x, column_indices['unique id']).value),
-                          hospital_name=worksheet.cell(x, column_indices['hospital name']).value,
-                          region=int(worksheet.cell(x, column_indices['region']).value),
-                          city=worksheet.cell(x, column_indices['city']).value,
-                          state=worksheet.cell(x, column_indices['state']).value),
+                node=Node(node_id=int(worksheet[f'{column_indices["unique id"]}{x}'].value),
+                          hospital_name=worksheet[f'{column_indices["hospital name"]}{x}'].value,
+                          region=int(worksheet[f'{column_indices["region"]}{x}'].value),
+                          city=worksheet[f'{column_indices["city"]}{x}'].value,
+                          state=worksheet[f'{column_indices["state"]}{x}'].value),
                 feedback=False)
 
     generate_distance_vector(network=network)
@@ -241,7 +242,6 @@ def get_distance(source_city, source_state, destination_city, destination_state)
 
 
 def logger_config():
-    logger = logging.getLogger('my-logger')
     logging.basicConfig(filename='scrape_distances.log',
                         level=logging.INFO,
                         format=' %(asctime)s.%(msecs)03d - %(levelname)s - '
@@ -270,14 +270,7 @@ def patch_pyppeteer():
 if __name__ == '__main__':
     logger_config()
     patch_pyppeteer()
-    # print(get_distance(source_city='Hato Rey',
-    #                    source_state='Puerto Rico',
-    #                    destination_city='Miami',
-    #                    destination_state='Florida'))
-    # print(get_distance(source_city='Honolulu',
-    #                    source_state='Hawaii',
-    #                    destination_city='Seattle',
-    #                    destination_state='Washington'))
+
     neighbor_regions = {1:  [9],
                         2:  [9, 10, 11],
                         3:  [4, 8, 11],  # 3 -> 8?
@@ -301,13 +294,15 @@ if __name__ == '__main__':
     column_indices = set_default_indices()
     get_column_indices(worksheet=sheet, columns=column_indices)
 
-    cities = get_unique_locations(worksheet=sheet)
-    distance_matrix = set_default_distances(locations=cities)
-    distance_matrix = get_distances(distance_vector=distance_matrix)
-    db['distance_vector2'] = distance_matrix
+    print('\n'.join(map(str, column_indices.items())))
 
-    # distance_matrix = db['distance_vector']
+    # cities = get_unique_locations(worksheet=sheet)
+    # distance_matrix = set_default_distances(locations=cities)
+    # distance_matrix = get_distances(distance_vector=distance_matrix)
+    # db['distance_vector2'] = distance_matrix
+
+    distance_matrix = db['distance_vector2']
 
     hospital_network = import_nodes(worksheet=sheet)
-    db['hospital_network2'] = hospital_network
+    # db['hospital_network2'] = hospital_network
     print(hospital_network)
