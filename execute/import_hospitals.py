@@ -87,6 +87,13 @@ def generate_distance_vector(network):
 
 
 def lookup_weight(source, adjacent):
+    """
+    Determines weight between source and adjacent nodes. Only returns
+    a value if there is a weight specified between the nodes.
+
+    :param Node source: source node
+    :param Node adjacent: destination node
+    """
     source_location = (source.city, source.state, source.region)
     adjacent_location = (adjacent.city, adjacent.state, adjacent.region)
 
@@ -96,6 +103,11 @@ def lookup_weight(source, adjacent):
 
 
 def node_pair_generator(network):
+    """
+    Generator that yields all possible pairings of nodes
+
+    :param Network network: source of nodes
+    """
     for node_id in network.nodes():
         source = network.network_dict[node_id]
 
@@ -133,6 +145,12 @@ def get_adjacent_regional_weight(source, adjacent, weight=None):
 
 
 def get_unique_locations(worksheet):
+    """
+    Returns a list of all unique city/state/region combinations for hospitals
+
+    :param Worksheet worksheet: worksheet containing information about
+                city/state/region of hospitals in network
+    """
     # creates a set of unique locations
     locations = set()
     for x in range(2, worksheet.max_row + 1):
@@ -144,6 +162,13 @@ def get_unique_locations(worksheet):
 
 
 def sort_locations(locations):
+    """
+    Sorts locations collection by region -> state --> city in ascending
+    order. This ensures the consistent results with successive executions
+    by ordering the collection.
+
+    :param list locations: list of unqiue (city, state, region) tuples
+    """
     # sorts collection by region/state/city in ascending order
     sorted_locations = sorted(locations, key=lambda tup: tup[0])
     sorted_locations = sorted(sorted_locations, key=lambda tup: tup[1])
@@ -153,6 +178,11 @@ def sort_locations(locations):
 
 
 def set_default_distances(locations):
+    """
+    Sets default distances in the distance matrix (distance_dict)
+
+    :param locations: list of unique locations
+    """
     distance_dict = dict()
     for location in locations:
         _, _, origin_region = location
@@ -165,6 +195,11 @@ def set_default_distances(locations):
 
 
 def get_distances(distance_vector):
+    """
+    Finds the distance between all connected nodes
+
+    :param dict distance_vector: distance matrix with default weights
+    """
     for source in sort_locations(distance_vector.keys()):
         source_city, source_state, source_region = source
         for destination in distance_vector[source]:
@@ -194,6 +229,14 @@ def get_distances(distance_vector):
 
 
 def get_distance(source_city, source_state, destination_city, destination_state):
+    """
+    Gathers the distance in km between the source and destination locations
+
+    :param str source_city: name of source city
+    :param str source_state: name of source state
+    :param str destination_city: name of destination city
+    :param str destination_state: name of destination state
+    """
     url = f'https://www.distance-cities.com/searchbd' \
           f'?from={source_city}%2C{source_state}' \
           f'&to={destination_city}%2C{destination_state}'
@@ -242,6 +285,9 @@ def get_distance(source_city, source_state, destination_city, destination_state)
 
 
 def logger_config():
+    """
+    Sets up root logger and disables propagation from dependencies
+    """
     logging.basicConfig(filename='scrape_distances.log',
                         level=logging.INFO,
                         format=' %(asctime)s.%(msecs)03d - %(levelname)s - '
