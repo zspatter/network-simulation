@@ -7,7 +7,7 @@ from network_simulator.GraphConverter import GraphConverter
 
 
 def export_gexf(import_path='.',
-                shelve_key='hospital_network',
+                shelve_key='hospital_network2',
                 export_path='hospital_network.gexf',
                 is_regional_weight=None):
     """
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     export_root = join(abspath('.'), 'export', 'gexf')
 
     export_gexf(import_path=shelve_path,
-                export_path=join(export_root, 'hospital_network_distance.gexf'))
+                export_path=join(export_root, 'hospital_network_distance2.gexf'))
     export_gexf(import_path=shelve_path,
-                export_path=join(export_root, 'hospital_network_regional.gexf'),
+                export_path=join(export_root, 'hospital_network_regional2.gexf'),
                 is_regional_weight=True)
