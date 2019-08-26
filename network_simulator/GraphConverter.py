@@ -36,23 +36,31 @@ class GraphConverter:
         :param Network network:
         :param bool is_regional_weight: indicates whether weight metric should
                 be regional weight or distance
-        :param dict state_dict: quanitfies how many hospitals share the state
-        :param dict region_dict: quanitfies how many hospitals share the region
+        :param dict state_dict: quantifies how many hospitals share the state
+        :param dict region_dict: quantifies how many hospitals share the region
         :return: NetworkX Graph
         """
         nx_graph = nx.Graph()
         nodes = network.nodes()
 
-        for node in nodes:
-            state = network.network_dict[node].state
-            state = 'Washington D.C.' if state == 'US' else state
-            region = network.network_dict[node].region
+        for node_id in nodes:
+            node = network.network_dict[node_id]
+            label = node.label
+            city = node.city
+            state = node.state
+            region = node.region
 
-            nx_graph.add_node(node,
+            state = 'Washington D.C.' if state == 'US' else state
+
+            nx_graph.add_node(node_id,
+                              hospital_name=label,
+                              city=city,
+                              state=state,
+                              region=region,
                               state_count=state_dict[state],
                               region_count=region_dict[region])
 
-            GraphConverter.add_edges(network, node, nx_graph, is_regional_weight)
+            GraphConverter.add_edges(network, node_id, nx_graph, is_regional_weight)
 
         return nx_graph
 
