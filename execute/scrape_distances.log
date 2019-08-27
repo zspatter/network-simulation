@@ -1,0 +1,224 @@
+ 2019-08-19 15:37:31.336 - INFO - <get_distance>: Albuquerque, New Mexico --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Albuquerque%2CNew%2CMexico&to=Honolulu%2CHawaii
+ 2019-08-19 15:37:37.587 - INFO - <get_distance>: Albuquerque, New Mexico --> Honolulu, Hawaii: 	5,187.19 km
+ 2019-08-19 15:55:02.031 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Oklahoma City, Oklahoma: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Oklahoma%2CCity%2COklahoma
+ 2019-08-19 15:55:08.040 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Oklahoma City, Oklahoma: 	3,626.28 km
+ 2019-08-19 15:55:08.042 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Tulsa, Oklahoma: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Tulsa%2COklahoma
+ 2019-08-19 15:55:14.562 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Tulsa, Oklahoma: 	3,532.34 km
+ 2019-08-19 15:55:14.562 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Austin, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Austin%2CTexas
+ 2019-08-19 15:55:20.922 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Austin, Texas: 	3,455.48 km
+ 2019-08-19 15:55:20.922 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Corpus Christi, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Corpus%2CChristi%2CTexas
+ 2019-08-19 15:55:26.717 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Corpus Christi, Texas: 	3,360.61 km
+ 2019-08-19 15:55:26.718 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Dallas, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Dallas%2CTexas
+ 2019-08-19 15:55:32.812 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Dallas, Texas: 	3,453.84 km
+ 2019-08-19 15:55:32.813 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Edinburg, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Edinburg%2CTexas
+ 2019-08-19 15:55:38.669 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Edinburg, Texas: 	3,406.30 km
+ 2019-08-19 15:55:38.670 - INFO - <get_distance>: Hato Rey, Puerto Rico --> El Paso, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=El%2CPaso%2CTexas
+ 2019-08-19 15:55:44.879 - INFO - <get_distance>: Hato Rey, Puerto Rico --> El Paso, Texas: 	4,304.65 km
+ 2019-08-19 15:55:44.880 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Fort Worth, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Fort%2CWorth%2CTexas
+ 2019-08-19 15:55:50.765 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Fort Worth, Texas: 	3,499.96 km
+ 2019-08-19 15:55:50.766 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Galveston, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Galveston%2CTexas
+ 2019-08-19 15:55:56.465 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Galveston, Texas: 	3,153.60 km
+ 2019-08-19 15:55:56.465 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Houston, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Houston%2CTexas
+ 2019-08-19 15:56:02.539 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Houston, Texas: 	3,220.24 km
+ 2019-08-19 15:56:02.540 - INFO - <get_distance>: Hato Rey, Puerto Rico --> San Antonio, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=San%2CAntonio%2CTexas
+ 2019-08-19 15:56:57.195 - INFO - <get_distance>: Hato Rey, Puerto Rico --> San Antonio, Texas: 	3,502.97 km
+ 2019-08-19 15:56:57.196 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Temple, Texas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Temple%2CTexas
+ 2019-08-19 15:57:02.859 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Temple, Texas: 	3,444.00 km
+ 2019-08-19 15:57:02.860 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Aurora, Colorado: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Aurora%2CColorado
+ 2019-08-19 15:57:11.141 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Aurora, Colorado: 	4,399.18 km
+ 2019-08-19 15:57:11.142 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Denver, Colorado: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Denver%2CColorado
+ 2019-08-19 15:57:18.722 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Denver, Colorado: 	4,414.56 km
+ 2019-08-19 15:57:18.723 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Des Moines, Iowa: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Des%2CMoines%2CIowa
+ 2019-08-19 15:57:26.001 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Des Moines, Iowa: 	3,668.88 km
+ 2019-08-19 15:57:26.003 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Iowa City, Iowa: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Iowa%2CCity%2CIowa
+ 2019-08-19 15:57:34.619 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Iowa City, Iowa: 	3,536.23 km
+ 2019-08-19 15:57:34.620 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Kansas City, Kansas: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Kansas%2CCity%2CKansas
+ 2019-08-19 15:57:41.061 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Kansas City, Kansas: 	3,585.83 km
+ 2019-08-19 15:57:41.062 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Columbia, Missouri: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Columbia%2CMissouri
+ 2019-08-19 15:57:47.451 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Columbia, Missouri: 	3,410.26 km
+ 2019-08-19 15:57:47.452 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Kansas City, Missouri: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Kansas%2CCity%2CMissouri
+ 2019-08-19 15:57:53.835 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Kansas City, Missouri: 	3,582.05 km
+ 2019-08-19 15:57:53.836 - INFO - <get_distance>: Hato Rey, Puerto Rico --> St Louis, Missouri: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=St%2CLouis%2CMissouri
+ 2019-08-19 15:58:00.277 - INFO - <get_distance>: Hato Rey, Puerto Rico --> St Louis, Missouri: 	3,239.13 km
+ 2019-08-19 15:58:00.278 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Omaha, Nebraska: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Omaha%2CNebraska
+ 2019-08-19 15:58:26.782 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Omaha, Nebraska: 	3,807.75 km
+ 2019-08-19 15:58:26.784 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Lexington, Kentucky: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Lexington%2CKentucky
+ 2019-08-19 15:58:33.440 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Lexington, Kentucky: 	2,823.09 km
+ 2019-08-19 15:58:33.440 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Louisville, Kentucky: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Louisville%2CKentucky
+ 2019-08-19 15:58:39.930 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Louisville, Kentucky: 	2,918.04 km
+ 2019-08-19 15:58:39.931 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Chapel Hill, North Carolina: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Chapel%2CHill%2CNorth%2CCarolina
+ 2019-08-19 15:58:54.869 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Chapel Hill, North Carolina: 	2,328.20 km
+ 2019-08-19 15:58:54.870 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Charlotte, North Carolina: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Charlotte%2CNorth%2CCarolina
+ 2019-08-19 15:59:25.306 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Charlotte, North Carolina: 	2,370.46 km
+ 2019-08-19 15:59:25.308 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Durham, North Carolina: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Durham%2CNorth%2CCarolina
+ 2019-08-19 15:59:31.133 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Durham, North Carolina: 	2,326.83 km
+ 2019-08-19 15:59:31.134 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Greenville, North Carolina: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Greenville%2CNorth%2CCarolina
+ 2019-08-19 15:59:40.432 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Greenville, North Carolina: 	2,214.00 km
+ 2019-08-19 15:59:40.433 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Winston Salem, North Carolina: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Winston%2CSalem%2CNorth%2CCarolina
+ 2019-08-19 15:59:47.219 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Winston Salem, North Carolina: 	2,409.83 km
+ 2019-08-19 15:59:47.220 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Charleston, South Carolina: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Charleston%2CSouth%2CCarolina
+ 2019-08-19 15:59:53.147 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Charleston, South Carolina: 	2,114.85 km
+ 2019-08-19 15:59:53.148 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Chattanooga, Tennessee: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Chattanooga%2CTennessee
+ 2019-08-19 15:59:59.064 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Chattanooga, Tennessee: 	2,651.02 km
+ 2019-08-19 15:59:59.064 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Knoxville, Tennessee: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Knoxville%2CTennessee
+ 2019-08-19 16:00:05.684 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Knoxville, Tennessee: 	2,623.71 km
+ 2019-08-19 16:00:05.684 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Memphis, Tennessee: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Memphis%2CTennessee
+ 2019-08-19 16:00:11.368 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Memphis, Tennessee: 	3,008.47 km
+ 2019-08-19 16:00:11.369 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Nashville, Tennessee: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Nashville%2CTennessee
+ 2019-08-19 16:00:16.945 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Nashville, Tennessee: 	2,832.66 km
+ 2019-08-19 16:00:16.946 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Charlottesville, Virginia: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Charlottesville%2CVirginia
+ 2019-08-19 16:00:23.250 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Charlottesville, Virginia: 	2,493.14 km
+ 2019-08-19 16:00:23.251 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Norfolk, Virginia: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Norfolk%2CVirginia
+ 2019-08-19 16:00:29.752 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Norfolk, Virginia: 	2,281.22 km
+ 2019-08-19 16:00:29.754 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Richmond, Virginia: 	https://www.distance-cities.com/searchbd?from=Hato%2CRey%2CPuerto%2CRico&to=Richmond%2CVirginia
+ 2019-08-19 16:00:36.664 - INFO - <get_distance>: Hato Rey, Puerto Rico --> Richmond, Virginia: 	2,398.62 km
+ 2019-08-19 16:00:36.665 - INFO - <get_distance>: San Juan, Puerto Rico --> Oklahoma City, Oklahoma: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Oklahoma%2CCity%2COklahoma
+ 2019-08-19 16:00:43.005 - INFO - <get_distance>: San Juan, Puerto Rico --> Oklahoma City, Oklahoma: 	3,627.79 km
+ 2019-08-19 16:00:43.007 - INFO - <get_distance>: San Juan, Puerto Rico --> Tulsa, Oklahoma: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Tulsa%2COklahoma
+ 2019-08-19 16:00:49.736 - INFO - <get_distance>: San Juan, Puerto Rico --> Tulsa, Oklahoma: 	3,533.92 km
+ 2019-08-19 16:00:49.737 - INFO - <get_distance>: San Juan, Puerto Rico --> Austin, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Austin%2CTexas
+ 2019-08-19 16:00:55.178 - INFO - <get_distance>: San Juan, Puerto Rico --> Austin, Texas: 	3,456.70 km
+ 2019-08-19 16:00:55.180 - INFO - <get_distance>: San Juan, Puerto Rico --> Corpus Christi, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Corpus%2CChristi%2CTexas
+ 2019-08-19 16:01:04.425 - INFO - <get_distance>: San Juan, Puerto Rico --> Corpus Christi, Texas: 	3,361.69 km
+ 2019-08-19 16:01:04.427 - INFO - <get_distance>: San Juan, Puerto Rico --> Dallas, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Dallas%2CTexas
+ 2019-08-19 16:01:11.602 - INFO - <get_distance>: San Juan, Puerto Rico --> Dallas, Texas: 	3,455.22 km
+ 2019-08-19 16:01:11.603 - INFO - <get_distance>: San Juan, Puerto Rico --> Edinburg, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Edinburg%2CTexas
+ 2019-08-19 16:01:17.224 - INFO - <get_distance>: San Juan, Puerto Rico --> Edinburg, Texas: 	3,407.26 km
+ 2019-08-19 16:01:17.225 - INFO - <get_distance>: San Juan, Puerto Rico --> El Paso, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=El%2CPaso%2CTexas
+ 2019-08-19 16:01:23.791 - INFO - <get_distance>: San Juan, Puerto Rico --> El Paso, Texas: 	4,305.85 km
+ 2019-08-19 16:01:23.792 - INFO - <get_distance>: San Juan, Puerto Rico --> Fort Worth, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Fort%2CWorth%2CTexas
+ 2019-08-19 16:01:30.104 - INFO - <get_distance>: San Juan, Puerto Rico --> Fort Worth, Texas: 	3,501.34 km
+ 2019-08-19 16:01:30.105 - INFO - <get_distance>: San Juan, Puerto Rico --> Galveston, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Galveston%2CTexas
+ 2019-08-19 16:01:36.706 - INFO - <get_distance>: San Juan, Puerto Rico --> Galveston, Texas: 	3,154.81 km
+ 2019-08-19 16:01:36.707 - INFO - <get_distance>: San Juan, Puerto Rico --> Houston, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Houston%2CTexas
+ 2019-08-19 16:01:45.280 - INFO - <get_distance>: San Juan, Puerto Rico --> Houston, Texas: 	3,221.48 km
+ 2019-08-19 16:01:45.282 - INFO - <get_distance>: San Juan, Puerto Rico --> San Antonio, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=San%2CAntonio%2CTexas
+ 2019-08-19 16:01:51.825 - INFO - <get_distance>: San Juan, Puerto Rico --> San Antonio, Texas: 	3,504.14 km
+ 2019-08-19 16:01:51.827 - INFO - <get_distance>: San Juan, Puerto Rico --> Temple, Texas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Temple%2CTexas
+ 2019-08-19 16:01:57.390 - INFO - <get_distance>: San Juan, Puerto Rico --> Temple, Texas: 	3,445.29 km
+ 2019-08-19 16:01:57.391 - INFO - <get_distance>: San Juan, Puerto Rico --> Aurora, Colorado: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Aurora%2CColorado
+ 2019-08-19 16:02:22.913 - INFO - <get_distance>: San Juan, Puerto Rico --> Aurora, Colorado: 	4,400.77 km
+ 2019-08-19 16:02:22.915 - INFO - <get_distance>: San Juan, Puerto Rico --> Denver, Colorado: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Denver%2CColorado
+ 2019-08-19 16:03:09.587 - INFO - <get_distance>: San Juan, Puerto Rico --> Denver, Colorado: 	4,416.16 km
+ 2019-08-19 16:03:09.588 - INFO - <get_distance>: San Juan, Puerto Rico --> Des Moines, Iowa: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Des%2CMoines%2CIowa
+ 2019-08-19 16:03:35.703 - INFO - <get_distance>: San Juan, Puerto Rico --> Des Moines, Iowa: 	3,670.71 km
+ 2019-08-19 16:03:35.704 - INFO - <get_distance>: San Juan, Puerto Rico --> Iowa City, Iowa: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Iowa%2CCity%2CIowa
+ 2019-08-19 16:03:47.604 - INFO - <get_distance>: San Juan, Puerto Rico --> Iowa City, Iowa: 	3,538.12 km
+ 2019-08-19 16:03:47.605 - INFO - <get_distance>: San Juan, Puerto Rico --> Kansas City, Kansas: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Kansas%2CCity%2CKansas
+ 2019-08-19 16:03:54.232 - INFO - <get_distance>: San Juan, Puerto Rico --> Kansas City, Kansas: 	3,587.59 km
+ 2019-08-19 16:03:54.233 - INFO - <get_distance>: San Juan, Puerto Rico --> Columbia, Missouri: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Columbia%2CMissouri
+ 2019-08-19 16:04:01.093 - INFO - <get_distance>: San Juan, Puerto Rico --> Columbia, Missouri: 	3,412.03 km
+ 2019-08-19 16:04:01.094 - INFO - <get_distance>: San Juan, Puerto Rico --> Kansas City, Missouri: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Kansas%2CCity%2CMissouri
+ 2019-08-19 16:04:06.947 - INFO - <get_distance>: San Juan, Puerto Rico --> Kansas City, Missouri: 	3,583.77 km
+ 2019-08-19 16:04:06.948 - INFO - <get_distance>: San Juan, Puerto Rico --> St Louis, Missouri: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=St%2CLouis%2CMissouri
+ 2019-08-19 16:04:14.143 - INFO - <get_distance>: San Juan, Puerto Rico --> St Louis, Missouri: 	3,240.94 km
+ 2019-08-19 16:04:14.144 - INFO - <get_distance>: San Juan, Puerto Rico --> Omaha, Nebraska: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Omaha%2CNebraska
+ 2019-08-19 16:04:21.464 - INFO - <get_distance>: San Juan, Puerto Rico --> Omaha, Nebraska: 	3,809.55 km
+ 2019-08-19 16:04:21.468 - INFO - <get_distance>: San Juan, Puerto Rico --> Lexington, Kentucky: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Lexington%2CKentucky
+ 2019-08-19 16:04:27.001 - INFO - <get_distance>: San Juan, Puerto Rico --> Lexington, Kentucky: 	2,825.00 km
+ 2019-08-19 16:04:27.002 - INFO - <get_distance>: San Juan, Puerto Rico --> Louisville, Kentucky: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Louisville%2CKentucky
+ 2019-08-19 16:04:33.377 - INFO - <get_distance>: San Juan, Puerto Rico --> Louisville, Kentucky: 	2,919.94 km
+ 2019-08-19 16:04:33.379 - INFO - <get_distance>: San Juan, Puerto Rico --> Chapel Hill, North Carolina: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Chapel%2CHill%2CNorth%2CCarolina
+ 2019-08-19 16:04:39.551 - INFO - <get_distance>: San Juan, Puerto Rico --> Chapel Hill, North Carolina: 	2,330.21 km
+ 2019-08-19 16:04:39.555 - INFO - <get_distance>: San Juan, Puerto Rico --> Charlotte, North Carolina: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Charlotte%2CNorth%2CCarolina
+ 2019-08-19 16:04:48.864 - INFO - <get_distance>: San Juan, Puerto Rico --> Charlotte, North Carolina: 	2,372.39 km
+ 2019-08-19 16:04:48.865 - INFO - <get_distance>: San Juan, Puerto Rico --> Durham, North Carolina: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Durham%2CNorth%2CCarolina
+ 2019-08-19 16:05:17.434 - INFO - <get_distance>: San Juan, Puerto Rico --> Durham, North Carolina: 	2,328.84 km
+ 2019-08-19 16:05:17.435 - INFO - <get_distance>: San Juan, Puerto Rico --> Greenville, North Carolina: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Greenville%2CNorth%2CCarolina
+ 2019-08-19 16:05:29.715 - INFO - <get_distance>: San Juan, Puerto Rico --> Greenville, North Carolina: 	2,216.06 km
+ 2019-08-19 16:05:29.716 - INFO - <get_distance>: San Juan, Puerto Rico --> Winston Salem, North Carolina: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Winston%2CSalem%2CNorth%2CCarolina
+ 2019-08-19 16:05:43.752 - INFO - <get_distance>: San Juan, Puerto Rico --> Winston Salem, North Carolina: 	2,411.81 km
+ 2019-08-19 16:05:43.754 - INFO - <get_distance>: San Juan, Puerto Rico --> Charleston, South Carolina: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Charleston%2CSouth%2CCarolina
+ 2019-08-19 16:05:51.486 - INFO - <get_distance>: San Juan, Puerto Rico --> Charleston, South Carolina: 	2,116.72 km
+ 2019-08-19 16:05:51.487 - INFO - <get_distance>: San Juan, Puerto Rico --> Chattanooga, Tennessee: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Chattanooga%2CTennessee
+ 2019-08-19 16:05:58.775 - INFO - <get_distance>: San Juan, Puerto Rico --> Chattanooga, Tennessee: 	2,652.82 km
+ 2019-08-19 16:05:58.776 - INFO - <get_distance>: San Juan, Puerto Rico --> Knoxville, Tennessee: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Knoxville%2CTennessee
+ 2019-08-19 16:06:07.471 - INFO - <get_distance>: San Juan, Puerto Rico --> Knoxville, Tennessee: 	2,625.57 km
+ 2019-08-19 16:06:07.473 - INFO - <get_distance>: San Juan, Puerto Rico --> Memphis, Tennessee: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Memphis%2CTennessee
+ 2019-08-19 16:06:14.422 - INFO - <get_distance>: San Juan, Puerto Rico --> Memphis, Tennessee: 	3,010.13 km
+ 2019-08-19 16:06:14.423 - INFO - <get_distance>: San Juan, Puerto Rico --> Nashville, Tennessee: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Nashville%2CTennessee
+ 2019-08-19 16:06:22.175 - INFO - <get_distance>: San Juan, Puerto Rico --> Nashville, Tennessee: 	2,834.45 km
+ 2019-08-19 16:06:22.176 - INFO - <get_distance>: San Juan, Puerto Rico --> Charlottesville, Virginia: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Charlottesville%2CVirginia
+ 2019-08-19 16:06:28.829 - INFO - <get_distance>: San Juan, Puerto Rico --> Charlottesville, Virginia: 	2,495.22 km
+ 2019-08-19 16:06:28.830 - INFO - <get_distance>: San Juan, Puerto Rico --> Norfolk, Virginia: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Norfolk%2CVirginia
+ 2019-08-19 16:06:35.163 - INFO - <get_distance>: San Juan, Puerto Rico --> Norfolk, Virginia: 	2,283.35 km
+ 2019-08-19 16:06:35.164 - INFO - <get_distance>: San Juan, Puerto Rico --> Richmond, Virginia: 	https://www.distance-cities.com/searchbd?from=San%2CJuan%2CPuerto%2CRico&to=Richmond%2CVirginia
+ 2019-08-19 16:06:41.223 - INFO - <get_distance>: San Juan, Puerto Rico --> Richmond, Virginia: 	2,400.72 km
+ 2019-08-19 16:09:24.292 - INFO - <get_distance>: Phoenix, Arizona --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Phoenix%2CArizona&to=Honolulu%2CHawaii
+ 2019-08-19 16:09:31.161 - INFO - <get_distance>: Phoenix, Arizona --> Honolulu, Hawaii: 	4,677.39 km
+ 2019-08-19 16:09:37.646 - INFO - <get_distance>: Tucson, Arizona --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Tucson%2CArizona&to=Honolulu%2CHawaii
+ 2019-08-19 16:09:44.906 - INFO - <get_distance>: Tucson, Arizona --> Honolulu, Hawaii: 	4,771.71 km
+ 2019-08-19 16:09:50.842 - INFO - <get_distance>: Duarte, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Duarte%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:09:57.390 - INFO - <get_distance>: Duarte, California --> Honolulu, Hawaii: 	4,146.42 km
+ 2019-08-19 16:10:03.177 - INFO - <get_distance>: La Jolla, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=La%2CJolla%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:10:10.009 - INFO - <get_distance>: La Jolla, California --> Honolulu, Hawaii: 	4,190.51 km
+ 2019-08-19 16:10:15.587 - INFO - <get_distance>: Loma Linda, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Loma%2CLinda%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:10:21.723 - INFO - <get_distance>: Loma Linda, California --> Honolulu, Hawaii: 	4,210.82 km
+ 2019-08-19 16:10:27.296 - INFO - <get_distance>: Los Angeles, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Los%2CAngeles%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:10:33.959 - INFO - <get_distance>: Los Angeles, California --> Honolulu, Hawaii: 	4,119.86 km
+ 2019-08-19 16:10:40.273 - INFO - <get_distance>: Orange, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Orange%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:10:46.125 - INFO - <get_distance>: Orange, California --> Honolulu, Hawaii: 	4,151.00 km
+ 2019-08-19 16:10:51.854 - INFO - <get_distance>: Palo Alto, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Palo%2CAlto%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:10:57.660 - INFO - <get_distance>: Palo Alto, California --> Honolulu, Hawaii: 	3,864.43 km
+ 2019-08-19 16:11:04.221 - INFO - <get_distance>: Riverside, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Riverside%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:11:10.492 - INFO - <get_distance>: Riverside, California --> Honolulu, Hawaii: 	4,197.83 km
+ 2019-08-19 16:11:17.086 - INFO - <get_distance>: Sacramento, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Sacramento%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:11:23.014 - INFO - <get_distance>: Sacramento, California --> Honolulu, Hawaii: 	3,959.17 km
+ 2019-08-19 16:11:29.134 - INFO - <get_distance>: San Diego, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=San%2CDiego%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:11:35.681 - INFO - <get_distance>: San Diego, California --> Honolulu, Hawaii: 	4,197.71 km
+ 2019-08-19 16:11:41.744 - INFO - <get_distance>: San Francisco, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=San%2CFrancisco%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:11:49.598 - INFO - <get_distance>: San Francisco, California --> Honolulu, Hawaii: 	3,854.06 km
+ 2019-08-19 16:11:55.749 - INFO - <get_distance>: Stanford, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Stanford%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:12:03.045 - INFO - <get_distance>: Stanford, California --> Honolulu, Hawaii: 	3,863.30 km
+ 2019-08-19 16:12:09.140 - INFO - <get_distance>: Torrance, California --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Torrance%2CCalifornia&to=Honolulu%2CHawaii
+ 2019-08-19 16:12:16.102 - INFO - <get_distance>: Torrance, California --> Honolulu, Hawaii: 	4,106.99 km
+ 2019-08-19 16:12:22.574 - INFO - <get_distance>: Las Vegas, Nevada --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Las%2CVegas%2CNevada&to=Honolulu%2CHawaii
+ 2019-08-19 16:12:29.045 - INFO - <get_distance>: Las Vegas, Nevada --> Honolulu, Hawaii: 	4,438.32 km
+ 2019-08-19 16:12:35.685 - INFO - <get_distance>: Albuquerque, New Mexico --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Albuquerque%2CNew%2CMexico&to=Honolulu%2CHawaii
+ 2019-08-19 16:12:42.549 - INFO - <get_distance>: Albuquerque, New Mexico --> Honolulu, Hawaii: 	5,187.19 km
+ 2019-08-19 16:12:48.135 - INFO - <get_distance>: Murray, Utah --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Murray%2CUtah&to=Honolulu%2CHawaii
+ 2019-08-19 16:12:55.323 - INFO - <get_distance>: Murray, Utah --> Honolulu, Hawaii: 	4,813.10 km
+ 2019-08-19 16:13:00.723 - INFO - <get_distance>: Salt Lake City, Utah --> Honolulu, Hawaii: 	https://www.distance-cities.com/searchbd?from=Salt%2CLake%2CCity%2CUtah&to=Honolulu%2CHawaii
+ 2019-08-19 16:13:06.726 - INFO - <get_distance>: Salt Lake City, Utah --> Honolulu, Hawaii: 	4,815.45 km
+ 2019-08-19 16:13:12.830 - INFO - <get_distance>: Honolulu, Hawaii --> Chicago, Illinois: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Chicago%2CIllinois
+ 2019-08-19 16:13:19.388 - INFO - <get_distance>: Honolulu, Hawaii --> Chicago, Illinois: 	6,837.92 km
+ 2019-08-19 16:13:19.388 - INFO - <get_distance>: Honolulu, Hawaii --> Maywood, Illinois: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Maywood%2CIllinois
+ 2019-08-19 16:13:25.574 - INFO - <get_distance>: Honolulu, Hawaii --> Maywood, Illinois: 	6,820.82 km
+ 2019-08-19 16:13:25.574 - INFO - <get_distance>: Honolulu, Hawaii --> Oak Lawn, Illinois: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Oak%2CLawn%2CIllinois
+ 2019-08-19 16:13:33.326 - INFO - <get_distance>: Honolulu, Hawaii --> Oak Lawn, Illinois: 	6,829.22 km
+ 2019-08-19 16:13:33.327 - INFO - <get_distance>: Honolulu, Hawaii --> Peoria, Illinois: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Peoria%2CIllinois
+ 2019-08-19 16:13:44.150 - INFO - <get_distance>: Honolulu, Hawaii --> Peoria, Illinois: 	6,683.25 km
+ 2019-08-19 16:13:44.150 - INFO - <get_distance>: Honolulu, Hawaii --> Springfield, Illinois: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Springfield%2CIllinois
+ 2019-08-19 16:13:50.607 - INFO - <get_distance>: Honolulu, Hawaii --> Springfield, Illinois: 	6,684.73 km
+ 2019-08-19 16:13:50.607 - INFO - <get_distance>: Honolulu, Hawaii --> Minneapolis, Minnesota: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Minneapolis%2CMinnesota
+ 2019-08-19 16:13:57.184 - INFO - <get_distance>: Honolulu, Hawaii --> Minneapolis, Minnesota: 	6,376.51 km
+ 2019-08-19 16:13:57.185 - INFO - <get_distance>: Honolulu, Hawaii --> Rochester, Minnesota: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Rochester%2CMinnesota
+ 2019-08-19 16:14:05.670 - INFO - <get_distance>: Honolulu, Hawaii --> Rochester, Minnesota: 	6,438.26 km
+ 2019-08-19 16:14:05.670 - INFO - <get_distance>: Honolulu, Hawaii --> Bismarck, North Dakota: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Bismarck%2CNorth%2CDakota
+ 2019-08-19 16:14:13.572 - INFO - <get_distance>: Honolulu, Hawaii --> Bismarck, North Dakota: 	5,815.96 km
+ 2019-08-19 16:14:13.572 - INFO - <get_distance>: Honolulu, Hawaii --> Fargo, North Dakota: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Fargo%2CNorth%2CDakota
+ 2019-08-19 16:14:20.432 - INFO - <get_distance>: Honolulu, Hawaii --> Fargo, North Dakota: 	6,118.60 km
+ 2019-08-19 16:14:20.448 - INFO - <get_distance>: Honolulu, Hawaii --> Sioux Falls, South Dakota: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Sioux%2CFalls%2CSouth%2CDakota
+ 2019-08-19 16:14:26.969 - INFO - <get_distance>: Honolulu, Hawaii --> Sioux Falls, South Dakota: 	6,093.78 km
+ 2019-08-19 16:14:26.969 - INFO - <get_distance>: Honolulu, Hawaii --> Madison, Wisconsin: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Madison%2CWisconsin
+ 2019-08-19 16:14:34.062 - INFO - <get_distance>: Honolulu, Hawaii --> Madison, Wisconsin: 	6,687.32 km
+ 2019-08-19 16:14:34.066 - INFO - <get_distance>: Honolulu, Hawaii --> Milwaukee, Wisconsin: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Milwaukee%2CWisconsin
+ 2019-08-19 16:14:40.420 - INFO - <get_distance>: Honolulu, Hawaii --> Milwaukee, Wisconsin: 	6,807.56 km
+ 2019-08-19 16:14:40.420 - INFO - <get_distance>: Honolulu, Hawaii --> Aurora, Colorado: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Aurora%2CColorado
+ 2019-08-19 16:14:47.762 - INFO - <get_distance>: Honolulu, Hawaii --> Aurora, Colorado: 	5,389.45 km
+ 2019-08-19 16:14:47.764 - INFO - <get_distance>: Honolulu, Hawaii --> Denver, Colorado: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Denver%2CColorado
+ 2019-08-19 16:15:03.103 - INFO - <get_distance>: Honolulu, Hawaii --> Denver, Colorado: 	5,374.71 km
+ 2019-08-19 16:15:03.103 - INFO - <get_distance>: Honolulu, Hawaii --> Des Moines, Iowa: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Des%2CMoines%2CIowa
+ 2019-08-19 16:15:09.664 - INFO - <get_distance>: Honolulu, Hawaii --> Des Moines, Iowa: 	6,343.08 km
+ 2019-08-19 16:15:09.664 - INFO - <get_distance>: Honolulu, Hawaii --> Iowa City, Iowa: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Iowa%2CCity%2CIowa
+ 2019-08-19 16:15:16.175 - INFO - <get_distance>: Honolulu, Hawaii --> Iowa City, Iowa: 	6,516.57 km
+ 2019-08-19 16:15:16.176 - INFO - <get_distance>: Honolulu, Hawaii --> Kansas City, Kansas: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Kansas%2CCity%2CKansas
+ 2019-08-19 16:15:23.803 - INFO - <get_distance>: Honolulu, Hawaii --> Kansas City, Kansas: 	6,260.69 km
+ 2019-08-19 16:15:23.804 - INFO - <get_distance>: Honolulu, Hawaii --> Columbia, Missouri: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Columbia%2CMissouri
+ 2019-08-19 16:15:32.784 - INFO - <get_distance>: Honolulu, Hawaii --> Columbia, Missouri: 	6,459.20 km
+ 2019-08-19 16:15:32.787 - INFO - <get_distance>: Honolulu, Hawaii --> Kansas City, Missouri: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Kansas%2CCity%2CMissouri
+ 2019-08-19 16:15:41.807 - INFO - <get_distance>: Honolulu, Hawaii --> Kansas City, Missouri: 	6,264.48 km
+ 2019-08-19 16:15:41.808 - INFO - <get_distance>: Honolulu, Hawaii --> St Louis, Missouri: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=St%2CLouis%2CMissouri
+ 2019-08-19 16:15:49.145 - INFO - <get_distance>: Honolulu, Hawaii --> St Louis, Missouri: 	6,646.03 km
+ 2019-08-19 16:15:49.145 - INFO - <get_distance>: Honolulu, Hawaii --> Omaha, Nebraska: 	https://www.distance-cities.com/searchbd?from=Honolulu%2CHawaii&to=Omaha%2CNebraska
+ 2019-08-19 16:15:55.871 - INFO - <get_distance>: Honolulu, Hawaii --> Omaha, Nebraska: 	6,148.97 km

@@ -77,7 +77,7 @@ class Node:
         adjacents: List[int] = list()
         if self.status:
             adjacents = [key for key in self.adjacency_dict if self.adjacency_dict[key]['status']]
-        return adjacents
+        return sorted(adjacents)
 
     def __str__(self) -> str:
         """
@@ -96,19 +96,19 @@ class Node:
 
             # builds header
             string = f"\n{'Node ID:':<16}{self.node_id:05d}" \
-                f"\n{'Hospital Name:':<16}{self.label}" \
-                f"{region}" \
-                f"{location}" \
-                f"\nNeighbors:"
+                     f"\n{'Hospital Name:':<16}{self.label}" \
+                     f"{region}" \
+                     f"{location}" \
+                     f"\nNeighbors:"
 
             # adds neighbors in ascending order
-            for key in sorted(self.adjacency_dict):
-                if self.adjacency_dict[key]['status']:
-                    regional_weight = self.adjacency_dict[key]['regional weight'] if \
-                        'regional weight' in self.adjacency_dict[key] else ''
+            for node_id in self.get_adjacents():
+                if self.adjacency_dict[node_id]['status']:
+                    regional_weight = self.adjacency_dict[node_id]['regional weight'] if \
+                        'regional weight' in self.adjacency_dict[node_id] else ''
 
-                    string += f"\n\tNode {'#' + str(key):>6}:  " \
-                        f"{self.adjacency_dict[key]['weight']:>9,.2f}" \
-                        f"{regional_weight:>4}"
+                    string += f"\n\tNode {'#' + str(node_id):>6}:  " \
+                              f"{self.adjacency_dict[node_id]['weight']:>9,.2f}" \
+                              f"{regional_weight:>4}"
             return string + '\n'
         return ''
