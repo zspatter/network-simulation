@@ -16,8 +16,33 @@ def generate_edgelist(network, output_path=Path('edgelist.txt')):
             out.writelines(lines)
 
 
+def unique_edge_list(network):
+    edge_list = []
+    nodes = [network.network_dict[node] for node in network.nodes()]
+
+    for node in nodes:
+        adjacents = node.get_adjacents()
+        for adjacent in adjacents:
+            edge = (node.node_id, adjacent)
+            alternate = (adjacent, node.node_id)
+            if edge not in edge_list and alternate not in edge_list:
+                edge_list.append(edge)
+
+    return edge_list
+
+
+def write_edge_list(edge_list, output_path):
+    with output_path.open('w') as out:
+        lines = '\n'.join(map(lambda x: f'{x[0]} {x[1]}', edge_list))
+        out.writelines(lines)
+
+
 if __name__ == '__main__':
     db = shelve.open(str(Path('./export/shelve/distance_vector')))
     hospital_network = db['hospital_network2']
-    generate_edgelist(network=hospital_network,
-                      output_path=Path('./export/edgelist/hospital_edgelist2'))
+    # generate_edgelist(network=hospital_network,
+    #                   output_path=Path('./export/edgelist/hospital_edge_list2'))
+
+    edges = unique_edge_list(network=hospital_network)
+    write_edge_list(edge_list=edges,
+                    output_path=Path('./export/edgelist/unique_edge_list'))
