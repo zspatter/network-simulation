@@ -72,5 +72,3 @@ if __name__ == '__main__':
 
     db['states'] = states
     db['regions'] = regions
-
-
