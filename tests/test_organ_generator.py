@@ -12,7 +12,7 @@ def test_generate_organs():
 
     assert len(organs) <= n * 6
     for organ in organs:
-        assert organ.current_location in test_net.nodes()
+        assert organ.current_location in test_net.node_ids()
         assert 0 <= organ.organ_type.value <= 5
         assert 0 <= organ.blood_type.blood_type_letter.value <= 3
         assert 0 <= organ.blood_type.blood_type_polarity.value <= 1
@@ -24,7 +24,7 @@ def test_generate_organs_to_list():
 
     # assert len(organ_list.organ_list) <= n * 6
     for organ in organ_list.organ_list:
-        assert organ.current_location in test_net.nodes()
+        assert organ.current_location in test_net.node_ids()
         assert 0 <= organ.organ_type.value <= 5
         assert 0 <= organ.blood_type.blood_type_letter.value <= 3
         assert 0 <= organ.blood_type.blood_type_polarity.value <= 1

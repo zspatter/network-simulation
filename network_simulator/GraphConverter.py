@@ -20,8 +20,8 @@ class GraphConverter:
         nodes = network.nodes()
 
         for node in nodes:
-            nx_graph.add_node(node)
-            GraphConverter.add_edges(network, node, nx_graph, is_regional_weight)
+            nx_graph.add_node(node.node_id)
+            GraphConverter.add_edges(network, node.node_id, nx_graph, is_regional_weight)
 
         return nx_graph
 
@@ -43,8 +43,7 @@ class GraphConverter:
         nx_graph = nx.Graph()
         nodes = network.nodes()
 
-        for node_id in nodes:
-            node = network.network_dict[node_id]
+        for node in nodes:
             label = node.label
             city = node.city
             state = node.state
@@ -52,7 +51,7 @@ class GraphConverter:
 
             state = 'Washington D.C.' if state == 'US' else state
 
-            nx_graph.add_node(node_id,
+            nx_graph.add_node(node.node_id,
                               hospital_name=label,
                               city=city,
                               state=state,

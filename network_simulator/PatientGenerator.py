@@ -25,7 +25,7 @@ class PatientGenerator:
         :param int n: number of patients to generate
         """
         # list of currently active nodes
-        nodes = graph.nodes()
+        nodes = graph.node_ids()
         patients: List[Patient] = list()
 
         for x in range(n):

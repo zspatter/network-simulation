@@ -32,7 +32,7 @@ class OrganGenerator:
         """
 
         # list of currently active nodes
-        nodes = graph.nodes()
+        nodes = graph.node_ids()
         organs: List[Organ] = list()
 
         # number of patients to harvest from

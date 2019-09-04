@@ -11,8 +11,8 @@ def generate_edge_list(network, output_path=Path('edgelist.txt')):
     """
     with output_path.open('w') as out:
         for node in network.nodes():
-            adjacents = network.network_dict[node].get_adjacents()
-            lines = [f'{node} {x}\n' for x in adjacents]
+            adjacents = node.get_adjacents()
+            lines = [f'{node.node_id} {x}\n' for x in adjacents]
             out.writelines(lines)
 
 
@@ -25,7 +25,7 @@ def unique_edge_list(network):
     :return: list edge_list: unique set of edges
     """
     edge_list = []
-    nodes = [network.network_dict[node] for node in network.nodes()]
+    nodes = network.nodes()
 
     for node in nodes:
         adjacents = node.get_adjacents()

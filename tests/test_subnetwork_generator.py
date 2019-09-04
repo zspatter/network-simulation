@@ -36,19 +36,19 @@ def test_generate_subnetwork():
     patient_network = SubnetworkGenerator.generate_subnetwork(network, wait_list)
     organ_network = SubnetworkGenerator.generate_subnetwork(network, organ_list)
 
-    patient_nodes = patient_network.nodes()
-    organ_nodes = organ_network.nodes()
+    patient_nodes = patient_network.node_ids()
+    organ_nodes = organ_network.node_ids()
 
-    assert len(network.nodes()) == 4
-    assert len(patient_network.nodes()) == 2
-    assert len(organ_network.nodes()) == 2
+    assert len(network.node_ids()) == 4
+    assert len(patient_network.node_ids()) == 2
+    assert len(organ_network.node_ids()) == 2
     assert node_a.node_id in patient_nodes
     assert node_b.node_id in patient_nodes
     assert node_c.node_id in organ_nodes
     assert node_d.node_id in organ_nodes
 
     for node in patient_nodes:
-        assert node in network.nodes()
+        assert node in network.node_ids()
 
     for node in organ_nodes:
-        assert node in network.nodes()
+        assert node in network.node_ids()

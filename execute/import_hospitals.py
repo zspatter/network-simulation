@@ -108,10 +108,8 @@ def node_pair_generator(network):
 
     :param Network network: source of nodes
     """
-    for node_id in network.nodes():
-        source = network.network_dict[node_id]
-
-        for adjacent_id in set(network.nodes()) - {node_id}:
+    for source in network.nodes():
+        for adjacent_id in set(network.node_ids()) - {source.node_id}:
             adjacent = network.network_dict[adjacent_id]
 
             yield source, adjacent

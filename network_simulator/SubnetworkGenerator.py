@@ -57,5 +57,5 @@ class SubnetworkGenerator:
 
         :param Network network: graph that is the foundation for subnetworks
         """
-        for node in network.nodes():
+        for node in network.node_ids():
             network.mark_node_inactive(node, feedback=False)

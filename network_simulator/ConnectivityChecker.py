@@ -27,7 +27,7 @@ class ConnectivityChecker:
         """
         if not nodes_encountered:
             nodes_encountered = set()
-        nodes = network.nodes()
+        nodes = network.node_ids()
         if not source:
             # chose a vertex from network as start point
             source = nodes[0]
@@ -55,7 +55,7 @@ class ConnectivityChecker:
         """
         nodes_encountered: Set[Optional[int]] = set()
         if not node_id:
-            node_id = network.nodes()[0]
+            node_id = network.node_ids()[0]
         stack = [node_id]
         while stack:
             node = stack.pop()
@@ -81,12 +81,12 @@ class ConnectivityChecker:
         :rtype: bool
         """
         # mark all the nodes as not visited (value is None)
-        visited = dict.fromkeys(network.nodes())
+        visited = dict.fromkeys(network.node_ids())
         nodes_encountered = set()
         queue = []
 
         if not node_id:
-            node_id = network.nodes()[0]
+            node_id = network.node_ids()[0]
 
         # mark the source node as visited and enqueue it
         queue.append(node_id)

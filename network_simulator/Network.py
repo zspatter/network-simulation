@@ -86,16 +86,16 @@ class Network:
                 to_remove.append([node, adjacent])
 
     # allows graphs to be iterated through (via active nodes)
-    def __iter__(self) -> Iterator[int]:
-        """
-        Creates and returns a custom iterator for the network.
-        This iterates through currently active nodes.
+    # def __iter__(self) -> Iterator[int]:
+    #     """
+    #     Creates and returns a custom iterator for the network.
+    #     This iterates through currently active nodes.
+    #
+    #     :return: iterator
+    #     """
+    #     return iter(self.nodes())
 
-        :return: iterator
-        """
-        return iter(self.nodes())
-
-    def nodes(self) -> List[int]:
+    def nodes(self) -> List[Node]:
         """
         Returns list of active nodes within the graph.
 
@@ -103,7 +103,19 @@ class Network:
         :rtype: list
         """
         nodes = set(self.network_dict.keys())
-        active_nodes = [node for node in nodes if self.network_dict[node].status]
+        active_nodes = [self.network_dict[node_id] for node_id in nodes
+                        if self.network_dict[node_id].status]
+        return sorted(active_nodes, key=lambda x: x.node_id)
+
+    def node_ids(self) -> List[int]:
+        """
+        Returns list of active node ids within the graph.
+
+        :return: active node ids in graph
+        :rtype: list
+        """
+        nodes = set(self.network_dict.keys())
+        active_nodes = [node_id for node_id in nodes if self.network_dict[node_id].status]
         return sorted(active_nodes)
 
     def add_node(self, node: Node, feedback: bool = True) -> None:
@@ -226,7 +238,7 @@ class Network:
             should be print to the console
         """
         # if nodes are active
-        if node_id1 in self.nodes() and node_id2 in self.nodes():
+        if node_id1 in self.node_ids() and node_id2 in self.node_ids():
             # if there is not an edge already connecting node 1 and node 2
             if node_id2 not in self.network_dict[node_id1].get_adjacents() \
                     and node_id1 not in self.network_dict[node_id2].get_adjacents():
@@ -550,7 +562,7 @@ class Network:
         :rtype: str
         """
         string = ''
-        for node_id in self.nodes():
+        for node in self.nodes():
             # if self.network_dict[key].status:
-            string += f'{self.network_dict[node_id].__str__()}'
+            string += f'{node.__str__()}'
         return string + '\n===============================\n'

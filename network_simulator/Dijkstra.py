@@ -45,9 +45,9 @@ class Dijkstra:
         :return: weight: dict represented as {node_id: <weight>, ...}
         :return: previous: dict represented as {node_id: <previous_node_id>, ...}
         """
-        unvisited = graph.nodes()
-        weight = dict.fromkeys(graph.nodes(), float('inf'))
-        previous: Dict[int, Union[int, None]] = dict.fromkeys(graph.nodes(), None)
+        unvisited = graph.node_ids()
+        weight = dict.fromkeys(graph.node_ids(), float('inf'))
+        previous: Dict[int, Union[int, None]] = dict.fromkeys(graph.node_ids(), None)
         weight[source] = 0
         
         # while there are nodes which haven't been visited

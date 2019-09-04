@@ -16,7 +16,7 @@ def test_generate_patients():
         assert 0 <= patient.blood_type.blood_type_letter.value <= 3
         assert 0 <= patient.blood_type.blood_type_polarity.value <= 1
         assert 0 <= patient.priority < 100 + n
-        assert patient.location in test_net.nodes()
+        assert patient.location in test_net.node_ids()
 
 
 def test_generate_patients_to_list():
@@ -25,9 +25,9 @@ def test_generate_patients_to_list():
 
     assert len(wait_list.wait_list) is n
     for patient in wait_list.wait_list:
-        assert patient.location in test_net.nodes()
+        assert patient.location in test_net.node_ids()
         assert 0 <= patient.organ_needed.value <= 5
         assert 0 <= patient.blood_type.blood_type_letter.value <= 3
         assert 0 <= patient.blood_type.blood_type_polarity.value <= 1
         assert 0 <= patient.priority < 100 + n
-        assert patient.location in test_net.nodes()
+        assert patient.location in test_net.node_ids()
