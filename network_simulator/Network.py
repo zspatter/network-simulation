@@ -86,15 +86,15 @@ class Network:
                 to_remove.append([node, adjacent])
 
     # allows graphs to be iterated through (via active nodes)
-    # def __iter__(self) -> Iterator[int]:
-    #     """
-    #     Creates and returns a custom iterator for the network.
-    #     This iterates through currently active nodes.
-    #
-    #     :return: iterator
-    #     """
-    #     return iter(self.nodes())
+    def __iter__(self) -> Iterator[Node]:
+        """
+        Creates and returns a custom iterator for the network.
+        This iterates through currently active nodes.
 
+        :return: iterator
+        """
+        return iter(self.nodes())
+    
     def nodes(self) -> List[Node]:
         """
         Returns list of active nodes within the graph.
