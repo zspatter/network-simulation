@@ -1,3 +1,5 @@
+from typing import Optional
+
 import networkx as nx  # type: ignore
 
 from network_simulator.Network import Network
@@ -7,7 +9,7 @@ class GraphConverter:
 
     @staticmethod
     def convert_to_networkx(network: Network,
-                            is_regional_weight: bool = None) -> nx.Graph:
+                            is_regional_weight: Optional[bool] = None) -> nx.Graph:
         """
         Converts a Network object to a NetworkX graph
 
@@ -27,7 +29,7 @@ class GraphConverter:
 
     @staticmethod
     def convert_to_attribute_nx(network: Network,
-                                is_regional_weight: bool = None,
+                                is_regional_weight: Optional[bool] = None,
                                 state_dict=None,
                                 region_dict=None) -> nx.Graph:
         """
