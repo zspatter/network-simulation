@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import heapq
-from typing import List
+from itertools import count
+from typing import List, Optional, Tuple
 
 from network_simulator.Organ import Organ
 from network_simulator.Patient import Patient
+
+prioritized_patient = Tuple[int, int, Patient]
 
 
 class WaitList:
@@ -13,7 +16,7 @@ class WaitList:
     a donation. This list accepts all patients in need of organs (generic)
     """
 
-    def __init__(self, wait_list: List[Patient] = None, label: str = None) -> None:
+    def __init__(self, wait_list: Optional[List[Patient]] = None, label: Optional[str] = None) -> None:
         """
         Creates a WaitList object. If no wait_list parameter is provided,
         an empty list is created
@@ -33,25 +36,32 @@ class WaitList:
         self.label = label
         self.wait_list = wait_list
 
-    def get_prioritized_patients(self, organ: Organ) -> List[Patient]:
+    def get_prioritized_patients(self, organ: Organ) -> List[prioritized_patient]:
         """
         Takes an organ as a parameter and searches the
         wait list for matches. All matches are added to a priority queue
-        with the patient's priority attribute determining priority.
+        with the patient's priority attribute determining priority (highest
+        priority first).
 
-        The heapq is returned after the entire list has been iterated through
+        Patients are stored as (-priority, insertion_order, patient) tuples so the
+        queue can be built and drained with the standard library's min-heap
+        `heapq` API (public API only - no private `_heapify_max`/`_heappop_max`
+        internals). `insertion_order` breaks ties between equal-priority patients
+        without relying on `Patient` supporting comparison.
 
         :param Organ organ: object representing a prospective transplant
-        :return: heapq (priority queue) with only patients whose needs match that of the parameters
+        :return: heapq (priority queue) of (-priority, insertion_order, patient)
+            tuples with only patients whose needs match that of the parameters;
+            pop with heapq.heappop() to get the highest-priority match next
         """
-        queue: List[Patient] = []
+        queue: List[prioritized_patient] = []
+        counter = count()
 
         for patient in self.wait_list:
-            if patient.organ_needed is organ.organ_type and \
+            if patient.organ_needed == organ.organ_type and \
                     patient.blood_type.is_compatible_recipient(organ.blood_type):
-                heapq.heappush(queue, patient)
+                heapq.heappush(queue, (-patient.priority, next(counter), patient))
 
-        heapq._heapify_max(queue)  # type: ignore
         return queue
 
     def add_patient(self, patient: Patient) -> None:
@@ -79,6 +89,17 @@ class WaitList:
             self.wait_list.remove(patient)
             return
         print('This patient isn\'t in the wait list!')
+
+    def increment_wait_times(self) -> None:
+        """
+        Increments rounds_waited for every patient still on the wait list.
+        Intended to be called once per simulation round (see
+        execute/benchmark_strategies.py) so time-aware scoring functions
+        (e.g. allocation.scoring.CompositeScore) have a real time axis to
+        react to.
+        """
+        for patient in self.wait_list:
+            patient.rounds_waited += 1
 
     def __str__(self) -> str:
         string = ''

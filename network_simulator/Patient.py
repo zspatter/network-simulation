@@ -26,6 +26,7 @@ class Patient:
         self.blood_type: BloodType = blood_type
         self.priority: int = priority
         self.location: int = location
+        self.rounds_waited: int = 0
         if wait_list:
             wait_list.add_patient(self)
 
@@ -42,6 +43,7 @@ class Patient:
             f'\tOrgan needed: {OrganType(self.organ_needed).name}\n' \
             f'\tBlood type: {self.blood_type}\n' \
             f'\tPriority: {self.priority}\n' \
+            f'\tRounds waited: {self.rounds_waited}\n' \
             f'\tNearest hospital: {self.location}\n'
 
     def __eq__(self, other) -> bool:
@@ -52,14 +54,27 @@ class Patient:
         :return: boolean indicating equivalence
         """
         if isinstance(other, Patient):
-            return self.patient_id is other.patient_id \
-                   and self.patient_name is other.patient_name \
-                   and self.illness is other.illness \
-                   and self.organ_needed is other.organ_needed \
+            return self.patient_id == other.patient_id \
+                   and self.patient_name == other.patient_name \
+                   and self.illness == other.illness \
+                   and self.organ_needed == other.organ_needed \
                    and self.blood_type == other.blood_type \
-                   and self.priority is other.priority \
-                   and self.location is other.location
+                   and self.priority == other.priority \
+                   and self.location == other.location \
+                   and self.rounds_waited == other.rounds_waited
         return NotImplemented
+
+    def __hash__(self) -> int:
+        """
+        Hashes by patient_id (the class's unique identifier). Defining
+        __eq__ without __hash__ makes instances unhashable by default, which
+        would block using Patient in sets/dicts - e.g. allocation matchers
+        that need to track which patients have already been claimed within
+        a batch.
+
+        :return: hash of the patient's unique identifier
+        """
+        return hash(self.patient_id)
 
     def __ne__(self, other) -> bool:
         """
@@ -69,13 +84,14 @@ class Patient:
         :return: boolean indicating non-equivalence
         """
         if isinstance(other, Patient):
-            return not (self.patient_id is other.patient_id
-                        and self.patient_name is other.patient_name
-                        and self.illness is other.illness
-                        and self.organ_needed is other.organ_needed
+            return not (self.patient_id == other.patient_id
+                        and self.patient_name == other.patient_name
+                        and self.illness == other.illness
+                        and self.organ_needed == other.organ_needed
                         and self.blood_type == other.blood_type
-                        and self.priority is other.priority
-                        and self.location is other.location)
+                        and self.priority == other.priority
+                        and self.location == other.location
+                        and self.rounds_waited == other.rounds_waited)
         return NotImplemented
 
     def __lt__(self, other) -> bool:

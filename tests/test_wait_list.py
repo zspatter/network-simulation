@@ -12,7 +12,7 @@ ab_pos = BloodType(BloodTypeLetter.AB, BloodTypePolarity.POS)
 
 def test__init__():
     wait_list = WaitList()
-    assert len(wait_list.wait_list) is 0
+    assert len(wait_list.wait_list) == 0
 
 
 def test_get_prioritized_patients():
@@ -28,11 +28,11 @@ def test_get_prioritized_patients():
     organ = Organ(OrganType.Pancreas, ab_pos, 3)
     queue = wait_list.get_prioritized_patients(organ)
 
-    assert len(queue) is 3
-    assert heapq._heappop_max(queue) is patient4
-    assert heapq._heappop_max(queue) is patient3
-    assert heapq._heappop_max(queue) is patient2
-    assert len(queue) is 0
+    assert len(queue) == 3
+    assert heapq.heappop(queue)[2] is patient4
+    assert heapq.heappop(queue)[2] is patient3
+    assert heapq.heappop(queue)[2] is patient2
+    assert len(queue) == 0
 
 
 def test_add_patient():
@@ -40,14 +40,14 @@ def test_add_patient():
     patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1)
     wait_list.add_patient(patient)
 
-    assert len(wait_list.wait_list) is 1
+    assert len(wait_list.wait_list) == 1
     wait_list.add_patient(patient)
-    assert len(wait_list.wait_list) is 1
+    assert len(wait_list.wait_list) == 1
     patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1)
     wait_list.add_patient(patient)
-    assert len(wait_list.wait_list) is 2
+    assert len(wait_list.wait_list) == 2
     wait_list.add_patient(1)
-    assert len(wait_list.wait_list) is 2
+    assert len(wait_list.wait_list) == 2
 
 
 def test_add_patients():
@@ -70,9 +70,27 @@ def test_remove_patient():
     patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
 
-    assert len(wait_list.wait_list) is 0
+    assert len(wait_list.wait_list) == 0
     patient2 = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1, wait_list)
     wait_list.remove_patient(patient)
-    assert len(wait_list.wait_list) is 1
+    assert len(wait_list.wait_list) == 1
     wait_list.remove_patient(patient2)
-    assert len(wait_list.wait_list) is 0
+    assert len(wait_list.wait_list) == 0
+
+
+def test_increment_wait_times():
+    wait_list = WaitList()
+    patient1 = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1, wait_list)
+    patient2 = Patient('name2', 'illness2', OrganType.Pancreas, o_neg, 500, 1, wait_list)
+
+    assert patient1.rounds_waited == 0
+    assert patient2.rounds_waited == 0
+
+    wait_list.increment_wait_times()
+    assert patient1.rounds_waited == 1
+    assert patient2.rounds_waited == 1
+
+    wait_list.remove_patient(patient1)
+    wait_list.increment_wait_times()
+    assert patient1.rounds_waited == 1  # no longer on the list, unaffected
+    assert patient2.rounds_waited == 2
