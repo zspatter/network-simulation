@@ -6,14 +6,14 @@ def test_add_node():
     test_net = Network()
 
     # add node to empty graph
-    assert len(test_net.nodes()) is 0
+    assert len(test_net.nodes()) == 0
     test_net.add_node(node1)
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert node1.node_id in test_net.nodes()
 
     # attempt to add node that already exists
     test_net.add_node(node1)
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert node1.node_id in test_net.nodes()
 
 
@@ -23,14 +23,14 @@ def test_remove_node():
     test_net = Network({1: node1, 2: node2})
 
     # remove an existing node
-    assert len(test_net.nodes()) is 2
+    assert len(test_net.nodes()) == 2
     test_net.remove_node(1)
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert node2.node_id in test_net.network_dict
 
     # remove a node that doesn't exist
     test_net.remove_node(3)
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert node2.node_id in test_net.network_dict
 
 
@@ -42,17 +42,17 @@ def test_add_edge():
     # add nodes, but not edges
     test_net.add_node(node1)
     test_net.add_node(node2)
-    assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 0
+    assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 0
 
     # add edge to existing nodes
     test_net.add_edge(node1.node_id, node2.node_id, 5)
-    assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
-    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
+    assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
+    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
     # attempt to add edge that already exists
     test_net.add_edge(node1.node_id, node2.node_id, 5)
-    assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
-    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
+    assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
+    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
     # add inactive node
     node3 = Node(3, status=False)
@@ -60,13 +60,13 @@ def test_add_edge():
 
     # attempt to add edge to inactive node
     test_net.add_edge(node1.node_id, node3.node_id, 15)
-    assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
-    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
+    assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
+    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
     # attempts to add edge to node that doesn't exist
     test_net.add_edge(node1.node_id, node_id2=4, weight=25)
-    assert len(test_net.network_dict[node1.node_id].get_adjacents()) is 1
-    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] is 5
+    assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
+    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
 
 def test_remove_edge():
@@ -86,19 +86,19 @@ def test_remove_edge():
     assert node1.node_id not in node2.adjacency_dict
     assert not node1.adjacency_dict
     assert not node2.adjacency_dict
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
 
     # attempt to remove edge with no shared edge
     test_net.remove_edge(node1.node_id, node3.node_id)
     assert not node1.adjacency_dict
     assert not node2.adjacency_dict
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
 
     # attempt to remove edge from a node that doesn't exist
     test_net.remove_edge(node1.node_id, 4)
     assert not node1.adjacency_dict
     assert not node2.adjacency_dict
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
 
 
 def test_mark_node_inactive():
@@ -112,7 +112,7 @@ def test_mark_node_inactive():
 
     # test marking existing active node as inactive
     test_net.mark_node_inactive(1)
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is not len(test_net.nodes())
     assert not node1.status
     assert node2.status
@@ -123,7 +123,7 @@ def test_mark_node_inactive():
 
     # test already inactive node
     test_net.mark_node_inactive(1)
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is not len(test_net.nodes())
     assert not node1.status
     assert node2.status
@@ -134,7 +134,7 @@ def test_mark_node_inactive():
 
     # test node that doesn't exist
     test_net.mark_node_inactive(3)
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is not len(test_net.nodes())
 
 
@@ -147,26 +147,26 @@ def test_mark_node_active():
     # test existing inactive node
     test_net.mark_node_active(1)
     assert node1.node_id in test_net.nodes()
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert node1.status
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
 
     # test existing active node
     test_net.mark_node_active(1)
     assert node1.node_id in test_net.nodes()
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert node1.status
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
 
     # test nonexistent node
     test_net.mark_node_active(3)
     assert node1.node_id in test_net.nodes()
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert node1.status
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
 
 
 def test_mark_edge_inactive():
@@ -180,7 +180,7 @@ def test_mark_edge_inactive():
     assert not node2.adjacency_dict[node1.node_id]['status']
     assert not node1.get_adjacents()
     assert not node2.get_adjacents()
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is len(test_net.nodes())
 
     # test existing nodes with shared, inactive edge
@@ -189,7 +189,7 @@ def test_mark_edge_inactive():
     assert not node2.adjacency_dict[node1.node_id]['status']
     assert not node1.get_adjacents()
     assert not node2.get_adjacents()
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is len(test_net.nodes())
 
     # test existing nodes with shared, inactive edge
@@ -199,7 +199,7 @@ def test_mark_edge_inactive():
     assert not node2.adjacency_dict[node1.node_id]['status']
     assert not node1.get_adjacents()
     assert not node2.get_adjacents()
-    assert len(test_net.network_dict) is 3
+    assert len(test_net.network_dict) == 3
     assert len(test_net.network_dict) is len(test_net.nodes())
 
     # test with nonexistent node
@@ -209,7 +209,7 @@ def test_mark_edge_inactive():
     assert not node2.adjacency_dict[node1.node_id]['status']
     assert not node1.get_adjacents()
     assert not node2.get_adjacents()
-    assert len(test_net.network_dict) is 3
+    assert len(test_net.network_dict) == 3
     assert len(test_net.network_dict) is len(test_net.nodes())
 
 
@@ -222,18 +222,18 @@ def test_mark_edge_active():
     test_net.mark_edge_active(node1.node_id, node2.node_id)
     assert node1.adjacency_dict[node2.node_id]['status']
     assert node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) is 1
-    assert len(node2.adjacency_dict) is 1
-    assert len(test_net.network_dict) is 2
+    assert len(node1.adjacency_dict) == 1
+    assert len(node2.adjacency_dict) == 1
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is len(test_net.nodes())
 
     # test existing, active nodes with shared, active edge
     test_net.mark_edge_active(node1.node_id, node2.node_id)
     assert node1.adjacency_dict[node2.node_id]['status']
     assert node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) is 1
-    assert len(node2.adjacency_dict) is 1
-    assert len(test_net.network_dict) is 2
+    assert len(node1.adjacency_dict) == 1
+    assert len(node2.adjacency_dict) == 1
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is len(test_net.nodes())
 
     # test existing, inactive node with shared, inactive edge
@@ -241,9 +241,9 @@ def test_mark_edge_active():
     test_net.mark_edge_active(node1.node_id, node2.node_id)
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert not node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) is 1
-    assert len(node2.adjacency_dict) is 1
-    assert len(test_net.network_dict) is 2
+    assert len(node1.adjacency_dict) == 1
+    assert len(node2.adjacency_dict) == 1
+    assert len(test_net.network_dict) == 2
     assert len(test_net.network_dict) is not len(test_net.nodes())
     assert not node1.status
     assert node2.status
@@ -255,9 +255,9 @@ def test_mark_edge_active():
     test_net.mark_edge_active(node1.node_id, node2.node_id)
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert not node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) is 1
-    assert len(node2.adjacency_dict) is 1
-    assert len(test_net.network_dict) is 3
+    assert len(node1.adjacency_dict) == 1
+    assert len(node2.adjacency_dict) == 1
+    assert len(test_net.network_dict) == 3
     assert len(test_net.network_dict) is not len(test_net.nodes())
     assert not node1.status
     assert node2.status
@@ -270,9 +270,9 @@ def test_mark_edge_active():
     test_net.mark_edge_active(node1.node_id, node2.node_id)
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert not node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) is 1
-    assert len(node2.adjacency_dict) is 1
-    assert len(test_net.network_dict) is 3
+    assert len(node1.adjacency_dict) == 1
+    assert len(node2.adjacency_dict) == 1
+    assert len(test_net.network_dict) == 3
     assert len(test_net.network_dict) is not len(test_net.nodes())
     assert not node1.status
     assert node2.status
@@ -284,23 +284,23 @@ def test_nodes():
     test_net = Network({1: node1, 2: node2})
 
     # test graph with 2 active nodes
-    assert len(test_net.nodes()) is 2
+    assert len(test_net.nodes()) == 2
     assert len(test_net.nodes()) is len(test_net.network_dict)
     assert node1.node_id in test_net.nodes()
     assert node2.node_id in test_net.nodes()
 
     # test edge deactivation
     test_net.mark_edge_inactive(node1.node_id, node2.node_id)
-    assert len(test_net.nodes()) is 2
+    assert len(test_net.nodes()) == 2
     assert len(test_net.nodes()) is len(test_net.network_dict)
     assert node1.node_id in test_net.nodes()
     assert node2.node_id in test_net.nodes()
 
     # deactivate 1 node and test
     test_net.mark_node_inactive(node1.node_id)
-    assert len(test_net.nodes()) is 1
+    assert len(test_net.nodes()) == 1
     assert len(test_net.nodes()) is not len(test_net.network_dict)
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
     assert node1.node_id not in test_net.nodes()
     assert node2.node_id in test_net.nodes()
 
@@ -308,6 +308,6 @@ def test_nodes():
     test_net.mark_node_inactive(node2.node_id)
     assert not test_net.nodes()
     assert len(test_net.nodes()) is not len(test_net.network_dict)
-    assert len(test_net.network_dict) is 2
+    assert len(test_net.network_dict) == 2
     assert node1.node_id not in test_net.nodes()
     assert node2.node_id not in test_net.nodes()

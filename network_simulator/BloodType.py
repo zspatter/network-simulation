@@ -61,8 +61,8 @@ class BloodType:
         :return: bool indicating if the objects are equivalent
         """
         if isinstance(other, BloodType):
-            return self.blood_type_letter.value is other.blood_type_letter.value \
-                   and self.blood_type_polarity.value is other.blood_type_polarity.value
+            return self.blood_type_letter.value == other.blood_type_letter.value \
+                   and self.blood_type_polarity.value == other.blood_type_polarity.value
 
         return NotImplemented
 
@@ -74,7 +74,7 @@ class BloodType:
         :return: bool indicating if the objects are not equivalent
         """
         if isinstance(other, BloodType):
-            return not (self.blood_type_letter.value is other.blood_type_letter.value
-                        and self.blood_type_polarity.value is other.blood_type_polarity.value)
+            return not (self.blood_type_letter.value == other.blood_type_letter.value
+                        and self.blood_type_polarity.value == other.blood_type_polarity.value)
 
         return NotImplemented
