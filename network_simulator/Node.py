@@ -13,9 +13,10 @@ class Node:
     """
 
     def __init__(self, node_id: int, hospital_name: str = 'Default Name',
-                 adjacency_dict: adj_dict = None, status: bool = None,
-                 region: int = None, city: str = None,
-                 state: str = None) -> None:
+                 adjacency_dict: Optional[adj_dict] = None, status: Optional[bool] = None,
+                 region: Optional[int] = None, city: Optional[str] = None,
+                 state: Optional[str] = None, latitude: Optional[float] = None,
+                 longitude: Optional[float] = None) -> None:
         """
         Creates an instance of a Node
 
@@ -28,6 +29,8 @@ class Node:
         :param int region: US organ network region (1-11)
         :param str city: string representation of city
         :param str state: string representation of state
+        :param float latitude: latitude of the node's real-world location, in degrees
+        :param float longitude: longitude of the node's real-world location, in degrees
         """
         self.node_id: int = node_id
         self.label: str = hospital_name
@@ -36,6 +39,8 @@ class Node:
         self.region: Optional[int] = region
         self.city: Optional[str] = city
         self.state: Optional[str] = state
+        self.latitude: Optional[float] = latitude
+        self.longitude: Optional[float] = longitude
 
         if not adjacency_dict:
             adjacency_dict = {}

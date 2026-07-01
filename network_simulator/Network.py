@@ -1,4 +1,4 @@
-from typing import Dict, List, Iterator
+from typing import Dict, List, Iterator, Optional
 
 from network_simulator.Node import Node
 from network_simulator.exceptions import GraphElementError
@@ -12,9 +12,17 @@ class Network:
     a label and a collection of nodes (and their adjacency dicts).
     A network consists of a network dict that contains all of the
     nodes contained within the graph.
+
+    Edge weight convention: every edge weight represents estimated transit
+    time in hours (see network_simulator.distance for how real hospital
+    networks derive this from coordinates). This matches the unit
+    Organ.viability is expressed in, which is what makes shortest-path costs
+    from Dijkstra directly comparable to an organ's remaining viability.
+    Synthetic networks from GraphBuilder use arbitrary weights in the same
+    unit for stress-testing purposes.
     """
 
-    def __init__(self, network_dict: Dict[int, Node] = None,
+    def __init__(self, network_dict: Optional[Dict[int, Node]] = None,
                  label: str = 'Default network label') -> None:
         """
         Creates an instance of a Network. This function ensures that
@@ -176,7 +184,7 @@ class Network:
                 print(e)
 
     def add_edge(self, node_id1: int, node_id2: int, weight: int,
-                 regional_weight: int = None, feedback: bool = True) -> None:
+                 regional_weight: Optional[int] = None, feedback: bool = True) -> None:
         """
         Adds an edge between two nodes with a specified weight. It is
         assumed that the added edge will be active. If there already
@@ -210,7 +218,7 @@ class Network:
                 print(e)
 
     def add_edge_to_dict(self, node_id1: int, node_id2: int, weight: int,
-                         regional_weight: int = None, feedback: bool = True) -> None:
+                         regional_weight: Optional[int] = None, feedback: bool = True) -> None:
         """
         Verifies param node IDs can be added to the graph (and adds them).
         If there is a comparability issue, an exception is raised.

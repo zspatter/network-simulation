@@ -56,22 +56,56 @@ class Organ:
     @staticmethod
     def get_viability(organ_type: OrganType) -> float:
         """
-        Gets viability rating for each organ individually
+        Gets viability rating for each organ individually, in hours - the
+        same unit Network edge weights and get_operation_buffer() use (see
+        Network's docstring), so viability and transit/operation time are
+        directly comparable.
 
-        Viability is represented by hours an organ can be out of body * 10
+        These are maximum cold ischemia times (the transport budget only -
+        see get_operation_buffer() for the additional time a match needs to
+        reserve for the transplant procedure itself), sourced from published
+        ranges: heart/lungs ~4-6h, liver ~8-12h, pancreas ~12-18h,
+        kidney ~24-36h.
 
         :param int organ_type: constant corresponding to an organ type
-        :return: int viability rating (used in __init__())
+        :return: hours the organ remains viable outside the body
         """
         viability = {
-            OrganType.Heart.value:      60,
-            OrganType.Kidney.value:     300,
-            OrganType.Liver.value:      120,
-            OrganType.Lungs.value:      60,
-            OrganType.Pancreas.value:   120,
-            OrganType.Intestines.value: 80}
+            OrganType.Heart.value:      6.0,
+            OrganType.Kidney.value:     30.0,
+            OrganType.Liver.value:      12.0,
+            OrganType.Lungs.value:      6.0,
+            OrganType.Pancreas.value:   12.0,
+            OrganType.Intestines.value: 8.0}
 
         return viability[organ_type.value]
+
+    @staticmethod
+    def get_operation_buffer(organ_type: OrganType) -> float:
+        """
+        Gets the operation buffer for each organ individually: the number of
+        hours a match needs to reserve, on top of transit time, for the
+        transplant procedure itself once the organ arrives. A feasible match
+        requires organ.viability - transit_hours >= operation_buffer.
+
+        Sourced from typical operating-room durations: kidney ~4h,
+        pancreas ~3-6h, heart ~4-6h, lung ~6h (longer for double-lung),
+        liver ~6-12h. Intestines is a rough placeholder pending a dedicated
+        source - transplant literature generally groups it with liver/
+        multivisceral procedures as similarly long and complex.
+
+        :param OrganType organ_type: constant corresponding to an organ type
+        :return: hours to reserve for the transplant procedure
+        """
+        operation_buffer = {
+            OrganType.Heart.value:      5.0,
+            OrganType.Kidney.value:     4.0,
+            OrganType.Liver.value:      8.0,
+            OrganType.Lungs.value:      6.0,
+            OrganType.Pancreas.value:   4.0,
+            OrganType.Intestines.value: 7.0}
+
+        return operation_buffer[organ_type.value]
 
     def __str__(self) -> str:
         """
