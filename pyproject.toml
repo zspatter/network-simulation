@@ -1,0 +1,43 @@
+[project]
+name = "network-simulation"
+version = "0.2.0"
+description = "Simulates organ transplant matching across a network of hospitals, with pluggable allocation strategies for comparing matching algorithms."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE.md" }
+authors = [{ name = "Zachary Patterson" }]
+dependencies = [
+    "networkx>=3.2",
+    "openpyxl>=3.1",
+    "beautifulsoup4>=4.12",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "mypy>=1.10",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["network_simulator*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+show_error_context = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
