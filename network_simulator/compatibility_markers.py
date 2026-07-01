@@ -2,60 +2,70 @@ from __future__ import annotations
 
 import random
 from enum import Enum
+from typing import Optional
 
 
 class OrganType(Enum):
     """
     This enum contains flags that indicate organ type
     """
-    Heart: int = 0
-    Kidney: int = 1
-    Liver: int = 2
-    Lungs: int = 3
-    Pancreas: int = 4
-    Intestines: int = 5
+    Heart = 0
+    Kidney = 1
+    Liver = 2
+    Lungs = 3
+    Pancreas = 4
+    Intestines = 5
 
     @classmethod
-    def random_organ_type(cls) -> OrganType:
+    def random_organ_type(cls, rng: Optional[random.Random] = None) -> OrganType:
         """
         Returns a random OrganType
-        
+
+        :param random.Random rng: optional random source (defaults to the
+            shared global random module); pass a seeded instance for
+            reproducible generation, e.g. in the benchmark harness
         :return: OrganType
         """
-        return random.choice(list(OrganType.__iter__()))
+        return (rng or random).choice(list(OrganType.__iter__()))
 
 
 class BloodTypeLetter(Enum):
     """
     This enum contains flags that indicate blood type letter
     """
-    O: int = 0
-    A: int = 1
-    B: int = 2
-    AB: int = 3
+    O = 0
+    A = 1
+    B = 2
+    AB = 3
 
     @classmethod
-    def random_blood_type(cls) -> BloodTypeLetter:
+    def random_blood_type(cls, rng: Optional[random.Random] = None) -> BloodTypeLetter:
         """
         Returns a random BloodTypeLetter
 
+        :param random.Random rng: optional random source (defaults to the
+            shared global random module); pass a seeded instance for
+            reproducible generation, e.g. in the benchmark harness
         :return: BloodTypeLetter
         """
-        return random.choice(list(BloodTypeLetter.__iter__()))
+        return (rng or random).choice(list(BloodTypeLetter.__iter__()))
 
 
 class BloodTypePolarity(Enum):
     """
     This enum contains flags that indicate blood polarity
     """
-    NEG: int = 0
-    POS: int = 1
+    NEG = 0
+    POS = 1
 
     @classmethod
-    def random_blood_polarity(cls) -> BloodTypePolarity:
+    def random_blood_polarity(cls, rng: Optional[random.Random] = None) -> BloodTypePolarity:
         """
         Returns a random BloodTypePolarity
 
+        :param random.Random rng: optional random source (defaults to the
+            shared global random module); pass a seeded instance for
+            reproducible generation, e.g. in the benchmark harness
         :return: BloodTypePolarity
         """
-        return random.choice(list(BloodTypePolarity.__iter__()))
+        return (rng or random).choice(list(BloodTypePolarity.__iter__()))
