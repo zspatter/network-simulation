@@ -1,22 +1,16 @@
 # Network Simulation
-[![Python Version](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/getit/)
+[![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/getit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-<br>
-[![Build Status](https://travis-ci.com/zspatter/network-simulation.svg?branch=master)](https://travis-ci.com/zspatter/network-simulation)
-[![Coverage Status](https://coveralls.io/repos/github/zspatter/network-simulation/badge.svg?branch=master)](https://coveralls.io/github/zspatter/network-simulation?branch=master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/6411a44b799e13d3b3ee/maintainability)](https://codeclimate.com/github/zspatter/network-simulation/maintainability)
-<br>
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/zspatter/network-simulation.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zspatter/network-simulation/context:python)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85d142fb6e544882b1a56c1787544225)](https://www.codacy.com/app/localhost_2/network-simulation?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zspatter/network-simulation&amp;utm_campaign=Badge_Grade)
+[![CI](https://github.com/zspatter/network-simulation/actions/workflows/ci.yml/badge.svg)](https://github.com/zspatter/network-simulation/actions/workflows/ci.yml)
 
-This project is designed to simulate an organ transplant system. Its aim is to simulate the organ transplant matching process. To accomplish this, there will be a list of patients in need of an organ transplant within a given network of hospitals. After organs are harvested from a deceased organ donor, the system will find the most optimal match by looking at the list of patients, then the organ will be allocated to the matched patient. 
+This project is designed to simulate an organ transplant system. Its aim is to simulate the organ transplant matching process, and to compare different allocation strategies for finding the best matches. To accomplish this, there will be a list of patients in need of an organ transplant within a given network of hospitals. After organs are harvested from a deceased organ donor, the system finds a match by looking at the list of patients, then the organ is allocated to the matched patient.
 
-**<ins>The following criteria are used to determine matches</ins>:**
+**<ins>The following criteria determine whether a match is feasible</ins>:**
 1. The patient's need must be of the same organ type (kidney, lungs, heart, etc.)
 2. The patient must be of a compatible blood type (example: patient: AB-, organ: B-)
-3. The organ must be able to be transported to the patient's hospital while remaining viable (organ-specific time limit)
-4. The optimal match will be the patient with the highest priority rating who matches all the above criteria 
+3. The organ must be able to be transported to the patient's hospital, and leave enough time to complete the transplant procedure, before it's no longer viable (both are organ-specific - see `Organ.get_viability`/`Organ.get_operation_buffer`)
+
+**<ins>Which feasible match is chosen depends on the selected allocation strategy</ins>** (see `network_simulator.allocation`) - see [Allocation Strategies](#allocation-strategies) below.
 
 ## Classes
 
@@ -46,18 +40,32 @@ The network is a graph that is represented as a collection of nodes. The network
 -  `GraphBuilder` - builds a random network with N nodes
 -  `OrganGenerator` - simulates harvesting organs from N patients where each organ has a 75% of being successfully harvested and adds the generated organs to an `OrganList`
 -  `PatientGenerator` - generates N patients each with a random organ need, blood type, priority, and location (`node_id`) and adds the generated patients to a `WaitList`
--  `OrganAllocator` - allocates harvested organs (`OrganList`) to the most optimal matching patient (`WaitList`)
 -  `ConnectivityChecker` - determines if a given graph is connected 
 -  `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
--  `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object 
+-  `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object
+-  `distance` - computes real-world hospital distances (haversine) and estimated transit time directly from coordinates, instead of scraping a distance-lookup site
 
 ### <ins>Scripts</ins>
 - `generate_networks.py` - creates, serializes, and exports random graph
 - `make_tsv.py` - gnerates random edge list in TSV format (for IO)
 - `import_edge_list.py` - converts edge list format to `Network`
 
+### <ins>Allocation Strategies</ins>
+`network_simulator.allocation` decides *which* feasible organ/patient pairs to actually form. A strategy is a (matcher, scorer) pair - the two axes are independent, so strategies can be compared to see whether a result is driven by the matching algorithm, the scoring model, or both:
+
+- **Matchers** (`allocation.matchers`) - *how* matches are chosen:
+  - `GreedyMatcher` - processes organs one at a time, assigning each to its highest-scoring available patient (the project's original behavior)
+  - `OptimalMatcher` - solves one allocation batch as a maximum-weight bipartite matching (via `networkx`), so an earlier low-value match can't crowd out a better one available for a later organ
+- **Scorers** (`allocation.scoring`) - *how* a match is valued:
+  - `PriorityScore` - ranks purely by the patient's priority attribute
+  - `CompositeScore` - combines urgency (priority), time already spent on the wait list, and travel cost, inspired by real OPTN/UNOS allocation policy
+
+`STRATEGIES` (in `allocation.strategies`) exposes four named combinations (`baseline`, `optimal_priority`, `optimal_composite`, `greedy_composite`) that `execute/benchmark_strategies.py` runs across many randomized multi-round simulations to compare - organs transplanted, organs wasted, priority served, and a fairness spread across priority tiers.
+
 ### <ins>Simulator</ins>
-The `Simulator` is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `OrganAllocator` classes. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
+The `Simulator` is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `network_simulator.allocation` classes, including choosing which allocation strategy to use. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
 
 ## UML Diagram
 ![UML diagram](./UML.png)
+
+Note: predates the allocation-strategy package described above; kept for the original graph/patient/organ model.
