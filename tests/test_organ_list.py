@@ -1,7 +1,7 @@
 from network_simulator.BloodType import BloodType
+from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
 from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
-from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 
@@ -59,9 +59,19 @@ def test_remove_organ():
 def test_empty_list():
     organ_list = OrganList()
 
-    organ = Organ(OrganType.Pancreas, o_neg, 1, organ_list)
-    organ = Organ(OrganType.Pancreas, o_neg, 1, organ_list)
-    organ = Organ(OrganType.Pancreas, o_neg, 1, organ_list)
+    Organ(OrganType.Pancreas, o_neg, 1, organ_list)
+    Organ(OrganType.Pancreas, o_neg, 1, organ_list)
+    Organ(OrganType.Pancreas, o_neg, 1, organ_list)
     assert len(organ_list.organ_list) == 3
     organ_list.empty_list()
     assert len(organ_list.organ_list) == 0
+
+
+def test__str__():
+    organ_list = OrganList()
+    assert str(organ_list) == '===============================\n'
+
+    organ = Organ(OrganType.Pancreas, o_neg, 1, organ_list)
+    text = str(organ_list)
+    assert str(organ) in text
+    assert text.endswith('===============================\n')

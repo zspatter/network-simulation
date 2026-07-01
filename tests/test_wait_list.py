@@ -1,10 +1,10 @@
 import heapq
 
 from network_simulator.BloodType import BloodType
+from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
 from network_simulator.Organ import Organ
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
-from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 ab_pos = BloodType(BloodTypeLetter.AB, BloodTypePolarity.POS)
@@ -94,3 +94,13 @@ def test_increment_wait_times():
     wait_list.increment_wait_times()
     assert patient1.rounds_waited == 1  # no longer on the list, unaffected
     assert patient2.rounds_waited == 2
+
+
+def test__str__():
+    wait_list = WaitList()
+    assert str(wait_list) == '===============================\n'
+
+    patient = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1, wait_list)
+    text = str(wait_list)
+    assert str(patient) in text
+    assert text.endswith('===============================\n')

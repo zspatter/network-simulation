@@ -1,6 +1,6 @@
 from network_simulator.BloodType import BloodType
+from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
 from network_simulator.Organ import Organ
-from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 
@@ -45,3 +45,14 @@ def test_get_operation_buffer():
     assert Organ.get_operation_buffer(OrganType.Lungs) == 6.0
     assert Organ.get_operation_buffer(OrganType.Pancreas) == 4.0
     assert Organ.get_operation_buffer(OrganType.Intestines) == 7.0
+
+
+def test__str__():
+    test_organ = Organ(organ_type=OrganType.Liver, blood_type=o_neg, location=3)
+    text = str(test_organ)
+
+    assert 'Organ' in text
+    assert 'Liver' in text
+    assert str(o_neg) in text
+    assert str(test_organ.viability) in text
+    assert 'Origin location: 3' in text
