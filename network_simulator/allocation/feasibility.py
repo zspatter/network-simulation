@@ -10,13 +10,13 @@ from __future__ import annotations
 
 from typing import Dict, List, Tuple
 
+from network_simulator.clinical.gates import GATES_BY_ORGAN
 from network_simulator.Dijkstra import Dijkstra
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
-from network_simulator.clinical.gates import GATES_BY_ORGAN
 
 feasible_match = Tuple[Patient, float]  # (patient, transit_hours)
 

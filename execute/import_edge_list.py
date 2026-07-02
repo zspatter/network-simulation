@@ -12,7 +12,7 @@ def import_edge_list(path, delimiter='\t'):
         for row in reader:
             data[0].append(int(row[0]))
             data[1].append(int(row[1]))
-            data[2].append(int(row[3])) if len(row) == 3 else data[2].append(None)
+            data[2].append(int(row[2])) if len(row) == 3 else data[2].append(None)
 
     return data
 

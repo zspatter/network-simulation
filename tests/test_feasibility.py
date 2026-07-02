@@ -76,14 +76,16 @@ def test_feasible_matches_excludes_positive_crossmatch_kidney_patient():
     Patient('crossmatch pos', 'n/a', OrganType.Kidney, o_neg, 100, 2, wait_list,
             unacceptable_antigens=frozenset({5}))
 
-    feasible_patients = [p for p, _ in feasible_matches_by_organ(organ_list, wait_list, network)[organ]]
+    matches = feasible_matches_by_organ(organ_list, wait_list, network)[organ]
+    feasible_patients = [p for p, _ in matches]
     assert feasible_patients == [compatible]
 
 
 def test_feasible_matches_excludes_size_mismatched_heart_patient():
     network = _network()
     organ_list = OrganList()
-    # small donor heart; viability 6h - operation buffer 5h leaves 1h, transit is 1h (feasible on time)
+    # small donor heart; viability 6h - operation buffer 5h leaves 1h, transit is 1h
+    # (feasible on time)
     organ = Organ(OrganType.Heart, o_neg, location=1, organ_list=organ_list, donor_size=55.0)
 
     wait_list = WaitList()
@@ -91,5 +93,6 @@ def test_feasible_matches_excludes_size_mismatched_heart_patient():
                            body_size=60.0)
     Patient('too large', 'n/a', OrganType.Heart, o_neg, 100, 2, wait_list, body_size=110.0)
 
-    feasible_patients = [p for p, _ in feasible_matches_by_organ(organ_list, wait_list, network)[organ]]
+    matches = feasible_matches_by_organ(organ_list, wait_list, network)[organ]
+    feasible_patients = [p for p, _ in matches]
     assert feasible_patients == [size_matched]

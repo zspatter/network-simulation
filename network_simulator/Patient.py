@@ -1,9 +1,13 @@
 from __future__ import annotations
 
-from typing import FrozenSet, Optional
+from typing import TYPE_CHECKING, FrozenSet, Optional
 
 from network_simulator.BloodType import BloodType
 from network_simulator.compatibility_markers import OrganType
+
+if TYPE_CHECKING:
+    # deferred to avoid a circular import: WaitList imports Patient at module level
+    from network_simulator.WaitList import WaitList
 
 
 class Patient:
@@ -24,7 +28,7 @@ class Patient:
 
     def __init__(self, patient_name: str, illness: str, organ_needed: OrganType,
                  blood_type: BloodType, priority: int, location: int,
-                 wait_list: 'WaitList' = None,  # type: ignore
+                 wait_list: Optional[WaitList] = None,
                  acuity: float = 0.0, raw_urgency: float = 0.0,
                  body_size: Optional[float] = None,
                  unacceptable_antigens: FrozenSet[int] = frozenset(),

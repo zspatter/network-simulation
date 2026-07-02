@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from network_simulator.Network import Network
 

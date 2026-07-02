@@ -6,8 +6,12 @@ import pytest
 sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 from benchmark_strategies import (  # noqa: E402
+    AggregatedMetrics,
+    SignificanceResult,
     TrialMetrics,
     compare_to_reference,
+    print_report,
+    print_significance_report,
     run_benchmark,
     run_trial,
 )
@@ -97,3 +101,45 @@ def test_compare_to_reference_rejects_an_unknown_reference():
 
     with pytest.raises(ValueError):
         compare_to_reference(trials_by_strategy, reference='not_a_real_strategy')
+
+
+def _aggregated_metrics(strategy_name, **overrides):
+    defaults = dict(strategy_name=strategy_name, transplanted_mean=10.0, transplanted_stdev=1.0,
+                    wasted_mean=2.0, deaths_mean=1.0, deaths_high_acuity_mean=0.5,
+                    median_wait_mean=1.0, life_years_mean=100.0, priority_served_mean=50.0,
+                    fairness_spread_mean=0.1, runtime_mean=0.01)
+    defaults.update(overrides)
+    return AggregatedMetrics(**defaults)
+
+
+def test_print_report_includes_every_strategy_and_its_metrics(capsys):
+    aggregated = [_aggregated_metrics('baseline'),
+                 _aggregated_metrics('real_world_circle', life_years_mean=120.0)]
+
+    print_report(aggregated)
+
+    out = capsys.readouterr().out
+    assert 'baseline' in out
+    assert 'real_world_circle' in out
+    assert '120.0' in out
+
+
+def test_print_significance_report_marks_significant_rows_and_not_insignificant_ones(capsys):
+    significant = SignificanceResult(strategy_name='optimal_acuity', metric='waitlist_deaths',
+                                     mean_diff=-1.5, ci_low=-2.0, ci_high=-1.0, effect_size=0.8,
+                                     p_value=0.001, adjusted_p_value=0.004)
+    not_significant = SignificanceResult(strategy_name='baseline', metric='waitlist_deaths',
+                                         mean_diff=0.1, ci_low=-0.5, ci_high=0.7, effect_size=0.05,
+                                         p_value=0.9, adjusted_p_value=1.0)
+
+    print_significance_report([significant, not_significant], alpha=0.05,
+                              reference='real_world_circle')
+
+    out = capsys.readouterr().out
+    assert 'optimal_acuity' in out
+    assert 'baseline' in out
+    assert 'real_world_circle' in out  # named as the reference in the header
+
+    lines = {line.split()[0]: line for line in out.splitlines() if line.split()[:1]}
+    assert lines['optimal_acuity'].rstrip().endswith('*')
+    assert not lines['baseline'].rstrip().endswith('*')

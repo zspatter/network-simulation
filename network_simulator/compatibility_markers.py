@@ -33,7 +33,7 @@ class BloodTypeLetter(Enum):
     """
     This enum contains flags that indicate blood type letter
     """
-    O = 0
+    O = 0  # noqa: E741 - real blood type letter, not an ambiguous variable name
     A = 1
     B = 2
     AB = 3

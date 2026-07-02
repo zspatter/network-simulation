@@ -1,9 +1,13 @@
 from __future__ import annotations
 
-from typing import FrozenSet, List, Optional, Tuple
+from typing import TYPE_CHECKING, FrozenSet, List, Optional, Tuple
 
 from network_simulator.BloodType import BloodType
 from network_simulator.compatibility_markers import OrganType
+
+if TYPE_CHECKING:
+    # deferred to avoid a circular import: OrganList imports Organ at module level
+    from network_simulator.OrganList import OrganList
 
 path_structure = Optional[List[Optional[int]]]
 shortest_path_structure = Tuple[path_structure, float]
@@ -26,7 +30,7 @@ class Organ:
     organ_count = 0
 
     def __init__(self, organ_type: OrganType, blood_type: BloodType,
-                 location: int, organ_list: 'OrganList' = None,  # type: ignore
+                 location: int, organ_list: Optional[OrganList] = None,
                  hla_antigens: FrozenSet[int] = frozenset(),
                  donor_size: Optional[float] = None) -> None:
         Organ.organ_count = Organ.organ_count + 1

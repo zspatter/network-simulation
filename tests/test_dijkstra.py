@@ -1,5 +1,5 @@
 from network_simulator.Dijkstra import Dijkstra
-from network_simulator.Network import Node, Network
+from network_simulator.Network import Network, Node
 
 
 def test_dijkstra():

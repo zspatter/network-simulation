@@ -17,8 +17,9 @@ def test__init__():
 
 def test_get_prioritized_patients():
     wait_list = WaitList()
-    patient1 = Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1,
-                       wait_list)
+    # O- patient can't receive an AB+ organ - constructed only to prove the queue
+    # excludes blood-incompatible patients (highest priority yet absent below)
+    Patient('name1', 'illness1', OrganType.Pancreas, o_neg, 500, 1, wait_list)
     patient2 = Patient('name2', 'illness2', OrganType.Pancreas, ab_pos, 200, 1,
                        wait_list)
     patient3 = Patient('name3', 'illness3', OrganType.Pancreas, ab_pos, 300, 1,

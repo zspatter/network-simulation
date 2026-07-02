@@ -16,7 +16,8 @@ class WaitList:
     a donation. This list accepts all patients in need of organs (generic)
     """
 
-    def __init__(self, wait_list: Optional[List[Patient]] = None, label: Optional[str] = None) -> None:
+    def __init__(self, wait_list: Optional[List[Patient]] = None,
+                label: Optional[str] = None) -> None:
         """
         Creates a WaitList object. If no wait_list parameter is provided,
         an empty list is created

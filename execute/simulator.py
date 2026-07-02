@@ -1,9 +1,9 @@
+from network_simulator.allocation import STRATEGIES
 from network_simulator.GraphBuilder import GraphBuilder
 from network_simulator.OrganGenerator import OrganGenerator
 from network_simulator.OrganList import OrganList
 from network_simulator.PatientGenerator import PatientGenerator
 from network_simulator.WaitList import WaitList
-from network_simulator.allocation import STRATEGIES
 
 network, wait_list, organ_list = None, WaitList(), OrganList()
 selected_strategy = STRATEGIES['baseline']
@@ -40,7 +40,7 @@ def main_menu():
 
     while menu_option != '0':
         print_menu()
-        menu_option = input(f'Please select an option: ')
+        menu_option = input('Please select an option: ')
 
         if menu_option == '1':
             build_network()
@@ -86,8 +86,8 @@ def build_network():
                   f'main menu.{ANSI_RESET}\n')
             return
     try:
-        response = int(input(f'\nEnter the number of hospitals (nodes) '
-                             f'you\'d like in the network: '))
+        response = int(input('\nEnter the number of hospitals (nodes) '
+                             'you\'d like in the network: '))
 
         network = GraphBuilder.graph_builder(response)
     except ValueError:
@@ -120,7 +120,7 @@ def generate_patients():
 
     if network:
         try:
-            response = int(input(f'\nHow many patients would you like to generate? '))
+            response = int(input('\nHow many patients would you like to generate? '))
             PatientGenerator.generate_patients_to_list(network, response, wait_list)
 
         except ValueError:
@@ -285,4 +285,5 @@ def restart():
           f' patients, or organs.{ANSI_RESET}\n')
 
 
-main_menu()
+if __name__ == '__main__':
+    main_menu()

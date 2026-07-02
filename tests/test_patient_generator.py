@@ -1,4 +1,4 @@
-from network_simulator.Network import Node, Network
+from network_simulator.Network import Network, Node
 from network_simulator.PatientGenerator import PatientGenerator
 from network_simulator.WaitList import WaitList
 

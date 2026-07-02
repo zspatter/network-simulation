@@ -1,4 +1,4 @@
-from network_simulator.Network import Node, Network
+from network_simulator.Network import Network, Node
 from network_simulator.OrganGenerator import OrganGenerator
 from network_simulator.OrganList import OrganList
 

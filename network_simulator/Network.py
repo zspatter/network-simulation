@@ -1,7 +1,7 @@
-from typing import Dict, List, Iterator, Optional
+from typing import Dict, Iterator, List, Optional
 
-from network_simulator.Node import Node
 from network_simulator.exceptions import GraphElementError
+from network_simulator.Node import Node
 
 nodes_to_remove = List[List[int]]
 
@@ -208,10 +208,10 @@ class Network:
                                       regional_weight, feedback)
             # if node(s) don't exist
             else:
-                raise GraphElementError(f'One of the passed nodes does '
-                                        f'not exist! As a result, there '
-                                        f'cannot be an edge, so it cannot '
-                                        f'be added.')
+                raise GraphElementError('One of the passed nodes does '
+                                        'not exist! As a result, there '
+                                        'cannot be an edge, so it cannot '
+                                        'be added.')
 
         except GraphElementError as e:
             if feedback:
@@ -292,10 +292,10 @@ class Network:
 
             # if node(s) doesn't exist
             else:
-                raise GraphElementError(f'One of the passed nodes does '
-                                        f'not exist! As a result, there '
-                                        f'cannot be an edge, so it cannot '
-                                        f'be marked as inactive.')
+                raise GraphElementError('One of the passed nodes does '
+                                        'not exist! As a result, there '
+                                        'cannot be an edge, so it cannot '
+                                        'be marked as inactive.')
 
         except GraphElementError as e:
             if feedback:
@@ -478,10 +478,10 @@ class Network:
 
             # if node doesn't exist
             else:
-                raise GraphElementError(f'One of the passed nodes does '
-                                        f'not exist! As a result, there '
-                                        f'cannot be an edge, so it cannot '
-                                        f'be marked as inactive.')
+                raise GraphElementError('One of the passed nodes does '
+                                        'not exist! As a result, there '
+                                        'cannot be an edge, so it cannot '
+                                        'be marked as inactive.')
 
         except GraphElementError as e:
             if feedback:
@@ -539,10 +539,10 @@ class Network:
                                             f'marked active.')
             # if node doesn't exist
             else:
-                raise GraphElementError(f'One of the passed nodes does '
-                                        f'not exist! As a result, there '
-                                        f'cannot be an edge, so it cannot '
-                                        f'be marked as inactive.')
+                raise GraphElementError('One of the passed nodes does '
+                                        'not exist! As a result, there '
+                                        'cannot be an edge, so it cannot '
+                                        'be marked as inactive.')
 
         except GraphElementError as e:
             if feedback:

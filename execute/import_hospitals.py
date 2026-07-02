@@ -4,9 +4,9 @@ from os.path import abspath, join
 import openpyxl
 from openpyxl.utils import get_column_letter
 
+from network_simulator.distance import estimate_transit_hours, haversine_km
 from network_simulator.Network import Network
 from network_simulator.Node import Node
-from network_simulator.distance import estimate_transit_hours, haversine_km
 
 
 def set_default_indices():
@@ -40,7 +40,7 @@ def get_column_indices(worksheet, columns):
             columns[cell.lower()] = get_column_letter(x)
 
 
-def import_nodes(worksheet):
+def import_nodes(worksheet, column_indices, neighbor_regions):
     """
     Imports a node from each row and adds it to the network. Nodes carry
     node_id, hospital_name, region, city, state, and coordinates (latitude/
@@ -49,6 +49,9 @@ def import_nodes(worksheet):
     matrix (status is assumed to be True).
 
     :param Worksheet worksheet: worksheet to read data from
+    :param dict column_indices: {field name: column letter}, from get_column_indices()
+    :param dict neighbor_regions: {region: [adjacent region, ...]}, forwarded to
+        get_adjacent_regional_weight() via generate_distance_vector()
     :return: Network
     """
     network = Network()
@@ -63,11 +66,11 @@ def import_nodes(worksheet):
                           longitude=float(worksheet[f'{column_indices["longitude"]}{x}'].value)),
                 feedback=False)
 
-    generate_distance_vector(network=network)
+    generate_distance_vector(network=network, neighbor_regions=neighbor_regions)
     return network
 
 
-def generate_distance_vector(network):
+def generate_distance_vector(network, neighbor_regions):
     """
     Computes the weight (estimated transit hours - see
     network_simulator.distance) between every pair of nodes directly from
@@ -76,12 +79,15 @@ def generate_distance_vector(network):
     third-party site and cached them in a shelve-backed distance matrix.
 
     :param Network network:
+    :param dict neighbor_regions: {region: [adjacent region, ...]}, forwarded to
+        get_adjacent_regional_weight()
     """
     for source, adjacent in node_pair_generator(network=network):
         if source.node_id >= adjacent.node_id:
             continue  # undirected edge; only needs to be added once per pair
 
-        regional_weight = get_adjacent_regional_weight(source=source, adjacent=adjacent)
+        regional_weight = get_adjacent_regional_weight(source=source, adjacent=adjacent,
+                                                        neighbor_regions=neighbor_regions)
         if regional_weight:
             km = haversine_km(source.latitude, source.longitude,
                               adjacent.latitude, adjacent.longitude)
@@ -107,13 +113,14 @@ def node_pair_generator(network):
             yield source, adjacent
 
 
-def get_adjacent_regional_weight(source, adjacent, weight=None):
+def get_adjacent_regional_weight(source, adjacent, neighbor_regions, weight=None):
     """
     Calculates weight based up on city, state, and region fields for
     both the node and adjacent
 
     :param Node source: current source node
     :param Node adjacent: current destination node
+    :param dict neighbor_regions: {region: [adjacent region, ...]}
     :param float weight: default max weight
     :return: weight
     """
@@ -157,7 +164,8 @@ if __name__ == '__main__':
     column_indices = set_default_indices()
     get_column_indices(worksheet=sheet, columns=column_indices)
 
-    hospital_network = import_nodes(worksheet=sheet)
+    hospital_network = import_nodes(worksheet=sheet, column_indices=column_indices,
+                                    neighbor_regions=neighbor_regions)
 
     with shelve.open(join(root, 'distance_vector')) as db:
         db['hospital_network2'] = hospital_network

@@ -1,6 +1,6 @@
 import os
 import shelve
-from os.path import join, abspath
+from os.path import abspath, join
 
 import networkx
 
