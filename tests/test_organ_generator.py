@@ -10,7 +10,8 @@ n = 3
 def test_generate_organs():
     organs = OrganGenerator.generate_organs(graph=test_net, n=n)
 
-    assert len(organs) <= n * 6
+    # at most 7 organs per donor: one of each of the 6 types, but kidney yields 2
+    assert len(organs) <= n * 7
     for organ in organs:
         assert organ.current_location in test_net.nodes()
         assert 0 <= organ.organ_type.value <= 5

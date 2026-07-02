@@ -1,11 +1,10 @@
 import random
 from typing import List, Optional
 
-from network_simulator.BloodType import BloodType
+from network_simulator.clinical.frequencies import random_us_blood_type, random_waitlist_organ
 from network_simulator.Network import Network
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
-from network_simulator.compatibility_markers import OrganType, BloodTypeLetter, BloodTypePolarity
 
 
 class PatientGenerator:
@@ -13,6 +12,11 @@ class PatientGenerator:
     Generates a variable number of patients in need of a transplant.
     The generated patients are distributed randomly across the network
     and are assigned a random blood type and priority value.
+
+    Organ need and blood type are drawn from real US frequency distributions
+    (see network_simulator.clinical.frequencies) rather than uniformly, so a
+    generated wait list is kidney-dominant and blood-type-skewed like the
+    real one.
     """
 
     @staticmethod
@@ -36,9 +40,8 @@ class PatientGenerator:
         for x in range(n):
             patients.append(Patient(patient_name="generated patient #" + str(x + 1),
                                     illness="N/A",
-                                    organ_needed=OrganType.random_organ_type(rng),
-                                    blood_type=BloodType(BloodTypeLetter.random_blood_type(rng),
-                                                         BloodTypePolarity.random_blood_polarity(rng)),
+                                    organ_needed=random_waitlist_organ(rng),
+                                    blood_type=random_us_blood_type(rng),
                                     priority=source.randrange(100 + n),
                                     location=source.choice(nodes)))
         return patients
