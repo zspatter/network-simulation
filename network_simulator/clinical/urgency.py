@@ -55,7 +55,7 @@ def _interpolate(x: float, anchors: List[Tuple[float, float]]) -> float:
         if x0 <= x <= x1:
             t = (x - x0) / (x1 - x0)
             return y0 + t * (y1 - y0)
-    return anchors[-1][1]
+    return anchors[-1][1]  # pragma: no cover - unreachable; the guards above cover all x
 
 
 def initial_raw_urgency(organ_type: OrganType, rng: Optional[random.Random] = None) -> float:
