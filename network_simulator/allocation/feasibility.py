@@ -16,6 +16,7 @@ from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
+from network_simulator.clinical.gates import GATES_BY_ORGAN
 
 feasible_match = Tuple[Patient, float]  # (patient, transit_hours)
 
@@ -24,9 +25,13 @@ def feasible_matches_by_organ(organ_list: OrganList, wait_list: WaitList,
                               network: Network) -> Dict[Organ, List[feasible_match]]:
     """
     For every organ in organ_list, finds every patient on wait_list who is a
-    compatible recipient (blood type + organ type) and reachable in time to
-    both arrive and complete the transplant procedure:
-    organ.viability - transit_hours >= organ.get_operation_buffer().
+    compatible recipient and reachable in time to both arrive and complete the
+    transplant procedure. A patient is feasible iff:
+      - organ type matches the patient's need,
+      - blood type is compatible,
+      - organ.viability - transit_hours >= organ.get_operation_buffer(), and
+      - every organ-specific gate passes (see clinical.gates.GATES_BY_ORGAN:
+        size matching for heart/lung, HLA crossmatch for kidney).
 
     Runs one Dijkstra per distinct organ origin location in the batch
     (rather than per organ), since harvested organs frequently share an
@@ -48,6 +53,7 @@ def feasible_matches_by_organ(organ_list: OrganList, wait_list: WaitList,
         weights = dijkstra_by_origin[origin].weight
 
         operation_buffer = Organ.get_operation_buffer(organ.organ_type)
+        organ_gates = GATES_BY_ORGAN.get(organ.organ_type, ())
         organ_matches: List[feasible_match] = []
 
         for patient in wait_list.wait_list:
@@ -57,8 +63,13 @@ def feasible_matches_by_organ(organ_list: OrganList, wait_list: WaitList,
                 continue
 
             transit_hours = weights[patient.location]
-            if organ.viability - transit_hours >= operation_buffer:
-                organ_matches.append((patient, transit_hours))
+            if organ.viability - transit_hours < operation_buffer:
+                continue
+
+            if not all(gate(organ, patient) for gate in organ_gates):
+                continue
+
+            organ_matches.append((patient, transit_hours))
 
         matches[organ] = organ_matches
 

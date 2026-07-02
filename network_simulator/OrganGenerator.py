@@ -6,6 +6,8 @@ from network_simulator.clinical.frequencies import (
     KIDNEYS_PER_DONOR,
     random_us_blood_type,
 )
+from network_simulator.clinical.hla import donor_antigens
+from network_simulator.clinical.size import body_size
 from network_simulator.compatibility_markers import OrganType
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
@@ -48,6 +50,9 @@ class OrganGenerator:
         for _ in range(n):
             location_id = source.choice(nodes)
             blood_type = random_us_blood_type(rng)
+            # donor-level attributes shared across every organ from this donor
+            antigens = donor_antigens(rng)
+            donor_body_size = body_size(rng)
 
             for organ_type in OrganType:
                 # determines if this organ is suitable for recovery from this donor
@@ -56,7 +61,9 @@ class OrganGenerator:
                     for _ in range(count):
                         organs.append(Organ(organ_type=organ_type,
                                             blood_type=blood_type,
-                                            location=location_id))
+                                            location=location_id,
+                                            hla_antigens=antigens,
+                                            donor_size=donor_body_size))
         return organs
 
     @staticmethod
