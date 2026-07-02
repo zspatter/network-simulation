@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple, Optional
+from typing import FrozenSet, List, Optional, Tuple
 
 from network_simulator.BloodType import BloodType
 from network_simulator.compatibility_markers import OrganType
@@ -15,12 +15,20 @@ class Organ:
 
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
+
+    Clinical fields (hla_antigens, donor_size) describe the donor and gate
+    feasibility for HLA crossmatch (kidney) and size matching (heart/lung);
+    they are populated by the generator and default to empty/None so
+    hand-constructed organs simply pass those gates (see
+    network_simulator.clinical.gates).
     """
 
     organ_count = 0
 
     def __init__(self, organ_type: OrganType, blood_type: BloodType,
-                 location: int, organ_list: 'OrganList' = None) -> None:  # type: ignore
+                 location: int, organ_list: 'OrganList' = None,  # type: ignore
+                 hla_antigens: FrozenSet[int] = frozenset(),
+                 donor_size: Optional[float] = None) -> None:
         Organ.organ_count = Organ.organ_count + 1
 
         self.organ_id: int = Organ.organ_count
@@ -30,6 +38,10 @@ class Organ:
         self.origin_location: int = location
         self.current_location: int = location
         self.path: path_structure = [location]
+
+        # donor clinical attributes (see class docstring)
+        self.hla_antigens: FrozenSet[int] = hla_antigens
+        self.donor_size: Optional[float] = donor_size
 
         if organ_list:
             organ_list.add_organ(self)

@@ -73,6 +73,22 @@ def test__hash__distinguishes_different_patients():
     assert len({patient1, patient2}) == 2
 
 
+def test_clinical_fields_are_excluded_from_equality():
+    # clinical state is mutable per-round; a patient who has deteriorated is
+    # still the same patient, so acuity/urgency/sensitization/size must not
+    # affect equality or hashing (see Patient class docstring)
+    clone = copy.deepcopy(patient1)
+    clone.acuity = 0.9
+    clone.raw_urgency = 38.0
+    clone.rounds_waited = patient1.rounds_waited  # rounds_waited IS in equality
+    clone.body_size = 95.0
+    clone.unacceptable_antigens = frozenset({1, 2, 3})
+    clone.cpra = 0.99
+
+    assert clone == patient1
+    assert hash(clone) == hash(patient1)
+
+
 def test__str__():
     text = str(patient1)
 
