@@ -1,73 +1,182 @@
+"""
+Builds a Network of real US transplant-system locations from the OPTN membership directory
+(https://www.hrsa.gov/optn/about/membership/optn-membership-database), geocoded via the free US
+Census Bureau geocoder (https://geocoding.geo.census.gov - no API key needed). Replaces the old
+2019 xlsx + Bing Maps pipeline: Bing Maps' free/basic tier was retired by Microsoft on June 30,
+2025, and the Census geocoder is strictly more precise besides, since it geocodes the full
+street address rather than just city/state (a city-center point).
+
+Only two OPTN membership `organizationType`s are physical locations this simulation models:
+'Transplant Hospital' (where patients wait and transplants happen) and 'Independent OPO' /
+'Hospital Based OPO' (Organ Procurement Organizations - who actually coordinate organ recovery;
+a transplant hospital performs transplants but doesn't necessarily procure the organ itself).
+Everything else in the membership directory (labs, business/individual/public/scientific
+members) isn't a location this simulation places patients or organs at.
+
+Some rows share a `centerCode` (e.g. a hospital-based OPO co-located with its affiliated
+transplant hospital) but are still distinct physical addresses - checked directly against the
+membership CSV - so every row gets its own Node rather than being deduplicated by centerCode.
+"""
+import csv
+import io
 import shelve
+import time
 from os.path import abspath, join
 
-import openpyxl
-from openpyxl.utils import get_column_letter
+import requests
 
 from network_simulator.distance import estimate_transit_hours, haversine_km
 from network_simulator.Network import Network
 from network_simulator.Node import Node
 
+PHYSICAL_LOCATION_TYPES = {'Transplant Hospital', 'Independent OPO', 'Hospital Based OPO'}
 
-def set_default_indices():
+CENSUS_BATCH_URL = 'https://geocoding.geo.census.gov/geocoder/locations/addressbatch'
+CENSUS_BENCHMARK = 'Public_AR_Current'
+
+# Fallback for the ~10% of hospital addresses the Census geocoder can't match - large campus
+# addresses (e.g. "One Medical Center Drive") often aren't in TIGER/Line's street reference data
+# at all, no matter how the query is reformatted (verified directly - zip+4 vs 5-digit zip vs no
+# zip made no difference). Nominatim (OpenStreetMap) resolves all of these in testing. Its usage
+# policy caps free use at 1 request/second and requires a descriptive User-Agent identifying the
+# application - fine here since this only runs for a handful of per-row fallback lookups, not the
+# whole batch.
+NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
+NOMINATIM_USER_AGENT = 'network-simulation (hospital network data refresh)'
+NOMINATIM_RATE_LIMIT_SECONDS = 1.0
+
+
+def read_membership_csv(path):
     """
-    Sets default dict for columns (placeholders for indices)
+    Reads the OPTN membership CSV into a list of row dicts (one dict per member, keyed by the
+    CSV's header names - region, centerCode, organizationType, accountName, address1, city,
+    state, zipCode, membershipStatus, etc.).
+
+    :param str path: path to the OPTN membership CSV export
+    :return: list of row dicts
     """
-    fields = ('unique id',
-              'hospital name',
-              'city',
-              'state',
-              'region',
-              'latitude',
-              'longitude')
-    columns = {}
-    for field in fields:
-        columns.setdefault(field, None)
-
-    return columns
+    with open(path, newline='', encoding='utf-8-sig') as csv_in:
+        return list(csv.DictReader(csv_in))
 
 
-def get_column_indices(worksheet, columns):
+def filter_physical_locations(rows):
     """
-    Gets index for each column for reading data
+    Keeps only rows that are both a real physical location this simulation models
+    (PHYSICAL_LOCATION_TYPES) and currently Approved (drops "Interim Approval-Pending BOD
+    Action" rows - not yet real capacity).
 
-    :param Worksheet worksheet: worksheet to read
-    :param dict columns: expected columns to store indices
+    :param rows: rows from read_membership_csv()
+    :return: filtered rows
     """
-    for x in range(1, 9):
-        cell = worksheet[f'{get_column_letter(x)}1'].value
-        if cell and cell.lower() in columns:
-            columns[cell.lower()] = get_column_letter(x)
+    return [row for row in rows
+           if row['membershipStatus'] == 'Approved'
+           and row['organizationType'] in PHYSICAL_LOCATION_TYPES]
 
 
-def import_nodes(worksheet, column_indices, neighbor_regions):
+def geocode_addresses(rows):
     """
-    Imports a node from each row and adds it to the network. Nodes carry
-    node_id, hospital_name, region, city, state, and coordinates (latitude/
-    longitude); generate_distance_vector() uses the coordinates to compute
-    edge weights directly instead of looking up a pre-scraped distance
-    matrix (status is assumed to be True).
+    Batch-geocodes every row's street address via the free US Census Bureau geocoder in a
+    single request (rather than one request per row), then individually retries via Nominatim
+    (rate-limited) any address the Census geocoder couldn't match.
 
-    :param Worksheet worksheet: worksheet to read data from
-    :param dict column_indices: {field name: column letter}, from get_column_indices()
+    :param rows: row dicts with 'address1', 'city', 'state', 'zipCode' keys
+    :return: {row index (0-based, matching `rows` order): (latitude, longitude)} - a row is
+        omitted only if neither geocoder could match its address
+    """
+    coordinates = _geocode_via_census(rows)
+
+    missing = [index for index in range(len(rows)) if index not in coordinates]
+    for index in missing:
+        coordinate = _geocode_via_nominatim(rows[index])
+        if coordinate:
+            coordinates[index] = coordinate
+        time.sleep(NOMINATIM_RATE_LIMIT_SECONDS)
+
+    return coordinates
+
+
+def _geocode_via_census(rows):
+    """One batch call to the Census geocoder - see geocode_addresses()."""
+    batch_csv = io.StringIO()
+    writer = csv.writer(batch_csv)
+    for index, row in enumerate(rows):
+        writer.writerow([index, row['address1'], row['city'], row['state'], row['zipCode']])
+
+    response = requests.post(
+            CENSUS_BATCH_URL,
+            files={'addressFile': ('batch.csv', batch_csv.getvalue(), 'text/csv')},
+            data={'benchmark': CENSUS_BENCHMARK})
+    response.raise_for_status()
+
+    coordinates = {}
+    for line in csv.reader(io.StringIO(response.text)):
+        if not line or line[2] != 'Match':
+            continue
+        longitude, latitude = line[5].split(',')
+        coordinates[int(line[0])] = (float(latitude), float(longitude))
+    return coordinates
+
+
+def _geocode_via_nominatim(row):
+    """
+    One rate-limited fallback lookup via Nominatim - see geocode_addresses(). Institutional
+    campus addresses (e.g. "One Medical Center Drive") are frequently missing from Census'
+    TIGER/Line street reference data outright, regardless of how the query is formatted, but
+    Nominatim's broader (OpenStreetMap-derived) index resolves them.
+
+    :param dict row: a single row dict with 'address1', 'city', 'state' keys
+    :return: (latitude, longitude), or None if Nominatim also found no match
+    """
+    query = f"{row['address1']}, {row['city']}, {row['state']}"
+    response = requests.get(NOMINATIM_URL, params={'q': query, 'format': 'json', 'limit': 1},
+                            headers={'User-Agent': NOMINATIM_USER_AGENT})
+    response.raise_for_status()
+
+    matches = response.json()
+    if not matches:
+        return None
+    return float(matches[0]['lat']), float(matches[0]['lon'])
+
+
+def import_nodes(rows, neighbor_regions):
+    """
+    Builds a Network from membership rows already filtered by filter_physical_locations(): one
+    Node per row (sequential node_id over successfully-geocoded rows only), then wires edges via
+    generate_distance_vector().
+
+    :param rows: filtered rows (see filter_physical_locations())
     :param dict neighbor_regions: {region: [adjacent region, ...]}, forwarded to
         get_adjacent_regional_weight() via generate_distance_vector()
-    :return: Network
+    :return: (Network, transplant_hospital_ids, opo_ids) - the latter two are the node_id sets
+        by role, for restricting where patients vs. organs are generated - see
+        network_simulator.PatientGenerator/OrganGenerator's eligible_nodes parameter
     """
+    coordinates = geocode_addresses(rows)
+    geocoded_rows = [(row, coordinates[index]) for index, row in enumerate(rows)
+                     if index in coordinates]
+
     network = Network()
-    for x in range(2, worksheet.max_row + 1):
+    transplant_hospital_ids = set()
+    opo_ids = set()
+
+    for node_id, (row, (latitude, longitude)) in enumerate(geocoded_rows, start=1):
         network.add_node(
-                node=Node(node_id=int(worksheet[f'{column_indices["unique id"]}{x}'].value),
-                          hospital_name=worksheet[f'{column_indices["hospital name"]}{x}'].value,
-                          region=int(worksheet[f'{column_indices["region"]}{x}'].value),
-                          city=worksheet[f'{column_indices["city"]}{x}'].value,
-                          state=worksheet[f'{column_indices["state"]}{x}'].value,
-                          latitude=float(worksheet[f'{column_indices["latitude"]}{x}'].value),
-                          longitude=float(worksheet[f'{column_indices["longitude"]}{x}'].value)),
+                node=Node(node_id=node_id,
+                          hospital_name=row['accountName'],
+                          region=int(row['region']),
+                          city=row['city'],
+                          state=row['state'],
+                          latitude=latitude,
+                          longitude=longitude),
                 feedback=False)
 
+        if row['organizationType'] == 'Transplant Hospital':
+            transplant_hospital_ids.add(node_id)
+        else:
+            opo_ids.add(node_id)
+
     generate_distance_vector(network=network, neighbor_regions=neighbor_regions)
-    return network
+    return network, transplant_hospital_ids, opo_ids
 
 
 def generate_distance_vector(network, neighbor_regions):
@@ -156,18 +265,15 @@ if __name__ == '__main__':
 
     root = join(abspath('.'), 'export', 'shelve')
 
-    path = join(abspath('.'), 'import', 'workbooks',
-                'National_Transplant_Hospitals_coordinates.xlsx')
-    workbook = openpyxl.load_workbook(filename=path)
-    sheet = workbook.active
+    csv_path = join(abspath('.'), 'import', 'optn_membership', 'optn_membership_2026-07-02.csv')
+    membership_rows = filter_physical_locations(read_membership_csv(csv_path))
 
-    column_indices = set_default_indices()
-    get_column_indices(worksheet=sheet, columns=column_indices)
-
-    hospital_network = import_nodes(worksheet=sheet, column_indices=column_indices,
-                                    neighbor_regions=neighbor_regions)
+    hospital_network, transplant_hospital_ids, opo_ids = import_nodes(
+            rows=membership_rows, neighbor_regions=neighbor_regions)
 
     with shelve.open(join(root, 'distance_vector')) as db:
         db['hospital_network2'] = hospital_network
+        db['transplant_hospital_ids'] = transplant_hospital_ids
+        db['opo_ids'] = opo_ids
 
     print(hospital_network)

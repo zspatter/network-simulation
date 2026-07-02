@@ -26,8 +26,8 @@ class OrganGenerator:
     """
 
     @staticmethod
-    def generate_organs(graph: Network, n: int,
-                        rng: Optional[random.Random] = None) -> List[Organ]:
+    def generate_organs(graph: Network, n: int, rng: Optional[random.Random] = None,
+                        eligible_nodes: Optional[List[int]] = None) -> List[Organ]:
         """
         Harvests organs from n deceased donors. Each organ type is recovered
         with its own probability (DONOR_RECOVERY_PROBABILITIES), so not every
@@ -39,10 +39,14 @@ class OrganGenerator:
         :param random.Random rng: optional random source (defaults to the
             shared global random module); pass a seeded instance for
             reproducible generation, e.g. in the benchmark harness
+        :param eligible_nodes: optional subset of node ids a donor may be located at (defaults
+            to every node in `graph`); e.g. on a real hospital network, donors may originate at
+            a transplant hospital or an Organ Procurement Organization, but not e.g. a lab
+            (see execute.import_hospitals)
         """
 
         # list of currently active nodes
-        nodes = graph.nodes()
+        nodes = eligible_nodes if eligible_nodes is not None else graph.nodes()
         organs: List[Organ] = list()
         source = rng or random
 
@@ -68,7 +72,8 @@ class OrganGenerator:
 
     @staticmethod
     def generate_organs_to_list(graph: Network, n: int, organ_list: OrganList,
-                                rng: Optional[random.Random] = None) -> None:
+                                rng: Optional[random.Random] = None,
+                                eligible_nodes: Optional[List[int]] = None) -> None:
         """
         Generates N organs and adds all generated organs to an OrganList
 
@@ -78,5 +83,7 @@ class OrganGenerator:
         :param random.Random rng: optional random source (defaults to the
             shared global random module); pass a seeded instance for
             reproducible generation, e.g. in the benchmark harness
+        :param eligible_nodes: optional subset of node ids a donor may be located at - see
+            generate_organs()
         """
-        organ_list.add_organs(OrganGenerator.generate_organs(graph, n, rng))
+        organ_list.add_organs(OrganGenerator.generate_organs(graph, n, rng, eligible_nodes))

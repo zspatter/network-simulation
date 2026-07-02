@@ -23,8 +23,8 @@ class PatientGenerator:
     """
 
     @staticmethod
-    def generate_patients(graph: Network, n: int,
-                          rng: Optional[random.Random] = None) -> List[Patient]:
+    def generate_patients(graph: Network, n: int, rng: Optional[random.Random] = None,
+                         eligible_nodes: Optional[List[int]] = None) -> List[Patient]:
         """
         Generates n patients to add to wait list with random combinations of
         organ needed, blood type, priority, and location
@@ -34,9 +34,13 @@ class PatientGenerator:
         :param random.Random rng: optional random source (defaults to the
             shared global random module); pass a seeded instance for
             reproducible generation, e.g. in the benchmark harness
+        :param eligible_nodes: optional subset of node ids patients may be located at (defaults
+            to every node in `graph`); e.g. on a real hospital network, only nodes that are
+            actual transplant hospitals - not Organ Procurement Organizations - should carry
+            wait-list patients (see execute.import_hospitals)
         """
         # list of currently active nodes
-        nodes = graph.nodes()
+        nodes = eligible_nodes if eligible_nodes is not None else graph.nodes()
         patients: List[Patient] = list()
         source = rng or random
 
@@ -57,7 +61,8 @@ class PatientGenerator:
 
     @staticmethod
     def generate_patients_to_list(graph: Network, n: int, wait_list: WaitList,
-                                  rng: Optional[random.Random] = None) -> None:
+                                  rng: Optional[random.Random] = None,
+                                  eligible_nodes: Optional[List[int]] = None) -> None:
         """
         Generates N patients and add all generated patients to a WaitList
 
@@ -68,5 +73,8 @@ class PatientGenerator:
         :param random.Random rng: optional random source (defaults to the
             shared global random module); pass a seeded instance for
             reproducible generation, e.g. in the benchmark harness
+        :param eligible_nodes: optional subset of node ids patients may be located at - see
+            generate_patients()
         """
-        wait_list.add_patients(PatientGenerator.generate_patients(graph, n, rng))
+        wait_list.add_patients(
+                PatientGenerator.generate_patients(graph, n, rng, eligible_nodes))

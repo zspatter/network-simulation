@@ -8,9 +8,8 @@ license = { file = "LICENSE.md" }
 authors = [{ name = "Zachary Patterson" }]
 dependencies = [
     "networkx>=3.2",
-    "openpyxl>=3.1",
-    "beautifulsoup4>=4.12",
     "requests>=2.31",
+    "scipy>=1.11",
 ]
 
 [project.optional-dependencies]
@@ -19,6 +18,9 @@ dev = [
     "pytest-cov>=5.0",
     "mypy>=1.10",
     "ruff>=0.6",
+]
+report = [
+    "reportlab>=4.0",
 ]
 
 [build-system]

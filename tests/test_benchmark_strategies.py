@@ -17,6 +17,9 @@ from benchmark_strategies import (  # noqa: E402
 )
 
 from network_simulator.allocation import STRATEGIES  # noqa: E402
+from network_simulator.GraphBuilder import GraphBuilder  # noqa: E402
+from network_simulator.OrganGenerator import OrganGenerator  # noqa: E402
+from network_simulator.PatientGenerator import PatientGenerator  # noqa: E402
 
 
 def test_run_trial_accounts_for_every_organ():
@@ -56,6 +59,67 @@ def test_run_trial_is_reproducible_for_the_same_seed():
     assert first.waitlist_deaths == second.waitlist_deaths
     assert first.deaths_by_organ == second.deaths_by_organ
     assert first.wait_times_to_transplant == second.wait_times_to_transplant
+
+
+def test_run_trial_uses_a_provided_network_instead_of_building_a_synthetic_one(monkeypatch):
+    import benchmark_strategies
+
+    real_network = GraphBuilder.graph_builder(6)  # built before patching, with the real method
+
+    def _fail_if_called(*_args, **_kwargs):
+        raise AssertionError('GraphBuilder.graph_builder should not be called when a '
+                             'network is passed to run_trial')
+
+    monkeypatch.setattr(benchmark_strategies.GraphBuilder, 'graph_builder', _fail_if_called)
+
+    metrics = run_trial(seed=1, strategy=STRATEGIES['baseline'], rounds=2,
+                        patients_per_round=5, harvests_per_round=2, network=real_network)
+
+    assert isinstance(metrics, TrialMetrics)
+
+
+def test_run_trial_threads_patient_and_organ_nodes_through_to_the_generators(monkeypatch):
+    import benchmark_strategies
+
+    original_generate_patients = PatientGenerator.generate_patients
+    original_generate_organs_to_list = OrganGenerator.generate_organs_to_list
+    captured = {}
+
+    def _capture_patients(graph, n, rng, eligible_nodes=None):
+        captured['patient_nodes'] = eligible_nodes
+        return original_generate_patients(graph, n, rng, eligible_nodes)
+
+    def _capture_organs(graph, n, organ_list, rng, eligible_nodes=None):
+        captured['organ_nodes'] = eligible_nodes
+        return original_generate_organs_to_list(graph, n, organ_list, rng, eligible_nodes)
+
+    monkeypatch.setattr(benchmark_strategies.PatientGenerator, 'generate_patients',
+                       _capture_patients)
+    monkeypatch.setattr(benchmark_strategies.OrganGenerator, 'generate_organs_to_list',
+                       _capture_organs)
+
+    run_trial(seed=1, strategy=STRATEGIES['baseline'], num_nodes=6, rounds=1,
+             patients_per_round=5, harvests_per_round=2,
+             patient_nodes=[1, 2], organ_nodes=[3, 4])
+
+    assert captured['patient_nodes'] == [1, 2]
+    assert captured['organ_nodes'] == [3, 4]
+
+
+def test_run_trial_records_wait_list_size_snapshots_at_the_given_interval():
+    metrics = run_trial(seed=1, strategy=STRATEGIES['baseline'], num_nodes=10, rounds=6,
+                        patients_per_round=10, harvests_per_round=2,
+                        snapshot_interval_rounds=2)
+
+    assert [round_number for round_number, _ in metrics.wait_list_size_snapshots] == [2, 4, 6]
+    assert all(size >= 0 for _, size in metrics.wait_list_size_snapshots)
+
+
+def test_run_trial_records_no_snapshots_by_default():
+    metrics = run_trial(seed=1, strategy=STRATEGIES['baseline'], num_nodes=10, rounds=6,
+                        patients_per_round=10, harvests_per_round=2)
+
+    assert metrics.wait_list_size_snapshots == []
 
 
 def test_run_benchmark_aggregates_every_strategy():

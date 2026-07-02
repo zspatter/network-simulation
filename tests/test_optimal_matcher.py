@@ -1,3 +1,5 @@
+import time
+
 from network_simulator.allocation.matchers.optimal import OptimalMatcher
 from network_simulator.allocation.scoring import CompositeScore, PriorityScore, ScoreWeights
 from network_simulator.BloodType import BloodType
@@ -71,3 +73,36 @@ def test_optimal_matcher_uses_provided_feasibility_instead_of_recomputing():
 
     assert result.matches == [(organ_a, patient_y)]
     assert organ_b in result.unmatched_organs
+
+
+def test_optimal_matcher_solves_a_large_multi_organ_type_batch_quickly():
+    # regression test: OptimalMatcher previously solved one global nx.max_weight_matching
+    # over every organ, which both took minutes and could crash outright once a candidate
+    # pool reached tens of thousands (measured directly against the real national-scale
+    # network). This exercises two organ types at once, at a scale far beyond the other
+    # fixtures here, and asserts it stays fast.
+    o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
+    network = Network({1: Node(1)})
+    organ_list = OrganList()
+    wait_list = WaitList()
+
+    for _ in range(50):
+        Organ(OrganType.Kidney, o_neg, location=1, organ_list=organ_list)
+    for _ in range(20):
+        Organ(OrganType.Heart, o_neg, location=1, organ_list=organ_list)
+    for i in range(3000):
+        Patient(f'kidney patient {i}', 'n/a', OrganType.Kidney, o_neg, i, 1, wait_list)
+    for i in range(500):
+        Patient(f'heart patient {i}', 'n/a', OrganType.Heart, o_neg, i, 1, wait_list)
+
+    start = time.perf_counter()
+    result = OptimalMatcher().allocate(organ_list, wait_list, network, PriorityScore())
+    elapsed = time.perf_counter() - start
+
+    assert elapsed < 10.0
+    assert len(result.matches) == 70  # every organ finds a candidate (ample supply of both)
+    kidney_organs = {organ.organ_id for organ in organ_list.organ_list
+                    if organ.organ_type is OrganType.Kidney}
+    for organ, patient in result.matches:
+        # organ types never cross-match - each organ's candidate is the same organ type
+        assert (organ.organ_id in kidney_organs) == (patient.organ_needed is OrganType.Kidney)

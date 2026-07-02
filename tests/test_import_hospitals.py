@@ -1,8 +1,6 @@
 import sys
 from os.path import abspath, dirname, join
 
-import openpyxl
-
 sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 import import_hospitals  # noqa: E402
@@ -10,57 +8,119 @@ import import_hospitals  # noqa: E402
 from network_simulator.Network import Network  # noqa: E402
 from network_simulator.Node import Node  # noqa: E402
 
-_HEADERS = ('unique id', 'hospital name', 'city', 'state', 'region', 'latitude', 'longitude')
+
+class _FakeResponse:
+    """Minimal stand-in for requests.Response - .text for Census, .json() for Nominatim."""
+    def __init__(self, text=None, json_body=None):
+        self.text = text
+        self._json_body = json_body
+
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return self._json_body
 
 
-def _build_worksheet(rows):
-    workbook = openpyxl.Workbook()
-    worksheet = workbook.active
-    worksheet.append(list(_HEADERS))
-    for row in rows:
-        worksheet.append([row[header] for header in _HEADERS])
-    return worksheet
-
-
-def test_set_default_indices_returns_every_field_unset():
-    columns = import_hospitals.set_default_indices()
-
-    assert set(columns.keys()) == set(_HEADERS)
-    assert all(value is None for value in columns.values())
-
-
-def test_get_column_indices_maps_header_names_to_column_letters():
-    worksheet = _build_worksheet([])
-    columns = import_hospitals.set_default_indices()
-
-    import_hospitals.get_column_indices(worksheet=worksheet, columns=columns)
-
-    assert columns['unique id'] == 'A'
-    assert columns['hospital name'] == 'B'
-    assert columns['region'] == 'E'
-    assert columns['longitude'] == 'G'
-
-
-def test_import_nodes_builds_a_network_with_coordinates_and_region():
+def test_filter_physical_locations_keeps_only_approved_hospitals_and_opos():
     rows = [
-        {'unique id': 1, 'hospital name': 'Hospital A', 'city': 'Austin', 'state': 'TX',
-         'region': 4, 'latitude': 30.27, 'longitude': -97.74},
-        {'unique id': 2, 'hospital name': 'Hospital B', 'city': 'Dallas', 'state': 'TX',
-         'region': 4, 'latitude': 32.78, 'longitude': -96.80},
+        {'organizationType': 'Transplant Hospital', 'membershipStatus': 'Approved'},
+        {'organizationType': 'Independent OPO', 'membershipStatus': 'Approved'},
+        {'organizationType': 'Hospital Based OPO', 'membershipStatus': 'Approved'},
+        {'organizationType': 'Hospital Based Lab', 'membershipStatus': 'Approved'},
+        {'organizationType': 'Transplant Hospital',
+         'membershipStatus': 'Interim Approval-Pending BOD Action'},
     ]
-    worksheet = _build_worksheet(rows)
-    columns = import_hospitals.set_default_indices()
-    import_hospitals.get_column_indices(worksheet=worksheet, columns=columns)
 
-    network = import_hospitals.import_nodes(worksheet=worksheet, column_indices=columns,
-                                            neighbor_regions={})
+    filtered = import_hospitals.filter_physical_locations(rows)
+
+    assert len(filtered) == 3
+    assert {row['organizationType'] for row in filtered} == \
+        {'Transplant Hospital', 'Independent OPO', 'Hospital Based OPO'}
+
+
+def test_read_membership_csv_reads_rows(tmp_path):
+    path = tmp_path / 'membership.csv'
+    path.write_text('region,organizationType,membershipStatus,accountName,address1,city,'
+                    'state,zipCode\n3,Transplant Hospital,Approved,Test Hospital,100 Main St,'
+                    'Testville,AL,35233\n')
+
+    rows = import_hospitals.read_membership_csv(str(path))
+
+    assert len(rows) == 1
+    assert rows[0]['accountName'] == 'Test Hospital'
+    assert rows[0]['region'] == '3'
+
+
+def test_geocode_addresses_uses_census_batch_result_and_falls_back_to_nominatim(monkeypatch):
+    rows = [
+        {'address1': '100 Main St', 'city': 'Testville', 'state': 'AL', 'zipCode': '35233'},
+        {'address1': '200 Oak Ave', 'city': 'Otherville', 'state': 'AL', 'zipCode': '35234'},
+    ]
+    census_csv = (
+        '"0","100 Main St, Testville, AL, 35233","Match","Exact",'
+        '"100 MAIN ST, TESTVILLE, AL, 35233","-86.8,33.5","123","L"\n'
+        '"1","200 Oak Ave, Otherville, AL, 35234","No_Match"\n'
+    )
+    monkeypatch.setattr(import_hospitals.requests, 'post',
+                       lambda *a, **k: _FakeResponse(text=census_csv))
+    monkeypatch.setattr(import_hospitals.requests, 'get',
+                       lambda *a, **k: _FakeResponse(json_body=[{'lat': '33.6', 'lon': '-86.9'}]))
+    monkeypatch.setattr(import_hospitals.time, 'sleep', lambda *_: None)
+
+    coordinates = import_hospitals.geocode_addresses(rows)
+
+    assert coordinates[0] == (33.5, -86.8)  # resolved directly by Census
+    assert coordinates[1] == (33.6, -86.9)  # resolved by the Nominatim fallback
+
+
+def test_geocode_addresses_omits_a_row_neither_geocoder_can_match(monkeypatch):
+    rows = [{'address1': 'nowhere', 'city': 'nowhere', 'state': 'ZZ', 'zipCode': '00000'}]
+    monkeypatch.setattr(import_hospitals.requests, 'post',
+                       lambda *a, **k: _FakeResponse(text='"0","nowhere","No_Match"\n'))
+    monkeypatch.setattr(import_hospitals.requests, 'get',
+                       lambda *a, **k: _FakeResponse(json_body=[]))
+    monkeypatch.setattr(import_hospitals.time, 'sleep', lambda *_: None)
+
+    assert import_hospitals.geocode_addresses(rows) == {}
+
+
+def test_import_nodes_tags_node_ids_by_organizationType(monkeypatch):
+    rows = [
+        {'accountName': 'Hospital A', 'region': '4', 'city': 'Austin', 'state': 'TX',
+         'organizationType': 'Transplant Hospital'},
+        {'accountName': 'OPO B', 'region': '4', 'city': 'Austin', 'state': 'TX',
+         'organizationType': 'Independent OPO'},
+    ]
+    monkeypatch.setattr(import_hospitals, 'geocode_addresses',
+                        lambda rows: {0: (30.27, -97.74), 1: (30.28, -97.75)})
+
+    network, transplant_hospital_ids, opo_ids = import_hospitals.import_nodes(
+            rows, neighbor_regions={})
 
     assert set(network.network_dict.keys()) == {1, 2}
+    assert transplant_hospital_ids == {1}
+    assert opo_ids == {2}
     assert network.network_dict[1].city == 'Austin'
     assert network.network_dict[1].region == 4
-    # same region, different city, same state -> regional_weight 2 (see
-    # get_adjacent_regional_weight), so an edge should have been added
-    assert 2 in network.network_dict[1].adjacency_dict
+
+
+def test_import_nodes_skips_rows_that_failed_to_geocode(monkeypatch):
+    rows = [
+        {'accountName': 'Hospital A', 'region': '4', 'city': 'Austin', 'state': 'TX',
+         'organizationType': 'Transplant Hospital'},
+        {'accountName': 'Hospital B (unresolved)', 'region': '4', 'city': 'Nowhere',
+         'state': 'TX', 'organizationType': 'Transplant Hospital'},
+    ]
+    monkeypatch.setattr(import_hospitals, 'geocode_addresses',
+                        lambda rows: {0: (30.27, -97.74)})  # row 1 has no match
+
+    network, transplant_hospital_ids, opo_ids = import_hospitals.import_nodes(
+            rows, neighbor_regions={})
+
+    assert len(network.network_dict) == 1
+    assert transplant_hospital_ids == {1}
+    assert opo_ids == set()
 
 
 def test_get_adjacent_regional_weight_same_city_and_state_is_weight_one():

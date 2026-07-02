@@ -23,6 +23,7 @@ Requires Python 3.12+.
 
 ```bash
 pip install -e .[dev]      # installs the package plus pytest/mypy/ruff
+pip install -e .[report]   # optional: adds reportlab, for scenario_report.py's PDF output
 ```
 
 - **Run the interactive simulator** (build a network, generate patients, harvest and allocate organs, pick a strategy from the menu):
@@ -32,6 +33,10 @@ pip install -e .[dev]      # installs the package plus pytest/mypy/ruff
 - **Compare allocation strategies** (runs every strategy in `STRATEGIES` across several seeded multi-round simulations and prints a comparison table):
   ```bash
   python execute/benchmark_strategies.py
+  ```
+- **Generate a national scenario report** (real hospital network, multi-year horizons, Markdown/CSV/PDF output - see [Scenario Reports](#scenario-reports)):
+  ```bash
+  python execute/scenario_report.py
   ```
 - **Run the test suite** (100% line/branch coverage on `network_simulator`):
   ```bash
@@ -79,8 +84,8 @@ Edge weight is always **estimated transit time in hours** - the same unit `Organ
 ### <ins>Other Classes</ins>
 -  `Dijkstra` - finds all shortest paths from a source node in a given graph
 -  `GraphBuilder` - builds a random network with N nodes (edge weights are synthetic but expressed in the same "hours" unit as real networks)
--  `OrganGenerator` - harvests organs from N deceased donors using per-organ recovery probabilities (kidney recovered from nearly every donor and yields two; heart/lung less often) and adds them to an `OrganList`
--  `PatientGenerator` - generates N patients with realistic organ need / blood type / body size / HLA sensitization / initial urgency, plus a location, and adds them to a `WaitList`
+-  `OrganGenerator` - harvests organs from N deceased donors using per-organ recovery probabilities (kidney recovered from nearly every donor and yields two; heart/lung less often) and adds them to an `OrganList`. Donor location is drawn uniformly from every network node by default, or from an optional `eligible_nodes` subset - e.g. on the real hospital network, donors may originate at a transplant hospital or an Organ Procurement Organization (OPO), but not e.g. a lab (see [Scenario Reports](#scenario-reports)).
+-  `PatientGenerator` - generates N patients with realistic organ need / blood type / body size / HLA sensitization / initial urgency, plus a location, and adds them to a `WaitList`. Location is likewise uniform over every node by default, or restricted to an optional `eligible_nodes` subset - e.g. only real transplant-hospital nodes, since only they maintain a wait list.
 -  `ConnectivityChecker` - determines if a given graph is connected 
 -  `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
 -  `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object, optionally including hospital attributes (city/state/region/counts) for visualization or analysis
@@ -93,7 +98,7 @@ Edge weight is always **estimated transit time in hours** - the same unit `Organ
 
 - **Matchers** (`allocation.matchers`) - *how* matches are chosen:
   - `GreedyMatcher` - processes organs one at a time, assigning each to its highest-scoring available patient (the project's original behavior)
-  - `OptimalMatcher` - solves one allocation batch as a maximum-weight bipartite matching (via `networkx`), so an earlier low-value match can't crowd out a better one available for a later organ
+  - `OptimalMatcher` - solves one allocation batch as a maximum-weight bipartite matching (one `scipy.optimize.linear_sum_assignment` per organ type - the Hungarian/Jonker-Volgenant algorithm, built for exactly this rectangular assignment problem), so an earlier low-value match can't crowd out a better one available for a later organ. Originally used `networkx`'s general-graph matching to avoid a scipy dependency, but that algorithm both took minutes and could crash outright once a real wait-list backlog reached tens of thousands of candidates (measured directly against the real national-scale network - see [Scenario Reports](#scenario-reports)); scipy's LAP solver handles that same scale in well under a second.
   - `TieredMatcher` - wraps either matcher with a hard geographic constraint (see [Geographic Allocation Constraints](#geographic-allocation-constraints) below): an organ is only offered outside its current tier once no candidate remains inside it, mirroring the real "match run" waterfall (local, then regional, then national) instead of a single global optimization that treats geography as just another score input
 - **Scorers** (`allocation.scoring`) - *how* a match is valued:
   - `PriorityScore` - ranks purely by the patient's priority attribute (the original behavior)
@@ -128,6 +133,22 @@ Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrai
 
 `benchmark_strategies.compare_to_reference` runs this for every strategy against `real_world_circle` (current real allocation policy for most organs) on the two outcomes the README already centers as the "lives saved" question - `waitlist_deaths` and `life_years_saved` - and `print_significance_report` prints the result as a second plain-text table alongside the main comparison.
 
+### <ins>Scenario Reports</ins>
+`execute/scenario_report.py` answers a different question than the benchmark above: not "is this difference statistically significant at toy scale," but "what does this strategy actually buy the country, over years, on the real network" - a shareable, regenerable snapshot document rather than a hypothesis test.
+
+- **Real network**: builds the network once via `import_hospitals.py`'s pipeline (see [Real Hospital Network Data Pipeline](#scripts) below) and reuses it across every strategy/seed/horizon in the run, since (unlike the benchmark's per-seed synthetic topology) the real network doesn't change.
+- **Real calibration**: arrivals and donor recovery are calibrated to OPTN/SRTR 2024 figures - 70,600 new waitlist additions/year (≈1,358/week) and 16,989 deceased donors/year (≈327/week) at full scale (`--scale 1.0`). **Growth, not just decay, was already modeled** - `run_trial`'s round loop already generates new patients every round alongside deaths and matches; this only needed realistic calibration, not a new mechanism.
+- **`--scale` default is 0.1** (10% of national volume), not 1.0: a single real `real_world_circle`/1-year/1-seed trial at full scale measured **850 seconds** and, before the `OptimalMatcher` fix above, two of four curated strategies crashed outright, because feasibility checking is `O(organs x wait-list size)` per round and the wait-list backlog itself realistically grows into the tens of thousands over a year. At the default 10% scale the same trial completes in ~17 seconds, and the wait-list trajectory scales down proportionally (confirmed directly: ~2,738 at 10% scale vs. ~27,065 at full scale for the same year). Relative comparisons between strategies hold at reduced scale; absolute counts don't claim to be literal national totals unless `--scale 1.0` is used.
+- **Curated strategy roster** (`--strategies curated`, the default) isolates a deliberate 4-tier delta rather than comparing all ten `STRATEGIES` by default:
+  1. **Current policy** - `real_world_circle`: what kidney/pancreas/heart allocation actually does today.
+  2. **Easy win** - `optimal_real_world_circle`: identical policy scoring, but a computed global optimum instead of sequential greedy offers - a backend algorithm change, not a policy fight.
+  3. **Medium lift** - `real_world_unconstrained`: same scoring, geographic constraint dropped entirely - mirrors where continuous distribution (already live for lung) is headed for the rest.
+  4. **Theoretical ceiling** - `composite_acuity`: acuity + wait time + geography combined, optimally matched - maximizes lives saved but reshapes prioritization philosophy, the hardest lift politically.
+
+  `--strategies all` runs the full `STRATEGIES` roster instead, or an explicit comma-separated list - **configurable so more compute can be spent for a more complete comparison** when wanted, rather than the curated subset being the only option.
+- **Configurable horizons and seeds**: `--horizon-years` (default `1,5,10`), `--seeds` (default 5 for the 1-year horizon, 3 for longer ones - runtime compounds with horizon length).
+- **Output**: a Markdown report (methodology, per-horizon summary table, year-by-year wait-list-size trajectory, and a significance table reusing `compare_to_reference` when seeds ≥ 2) plus matching CSVs (`--formats markdown,csv`, the default) for pivoting in Excel/pandas; PDF is opt-in (`--formats markdown,csv,pdf`) via the optional `reportlab` dependency, rendered by `scenario_report_pdf.py` so the default path never imports it.
+
 ### <ins>Clinical Realism</ins>
 `network_simulator.clinical` grounds the simulation in real-world data so "which strategy is best" is measured the way real allocation policy is judged - by lives saved, not just organ throughput:
 
@@ -144,17 +165,17 @@ The `Simulator` (`execute/simulator.py`) is designed to create an interactive ex
 
 All scripts live under `execute/` and are run as `python execute/<script>.py` from the repository root.
 
-**Interactive & benchmark**
+**Interactive, benchmark & scenario reports**
 - `simulator.py` - the interactive console simulator described above.
 - `simulation.py` - a small non-interactive scripted demo: builds a hand-written hospital network, generates patients/organs, and runs one allocation pass end-to-end.
 - `benchmark_strategies.py` - runs every strategy in `STRATEGIES` across many seeded multi-round simulations and prints the comparison table described in [Allocation Strategies](#allocation-strategies), followed by the paired-significance table described in [Statistical Rigor](#statistical-rigor). Also importable (`run_trial`, `run_benchmark`, `compare_to_reference`) for custom comparisons.
 - `benchmark_stats.py` - the pure-Python statistical helpers (permutation test, bootstrap CI, effect size, Holm-Bonferroni correction, sample-size planning) `benchmark_strategies.py` uses - see [Statistical Rigor](#statistical-rigor).
+- `scenario_report.py` / `scenario_report_pdf.py` - the national scenario report generator described in [Scenario Reports](#scenario-reports); `scenario_report_pdf.py` holds the optional PDF rendering so the `reportlab` import only happens when `--formats` includes `pdf`.
 
 **Real hospital network data pipeline**
-- `import_hospitals.py` - builds a `Network` of real US transplant hospitals from `import/workbooks/National_Transplant_Hospitals_coordinates.xlsx`, with edge weights computed directly from coordinates via `network_simulator.distance` (no scraping).
-- `get_coordinates.py` - a one-time utility that geocodes hospital city/state into latitude/longitude via the Bing Maps API, producing the coordinates workbook `import_hospitals.py` consumes. Only needed if the hospital roster is refreshed.
+- `import_hospitals.py` - builds a `Network` of real US transplant-system locations from the OPTN membership directory CSV (`import/optn_membership/`, downloaded from `hrsa.gov/optn/about/membership/optn-membership-database`), keeping only `Transplant Hospital` and `Independent OPO`/`Hospital Based OPO` rows (the only member types that are physical locations this simulation places patients or organs at - see the module docstring for why some rows share a `centerCode` but still get separate nodes). Coordinates come from the free US Census Bureau batch geocoder, with a rate-limited Nominatim (OpenStreetMap) fallback for the institutional-campus addresses Census can't match (e.g. "One Medical Center Drive") - no API key needed for either. Edge weights are computed directly from those coordinates via `network_simulator.distance` (no scraping). This replaced an older 2019 xlsx + Bing Maps pipeline; Bing Maps' free/basic tier was retired by Microsoft on June 30, 2025.
 - `export_hospital_network.py` / `export_edgelist.py` - export a previously-built (shelve-serialized) network to GEXF or a plain edge-list file for use in external graph tools.
-- `hospital_count.py` - tallies hospitals per US state/region from the source workbook.
+- `hospital_count.py` - tallies hospitals per US state/region from the same membership CSV.
 - `generate_networks.py` - generates and serializes a batch of random networks (with their patient/organ populations) for reuse across scripts.
 
 **Demo & utility scripts**

@@ -1,0 +1,545 @@
+region,centerCode,centerType,organizationType,accountName,address1,address2,city,state,zipCode,phone,fax,website,votingRights,membershipStatus,vaAffiliated,mainPrograms,livingPrograms,pediatricPrograms,pediatricOnly
+3,ALCH,TX1,Transplant Hospital,Children's of Alabama,1600 7th Avenue South,,Birmingham,AL,35233,205-638-3333,205-638-6095,http://www.childrensal.org,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+3,ALOB,OP1,Independent OPO,Legacy of Hope,502 20th Street South,,Birmingham,AL,35233,205-731-9200,205-731-9250,http://legacyofhope.org/,Y,Approved,N,,,,N
+3,ALUA,IT1,Hospital Based Lab,Histocompatibility and Immunogenetics Laboratory CTI at UAB,"619 19th Street S, West Pavilion P290",,Birmingham,AL,35249,205-934-4987,205-975-6698,https://www.uabmedicine.org/specialties/transplant-services/,N,Approved,N,,,,N
+3,ALUA,TX1,Transplant Hospital,University of Alabama Hospital,1802 6th Avenue South,,Birmingham,AL,35233,833-822-2841,205-975-5310,https://www.uabmedicine.org/specialties/transplant-services/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI, UT","KI, LI","HR, KI, LU, PA",N
+3,ARBH,TX1,Transplant Hospital,Baptist Medical Center,9601 Baptist Health Drive,,Little Rock,AR,72205,501-202-1500,501-202-1357,https://www.baptist-health.com/location/baptist-health-transplant-institute,Y,Approved,N,HR,,,N
+3,ARCH,TX1,Transplant Hospital,Arkansas Children's Hospital,1 Children's Way,,Little Rock,AR,72202,501-364-1100,,http://www.archildrens.org/,Y,Approved,N,"HR, KI",,"HR, KI",Y
+3,AROR,OP1,Independent OPO,Southern Legacy of Life,1300 Wilson Road,,Little Rock,AR,72205,501-907-9150,501-372-6279,http://www.arora.org,Y,Approved,N,,,,N
+3,ARUA,IT1,Hospital Based Lab,Tissue Typing Laboratory at UAMS Medical Center,800 Marshall Street,Room S-2177,Little Rock,AR,72202,501-364-1803,501-364-4795,,N,Approved,N,,,,N
+3,ARUA,TX1,Transplant Hospital,UAMS Medical Center,4301 West Markham Street,,Little Rock,AR,72205,501-686-7000,,http://www.uams.edu,Y,Approved,N,"KI, LI, PA",KI,,N
+5,AZCH,TX1,Transplant Hospital,Phoenix Children's Hospital,1919 East Thomas Road,,Phoenix,AZ,85016,602-933-1000,,https://phoenixchildrens.org/,Y,Approved,N,"HR, KI, LI",KI,"HR, KI, LI",Y
+5,AZGC,TT1,Independent Lab,Donor Network of Arizona Immunogenetics Laboratory,2010 West Rio Salado Parkway,,Tempe,AZ,85281,602-222-2200,,http://www.dnaz.org/about-us/our-services/immunogenetics-laboratory/,Y,Approved,N,,,,N
+5,AZGS,TX1,Transplant Hospital,Banner-University Medical Center Phoenix,1111 East McDowell Road,,Phoenix,AZ,85006,602-521-5831,602-521-5327,https://www.bannerhealth.com/,Y,Approved,N,"HR, KI, LI, PA",KI,,N
+5,AZMC,IT1,Hospital Based Lab,Mayo Clinic in Arizona Histocompatibility Laboratory,5777 E. Mayo Boulevard,,Phoenix,AZ,85054,480-342-2700,,,N,Approved,N,,,,N
+5,AZMC,TX1,Transplant Hospital,Mayo Clinic Hospital Arizona,5777 East Mayo Boulevard,,Phoenix,AZ,85054-4582,844-243-1846,507-284-0161,https://www.mayoclinic.org/departments-centers/transplant-center/home/orc-20203891?mc_id=us&utm_source=optn&utm_medium=l&utm_content=medicallistingtransplant&utm_campaign=mayoclinic&geo=national&placementsite=enterprise&invsrc=transplant&cauid=106867,Y,Approved,N,"HL, HN, HR, KI, LI, LU, PA","KI, LI",,N
+5,AZOB,OP1,Independent OPO,Donor Network of Arizona,2010 West Rio Salado Parkway,,Tempe,AZ,85281,602-222-2200,602-222-2202,http://www.dnaz.org,Y,Approved,N,,,,N
+5,AZSJ,TX1,Transplant Hospital,St. Joseph's Hospital and Medical Center,350 West Thomas Road,,Phoenix,AZ,85013,602-406-3000,,https://www.dignityhealth.org/arizona/locations/stjosephs,Y,Approved,N,"KI, LI, LU",KI,LU,N
+5,AZTL,TT1,Independent Lab,Vitalant,124 West Thomas Road,Suite 210,Phoenix,AZ,85013,623-487-6400,602-279-8240,https://www.vitalanthealth.org/clinical-services/laboratory/human-leukocyte-antigen,Y,Approved,N,,,,N
+5,AZUA,IT1,Hospital Based Lab,Banner University Medical Center- Clinical HLA Laboratory,1625 North Campbell Avenue,,Tucson,AZ,85719,520-694-6292,520-694-7329,http://www.umcarizona.org,N,Approved,N,,,,N
+5,AZUA,TX1,Transplant Hospital,Banner University Medical Center-Tucson,1625 North Campbell Avenue,,Tucson,AZ,85719,520-694-0111,520-694-2692,https://www.bannerhealth.com/,Y,Approved,N,"KI, LI, PA",KI,,N
+3,BSAC,BUS,Business,All Call LLC dba All Call Nursing,122 Mathews Road,,Clayton,LA,71326,5043296890,,https://allcallnursing.org/,N,Approved,N,,,,N
+3,BSAP,BUS,Business,Asyston Professional LLC,13716 Hartle Groves Place #301,,Clermont,FL,34711,585-727-6746,,,N,Approved,N,,,,N
+3,BSAR,BUS,Business,Arrowsmith RNs,1395 Morgan Drive,,Buckhead,GA,30625,985-445-7887,888-506-5754,,N,Approved,N,,,,N
+5,BSAV,BUS,Business,Blue Skies Aviation and Logistics LLC,"485 South Rock Boulevard, Suite B",,Reno,NV,89502,833-897-5681,,,N,Approved,N,,,,N
+3,BSBH,BUS,Business,Bluerock Health Systems,3324 Northeast 34th Street,,Fort Lauderdale,FL,33308,954-247-4029,,,N,Approved,N,,,,N
+9,BSBT,BUS,Business,Buckeye Transplant Services,369 Franklin Street,,Buffalo,NY,14202,614-689-1129,,http://www.buckeyetransplant.com/,N,Approved,N,,,,N
+11,BSCA,BUS,Business,"Clinical Consulting Associates, Inc.",9988 South Wagstaff Circle,,North Chesterfield,VA,23236,443-306-7875,866-434-7837,http://www.clinicalconsultingassociates.com,N,Approved,N,,,,N
+5,BSCM,BUS,Business,CompuMed Inc.,5777 West Century Boulevard Suite 360,,Los Angeles,CA,90045,310-258-5000,,,N,Approved,N,,,,N
+5,BSCO,BUS,Business,"Coppel Consulting, LLC.",101 Talmadge,,Irvine,CA,92602,310-922-2154,,https://www.coppelconsulting.org/,N,Approved,N,,,,N
+10,BSCS,BUS,Business,Organ Perfusion and Cellular Services,12354 Wheathill Pass,,Fishers,IN,46037,231-557-5888,,,N,Approved,N,,,,N
+7,BSCT,BUS,Business,CellTrans Inc,2201 West Campbell Park Drive,,Chicago,IL,60612,,,,N,Approved,N,,,,N
+11,BSDC,BUS,Business,"Donor Call Solutions, LLC",102 Langdale Place,,Cary,NC,27513,602-214-8703,,https://www.donorcallsolutions.org/,N,Approved,N,,,,N
+5,BSDD,BUS,Business,Dedicated Donor Call,3010 West Oceanfront B,,Newport Beach,CA,92663,602-909-2164,,www.dedicateddonorcall.org,N,Approved,N,,,,N
+3,BSDL,BUS,Business,DonorLink,5011 North Ocean Boulevard #2 Upper,,Boynton Beach,FL,33435,561-613-1517,,,N,Approved,N,,,,N
+8,BSDR,BUS,Business,Donor Recovery Services,57 Lakeland Lane,,Sunrise Beach,MO,65079,913-579-7282,,https://donorrecoveryservices.com/,N,Approved,N,,,,N
+10,BSDS,BUS,Business,Donor Staff Support,3584 Ridgewood Road,,Toledo,OH,43606,,,,N,Approved,N,,,,N
+5,BSDX,BUS,Business,"CareDx, Inc.",8000 Marina Boulevard,,Brisbane,CA,94005,415-287-2300,415-287-2450,https://caredx.com/,N,Approved,N,,,,N
+1,BSED,BUS,Business,"e-DonorCare Procurement Consultants, Inc",679 Washington Street  Suite 3-160,,Attleboro,MA,02703,210-215-8116,,,N,Approved,N,,,,N
+8,BSGM,BUS,Business,Grizzly Medical Staffing,24751 East Layton Place,,Aurora,CO,80016,303-501-6272,,https://www.grizzlymedicalstaffing.com/,N,Approved,N,,,,N
+3,BSGP,BUS,Business,Gold Standard Preservation,"3904 North Druid Hills Road, Suite 330",,Decatur,GA,30033,470-901-3959,,https://goldstandardpreservation.org/,N,Approved,N,,,,N
+5,BSGR,BUS,Business,"Gravitas Surgical Solutions, LLC",3425 East Cherokee Street,,Phoenix,AZ,85044,520-237-6732,,,N,Approved,N,,,,N
+3,BSHL,BUS,Business,Heart and Lung Transplant National Recovery Program,"14286 Beach Boulevard, Suite 19",,Jacksonville,FL,32250,713-256-9045,,https://hlt-nrp.org/,N,Approved,N,,,,N
+1,BSHM,BUS,Business,HML Partners,71 Central Ave,,Braintree,MA,02184,781-884-7127,,,N,Approved,N,,,,N
+2,BSII,BUS,Business,IIAM,125 May Street,,Edison,NJ,08837,800-486-4426,732-661-3890,https://iiam.org/,N,Approved,N,,,,N
+11,BSIR,BUS,Business,"Institute of Regenerative Medicine, LLC",1864 Concert Drive,,Virginia Beach,VA,23453,757-464-4761,757-299-4110,https://www.lifenethealth.org/institute-regenerative-medicine,N,Approved,N,,,,N
+11,BSKP,BUS,Business,"Keystone Perfusion Services, LLC","1050 Johnnie Dodds Boulevard, Suite 2278",,Mount Pleasant,SC,29464,8562646089,,https://keystoneperfusion.com/,N,Approved,N,,,,N
+5,BSLG,BUS,Business,"Life Giving Resources, Inc.",1961 North 500 East,,Orem,UT,84097,855-547-4438,,https://www.lifegivingresources.com/,N,Approved,N,,,,N
+10,BSLI,BUS,Business,"34 Lives, PBC",1281 Win Hentschel Boulevard Suite 2574,,West Lafayette,IN,47906,800-782-8195,800-782-8195,,N,Approved,N,,,,N
+2,BSLW,BUS,Business,"Lonza Walkersville, Inc.",8830 Biggs Ford Road,,Walkersville,MD,21793,336-263-9673,,,N,Approved,N,,,,N
+3,BSME,BUS,Business,T-I Med LLC,11820 Southwest 24th Terrace,,Miami,FL,33175,305-202-4561,,,N,Approved,N,,,,N
+9,BSMM,BUS,Business,"MatchMind, LLC",153 Old Colony Road,,Hartsdale,NY,10530,210-213-9778,,,N,Interim Approval-Pending BOD Action,N,,,,N
+10,BSNL,BUS,Business,Network For Life,770 Kinnear Road,,Columbus,OH,43212,800-525-5667,,,N,Approved,N,,,,N
+5,BSNT,BUS,Business,Nevada Transplant Institute,2055 East Sahara Avenue,,Las Vegas,NV,89104,1-833-746-46,702-796-4225,,N,Interim Approval-Pending BOD Action,N,,,,N
+11,BSOL,BUS,Business,"OmniLife, Inc.",348 East Main Street,,Lexington,KY,40507,8155757017,,https://www.getomnilife.com/,N,Approved,N,,,,N
+11,BSOP,BUS,Business,OrganLink Plus,3470 Moores Spring Road,,Westfield,NC,27053,743-203-5465,,https://organlinkplus.com,N,Approved,N,,,,N
+9,BSPC,BUS,Business,"ProCure On-Demand, Inc.",747 3rd Avenue Suite 3504,,New York,NY,10017,917-993-1279,,,N,Approved,N,,,,N
+2,BSPF,BUS,Business,"Lung Bioengineering, Inc.",1015 Spring Street,,Silver Spring,MD,20910,844-367-3857,904-992-4718,https://www.lungbioengineering.com/,N,Approved,N,,,,N
+11,BSPL,BUS,Business,"PalmettoStar Life Associates, LLC","1964 Ashley River Road, Suite B #80953",,Charleston,SC,29407,843-410-3225,,https://palmettostarlife.com/,N,Approved,N,,,,N
+5,BSPO,BUS,Business,Organ Procurement Solutions LLC,1455 Kettner Blvd Suite #1103,,San Diego,CA,92101,619-840-1139,,www.organprocurementsolutions.com,N,Approved,N,,,,N
+7,BSPR,BUS,Business,Perfusion Solution Inc.,2563 West Creedy Road,,Beloit,WI,53511,(866) 661-53,,https://perfusionsolution.com/,N,Interim Approval-Pending BOD Action,N,,,,N
+11,BSPS,BUS,Business,OPO Procurement Support,780 Jefferson Drive,,Palmyra,VA,22963,866-220-3592,866-222-1324,,N,Approved,N,,,,N
+5,BSRC,BUS,Business,"Transplant Recovery Pros, LLC",8912 Paul B Koonce Street,,Houston,TX,77061,224-298-8662,,www.transplantrecoverypros.org,N,Approved,N,,,,N
+5,BSRE,BUS,Business,Recovicare P.A.,2100 Powell Street,,Emeryville,CA,94608,,888-322-2303,,N,Approved,N,,,,N
+3,BSRT,BUS,Business,"Ready Transplant Staffing, LLP",850 Dogwood Road Suite B200 #2118,,Lawrenceville,GA,30044,470-227-4780,,,N,Approved,N,,,,N
+5,BSSD,BUS,Business,Specialist Direct,2831 Saint Rose Parkway,,Henderson,NV,89052,888-317-0776,,,N,Approved,N,,,,N
+8,BSSI,BUS,Business,"Surge Ingenuity, Inc.",18919 West 158th Street,,Olathe,KS,66062,617-877-6506,,,N,Approved,N,,,,N
+8,BSSL,BUS,Business,Statline,125 May Street,,Edison,NJ,08837,888-881-7828,,,N,Approved,N,,,,N
+8,BSST,BUS,Business,XVIVO Services Inc.,"3615 South Huron Street, Suite 201",,Englewood,CO,80110,877-313-3448,866-280-4796,https://www.xvivogroup.com,N,Approved,N,,,,N
+11,BSTA,BUS,Business,"Transplant Advocates, LLC",164 Lynhurst Drive,,Crossville,TN,38558,,,,N,Approved,N,,,,N
+11,BSTC,BUS,Business,Transplant Coordinators of America,636 Long Point Road,,Mount Pleasant,SC,29464,843-270-3882,,http://www.transplantcoordinatorsofamerica.com/,N,Approved,N,,,,N
+9,BSTE,BUS,Business,TransPro Technologies,1161 Bedford Avenue Suite 103,,Brooklyn,NY,11216,917-886-2471,,,N,Approved,N,,,,N
+1,BSTI,BUS,Business,"TransMedics, Inc",200 Minuteman Road Suite 302,,Andover,MA,01810,978-552-0900,,https://www.transmedics.com/,N,Approved,N,,,,N
+8,BSTL,BUS,Business,Transplant Leadership Institute,13736 Quigley Street,,Overland Park,KS,66221,210-896-0882,,https://transplantleaders.com/,N,Approved,N,,,,N
+5,BSTM,BUS,Business,"Transplant Management Group, LLC",11835 Carmel Mountain Road,Suite 1304-248,San Diego,CA,92128,877-868-9170,901-339-2332,http://www.transplantmanagement.com,N,Approved,N,,,,N
+5,BSTO,BUS,Business,Trinity Medical Solutions,"4100 West Galveston Street, Suite 4",,Chandler,AZ,85226,888-977-9772,,,N,Approved,N,,,,N
+11,BSTP,BUS,Business,Tempo: Organ Procurement Professionals,8224 Spiral Drive,,Chesterfield,VA,23832,804-543-8460,,,N,Approved,N,,,,N
+10,BSTR,BUS,Business,"Transplant Staffing Resources, LLC",1442 Avondale Drive,,Westfield,IN,46074,231-557-5888,,https://transplantstaffingresources.org/,N,Approved,N,,,,N
+5,BSTS,BUS,Business,"Transplant Solutions, LLC",16248 North 9th Place,,Phoenix,AZ,85022,6233023136,,https://transplantsolutionsllc.com/,N,Approved,N,,,,N
+5,BSTT,BUS,Business,Thoracic Transplant Consultants Inc,"1950 Clay Street, Suite 401",,San Francisco,CA,94109,415-823-1954,415-359-1954,,N,Approved,N,,,,N
+11,BSTX,BUS,Business,Transplant Care Call,3186 Great Egret Drive,,Johns Island,SC,29455,866-314-4727,,,N,Interim Approval-Pending BOD Action,N,,,,N
+11,BSUN,BUS,Business,United Network for Organ Sharing,700 North 4th Street,,Richmond,VA,23219,804-782-4800,,https://unos.org/,N,Approved,N,,,,N
+3,BSVA,BUS,Business,"Valiant AI, LLC",3251 Progress Drive,,Orlando,FL,32826,912-358-9177,,,N,Approved,N,,,,N
+5,CAAV,TX1,Transplant Hospital,Antelope Valley Medical Center,1600 West Avenue J,,Lancaster,CA,93534,661-949-5000,661-949-5510,https://www.avmc.org/,Y,Approved,N,KI,KI,,N
+5,CACH,TX1,Transplant Hospital,Rady Children's Hospital and Health Center,3020 Children's Way,,San Diego,CA,92123-4282,858-576-1700,858-966-5815,http://www.rchsd.org,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+5,CACL,IT1,Hospital Based Lab,HLA Laboratory at Childrens Hospital Los Angeles,4650 Sunset Boulevard,,Los Angeles,CA,90027,323-361-2358,323-361-8125,,N,Approved,N,,,,N
+5,CACL,TX1,Transplant Hospital,Children's Hospital Los Angeles,4650 Sunset Boulevard,,Los Angeles,CA,90027,323-660-2450,,http://www.chla.org,Y,Approved,N,"HR, KI, LI, PA",,"HR, KI, LI, PA",Y
+5,CACS,IT1,Hospital Based Lab,Cedars-Sinai Transplantation and Immunogenetics Laboratory,8700 W Beverly Boulevard,,Los Angeles,CA,90048-1869,310-423-4979,310-423-0391,http://www.csmc.edu/,N,Approved,N,,,,N
+5,CACS,TX1,Transplant Hospital,Cedars-Sinai Medical Center,8700 Beverly Boulevard,,Los Angeles,CA,90048,310-423-5000,,https://www.cedars-sinai.org/,Y,Approved,N,"AW, EM, GL, HL, HN, HR, KI, LE, LI, LU, MS, OG, PA, UE, UT",KI,KI,N
+5,CADN,OP1,Independent OPO,Donor Network West,12667 Alcosta Boulevard,Suite 500,San Ramon,CA,94583,888-570-9400,925-480-3101,http://www.donornetworkwest.org/,Y,Approved,N,,,,N
+5,CAGH,TX1,Transplant Hospital,Scripps Green Hospital,10666 North Torrey Pines Road,,La Jolla,CA,92037,858-455-9100,,https://scrippsamg.com/hospital/scripps-green-hospital/,Y,Approved,N,"KI, LI, PA",KI,,N
+5,CAGS,OP1,Independent OPO,Sierra Donor Services,3940 Industrial Boulevard,,West Sacramento,CA,95691,916-567-1600,916-567-8300,https://sierradonor.org/,Y,Approved,N,,,,N
+5,CAHP,TX1,Transplant Hospital,City of Hope National Medical Center,1500 East Duarte Road,,Duarte,CA,91010,626-256-4673,626-301-8489,https://www.cityofhope.org/,Y,Approved,N,PI,,,N
+5,CAIL,TT1,Independent Lab,"University of California, Irvine HLA Tissue Typing Laboratory","101 The City Drive South Building 54, Ro",,Orange,CA,92868,714-456-5889,714-456-3964,https://www.testmenu.com/uci/search?category=6,Y,Approved,N,,,,N
+5,CAIM,TX1,Transplant Hospital,University of California Irvine Medical Center,101 The City Drive South,,Orange,CA,92868,714-456-6011,,http://www.ucirvinehealth.org/medical-services/transplant,Y,Approved,N,"KI, PA",KI,,N
+5,CALA,TX1,Transplant Hospital,Harbor UCLA Medical Center,1000 West Carson Street,,Torrance,CA,90509,424-306-4000,,http://www.harbor-ucla.org/,Y,Approved,N,KI,KI,,N
+5,CALL,IT1,Hospital Based Lab,Histocompatibility and Flow Cytometry Laboratories at Loma Linda University,11234 Anderson Street,,Loma Linda,CA,92354,909-558-4000,,,N,Approved,N,,,,N
+5,CALL,TX1,Transplant Hospital,Loma Linda University Medical Center,11234 Anderson Street,,Loma Linda,CA,92354,909-558-3636,909-558-3759,https://lluh.org/transplant-institute,Y,Approved,N,"HR, KI, LI, PA",KI,"HR, KI",N
+5,CAMB,TX1,Transplant Hospital,UCSF Medical Center at Mission Bay,1845 4th Street,,San Francisco,CA,94158,475-476-2423,415-476-9976,http://www.ucsfhealth.org,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+5,CANI,TT1,Independent Lab,Eurofins Donor & Product Testing (California),"1303 W. Optical Drive, Suite #380",,Azusa,CA,91702,213-387-4199,213-387-6543,https://www.eurofinsus.com/vrl,Y,Approved,N,,,,N
+5,CAOP,OP1,Independent OPO,OneLegacy,1303 West Optical Drive,,Azusa,CA,91702,213-229-5600,213-229-5601,http://www.onelegacy.org,Y,Approved,N,,,,N
+5,CAPC,TX1,Transplant Hospital,Lucile Salter Packard Children's Hospital at Stanford,725 Welch Road,,Palo Alto,CA,94304,650-497-8000,,https://www.stanfordchildrens.org/en.html,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA",KI,"HR, KI, LI, LU, PA",Y
+5,CAPM,IT1,Hospital Based Lab,Tissue Typing Laboratory at California Pacific Med Ctr,2330 Clay Street,Room 214,San Francisco,CA,94115,415-600-3430,415-600-3470,,N,Approved,N,,,,N
+5,CAPM,TX1,Transplant Hospital,California Pacific Medical Center-Van Ness Campus,1101 Van Ness Avenue,,San Francisco,CA,94109,415-600-6000,415-600-1298,http://www.cpmc.org/advanced/transplant,Y,Approved,N,"HR, KI, LI, PA","KI, LI",,N
+5,CASD,IO1,Hospital Based OPO,Lifesharing - A Donate Life Organization,7436 Mission Valley Road,,San Diego,CA,92108,619-543-7225,619-543-0017,http://www.lifesharing.org,Y,Approved,N,,,,N
+5,CASD,IT1,Hospital Based Lab,Histocompatibility and Immunogenetics Laboratory at UCSD,10865 Road to the Cure,Suite 150,San Diego,CA,92121,858-657-5740,858-642-0595,,N,Approved,N,,,,N
+5,CASD,TX1,Transplant Hospital,University of California San Diego Medical Center,9300 Campus Point Drive,,La Jolla,CA,92037,619-543-6222,,http://health.ucsd.edu,Y,Approved,N,"HL, HR, KI, LI, LU","KI, LI","HR, KI, LI, LU",N
+5,CASF,TX1,Transplant Hospital,University of California San Francisco Medical Center,505 Parnassus Avenue,,San Francisco,CA,94143,415-353-1551,,http://www.ucsfhealth.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI","HR, LU",N
+5,CASG,TX1,Transplant Hospital,Sutter Medical Center Sacramento,2825 Capital Avenue,,Sacramento,CA,95816,916-887-4242,916-887-4232,http://suttermedicalcenter.org/,Y,Approved,N,HR,,,N
+5,CASH,TX1,Transplant Hospital,Sharp Memorial Hospital,7901 Frost Street,,San Diego,CA,92123-2788,858-939-3400,,http://www.sharp.com/transplant/index.cfm,Y,Approved,N,"HR, KI",KI,,N
+5,CASJ,TX1,Transplant Hospital,Saint Joseph Hospital,1100 West Stewart Drive,,Orange,CA,92868,714-633-9111,,http://www.sjo.org,Y,Approved,N,"KI, PA",KI,,N
+5,CASL,TT1,Independent Lab,Stanford Blood Center - Histocompatibility & Immunogenetics Lab- Porter,3155 Porter Drive,,Palo Alto,CA,94304,650-724-0100,650-724-0294,,Y,Approved,N,,,,N
+5,CASM,TX1,Transplant Hospital,University of California Davis Medical Center,2315 Stockton Boulevard,,Sacramento,CA,95817-2201,916-734-2111,,http://www.ucdmc.ucdavis.edu/transplant/,Y,Approved,N,"KI, LI","KI, LI",KI,N
+5,CAST,TT1,Independent Lab,"Vitalant HLA Laboratory, Northern California",10536 Peter A. McCuen Boulevard,,Mather,CA,95655-4128,916-453-3680,916-456-2414,http://www.BloodSource.org,Y,Approved,N,,,,N
+5,CASU,IT1,Hospital Based Lab,"Stanford Blood Center, Histocompatibility Lab-Hillview",3373 Hillview Avenue,,Palo Alto,CA,94304-1204,650-723-5548,650-723-6350,http://bloodcenter.stanford.edu,N,Approved,N,,,,N
+5,CASU,TX1,Transplant Hospital,Stanford Health Care,500 Pasteur Drive,,Stanford,CA,94305,650-723-4000,650-725-4085,http://stanfordhospital.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI",LU,N
+5,CATL,TT1,Independent Lab,"University of California at Los Angeles, Immunogenetics Center",1000 Veteran Avenue,,Los Angeles,CA,90095-1652,310-825-7651,310-206-3216,https://www.uclahealth.org/departments/pathology/research-services/immunogenetics-uic,Y,Approved,N,,,,N
+5,CAUC,TX1,Transplant Hospital,University of California at Los Angeles Medical Center,757 Westwood Plaza,,Los Angeles,CA,90095,310-825-6836,310-825-9111,https://www.uclahealth.org/transplants/,Y,Approved,N,"AW, HL, HR, IN, KI, LI, LU, OG, PA","KI, LI","HR, KI, LI, PA",N
+5,CAUH,TX1,Transplant Hospital,Keck Hospital of USC,1500 San Pablo Street,,Los Angeles,CA,90033-4612,323-442-8500,323-442-8672,http://transplant.keckmedicine.org/,Y,Approved,N,"HL, HR, KI, LI, LU, OG, PA","KI, LI",,N
+5,CAUS,TT1,Independent Lab,UCSF Immunogenetics and Transplantation Laboratory,45 Castro Street,Main HospitalLevel B,San Francisco,CA,94114,415-476-3886,415-502-4926,https://itl.ucsf.edu/,Y,Approved,N,,,,N
+8,COCH,TX1,Transplant Hospital,Children's Hospital Colorado,13123 East 16th Avenue,,Aurora,CO,80045,720-777-1234,,http://www.childrenscolorado.org/,Y,Approved,N,"HR, KI, LI",KI,"HR, KI, LI",Y
+8,COHL,TT1,Independent Lab,ClinImmune Labs,12705 E. Montview Blvd. Suite 250,,Aurora,CO,80010,303-724-1300,303-724-1310,http://www.clinimmune.com,Y,Approved,N,,,,N
+8,COIA,TT1,Independent Lab,Eurofins Donor & Product Testing (Colorado),6933-B S. Revere Parkway,,Centennial,CO,80012,303-365-9000,303-343-6666,https://www.eurofinsus.com/vrl,Y,Approved,N,,,,N
+8,COPM,TX1,Transplant Hospital,AdventHealth Porter,2525 South Downing Street,,Denver,CO,80210,303-778-1955,,https://www.adventhealth.com/hospital/adventhealth-porter/transplant-care,Y,Approved,N,"KI, LI",KI,,N
+8,CORS,OP1,Independent OPO,Donor Alliance,200 Spruce Street,,Denver,CO,80230,303-329-4747,303-321-1183,http://www.donoralliance.org,Y,Approved,N,,,,N
+8,COSL,TX1,Transplant Hospital,Presbyterian/St Luke's Medical Center,1719 East 19th Avenue,,Denver,CO,80218,303-839-6000,,https://healthonecares.com/locations/presbyterian-st-lukes/,Y,Approved,N,"KI, LI",KI,,N
+8,COUC,TX1,Transplant Hospital,University of Colorado Hospital/Health Science Center,12605 East 16th Avenue,,Aurora,CO,80045,720-848-2280,,http://www.uch.edu/conditions/transplant-services/index.aspx,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",LU,N
+1,CTHH,IT1,Hospital Based Lab,Hartford Hospital Transplant Immunology Laboratory,80 Seymour Street,,Hartford,CT,06102-5037,860-972-3938,860-597-4143,,N,Approved,N,,,,N
+1,CTHH,TX1,Transplant Hospital,Hartford Hospital,80 Seymour Street,,Hartford,CT,06102-5037,860-972-4219,860-545-4328,http://www.harthosp.org,Y,Approved,N,"HR, KI, LI","KI, LI",KI,N
+1,CTYN,IT1,Hospital Based Lab,Histocompatibility and Immune Evaluation Laboratory at Yale,333 Cedar Street,FMB 15,New Haven,CT,06520-8062,203-785-4812,203-785-7162,,N,Approved,N,,,,N
+1,CTYN,TX1,Transplant Hospital,Yale New Haven Hospital,20 York Street,,New Haven,CT,06510,203-785-2565,,http://www.ynhh.org,Y,Approved,N,"HN, HR, KI, LI","KI, LI","HR, KI, LI",N
+2,DCCH,TX1,Transplant Hospital,Children's National Medical Center,"111 Michigan Avenue, NW",,Washington,DC,20010-2970,202-476-5000,202-476-4366,https://www.childrensnational.org/,Y,Approved,N,"HL, HR, KI, LU",KI,"HR, KI, LU",Y
+2,DCGU,IT1,Hospital Based Lab,Histocompatibility Laboratory at Georgetown University,"3800 Reservoir Road, NW",,Washington,DC,20007,202-444-3550,202-444-2861,,N,Approved,N,,,,N
+2,DCGU,TX1,Transplant Hospital,Medstar Georgetown Transplant Institute,3800 Reservoir Road NW,,Washington,DC,20007,202-444-3700,202-444-6193,http://gumc.georgetown.edu/,Y,Approved,N,"IN, KI, LE, LI, PA, PI","KI, LI","KI, LI, PA",N
+2,DCGW,TX1,Transplant Hospital,George Washington University Hospital,900 23rd Street NW,,Washington,DC,20037,202-715-4000,202-715-4663,https://www.gwhospital.com,Y,Approved,N,"KI, LI, PA",KI,,N
+2,DCWH,TX1,Transplant Hospital,Washington Hospital Center,"110 Irving Street, NW",,Washington,DC,20010,202-877-7000,,http://www.whcenter.org,Y,Approved,N,"HR, KI",,,N
+2,DCWR,IT1,Hospital Based Lab,Transplant Immunology Lab at Walter Reed National Medical Center - Bethesda,8901 Wisconsin Avenue,"Bldg 9, 1st Fl,#1640",Bethesda,MD,20889,301-319-7989,301-400-0929,http://www.wrnmmc.capmed.mil,N,Approved,Y,,,,N
+2,DCWR,TX1,Transplant Hospital,Walter Reed National Military Medical Center at Bethesda,8901 Rockville Pike,,Bethesda,MD,20889,301-295-4331,301-295-6081,https://walterreed.tricare.mil/,Y,Approved,Y,KI,KI,,N
+2,DEAI,TX1,Transplant Hospital,Nemours Children's Hospital Delaware,1600 Rockland Road,,Wilmington,DE,19803,302-651-4000,,http://www.nemours.org/about/location/nchaidhc.html,Y,Approved,N,"HR, KI, LI, PA","KI, LI","HR, KI, LI",Y
+2,DECC,TX1,Transplant Hospital,Christiana Care Health Services,4735 Ogletown-Stanton Road,,Newark,DE,19713,302-623-3863,302-623-3864,http://www.christianacare.org,Y,Approved,N,KI,KI,,N
+3,FLAC,TX1,Transplant Hospital,Johns Hopkins All Children's Hospital,501 6th Avenue South,,St. Petersburg,FL,33701,727-898-7451,727-767-2880,http://www.hopkinsallchildrens.org,Y,Approved,N,HR,,HR,Y
+3,FLCC,TX1,Transplant Hospital,Cleveland Clinic Florida Weston,3100 Weston Road,,Weston,FL,33331,954-689-5000,954-659-6023,http://my.clevelandclinic.org/florida/default.aspx,Y,Approved,N,"HR, KI, LI","KI, LI",,N
+3,FLFH,IO1,Hospital Based OPO,OurLegacy,900 Winderley Place Suite 2200,,Maitland,FL,32751,407-543-4100,407-644-8876,https://www.ourlegacyfl.org/,Y,Approved,N,,,,N
+3,FLFH,IT1,Hospital Based Lab,Tissue Typing Laboratory at Florida Hospital,601 East Rollins Street,,Orlando,FL,32803-1273,407-303-1681,407-303-7792,,N,Approved,N,,,,N
+3,FLFH,TX1,Transplant Hospital,AdventHealth Orlando,601 East Rollins Avenue,,Orlando,FL,32803,407-303-2474,407-303-0680,https://www.adventhealthtransplantinstitute.com/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","KI, LI",N
+3,FLHM,TX1,Transplant Hospital,Halifax Health,303 North Clyde Morris Boulevard,,Daytona Beach,FL,32114,386-947-4650,,http://www.halifaxhealth.org,Y,Approved,N,KI,KI,,N
+3,FLJD,TX1,Transplant Hospital,Memorial Regional Hospital/Joe DiMaggio Children's Hospital,3501 Johnson Street,,Hollywood,FL,33021,954-265-3437,954-983-5052,http://www.jdch.com/html/medical-specialties/cardiac/programs-services/heart-transplant-program.html,Y,Approved,N,HR,,HR,Y
+3,FLJM,TX1,Transplant Hospital,Jackson Memorial Hospital University of Miami School of Medicine,1801 Northwest 9th Avenue,3rd Floor,Miami,FL,33136,305-355-5000,,https://transplant.jacksonhealth.org/,Y,Approved,N,"AW, HL, HR, IN, KI, LI, LU, PA, PI","KI, LI","HR, KI, LI, LU, PA",N
+3,FLLM,TX1,Transplant Hospital,Largo Medical Center,201 14th Street Southwest,,Largo,FL,33770,727-588-5728,727-588-5906,http://www.largomedical.com,Y,Approved,N,"HR, KI, LI","KI, LI",,N
+3,FLML,TT1,Independent Lab,University of Miami Jackson Memorial Hospital Histocompatibility Testing,1600 NW 10th Avenue,Room 8160,Miami,FL,33101,305-243-3131,305-243-6341,https://umiamihealth.org/IHL,Y,Approved,N,,,,N
+3,FLMP,OP1,Independent OPO,South Florida Donor Network,"15100 NW 67th Ave, Suite 300",,Miami Lakes,FL,33014,855-683-6667,702-796-4225,https://www.sfldonor.org/,Y,Approved,N,,,,N
+3,FLMR,TX1,Transplant Hospital,Memorial Regional Hospital,3501 Johnson Street,,Hollywood,FL,33021,954-265-7750,954-893-6518,http://www.memorialregional.com,Y,Approved,N,"HR, KI, PA",KI,KI,N
+3,FLSF,TT1,Independent Lab,LifeLink Transplantation Immunology Laboratory,9661 Delaney Creek Boulevard,,Tampa,FL,33619,813-253-3866,813-254-3367,http://www.lifelinkfound.org,Y,Approved,N,,,,N
+3,FLSH,TX1,Transplant Hospital,Ascension Sacred Heart Pensacola,5151 North 9th Avenue,,Pensacola,FL,32504,850-416-7000,850-416-1075,https://healthcare.ascension.org/locations/florida/flpen/pensacola-ascension-sacred-heart-pensacola,Y,Approved,N,KI,KI,,N
+3,FLSL,IT1,Hospital Based Lab,HLA Laboratory at Mayo Clinic Florida,4500 San Pablo Road,,Jacksonville,FL,32224,904-956-3318,904-956-3336,,N,Approved,N,,,,N
+3,FLSL,TX1,Transplant Hospital,Mayo Clinic Hospital Florida,4500 San Pablo Road,Mayo Bldg 3 North,Jacksonville,FL,32224,904-953-2000,,https://www.mayoclinic.org/departments-centers/transplant-center/home/orc-20203891,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,LU,N
+3,FLTG,TX1,Transplant Hospital,Tampa General Hospital,1 Tampa General Circle,,Tampa,FL,33606,813-844-7000,813-844-4016,http://www.tgh.org,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","KI, LU",N
+3,FLUF,IO1,Hospital Based OPO,LifeQuest Organ Recovery Services,4016 Northwest 22nd Drive,,Gainesville,FL,32605,352-733-0350,352-733-0353,http://lifequestfla.org,Y,Approved,N,,,,N
+3,FLUF,IT1,Hospital Based Lab,Immunology Transplantation Laboratory/ Shands Hospital,4800 SW 35th Drive,,Gainesville,FL,32608,352-265-0072,352-265-0626,http://www.shands.org,N,Approved,N,,,,N
+3,FLUF,TX1,Transplant Hospital,UF Health Shands Hospital,1600 Southwest Archer Road,,Gainesville,FL,32610,877-743-2782,,https://ufhealth.org/transplant-center/overview,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","HR, KI, LU, PA",N
+3,FLWC,OP1,Independent OPO,LifeLink of Florida,9661 Delaney Creek Boulevard,,Tampa,FL,33619,813-253-2640,813-349-6515,https://lifelinkfoundation.org/our-story/#llflorida,Y,Approved,N,,,,N
+3,GAEH,TX1,Transplant Hospital,Children’s Healthcare of Atlanta - Arthur M. Blank Hospital,2220 North Druid Hills Road,,Atlanta,GA,30329,404-785-6119,,http://www.choa.org/,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+3,GAEM,IT1,Hospital Based Lab,HLA Laboratory at Emory University,"1364 Clifton Road, NE",Room C184,Atlanta,GA,30322,404-712-7365,404-712-4717,https://www.emoryhealthcare.org/,N,Approved,N,,,,N
+3,GAEM,TX1,Transplant Hospital,Emory University Hospital,"1364 Clifton Road, NE",,Atlanta,GA,30322-1064,855-366-7989,404-712-2617,https://www.emoryhealthcare.org/centers-programs/transplant-center/index.html,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",,N
+3,GALL,OP1,Independent OPO,LifeLink of Georgia,2875 Northwoods Parkway,,Norcross,GA,30071,770-225-5465,770-225-5466,https://lifelinkfoundation.org/,Y,Approved,N,,,,N
+3,GAMC,IT1,Hospital Based Lab,Histocompatibility Immunology Laboratory at the Medical College of Georgia,1120 15th Street,BAS 1641,Augusta,GA,30912-4091,762-375-3311,706-721-2709,https://www.augustahealth.org/pathology-services/histocompatibility-immunology-laboratory/histocompatibility-immunology-laboratory,N,Approved,N,,,,N
+3,GAMC,TX1,Transplant Hospital,"Wellstar MCG Health, affiliated with Medical College of Georgia",1120 15th Street,,Augusta,GA,30912-7700,706-721-0211,,http://www.augustahealth.org,Y,Approved,N,"KI, PA",KI,KI,N
+3,GAPH,IT1,Hospital Based Lab,Piedmont Hospital Histocompatibility & Immunogenetics Laboratory,"1968 Peachtree Road, NW",,Atlanta,GA,30309,404-605-1833,,,N,Approved,N,,,,N
+3,GAPH,TX1,Transplant Hospital,Piedmont Hospital,"1968 Peachtree Road, NW",,Atlanta,GA,30309,404-605-5000,,http://www.piedmonttransplant.org/,Y,Approved,N,"HR, KI, LI, PA",KI,,N
+8,GPCJ,GPM,Individual,GPM Christopher Jaynes,,,,,,,,,Y,Approved,N,,,,N
+3,GPDJ,GPM,Individual,GPM Damion Jackson,,,,,,,,,Y,Approved,N,,,,N
+8,GPEP,GPM,Individual,GPM Eric Pahl,,,,,,,,,Y,Approved,N,,,,N
+7,GPHB,GPM,Individual,GPM Joseph Hillenburg,,,,,,,,,Y,Approved,N,,,,N
+2,GPHN,GPM,Individual,GPM Melodie Hengerer,,,,,,,,,Y,Approved,N,,,,N
+6,GPJB,GPM,Individual,GPM Jill Brown,,,,,,,,,Y,Approved,N,,,,N
+6,GPKY,GPM,Individual,GPM Kathleen Anderson,,,,,,,,,Y,Approved,N,,,,N
+2,GPLO,GPM,Individual,GPM Linda Ohler,,,,,,,,,Y,Approved,N,,,,N
+10,GPMV,GPM,Individual,GPM Vivek Mendiratta,,,,,,,,,Y,Approved,N,,,,N
+1,GPMY,GPM,Individual,GPM Michael Young,,,,,,,,,N,Interim Approval-Pending BOD Action,N,,,,N
+5,GPNE,GPM,Individual,GPM Nilay Etiler,,,,,,,,,Y,Approved,N,,,,N
+2,GPRG,GPM,Individual,GPM Robert Goodman,,,,,,,,,Y,Approved,N,,,,N
+4,GPRI,GPM,Individual,GPM Riki Graves,,,,,,,,,Y,Approved,N,,,,N
+7,GPRK,GPM,Individual,GPM Renee' Koeune,,,,,,,,,Y,Approved,N,,,,N
+2,GPRP,GPM,Individual,GPM Rachel Park,,,,,,,,,Y,Approved,N,,,,N
+9,GPSR,GPM,Individual,GPM Sanjog Rawtani,,,,,,,,,Y,Interim Approval-Pending BOD Action,N,,,,N
+4,GPTG,GPM,Individual,GPM Tracy Giacoma,,,,,,,,,Y,Approved,N,,,,N
+6,HIOP,OP1,Independent OPO,Legacy of Life Hawaii,405 N. Kuakini Street,Suite 810,Honolulu,HI,96817,808-599-7630,808-599-7631,http://www.legacyoflifehawaii.org/,Y,Approved,N,,,,N
+6,HIQM,TX1,Transplant Hospital,The Queen's Medical Center,1301 Punchbowl Street,,Honolulu,HI,96813,808-538-9011,,https://www.queens.org/locations/hospitals/qmc/services/transplant-center/,Y,Approved,N,"KI, LI, PA",KI,,N
+6,HITL,TT1,Independent Lab,Eurofins Donor & Product Testing (Hawaii),2226 Liliha Street,5th Floor,Honolulu,HI,96817,855-875-5227,808-595-7078,https://www.eurofinsus.com/vrl,Y,Approved,N,,,,N
+8,IAIM,IT1,Hospital Based Lab,Histocompatibility Laboratory at Iowa Methodist Medical Center,1200 Pleasant Street,,Des Moines,IA,50309,515-241-6510,515-241-8535,http://www.ihsdesmines.org/,N,Approved,N,,,,N
+8,IAIM,TX1,Transplant Hospital,Iowa Methodist Medical Center,1200 Pleasant Street,,Des Moines,IA,50309-1453,515-241-6212,,https://www.unitypoint.org/locations/unitypoint-health---iowa-methodist-medical-center,Y,Approved,N,KI,KI,,N
+8,IAIV,TX1,Transplant Hospital,University of Iowa Hospitals and Clinics Transplant Programs,200 Hawkins Drive,,Iowa City,IA,52242-1084,319-356-8877,319-353-7773,http://www.uihealthcare.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","HR, KI, LI",N
+8,IAOP,OP1,Independent OPO,Iowa Donor Network,550 Madison Avenue,,North Liberty,IA,52317,515-727-7897,319-665-3788,http://www.iowadonornetwork.org,Y,Approved,N,,,,N
+8,IAVA,IT1,Hospital Based Lab,Iowa Regional Histocompatibility and Immunogenetics Laboratory,601 U.S. 6 West,,Iowa City,IA,52246,319-338-0581,,,N,Approved,N,,,,N
+8,IAVA,TX1,Transplant Hospital,The Iowa City VA Health Care System,601 Highway 6 West,,Iowa City,IA,52246,319-338-0581,,https://www.iowacity.va.gov/,Y,Approved,Y,KI,KI,,N
+7,ILCH,TX1,Transplant Hospital,Advocate Christ Medical Center,4440 West 95th Street,,Oak Lawn,IL,60453,877-684-4327,,http://www.advocatehealth.com/cmc/,Y,Approved,N,"HR, KI",KI,HR,N
+7,ILCM,TX1,Transplant Hospital,Ann & Robert H. Lurie Children's Hospital of Chicago,225 East Chicago Avenue,Siragusa Tpl Center,Chicago,IL,60611,312-227-4030,312-227-9645,http://www.luriechildrens.org,Y,Approved,N,"HR, IN, KI, LI, PA","KI, LI","HR, KI, LI, PA",Y
+7,ILIP,OP1,Independent OPO,Gift of Hope Organ & Tissue Donor Network,425 Spring Lake Drive,,Itasca,IL,60143,630-758-2600,630-758-2603,http://www.giftofhope.org,Y,Approved,N,,,,N
+7,ILLU,IT1,Hospital Based Lab,Clinical Histocompatibility Laboratory at Loyola University Medical Center,2160 S. First Avenue,,Maywood,IL,60153,708-216-3626,,,N,Approved,N,,,,N
+7,ILLU,TX1,Transplant Hospital,Loyola University Medical Center,2160 South First Avenue,,Maywood,IL,60153,708-216-9000,,http://www.loyolamedicine.org,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,LU,N
+7,ILMM,IT1,Hospital Based Lab,Histocompatibility Laboratory at Memorial Medical Center,701 North First Street,,Springfield,IL,62781,217-788-3905,217-788-5576,https://memorial.health/medical-services/laboratory/,N,Approved,N,,,,N
+7,ILMM,TX1,Transplant Hospital,Springfield Memorial Hospital,701 North 1st Street,,Springfield,IL,62781-0001,217-788-3000,217-788-3686,https://memorial.health/,Y,Approved,N,KI,KI,,N
+7,ILNM,IT1,Hospital Based Lab,Transplant Immunology Laboratory at Northwestern Memorial Hospital,"300 E. Superior Street, Tarry Building 1",,Chicago,IL,60611,312-503-8069,312-503-2563,https://www.feinberg.northwestern.edu/sites/transplant/research/research-cores/histocom-core.html,N,Approved,N,,,,N
+7,ILNM,TX1,Transplant Hospital,Northwestern Memorial Hospital,251 E. Huron,,Chicago,IL,60611,312-926-2000,,https://www.nm.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI",LU,N
+7,ILPL,IT1,Hospital Based Lab,Rush Medical Laboratories Histocompatibility Laboratory,1653 W. Congress Parkway,,Chicago,IL,60612-3833,312-942-8393,312-942-6787,,N,Approved,N,,,,N
+7,ILPL,TX1,Transplant Hospital,Rush University Medical Center,1620 West Harrison Street,,Chicago,IL,60612,312-942-5000,,http://www.rush.edu,Y,Approved,N,"KI, LI, PA",KI,,N
+7,ILRL,TT1,Independent Lab,Gift of Hope Organ & Tissue Donor Network Laboratory,425 Spring Lake Drive,,Itasca,IL,60143,630-758-2600,630-758-2602,http://www.giftofhope.org,Y,Approved,N,,,,N
+7,ILSF,TX1,Transplant Hospital,OSF Saint Francis Medical Center,530 NE Glen Oak Avenue,,Peoria,IL,61637,309-655-2000,,http://www.osfsaintfrancis.org/,Y,Approved,N,"HR, KI, PA",KI,KI,N
+7,ILUC,IT1,Hospital Based Lab,Transplant Immunology & Immunogenetics Laboratory,5841 S. Maryland Avenue,"MC0006, Room G-320",Chicago,IL,60637-1470,773-702-0700,773-834-5573,https://medlabs.uchicago.edu/clinical-specialties/clinical-pathology/transplant-immunology-immunogenetics/,N,Approved,N,,,,N
+7,ILUC,TX1,Transplant Hospital,University of Chicago Medical Center,5841 South Maryland Avenue,,Chicago,IL,60637,773-702-3000,,https://www.uchicagomedicine.org/,Y,Approved,N,"HL, HR, KI, LE, LI, LU, MS, PA, PI","KI, LI","KI, LI, LU, PA",N
+7,ILUI,IT1,Hospital Based Lab,Tissue Typing Laboratory at University of Illinois,808 S Wood Street,"Building 910, Rm 266",Chicago,IL,60612,312-996-1670,312-413-7538,,N,Approved,N,,,,N
+7,ILUI,TX1,Transplant Hospital,University of Illinois Medical Center,1740 West Taylor Street,,Chicago,IL,60612,312-996-7000,,http://hospital.uillinois.edu/,Y,Approved,N,"IN, KI, LI, PA, PI, UE","KI, LI",,N
+7,ILVA,TX1,Transplant Hospital,Edward Hines Jr. Veterans Administration Medical Center,5000 S. Fifth Ave,,Hines,IL,60141,708-202-3800,,https://www.hines.va.gov/,Y,Approved,Y,KI,,,N
+10,INIM,IT1,Hospital Based Lab,Indiana University Health Transplant Immunology Laboratory,I-65 at 21st Street,,Indianapolis,IN,46206-1367,317-962-6196,317-962-6195,,N,Approved,N,,,,N
+10,INIM,TX1,Transplant Hospital,Indiana University Health,1701 North Senate Boulevard,,Indianapolis,IN,46202,800-265-3220,,http://www.iuhealth.org,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+10,INOP,OP1,Independent OPO,Indiana Donor Network,3760 Guion Road,Suite 201,Indianapolis,IN,46222,317-685-0389,317-685-1687,http://indianadonornetwork.org/,Y,Approved,N,,,,N
+10,INSV,TX1,Transplant Hospital,Ascension St. Vincent Hospital,2001 West 86th Street,,Indianapolis,IN,46260,317-338-6499,,https://healthcare.ascension.org/st-vincent,Y,Approved,N,"HR, KI",KI,KI,N
+8,KSUK,TX1,Transplant Hospital,University of Kansas Hospital,4000 Cambridge Street,,Kansas City,KS,66160,913-588-5000,913-588-8786,https://www.kansashealthsystem.com/transplant,Y,Approved,N,"HR, KI, LI, PA","KI, LI",,N
+11,KYDA,OP1,Independent OPO,Network for Hope,10160 Linn Station Road,,Louisville,KY,40223,502-581-9511,502-589-5157,https://www.networkforhope.org/,Y,Approved,N,,,,N
+11,KYJH,IT1,Hospital Based Lab,Histocompatibility Laboratory at Jewish Hospital,200 Abraham Flexnor Way,,Louisville,KY,40202,502-587-4373,502-587-4504,,N,Approved,N,,,,N
+11,KYJH,TX1,Transplant Hospital,Jewish Hospital,200 Abraham Flexner Way,,Louisville,KY,40202-1886,502-587-4011,,https://uoflhealth.org/services/transplant/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, UE",KI,,N
+11,KYKC,TX1,Transplant Hospital,Norton Children's Hospital,231 East Chestnut Street,,Louisville,KY,40202,502-629-6000,,https://nortonchildrens.com/,Y,Approved,N,"HR, KI",KI,"HR, KI",Y
+11,KYUK,IT1,Hospital Based Lab,Immuno Molecular Pathology Laboratory at the University of Kentucky,800 Rose Street,HA629,Lexington,KY,40536-0293,859-323-5327,859-258-0029,https://www.testmenu.com/UKLab/,N,Approved,N,,,,N
+11,KYUK,TX1,Transplant Hospital,University of Kentucky Medical Center,1000 South Limestone,,Lexington,KY,40536,866-285-4337,,https://ukhealthcare.uky.edu/transplant-center,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,"KI, LU",N
+3,LACH,TX1,Transplant Hospital,Children's Hospital,200 Henry Clay Avenue,,New Orleans,LA,70118,504-899-9511,,http://www.chnola.org,Y,Approved,N,"KI, LI",KI,"KI, LI",Y
+3,LAOF,TX1,Transplant Hospital,Ochsner Foundation Hospital,1514 Jefferson Highway,,New Orleans,LA,70121,504-842-3925,504-837-0191,http://www.ochsner.org,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","HR, LI",N
+3,LAOP,OP1,Independent OPO,Louisiana Organ Procurement Agency,68190 Highway 190 Service Road,,Covington,LA,70433,504-837-3355,504-837-3587,http://www.lopa.org,Y,Approved,N,,,,N
+3,LATL,TT1,Independent Lab,Ochsner Histocompatibility and Immunogenetics Laboratory,1201 S. Clearview Parkway,Suite 401,New Orleans,LA,70121,504-842-3027,504-842-2357,,Y,Approved,N,,,,N
+3,LATM,TT1,Independent Lab,Histocompatibility and Immunogenetics Lab / Tulane Univ School of Medicine,1430 Tulane Avenue,Box SL75,New Orleans,LA,70112,504-988-5259,504-988-3636,http://www.tmc.tulane.edu,Y,Approved,N,,,,N
+3,LATU,TX1,Transplant Hospital,Tulane Medical Center,4200 Houma Boulevard,,Metairie,LA,70006,504-988-5344,504-988-6746,https://www.lcmchealth.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,,N
+3,LAWK,IT1,Hospital Based Lab,Willis Knighton Medical Center Laboratory,,2600 Greenwood Road,Shreveport,LA,71103-3908,318-212-4400,318-212-4470,,N,Approved,N,,,,N
+3,LAWK,TX1,Transplant Hospital,Willis-Knighton Medical Center,2600 Greenwood Road,,Shreveport,LA,71103,318-212-4000,,http://www.wkhs.com/Locations/MedicalCenter.aspx,Y,Approved,N,"KI, LI, PA",KI,,N
+1,MABI,IT1,Hospital Based Lab,Tissue Typing Laboratory at Beth Israel Deaconess Medical Center,330 Brookline Avenue,,Boston,MA,02215,617-667-3500,617-668-3512,https://www.bidmc.org/centers-and-departments/pathology/clinical-pathology,N,Approved,N,,,,N
+1,MABI,TX1,Transplant Hospital,Beth Israel Deaconess Medical Center,330 Brookline Avenue,,Boston,MA,02215,617-667-7000,,http://www.bidmc.org,Y,Approved,N,"HR, KI, LI, PA","KI, LI",,N
+1,MABS,TX1,Transplant Hospital,Baystate Medical Center,759 Chestnut Street,,Springfield,MA,01199-0001,413-794-2321,413-794-2322,https://www.baystatehealth.org/locations/baystate-medical-center,Y,Approved,N,KI,KI,,N
+1,MABU,TX1,Transplant Hospital,Boston Medical Center,One Boston Medical Center Place,,Boston,MA,02118,617-638-8000,,http://www.bmc.org,Y,Approved,N,KI,KI,,N
+1,MACH,TX1,Transplant Hospital,Boston Children's Hospital,300 Longwood Avenue,,Boston,MA,02115,617-355-6000,,http://www.childrenshospital.org,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA",,"HR, KI, LI, LU, PA",Y
+1,MALC,TX1,Transplant Hospital,Lahey Clinic Medical Center,41 Burlington Mall Road,,Burlington,MA,01805,781-744-2500,781-744-5743,http://www.lahey.org,Y,Approved,N,"KI, LI","KI, LI",,N
+1,MAMG,IT1,Hospital Based Lab,Histocompatibility Laboratory at Massachusetts General Hospital,55 Fruit Street,GRJ 220,Boston,MA,02114-2696,617-726-3722,617-724-3331,http://www.mgh.harvard.edu/,N,Approved,N,,,,N
+1,MAMG,TX1,Transplant Hospital,Massachusetts General Hospital,55 Fruit Street,,Boston,MA,02114-2696,617-726-2000,,http://www.massgeneral.org/transplant/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI","KI, LI",N
+1,MANM,IT1,Hospital Based Lab,Tufts Medical Center Laboratory,750 Washington Street,,Boston,MA,02111,617-636-5791,617-636-9105,https://www.tuftsmedicine.org/,N,Approved,N,,,,N
+1,MANM,TX1,Transplant Hospital,Tufts Medical Center,750 Washington Street,,Boston,MA,02111,617-636-5592,,https://www.tuftsmedicalcenter.org/,Y,Approved,N,"HR, KI, LI","KI, LI",,N
+1,MAOB,OP1,Independent OPO,New England Organ Bank,60 First Avenue,,Waltham,MA,02451,617-244-8000,617-244-8755,http://www.neds.org,Y,Approved,N,,,,N
+1,MAPB,IT1,Hospital Based Lab,Brigham & Women's Hospital Tissue Typing Lab,75 Francis Street,,Boston,MA,02115,617-732-5872,617-566-6176,,N,Approved,N,,,,N
+1,MAPB,TX1,Transplant Hospital,Brigham and Women's Hospital,75 Francis Street,,Boston,MA,02115,617-732-5500,,http://www.brighamandwomens.org/,Y,Approved,N,"HL, HR, KI, LE, LU, PA, UE",KI,,N
+1,MAUM,IT1,Hospital Based Lab,Histocompatibility Laboratory at UMASS Medical Center,"365 Plantation Street, RM B1-220",Biotech One,Worcester,MA,01605,508-334-6892,508-334-6846,,N,Approved,N,,,,N
+1,MAUM,TX1,Transplant Hospital,UMass Memorial Medical Center,55 North Lake Avenue,,Worcester,MA,01655,508-334-1000,508-856-1102,https://www.ummhealth.org/umass-memorial-medical-center,Y,Approved,N,"KI, LI","KI, LI",,N
+2,MDAI,TT1,Independent Lab,Applied Immunogenetics Laboratory,11419 Cronridge Drive,,Owings Mills,MD,21117,410-842-0700,,,Y,Approved,N,,,,N
+2,MDJH,TX1,Transplant Hospital,Johns Hopkins Hospital,1800 Orleans Street,,Baltimore,MD,21287,410-955-5000,,http://www.hopkinsmedicine.org/,Y,Approved,N,"AW, EM, HL, HN, HR, KI, LI, LU, OG, PA, UE","KI, LI","HR, KI, LI, LU",N
+2,MDPC,OP1,Independent OPO,Infinite Legacy,1730 Twin Springs Road,Suite 200,Baltimore,MD,21227,410-242-7000,410-242-1871,http://infinitelegacy.org/,Y,Approved,N,,,,N
+2,MDTL,TT1,Independent Lab,Immunogenetics Laboratories at the Johns Hopkins University,2041 E. Monument Street,,Baltimore,MD,21205-2222,410-955-3600,410-955-0431,https://labs.pathology.jhu.edu/immunogenetics/,Y,Approved,N,,,,N
+2,MDUM,IT1,Hospital Based Lab,Immunogenetics Laboratory,22 South Greene Street,Room P3G01,Baltimore,MD,21201,410-328-3297,443-462-5558,,N,Approved,N,,,,N
+2,MDUM,TX1,Transplant Hospital,University of Maryland Medical System,22 South Greene Street,,Baltimore,MD,21201,410-328-6363,,http://www.umm.edu/transplant,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",KI,N
+1,MEMC,TX1,Transplant Hospital,Maine Medical Center,22 Bramhall Street,,Portland,ME,04102-3175,207-662-0111,,http://www.mmc.org,Y,Approved,N,KI,KI,KI,N
+1,METL,TT1,Independent Lab,Nordx Immunogenetics Laboratory,301A U.S. 1,,Scarborough,ME,04074,207-396-7706,207-396-8307,https://www.mainehealth.org/nordx/about-nordx/accreditation,Y,Approved,N,,,,N
+10,MIBH,IT1,Hospital Based Lab,Histocompatibility Laboratory at Corewell Health William Beaumont Universit,3601 W Thirteen Mile Road,,Royal Oak,MI,48073-6769,248-898-9011,248-898-8057,https://www.beaumontlaboratory.com/,N,Approved,N,,,,N
+10,MIBH,TX1,Transplant Hospital,Corewell Health William Beaumont University Hospital,3601 West 13 Mile Road,,Royal Oak,MI,48073,248-898-5000,,http://www.beaumont.edu,Y,Approved,N,"KI, LI",KI,,N
+10,MICH,IT1,Hospital Based Lab,DMC University Laboratories - Histo & Immunogenetics Laboratory,"4707 Saint Antoine, WG71",,Detroit,MI,48201,313-745-8090,313-966-0934,,N,Approved,N,,,,N
+10,MICH,TX1,Transplant Hospital,Children's Hospital of Michigan,3901 Beaubien Boulevard,,Detroit,MI,48201-2119,313-745-5437,,http://www.dmc.org,Y,Approved,N,"HR, KI, LI",KI,"HR, KI, LI",Y
+10,MIDV,TX1,Transplant Hospital,Corewell Health Helen DeVos Children's Hospital,100 Michigan Street Northeast,,Grand Rapids,MI,49503,616-267-2802,,http://www.helendevoschildrens.org/,Y,Approved,N,KI,KI,KI,Y
+10,MIHF,IT1,Hospital Based Lab,Cellular Immunology & Histocompatibility at Henry Ford Hospital,2799 W Grand Boulevard,,Detroit,MI,48202,313-916-3165,313-916-9440,,N,Approved,N,,,,N
+10,MIHF,TX1,Transplant Hospital,Henry Ford Hospital,2799 West Grand Boulevard,,Detroit,MI,48202,313-916-2600,,http://www.henryfordhealth.org,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA","KI, LI",LU,N
+10,MIOP,OP1,Independent OPO,Gift of Life Michigan,3861 Research Park Drive,,Ann Arbor,MI,48108,866-500-5801,734-973-3133,http://www.giftoflifemichigan.org,Y,Approved,N,,,,N
+10,MIRI,TT1,Independent Lab,Immunohematology and Serology Laboratory at Michigan State University,B228 Life Sciences Building,,East Lansing,MI,48824,517-355-4616,517-353-5436,http://msuhla.chm.msu.edu,Y,Approved,N,,,,N
+10,MISH,TX1,Transplant Hospital,Corewell Health Grand Rapids Hospitals,100 Michigan Street Northeast,,Grand Rapids,MI,49503,616-391-2802,616-391-0688,http://www.spectrumhealth.org/,Y,Approved,N,"HL, HR, LU",,HR,N
+10,MISJ,TX1,Transplant Hospital,Ascension St. John Hospital,22101 Moross Road,,Detroit,MI,48236-2172,313-343-3047,,https://healthcare.ascension.org/specialty-care/kidney-health/michigan-kidney-transplant-specialty-center,Y,Approved,N,KI,KI,,N
+10,MISM,TX1,Transplant Hospital,Mercy Health Saint Mary's,200 Jefferson Avenue Southeast,,Grand Rapids,MI,49503,616-685-5000,,https://www.mercyhealth.com/location/trinity-health-saint-marys-grand-rapids,Y,Approved,N,KI,KI,,N
+10,MITS,TT1,Independent Lab,Gift of Life Michigan - Histocompatibility Laboratory,3861 Research Park Drive,,Ann Arbor,MI,48108,734-922-6014,734-973-0332,http://www.giftoflifemichigan.org,Y,Approved,N,,,,N
+10,MIUM,IT1,Hospital Based Lab,HLA Laboratory at the University of Michigan,2910 Huron Parkway,Room 1151,Ann Arbor,MI,48105,734-647-2783,734-936-7583,https://www.pathology.med.umich.edu/histocompatibility,N,Approved,N,,,,N
+10,MIUM,TX1,Transplant Hospital,University of Michigan Medical Center,1500 East Medical Center Drive,,Ann Arbor,MI,48109,734-936-4000,,https://www.uofmhealth.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+7,MNAN,TX1,Transplant Hospital,Abbott Northwestern Hospital,800 East 28th Street,,Minneapolis,MN,55407,612-863-4000,,https://www.allinahealth.org/abbott-northwestern-hospital,Y,Approved,N,HR,,,N
+7,MNCM,TX1,Transplant Hospital,Children's Minnesota,2525 Chicago Ave South,,Minneapolis,MN,55404,612-813-6000,,https://www.childrensmn.org,Y,Approved,N,HR,,HR,Y
+7,MNHC,TX1,Transplant Hospital,Hennepin County Medical Center,701 Park Avenue South,,Minneapolis,MN,55415,612-873-2810,612-904-4297,https://www.hennepinhealthcare.org/,Y,Approved,N,KI,KI,,N
+7,MNMC,IT1,Hospital Based Lab,Tissue Typing Laboratory at Mayo Clinic,201 W. Center Street,,Rochester,MN,55902,507-284-2640,507-284-1399,,N,Approved,N,,,,N
+7,MNMC,TX1,Transplant Hospital,Mayo Clinic Hospital Minnesota,1216 2nd Street Southwest,,Rochester,MN,55902,507-284-2511,,https://www.mayoclinic.org/departments-centers/transplant-center/home/orc-20203891?mc_id=us&utm_source=optn&utm_medium=l&utm_content=medicallistingtransplant&utm_campaign=mayoclinic&geo=national&placementsite=enterprise&invsrc=transplant&cauid=106867,Y,Approved,N,"HL, HN, HR, KI, LI, LU, OG, PA, UE","KI, LI","HR, KI, LI",N
+7,MNOP,OP1,Independent OPO,LifeSource Upper Midwest Organ Procurement Organization,2225 West River Road North,,Minneapolis,MN,55411,612-800-6100,612-800-6331,http://www.life-source.org,Y,Approved,N,,,,N
+7,MNUM,IT1,Hospital Based Lab,Clinical Histocompatibility Laboratory at University of Minnesota Med Ctr,Harvard Street at E. River Road,,Minneapolis,MN,55455,612-273-3100,612-273-7036,,N,Approved,N,,,,N
+7,MNUM,TX1,Transplant Hospital,"University of Minnesota Medical Center, Fairview",2450 Riverside Avenue,,Minneapolis,MN,55454,612-625-5115,612-625-2190,https://mhealthfairview.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI","HR, KI, LI, PA",N
+8,MOBH,TX1,Transplant Hospital,Barnes-Jewish Hospital,1 Barnes Jewish Hospital Plaza,,St. Louis,MO,63110,314-747-3000,,http://www.barnesjewish.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",,N
+8,MOCG,TX1,Transplant Hospital,Cardinal Glennon Children's Hospital,1465 South Grand Boulevard,,St. Louis,MO,63104,314-577-5600,,http://www.cardinalglennon.com,Y,Approved,N,"HR, KI, LI",KI,"HR, KI, LI",Y
+8,MOCH,TX1,Transplant Hospital,St. Louis Children's Hospital at Washington University Medical Center,One Children's Place,,St. Louis,MO,63110,314-454-6000,,http://www.stlouischildrens.org,Y,Approved,N,"HL, HR, KI, LI, LU","KI, LI","HR, KI, LI, LU",Y
+8,MOCM,TX1,Transplant Hospital,Children's Mercy Hospital,2401 Gillham Road,,Kansas City,MO,64108-4619,816-234-3000,816-302-8047,http://www.childrensmercy.org,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+8,MOHL,TT1,Independent Lab,HLA Laboratory at Barnes Jewish Hospital,One Barnes-Jewish Hospital Plaza,3rd Fl Service Bldg,St Louis,MO,63110,314-362-5322,314-362-4647,,Y,Approved,N,,,,N
+8,MOLB,TT1,Independent Lab,Mid-America Transplant Services Laboratory,"1110 Highland Plaza Drive, East",Suite 100,St. Louis,MO,63110,314-735-8234,,http://www.mts-stl.org,Y,Approved,N,,,,N
+8,MOLH,TX1,Transplant Hospital,St Luke's Hospital of Kansas City,4401 Wornall Road,,Kansas City,MO,64111-8277,816-932-2000,816-932-5990,https://www.saintlukeskc.org/locations/saint-lukes-hospital-kansas-city,Y,Approved,N,"HR, KI, LI",KI,,N
+8,MOMA,OP1,Independent OPO,Mid-America Transplant Services,1110 Highlands Plaza Drive East,Suite 100,St Louis,MO,63110,314-367-6767,314-735-8270,http://www.midamericatransplant.org/,Y,Approved,N,,,,N
+8,MORH,TX1,Transplant Hospital,Research Medical Center,2316 E Meyer Boulevard,,Kansas City,MO,64132,816-822-8257,,http://researchmedicalcenter.com/,Y,Approved,N,"KI, PA",KI,,N
+8,MOSL,IT1,Hospital Based Lab,St. Louis University HLA Laboratory,3635 Vista Avenue at Grand Boulevard,,St. Louis,MO,63110-0250,314-577-8671,314-268-5126,http://surgery.slu.edu/,N,Approved,N,,,,N
+8,MOSL,TX1,Transplant Hospital,SSM Health Saint Louis University Hospital,1201 South Grand Boulevard,,St. Louis,MO,63104,314-257-8000,314-268-5132,http://www.ssmhealth.com/sluhospital,Y,Approved,N,"KI, LI, PA",KI,,N
+8,MOUM,TX1,Transplant Hospital,University of Missouri Hospital and Clinics,1 Hospital Drive,,Columbia,MO,65201,573-882-4141,,http://www.muhealth.org/services/gim/nephrology/-kidney-transplant-program-/,Y,Approved,N,KI,KI,KI,N
+3,MSOP,OP1,Independent OPO,Mississippi Organ Recovery Agency,4400 Lakeland Drive,,Flowood,MS,39232,601-933-1000,601-933-1006,http://www.msora.org,Y,Approved,N,,,,N
+3,MSUM,IT1,Hospital Based Lab,Tissue Typing Laboratory of the University of Mississippi,2500 N. State Street,,Jackson,MS,39216-4505,601-984-1564,601-984-1835,,N,Approved,N,,,,N
+3,MSUM,TX1,Transplant Hospital,University of Mississippi Medical Center,2500 North State Street,,Jackson,MS,39216-4505,601-984-1000,,http://www.umc.edu,Y,Approved,N,"HR, KI, LI, PA",KI,"HR, KI",N
+8,MWKC,TT1,Independent Lab,Midwest Transplant Network Histocompatibility Laboratory Westwood,1900 W. 47th Place,Suite 400,Westwood,KS,66205-1867,913-262-1668,913-262-5130,https://www.mwtn.org/,Y,Approved,N,,,,N
+8,MWOB,OP1,Independent OPO,Midwest Transplant Network,1900 W. 47th Place,Suite 400,Westwood,KS,66205,913-262-1668,913-262-5130,http://www.mwtn.org/,Y,Approved,N,,,,N
+11,NCBG,IT1,Hospital Based Lab,HLA/Immunogenetics Lab,145 Kimel Park Drive,Suite 250,Winston-Salem,NC,27103,336-716-4456,,,N,Approved,N,,,,N
+11,NCBG,TX1,Transplant Hospital,Wake Forest Baptist Medical Center,1 Medical Center Boulevard,,Winston-Salem,NC,27157,336-716-2011,,http://www.wakehealth.edu,Y,Approved,N,"HR, KI, PA",KI,"KI, PA",N
+11,NCCM,IO1,Hospital Based OPO,LifeShare Carolinas,"3621 Randolph Road, Suite 100",,Charlotte,NC,28211,704-512-3303,704-512-3056,http://www.lifesharecarolinas.org/,Y,Approved,N,,,,N
+11,NCCM,IT1,Hospital Based Lab,Immunology Laboratory at Carolinas Medical Center,5040 Airport Center Parkway,Building H,Charlotte,NC,28208,704-512-4900,704-512-4919,,N,Approved,N,,,,N
+11,NCCM,TX1,Transplant Hospital,Carolinas Medical Center,1000 Blythe Boulevard,,Charlotte,NC,28203,704-355-2000,,https://atriumhealth.org/,Y,Approved,N,"HR, KI, LI, PA",KI,"HR, KI, LI",N
+11,NCDU,IT1,Hospital Based Lab,Clinical Transplantation Immunology Laboratory at Duke University Med. Ctr.,Research Park,Building 3,Durham,NC,27710,919-684-3089,919-684-9089,,N,Approved,N,,,,N
+11,NCDU,TX1,Transplant Hospital,Duke University Hospital,2301 Erwin Road,,Durham,NC,27710,919-684-8111,,http://www.dukehealth.org,Y,Approved,N,"AW, HL, HR, IN, KI, LI, LU, PA, UE","KI, LI","HR, KI, LI, LU, PA",N
+11,NCEC,IT1,Hospital Based Lab,Histocompatibility Laboratory at Vidant Medical Center,2100 Stantonsburg Road,,Greenville,NC,27834,252-847-4941,252-847-4209,,N,Approved,N,,,,N
+11,NCEC,TX1,Transplant Hospital,ECU Health Medical Center,2100 Stantonsburg Road,,Greenville,NC,27834,252-847-4100,,http://www.vidanthealth.com,Y,Approved,N,"KI, PA",KI,KI,N
+11,NCMH,IT1,Hospital Based Lab,Histocompatibility Laboratory at UNC Hospitals,101 Manning Drive,,Chapel Hill,NC,27514,984-974-4057,984-974-1662,,N,Approved,N,,,,N
+11,NCMH,TX1,Transplant Hospital,University of North Carolina Hospitals,101 Manning Drive,,Chapel Hill,NC,27514-4220,984-974-9950,,http://www.unchealthcare.org,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+11,NCNC,OP1,Independent OPO,HonorBridge,909 E. Arlington Boulevard,,Greenville,NC,27858,919-489-8404,919-493-5112,https://honorbridge.org/,Y,Approved,N,,,,N
+7,NDMC,TX1,Transplant Hospital,Sanford Bismarck Medical Center,300 N 7th Street,,Bismarck,ND,58501-5525,701-323-6000,,https://www.sanfordhealth.org,Y,Approved,N,KI,KI,,N
+7,NDSL,TX1,Transplant Hospital,Sanford Medical Center Fargo,801 North Broadway Drive,,Fargo,ND,58122,701-234-2000,,https://www.sanfordhealth.org/medical-services/transplant-surgery,Y,Approved,N,KI,KI,,N
+7,NDTL,TT1,Independent Lab,Sanford Histocompatibility Laboratory,222 N. 7th Street,,Bismarck,ND,58506-5505,701-323-5457,701-323-5874,,Y,Approved,N,,,,N
+7,NDTS,TT1,Independent Lab,Sanford Clinic - Fargo Histocompatibility Laboratory,,737 Broadway,Fargo,ND,58122,701-234-2411,701-234-2452,,Y,Approved,N,,,,N
+8,NECH,TX1,Transplant Hospital,Children’s Nebraska,8200 Dodge Street,,Omaha,NE,68114-4113,402-955-5400,,http://www.childrensomaha.org,Y,Approved,N,HR,,HR,Y
+8,NEOR,OP1,Independent OPO,Live On Nebraska,3867 Leavenworth Street,,Omaha,NE,68105,402-733-1800,402-733-9312,https://liveonnebraska.org/,Y,Approved,N,,,,N
+8,NEUN,IT1,Hospital Based Lab,Molecular Diagnostics Laboratory at The Nebraska Medical Center,985454 Nebraska Medical Center,,Omaha,NE,68198-5454,402-559-7630,402-559-2490,http://www.nebraskamed.com,N,Approved,N,,,,N
+8,NEUN,TX1,Transplant Hospital,The Nebraska Medical Center,4350 Dewey Avenue,,Omaha,NE,68105,402-559-4000,402-559-8220,http://www.nebraskamed.com,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+1,NHDH,TX1,Transplant Hospital,Mary Hitchcock Memorial Hospital,One Medical Center Drive,,Lebanon,NH,03756-0001,603-653-3931,603-650-0924,http://www.dhmc.org,Y,Approved,N,KI,KI,KI,N
+2,NJBI,TX1,Transplant Hospital,Newark Beth Israel Medical Center,201 Lyons Avenue,4th Floor,Newark,NJ,07112,973-926-7000,,https://www.rwjbh.org/newark-beth-israel-medical-center/,Y,Approved,N,"HL, HR, KI, LU",,,N
+2,NJHK,TX1,Transplant Hospital,Hackensack University Medical Center,30 Prospect Avenue,,Hackensack,NJ,07601-1991,201-996-2000,,http://www.hackensackumc.org/,Y,Approved,N,"KI, PA",KI,KI,N
+2,NJLL,TX1,Transplant Hospital,Virtua Our Lady of Lourdes Hospital,1600 Haddon Avenue,,Camden,NJ,08103-3117,856-757-3500,856-886-5367,https://www.virtua.org/locations/hospital-virtua-our-lady-of-lourdes,Y,Approved,N,"KI, LI, PA",KI,,N
+2,NJRW,TX1,Transplant Hospital,Robert Wood Johnson University Hospital,1 Robert Wood Johnson Place,,New Brunswick,NJ,08901,732-828-3000,732-235-8149,http://www.rwjuh.edu,Y,Approved,N,"HR, KI, PA",KI,KI,N
+2,NJSB,TX1,Transplant Hospital,Saint Barnabas Medical Center,94 Old Short Hills Road,,Livingston,NJ,07039,973-322-5000,,http://www.saintbarnabas.com,Y,Approved,N,"KI, PA",KI,KI,N
+2,NJTL,TT1,Independent Lab,New Jersey Organ and Tissue Sharing Network Transplant Laboratory,691 Central Avenue,,New Providence,NJ,07974,908-516-5454,908-516-5554,https://www.njsharingnetwork.org/lab/,Y,Approved,N,,,,N
+2,NJTO,OP1,Independent OPO,New Jersey Organ and Tissue Sharing Network OPO,691 Central Avenue,,New Providence,NJ,07974,908-516-5400,908-516-5501,http://www.njsharingnetwork.org,Y,Approved,N,,,,N
+2,NJUH,TX1,Transplant Hospital,University Hospital,150 Bergen Street,,Newark,NJ,07103-2406,973-972-7218,,http://www.uhnj.org/,Y,Approved,N,LI,,,N
+5,NMAQ,TX1,Transplant Hospital,"University Hospital, University of New Mexico Health Sciences Center",2211 Lomas Boulevard NE,,Albuquerque,NM,87106-3809,505-272-2111,,http://hospitals.unm.edu/,Y,Approved,N,KI,KI,KI,N
+5,NMPH,TX1,Transplant Hospital,Presbyterian Hospital,1100 Central Avenue Southeast,,Albuquerque,NM,87106,505-841-1234,,https://www.phs.org/doctors-services/services-centers/Pages/kidney-transplant-services.aspx,Y,Approved,N,"KI, PA",KI,,N
+5,NMTL,TT1,Independent Lab,"Tricore, Inc.","1001 Woodward Place, NE",,Albuquerque,NM,87102,505-938-8400,505-938-8410,http://tricore.org/,Y,Approved,N,,,,N
+5,NVGL,TT1,Independent Lab,"Nevada Donor Network, Immunogenetics Laboratory in Nevada",2055 E. Sahara Avenue,,Las Vegas,NV,89104,855-683-6667,702-384-8198,http://www.nvdonor.org,Y,Approved,N,,,,N
+5,NVLV,OP1,Independent OPO,Nevada Donor Network,2055 East Sahara Avenue,,Las Vegas,NV,89104,702-796-9600,702-796-4225,http://www.nvdonor.org,Y,Approved,N,,,,N
+5,NVRR,TX1,Transplant Hospital,Renown Regional Medical Center,1155 Mill Street,,Reno,NV,89502,775-982-3313,775-982-8063,https://www.renown.org/,Y,Approved,N,KI,KI,,N
+5,NVUM,TX1,Transplant Hospital,University Medical Center of Southern Nevada,1800 West Charleston Boulevard,,Las Vegas,NV,89102,702-383-2000,,http://www.umcsn.com/,Y,Approved,N,"KI, PA",KI,,N
+9,NYAL,TT1,Independent Lab,Transplantation Immunology Laboratory of the Albany Medical College,47 New Scotland Avenue,MC 122,Albany,NY,12208,518-262-3070,518-262-6274,,Y,Approved,N,,,,N
+9,NYAM,TX1,Transplant Hospital,Albany Medical Center Hospital,43 New Scotland Avenue,,Albany,NY,12208,518-262-3125,,http://www.amc.edu,Y,Approved,N,KI,KI,KI,N
+9,NYAP,OP1,Independent OPO,Center for Donation and Transplant,218 Great Oaks Boulevard,,Albany,NY,12203,518-262-5606,518-262-5427,http://www.cdtny.org/,Y,Approved,N,,,,N
+9,NYCC,TX1,Transplant Hospital,Long Island Jewish Medical Center-Cohen Children's Medical Center,269-01 76th Avenue,,Queens,NY,11040,718-470-3000,718-470-0887,https://childrenshospital.northwell.edu/,Y,Approved,N,"HR, KI",KI,"HR, KI",Y
+9,NYCP,IT1,Hospital Based Lab,Immunogenetics Laboratory at Columbia Presbyterian Medical Center,622 W. 168th Street,,New York,NY,10032-3784,212-305-6941,212-305-3429,,N,Approved,N,,,,N
+9,NYCP,TX1,Transplant Hospital,NY Presbyterian Hospital/Columbia Univ. Medical Center,622 West 168th Street,,New York,NY,10032,212-305-8110,,http://www.nyp.org/transplant/transplant-services,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+9,NYDS,IT1,Hospital Based Lab,Transplantation Immunology Laboratory at Brooklyn,450 Clarkson Avenue,Box 1197,Brooklyn,NY,11203-2098,718-270-1914,718-270-3369,,N,Approved,N,,,,N
+9,NYDS,TX1,Transplant Hospital,"State University of New York, Downstate Medical Center",450 Clarkson Avenue,Box 40,Brooklyn,NY,11203-2098,718-270-1000,,http://www.downstate.edu/,Y,Approved,N,KI,KI,KI,N
+9,NYEC,TX1,Transplant Hospital,Erie County Medical Center,462 Grider Street,,Buffalo,NY,14215-3098,716-898-3000,716-961-7027,http://www.ecmc.edu,Y,Approved,N,"KI, PA",KI,,N
+9,NYFL,IO1,Hospital Based OPO,Finger Lakes Donor Recovery Network,Corporate Woods of Brighton,"Bldg 30, Suite 220",Rochester,NY,14623,585-272-4930,585-272-4956,http://www.donorrecovery.org,Y,Approved,N,,,,N
+9,NYFL,IT1,Hospital Based Lab,Tissue Typing Laboratory at Strong Memorial Hospital,601 Elmwood Avenue,,Rochester,NY,14642-8410,585-275-0985,585-271-7929,https://www.urmc.rochester.edu/pathology-labs/clinical/hla-tissue-typing,N,Approved,N,,,,N
+9,NYFL,TX1,Transplant Hospital,"Strong Memorial Hospital, University of Rochester Medical Center",601 Elmwood Avenue,,Rochester,NY,14642-8410,585-275-2100,585-273-1118,http://www.urmc.edu,Y,Approved,N,"HR, KI, LI, PA","KI, LI",KI,N
+9,NYIL,TT1,Independent Lab,Immunogenetics Lab / The Rogosin Institute,430 E. 71st Street,,New York,NY,10021,212-772-6700,212-861-9473,http://www.rogosin.org/,Y,Approved,N,,,,N
+9,NYKS,TT1,Independent Lab,KSL Diagnostics Transplant Immunology Laboratory,55 Amherst Villa Road,,Buffalo,NY,14225,,716-431-5757,https://www.ksldx.com/,Y,Approved,N,,,,N
+9,NYLL,TT1,Independent Lab,NYU Langone Immunogenetics Laboratory,"882 3rd Avenue, 11th Floor",,Brooklyn,NY,11232,646-293-1400,929-298-5156,https://med.nyu.edu/departments-institutes/transplant/immunogenetics-laboratory,Y,Approved,N,,,,N
+9,NYMA,IT1,Hospital Based Lab,Transplant Immunology Laboratory at Montefiore Medical Center,111 E. 210th Street,,Bronx,NY,10467-2490,718-920-5581,718-515-7632,,N,Approved,N,,,,N
+9,NYMA,TX1,Transplant Hospital,Montefiore Medical Center,111 East 210th Street,,Bronx,NY,10467-2490,718-920-4321,,http://www.montefiore.org,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+9,NYMS,IT1,Hospital Based Lab,Mount Sinai Laboratory - Histocompatibility and Immunology,1425 Madison Avenue,,New York,NY,10029,,212-241-9345,https://icahn.mssm.edu/about/departments/pathology/molecular/immunogenetics,N,Approved,N,,,,N
+9,NYMS,TX1,Transplant Hospital,Mount Sinai Medical Center,1 Gustave L. Levy Place,,New York,NY,10029,212-241-6500,212-849-2441,http://www.mountsinai.org,Y,Approved,N,"AW, HL, HN, HR, IN, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+9,NYNS,TX1,Transplant Hospital,North Shore University Hospital/Northwell Health,300 Community Drive,,Manhasset,NY,11030,516-472-5800,516-472-5805,https://nsuh.northwell.edu/transplant-center,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",,N
+9,NYNY,TX1,Transplant Hospital,New York-Presbyterian Hospital/Weill Cornell Medical Center,525 East 68th Street,,New York,NY,10065,212-746-3099,,http://nyp.org/transplant/,Y,Approved,N,"HR, KI, LI, PA, PI","KI, LI",KI,N
+9,NYRT,OP1,Independent OPO,LiveOnNY,"30-30 47th Avenue, 9th Floor",,Long Island City,NY,11101,646-291-4444,646-291-4600,https://www.liveonny.org/,Y,Approved,N,,,,N
+9,NYSB,IT1,Hospital Based Lab,Histocompatibility and Immunogenetics Laboratory at Stony Brook,,Health Sciences Cent,Stony Brook,NY,11794-8192,631-444-1789,631-444-3831,https://renaissance.stonybrookmedicine.edu/pathology/labservicescontact,N,Approved,N,,,,N
+9,NYSB,TX1,Transplant Hospital,University Hospital of State University of New York at Stony Brook,"101 Nicolls Road, East Campus",,Stony Brook,NY,11794,631-444-2209,631-444-3831,https://www.stonybrookmedicine.edu/transplant,Y,Approved,N,KI,KI,KI,N
+9,NYSP,TT1,Independent Lab,SUNY Health Science Center at Syracuse Histocompatibility Laboratory,750 E Adams Street,,Syracuse,NY,13210,315-464-4775,315-464-9557,,Y,Approved,N,,,,N
+9,NYUC,TX1,Transplant Hospital,NYU Langone Health,550 First Avenue,,New York,NY,10016,212-263-7300,,https://nyulangone.org/locations/nyu-langone-transplant-institute,Y,Approved,N,"AW, HL, HN, HR, KI, LI, LU, PA, UE","KI, LI","HR, KI, LI, LU, PA",N
+9,NYUM,TX1,Transplant Hospital,State University of New York Upstate Medical University,750 East Adams Street,,Syracuse,NY,13210,315-464-5540,,http://www.upstate.edu/,Y,Approved,N,"KI, PA",KI,KI,N
+9,NYVA,TX1,Transplant Hospital,James J. Peters VA Medical Center,130 West Kingsbridge Road,,Bronx,NY,10468,718-584-9000,718-741-4711,http:/www.bronx.va.gov/,Y,Approved,Y,KI,,,N
+9,NYWC,IT1,Hospital Based Lab,Clinical Laboratory Grasslands Reservation at Westchester Medical Ctr.,"100 Woods Road Macy Pavilion, Suite 1433",,Valhalla,NY,10595,914-493-8481,914-493-1104,https://www.westchestermedicalcenter.org/laboratory-services,N,Approved,N,,,,N
+9,NYWC,TX1,Transplant Hospital,Westchester Medical Center,100 Woods Road,,Valhalla,NY,10595,914-493-7000,,https://www.westchestermedicalcenter.org/,Y,Approved,N,"HR, KI, LI","KI, LI","KI, LI",N
+9,NYWN,OP1,Independent OPO,Upstate New York Transplant Services Inc,4444 Bryant and Stratton Way,,Williamsville,NY,14221-6013,716-529-4300,716-853-6674,http://www.ConnectLife.org,Y,Approved,N,,,,N
+10,OHAL,TT1,Independent Lab,"Allogen Laboratories, The Cleveland Clinic Foundation",9500 Euclid Avenue,C100,Cleveland,OH,44195,216-444-6583,216-444-8261,,Y,Approved,N,,,,N
+10,OHCC,TX1,Transplant Hospital,The Cleveland Clinic Foundation,9500 Euclid Avenue,,Cleveland,OH,44195-0001,216-444-0340,,http://www.ccf.org,Y,Approved,N,"AW, HL, HN, HR, IN, KI, LI, LU, PA, UE, UT","KI, LI","HR, KI, LI, LU, PA",N
+10,OHCH,TX1,Transplant Hospital,Nationwide Children's Hospital,700 Children's Drive,,Columbus,OH,43205,614-722-2000,,http://www.nationwidechildrens.org,Y,Approved,N,"HL, HR, KI, LI, LU",KI,"HR, KI, LI, LU",Y
+11,OHCM,TX1,Transplant Hospital,Children's Hospital Medical Center,3333 Burnet Avenue,,Cincinnati,OH,45229-3039,513-636-4200,,http://www.cincinnatichildrens.org,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",Y
+10,OHCO,IT1,Hospital Based Lab,Tissue Typing Laboratory at University of Toledo Medical Center,3055  Arlington Avenue,,Toledo,OH,43614-0008,419-383-4292,419-383-3076,,N,Approved,N,,,,N
+10,OHCO,TX1,Transplant Hospital,University of Toledo Medical Center,3000 Arlington Avenue,,Toledo,OH,43614-2598,419-383-4000,,http://uthealth.utoledo.edu/,Y,Approved,N,"KI, PA",KI,,N
+11,OHHW,TT1,Independent Lab,Hoxworth Blood Center Transplantation Immunology Laboratory,3130 Highland Avenue,,Cincinnati,OH,45219,513-558-1500,513-558-1522,,Y,Approved,N,,,,N
+10,OHLB,OP1,Independent OPO,Lifebanc,4775 Richmond Road,,Cleveland,OH,44128-5919,216-752-5433,216-751-4204,http://www.lifebanc.org,Y,Approved,N,,,,N
+10,OHLC,OP1,Independent OPO,Life Connection of Ohio,2800 Donation Circle,,Kettering,OH,45420,937-223-8223,419-893-1827,https://www.lifeconnection.org/,Y,Approved,N,,,,N
+10,OHLP,OP1,Independent OPO,Lifeline of Ohio,770 Kinnear Road,Suite 200,Columbus,OH,43212,614-291-5667,614-291-0660,http://www.lifelineofohio.org,Y,Approved,N,,,,N
+10,OHOU,IT1,Hospital Based Lab,Clinical Histocompatibility Lab at Ohio State University Medical Center,410 W. 10th Avenue,,Columbus,OH,43210,614-293-8554,614-293-8287,,N,Approved,N,,,,N
+10,OHOU,TX1,Transplant Hospital,Ohio State University Medical Center,410 West 10th Avenue,,Columbus,OH,43210,614-293-8000,,https://wexnermedical.osu.edu/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI",,N
+10,OHSV,TX1,Transplant Hospital,Mercy Health - St. Vincent Medical Center,2213 Cherry Street,,Toledo,OH,43608,419-251-5310,567-440-6892,https://www.mercy.com/locations/hospitals/toledo/mercy-health-st-vincent-medical-center,Y,Approved,N,KI,KI,,N
+11,OHTC,TX1,Transplant Hospital,The Christ Hospital,2139 Auburn Avenue,,Cincinnati,OH,45219-2906,513-585-2000,,http://www.thechristhospital.com/?id=44&sid=1,Y,Approved,N,"HR, KI",KI,,N
+11,OHUC,TX1,Transplant Hospital,University of Cincinnati  Medical Center,3188 Bellevue Avenue,,Cincinnati,OH,45219,513-584-1000,,http://uchealth.com/university-of-cincinnati-medical-center/,Y,Approved,N,"HR, KI, LI, PA","KI, LI",,N
+10,OHUH,IT1,Hospital Based Lab,Histocompatibility Laboratory at University Hospitals of Cleveland,"10524 Euclid Avenue, WO Walker Center, 6",,Cleveland,OH,44106,216-844-5247,216-844-1810,,N,Approved,N,,,,N
+10,OHUH,TX1,Transplant Hospital,University Hospitals of Cleveland,11100 Euclid Avenue,,Cleveland,OH,44106,216-844-1000,,https://www.uhhospitals.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI",KI,KI,N
+4,OKBC,TX1,Transplant Hospital,Integris Baptist Medical Center,3300 NW Expressway,,Oklahoma City,OK,73112-4481,405-949-3349,,https://integrisok.com/locations/transplant/nazih-zuhdi-transplant-institute,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,,N
+4,OKCM,TX1,Transplant Hospital,Children's Hospital of Oklahoma,1200 Everett Drive,,Oklahoma City,OK,73104,405-271-5437,,http://www.oumedicine.com,Y,Approved,N,HR,,HR,N
+4,OKDL,TT1,Independent Lab,Diagnostic Laboratory of Oklahoma,,Suite 2259,Oklahoma City,OK,73112,405-713-7002,405-713-4528,https://www.dlolab.com/,Y,Approved,N,,,,N
+4,OKMD,IT1,Hospital Based Lab,HLA Laboratory at OU Medical Center,1200 Everett Drive,ET Room EB400,Oklahoma City,OK,73104,405-271-7726,405-271-7332,https://www.ouhealth.com/,N,Approved,N,,,,N
+4,OKMD,TX1,Transplant Hospital,OU Medical Center,700 Northeast 13th Street,,Oklahoma City,OK,73104,405-271-8000,,https://www.ouhealth.com/,Y,Approved,N,"KI, LI, PA",KI,KI,N
+4,OKOP,OP1,Independent OPO,LifeShare Transplant Donor Services of Oklahoma,4705 NW Expressway,,Oklahoma City,OK,73132-5213,405-840-5551,405-840-9748,http://www.lifeshareoklahoma.org/,Y,Approved,N,,,,N
+4,OKSJ,TX1,Transplant Hospital,St John Medical Center,1923 South Utica Avenue,,Tulsa,OK,74104,918-744-2345,,https://healthcare.ascension.org/locations/oklahoma/oktul/tulsa-ascension-st-john-medical-center,Y,Approved,N,KI,KI,,N
+6,ORGS,TX1,Transplant Hospital,Legacy Good Samaritan Hospital and Medical Center,1130 Northwest 22nd Avenue Suite 400,,Portland,OR,97210,503-413-6555,,http://www.legacyhealth.org/transplant,Y,Approved,N,KI,KI,,N
+6,ORSV,TX1,Transplant Hospital,Providence St. Vincent Medical Center,9205 SW Barnes Rd,,Portland,OR,97225,503-216-2115,,https://oregon.providence.org/location-directory/p/providence-st-vincent-medical-center/,Y,Approved,N,HR,,,N
+6,ORUO,IO1,Hospital Based OPO,Cascade Life Alliance,2611 S.W. Third Avenue,Suite 320,Portland,OR,97201-4943,503-494-5560,503-494-4725,http://www.pntb.org,Y,Approved,N,,,,N
+6,ORUO,IT1,Hospital Based Lab,Laboratory of Immunogenetics and Transplantation at OHSU,2611 SW Third Avenue,Suite 360,Portland,OR,97201-4942,503-494-8394,503-494-7695,,N,Approved,N,,,,N
+6,ORUO,TX1,Transplant Hospital,Oregon Health and Science University,3181 SW Sam Jackson Park Road,Mail Code CB 569,Portland,OR,97239-3011,503-494-8500,503-494-4492,http://www.ohsu.edu/,Y,Approved,N,"HR, KI, LI, PA",KI,KI,N
+6,ORVA,TX1,Transplant Hospital,VA Portland Health Care System,3710 SW U.S. Veterans Hospital Road,,Portland,OR,97239,503-220-8262,503-273-5072,http://www.portland.va.gov/,Y,Approved,Y,"KI, LI",KI,,N
+2,PAAE,TX1,Transplant Hospital,Albert Einstein Medical Center,5401 Old York Road,,Philadelphia,PA,19141,215-456-7890,,http://www.einstein.edu,Y,Approved,N,"KI, LI, PA",KI,,N
+2,PAAG,IT1,Hospital Based Lab,Histocompatibility Laboratory at Allegheny General Hospital,320 E. North Avenue,,Pittsburgh,PA,15212,412-359-6175,412-359-3044,https://www.ahn.org/locations/hospitals/allegheny-general.html,N,Interim Approval-Pending BOD Action,N,,,,N
+2,PAAG,TX1,Transplant Hospital,Allegheny General Hospital,320 East North Avenue,,Pittsburgh,PA,15212,412-359-3131,,https://www.ahn.org/services/surgery/transplant,Y,Approved,N,"HR, KI, LI, PA","KI, LI",,N
+2,PACH,TX1,Transplant Hospital,UPMC Children's Hospital of Pittsburgh,4401 Penn Avenue,,Pittsburgh,PA,15224,412-692-5325,,http://www.chp.edu,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA",LI,"HR, KI, LI, LU, PA",Y
+2,PACP,IT1,Hospital Based Lab,Children's Hosp. of Philadelphia Immunogenetics Lab,34th & Civic Center Boulevard,,Philadelphia,PA,19104,215-590-1000,215-590-6361,,N,Approved,N,,,,Y
+2,PACP,TX1,Transplant Hospital,Children's Hospital of Philadelphia,3401 Civic Center Boulevard,,Philadelphia,PA,19104,215-590-1000,,http://www.chop.edu,Y,Approved,N,"HL, HR, KI, LI, LU, UE",,"HR, KI, LI, LU",Y
+2,PADV,OP1,Independent OPO,Gift of Life Donor Program,401 North 3rd Street,,Philadelphia,PA,19123,215-557-8090,215-557-9359,http://www.donors1.org,Y,Approved,N,,,,N
+2,PAGM,TX1,Transplant Hospital,Geisinger Medical Center,100 North Academy Avenue,,Danville,PA,17822,570-271-6211,,http://www.geisinger.org,Y,Approved,N,"KI, LI",KI,,N
+2,PAHE,IT1,Hospital Based Lab,Histocompatibility and Clinical Immunology Lab at Hershey Medical Center,500 University Drive,,Hershey,PA,17033,717-531-6264,717-531-5409,,N,Approved,N,,,,N
+2,PAHE,TX1,Transplant Hospital,Penn State Milton S Hershey Medical Center,500 University Drive,,Hershey,PA,17033,717-531-7459,,https://www.pennstatehealth.org/,Y,Approved,N,HR,,,N
+2,PAHH,IT1,Hospital Based Lab,UPMC Pinnacle HLA Laboratory,205 South Front Street,Brady 7,Harrisburg,PA,17104,717-231-8855,717-231-8857,,N,Approved,N,,,,N
+2,PAHH,TX1,Transplant Hospital,Pinnacle Health System at Harrisburg Hospital,111 South Front Street,,Harrisburg,PA,17101-8099,717-231-8700,,https://www.upmc.com/services/south-central-pa/transplant,Y,Approved,N,KI,KI,,N
+2,PALN,TT1,Independent Lab,Eurofins Donor & Product Testing (Pennsylvania),401 North 3rd Street,,Philadelphia,PA,19123,720-528-4774,,https://www.eurofinsus.com/vrl,Y,Approved,N,,,,N
+2,PALV,IT1,Hospital Based Lab,HLA Lab at Lehigh Valley Hospital,,Cedar Crest and I-78,Allentown,PA,18103,610-402-8014,610-402-1688,,N,Approved,N,,,,N
+2,PALV,TX1,Transplant Hospital,Lehigh Valley Hospital,1200 S. Cedar Crest Boulevard,,Allentown,PA,18103,610-402-8000,,https://www.lvhn.org,Y,Approved,N,"KI, LI, PA",KI,,N
+2,PAPH,TX1,Transplant Hospital,UPMC Hamot,201 State Street,,Erie,PA,16550,814-877-6000,814-877-5696,http://www.upmc.com/,Y,Approved,N,KI,KI,,N
+2,PAPT,IT1,Hospital Based Lab,"University of Pittsburgh Medical Center, Histocompatibility Laboratory, Pre",UPMC Clinical Laboratory Building 3477 E,,Pittsburgh,PA,15213,412-647-6152,412-647-1755,,N,Approved,N,,,,N
+2,PAPT,TX1,Transplant Hospital,University of Pittsburgh Medical Center,200 Lothrop Street,,Pittsburgh,PA,15213-2582,800-430-8834,,http://www.upmc.com/Services/transplant/Pages/default.aspx,Y,Approved,N,"HL, HR, IN, KI, LI, LU, PA","KI, LI",LU,N
+2,PASC,TX1,Transplant Hospital,St. Christopher's Hospital for Children,160 East Erie Ave,,Philadelphia,PA,19134-1095,215-427-5000,,http://www.stchristophershospital.com/,Y,Approved,N,KI,,KI,Y
+2,PATF,OP1,Independent OPO,Center for Organ Recovery and Education,204 Sigma Drive,RIDC Park,Pittsburgh,PA,15238-2825,412-963-3550,412-963-3563,http://www.core.org,Y,Approved,N,,,,N
+2,PATJ,IT1,Hospital Based Lab,Immunogenetics and Tissue Typing Lab at Thomas Jefferson Univ. Hospital,111 S. 11th Street,Suite 8245 G,Philadelphia,PA,19107-5098,215-955-6564,215-923-8793,,N,Approved,N,,,,N
+2,PATJ,TX1,Transplant Hospital,Thomas Jefferson University Hospital,111 South 11th Street,,Philadelphia,PA,19107,215-955-6000,,http://www.jeffersonhospital.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",PA,N
+2,PATU,IT1,Hospital Based Lab,Temple University Hospital Immunogenetics Laboratory,3401 N Broad Street,,Philadelphia,PA,19140,215-707-6959,215-707-2053,,N,Approved,N,,,,N
+2,PATU,TX1,Transplant Hospital,Temple University Hospital,3401 North Broad Street,,Philadelphia,PA,19140,215-707-2000,,https://www.templehealth.org/services/transplant,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,,N
+2,PAUP,IT1,Hospital Based Lab,Immunology Laboratory at the University of Pennsylvania,3400 Spruce Street,,Philadelphia,PA,19104,215-662-6010,215-662-3538,,N,Approved,N,,,,N
+2,PAUP,TX1,Transplant Hospital,Hospital of the University of Pennsylvania,3400 Spruce Street,,Philadelphia,PA,19104,215-662-4000,,https://www.pennmedicine.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI, UE, UT","KI, LI, UT",,N
+2,PAVA,TX1,Transplant Hospital,VA Pittsburgh Healthcare System,1 University Drive C,,Pittsburgh,PA,15240,412-360-6155,,https://www.va.gov/pittsburgh-health-care/,Y,Approved,Y,"KI, LI",KI,,N
+2,POAN,PUO,Medical/Scientific Organization,American Nephrology Nurses Association,East Holly Avenue,Box 56,Pitman,NJ,08071-0056,856-256-2320,856-589-7463,http://www.annanurse.org/,Y,Approved,N,,,,N
+2,POAO,PUO,Medical/Scientific Organization,Association of Organ Procurement Organizations,8300 Greensboro Drive #L1-620,,McLean,VA,22102,703-556-4242,703-556-4852,http://www.aopo.org,Y,Approved,N,,,,N
+2,POAS,PUO,Medical/Scientific Organization,American Society For Histocompatibility and Immunogenetics,1120 Route 73,Suite 200,Mt. Laurel,NJ,08054,856-439-0500,,http://www.ashi-hla.org,Y,Approved,N,,,,N
+2,POEB,PUO,Medical/Scientific Organization,Eye Bank Association of America,1101 17th Street NW Suite 400,,Washington,DC,20036,202-775-4999,202-429-6036,http://www.restoresight.org,Y,Approved,N,,,,N
+7,POPD,PUO,Medical/Scientific Organization,American Academy of Pediatrics,345 Park Boulevard,,Itasca,IL,60143,630-626-6669,847-434-8000,http://www.aap.org,Y,Approved,N,,,,N
+11,POSE,PUO,Medical/Scientific Organization,American Foundation for Donation & Transplantation,8154 Forest Hill Avenue,Suite 3,Richmond,VA,23235-3255,804-323-9890,804-323-1300,https://www.afdt.org/,Y,Approved,N,,,,N
+10,POTA,PUO,Medical/Scientific Organization,Society for Advancement of Transplant Anesthesia,3757 Indianola Avenue,,Columbus,OH,43214,614-784-9772,614-784-9771,https://www.transplantanesthesia.org,Y,Approved,N,,,,N
+2,POTC,PUO,Medical/Scientific Organization,"NATCO, The Organization for Transplant Professionals",12820 Rose Grove Drive,,Oak Hill,VA,20171,703-483-9820,703-879-7544,http://www.natco1.org,Y,Approved,N,,,,N
+2,POTN,PUO,Medical/Scientific Organization,International Transplant Nurses Society,"4401 Penn Ave, Suite 6400",,Pittsburgh,PA,15224,412-692-8632,,http://www.itns.org/,Y,Approved,N,,,,N
+2,POTP,PUO,Medical/Scientific Organization,American Society of Transplantation,1000 Atrium Way Suite 400,,Mount Laurel Townshi,NJ,08054,856-439-9986,856-581-9604,http://www.myast.org,Y,Interim Approval-Pending BOD Action,N,,,,N
+2,POTS,PUO,Medical/Scientific Organization,American Society of Transplant Surgeons,1401 South Clark Street Suite 1120,,Arlington,VA,22202,703-414-7870,703-414-7874,http://www.asts.org,Y,Approved,N,,,,N
+3,PRCC,TX1,Transplant Hospital,Cardiovascular Center of Puerto Rico and the Caribbean,Avenida Américo Miranda Esq. Centro Médi,,San Juan,PR,00936,787-754-8500,,http://www.cardiovascular.pr.gov/,Y,Approved,N,HR,,,N
+3,PRLL,OP1,Independent OPO,LifeLink of Puerto Rico,"Calle 1, #1 Metro Office Park",Suite 100,Guaynabo,PR,00968,787-277-0900,787-277-0876,http://www.lifelinkfound.org,Y,Approved,N,,,,N
+3,PRSJ,IT1,Hospital Based Lab,Immunogenetics Laboratory at Auxilo Mutuo Hospital,Ponce De Leon Avenue,,Hato Rey,PR,00919-1227,787-758-2000,787-766-4038,,N,Approved,N,,,,N
+3,PRSJ,TX1,Transplant Hospital,Auxilio Mutuo Hospital,Ponce De Leon Avenue Stop 37½,,Hato Rey,PR,00919-1227,787-758-2000,787-771-7951,http://www.auxilio.com,Y,Approved,N,"KI, LI, PA",KI,"KI, LI",N
+1,RIRH,TX1,Transplant Hospital,Rhode Island Hospital,593 Eddy Street,,Providence,RI,02903-4970,401-444-4000,,https://www.lifespan.org,Y,Approved,N,KI,KI,KI,N
+11,SCCH,TX1,Transplant Hospital,MUSC Children's Hospital,10 McClennan Banks Drive,,Charleston,SC,29425,843-792-5097,843-792-2300,https://musckids.org/,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+11,SCLA,TX1,Transplant Hospital,MUSC Lancaster,800 West Meeting Street,,Lancaster,SC,29720,803-286-1481,803-286-1367,https://muschealth.org/locations/lancaster-medical-center,Y,Approved,N,KI,KI,,N
+11,SCMU,IT1,Hospital Based Lab,Tissue Typing Laboratory at the Medical University of South Carolina,171 Ashley Avenue,,Charleston,SC,29425-0777,843-792-4311,843-792-0540,,N,Approved,N,,,,N
+11,SCMU,TX1,Transplant Hospital,Medical University of South Carolina,171 Ashley Avenue,,Charleston,SC,29425-0777,843-792-5097,,https://web.musc.edu/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","KI, LI, LU",N
+11,SCOP,OP1,Independent OPO,We Are Sharing Hope SC,2215 Henry Tecklenburg Drive,,Charleston,SC,29414,843-763-7755,843-763-6393,http://www.SharingHopeSC.org,Y,Approved,N,,,,N
+11,SCPG,TX1,Transplant Hospital,Prisma Health Greenville Memorial Hospital,701 Grove Road,,Greenville,SC,29605,864-455-7000,864-455-1775,https://prismahealth.org/hospitals/prisma-health-greenville-memorial-hospital,Y,Approved,N,"KI, LI, PA",KI,,N
+11,SCVA,TX1,Transplant Hospital,Ralph H. Johnson Veterans Affairs Health Care System,109 Bee Street,,Charleston,SC,29401,843-789-7330,,,Y,Approved,N,KI,,,N
+7,SDMK,IT1,Hospital Based Lab,Avera McKennan Laboratory,1301 South Cliff Avenue Plaza 2,,Sioux Falls,SD,57117,605-322-7239,605-322-7150,,N,Approved,N,,,,N
+7,SDMK,TX1,Transplant Hospital,Avera McKennan Hospital,1325 South Cliff Avenue,,Sioux Falls,SD,57105,605-322-7350,605-322-7365,http://www.averamckennan.org/amck/specialtyclinics/transplantinst/index.aspx,Y,Approved,N,"KI, PA",KI,,N
+7,SDSV,TX1,Transplant Hospital,Sanford Health/USD Medical Center,1305 West 18th Street,,Sioux Falls,SD,57117,605-328-9290,605-328-9291,http://www.sanfordhealth.org,Y,Approved,N,KI,KI,,N
+11,TNBM,TX1,Transplant Hospital,Baptist Memorial Hospital,6019 Walnut Grove Road,,Memphis,TN,38120-2113,901-226-2000,901-226-2010,https://www.baptistonline.org/locations/memphis,Y,Approved,N,HR,,,N
+11,TNDL,TT1,Independent Lab,DCI Laboratory - Nashville,"2222 Rosa L Parks Boulevard, Suite 170",,Nashville,TN,37228,615-321-0212,615-321-4880,,Y,Approved,N,,,,N
+11,TNDS,OP1,Independent OPO,Tennessee Donor Services,566 Mainstream Drive,,Nashville,TN,37228,615-234-5251,615-320-1655,https://www.dcids.org/,Y,Approved,N,,,,N
+11,TNEM,TX1,Transplant Hospital,Erlanger Medical Center,975 East 3rd Street,,Chattanooga,TN,37403,423-778-7000,,http://www.erlanger.org,Y,Approved,N,KI,KI,,N
+11,TNLB,TX1,Transplant Hospital,Le Bonheur Children's Medical Center,50 N Dunlap,,Memphis,TN,38103,901-287-5437,,http://www.lebonheur.org,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+11,TNMH,TX1,Transplant Hospital,Methodist University Hospital,1265 Union Avenue,,Memphis,TN,38104,901-516-9183,,http://www.methodisthealth.org,Y,Approved,N,"KI, LI, PA",KI,"KI, LI",N
+11,TNML,TT1,Independent Lab,Mid-South Transplant Foundation Histocompatibility Laboratory,8001 Centerview Parkway,Suite 302,Memphis,TN,38108,901-328-4438,901-328-4462,http://www.midsouthtransplant.org,Y,Approved,N,,,,N
+11,TNMS,OP1,Independent OPO,Mid-South Transplant Foundation,8001 Centerview Parkway,Suite 302,Cordova,TN,38018,901-328-4438,901-328-4462,http://www.midsouthtransplant.org,Y,Approved,N,,,,N
+11,TNST,TX1,Transplant Hospital,Saint Thomas Hospital,4220 Harding Pike,,Nashville,TN,37205,615-222-2111,,https://healthcare.ascension.org/locations/tennessee/tnnas/nashville-ascension-saint-thomas-hospital-midtown,Y,Approved,N,"HR, KI",KI,,N
+11,TNUK,TX1,Transplant Hospital,University of Tennessee Medical Center at Knoxville,1924 Alcoa Hwy,,Knoxville,TN,37920,865-305-9000,865-305-9128,http://www.utmedicalcenter.org/,Y,Approved,N,KI,KI,,N
+11,TNVM,IT1,Hospital Based Lab,"Histocompatibility and Immunogenetic Laboratory, VML, VUMC","445 Great Circle Road, Suite 1316",,Nashville,TN,37228,,,https://www.vumc.org/vanderbilt-medical-labs/home,N,Approved,N,,,,N
+11,TNVU,TX1,Transplant Hospital,Vanderbilt University Medical Center,1211 Medical Center Drive,,Nashville,TN,37232,615-936-0388,,https://search.vanderbilthealth.com/locations/vanderbilt-university-medical-center,Y,Approved,N,"HL, HN, HR, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+4,TXAS,TX1,Transplant Hospital,Baylor  Scott and White All Saints Medical Center-Fort Worth,1400 Eighth Avenue,,Fort Worth,TX,76104,817-922-4650,,http://www.baylorhealth.com/PhysiciansLocations/AllSaints/SpecialtiesServices/Transplant/Pages/Default.aspx?cmpid=r_FortWorthTransplant,Y,Approved,N,"KI, LI, PA, PI",KI,,N
+4,TXBC,TX1,Transplant Hospital,"University Hospital, University of Texas Health Science Center",4502 Medical Drive,,San Antonio,TX,78229-4493,210-358-4000,,http://www.universitytransplantcenter.com/,Y,Approved,N,"KI, LI, LU","KI, LI",LU,N
+4,TXBL,TT1,Independent Lab,Immune Evaluation Lab-Baylor College of Medicine,6501 Fannin Street,NA-404,Houston,TX,77030,713-798-3088,713-798-5576,http://www.debakeydepartmentofsurgery.org,Y,Approved,N,,,,N
+4,TXCF,TX1,Transplant Hospital,Cook Children's Medical Center,801 7th Avenue,,Fort Worth,TX,76104,682-885-4000,,http://www.cookchildrens.org,Y,Approved,N,"HR, KI",,"HR, KI",Y
+4,TXCM,TX1,Transplant Hospital,Children's Medical Center of Dallas,1935 Medical District Drive,,Dallas,TX,75235,214-456-7000,,http://www.childrens.com,Y,Approved,N,"HR, KI, LI, PA",,"HR, KI, LI, PA",Y
+4,TXCT,TX1,Transplant Hospital,Seton Medical Center Austin,1201 West 38th Street,,Austin,TX,78705-1056,512-681-0500,512-681-0501,https://healthcare.ascension.org/Locations/Texas/TXAUS/Austin-Ascension-Seton-Medical-Center-Austin,Y,Approved,N,HR,,,N
+4,TXDC,TX1,Transplant Hospital,Driscoll Children's Hospital,3533 South Alameda Street,,Corpus Christi,TX,78411,361-694-5600,,http://www.driscollchildrens.org/,Y,Approved,N,KI,KI,KI,Y
+4,TXDL,TX1,Transplant Hospital,Dell Children's Medical Center,4900 Mueller Boulevard,,Austin,TX,78723,512-324-5942,512-324-5941,https://www.dellchildrens.net/,Y,Approved,N,HR,,HR,Y
+4,TXDM,TX1,Transplant Hospital,North Austin Medical Center,12221 Mopac Expressway North,,Austin,TX,78758,512-901-1000,,http://www.northaustin.com,Y,Approved,N,KI,KI,,N
+4,TXDR,TX1,Transplant Hospital,Doctor's Hospital at Renaissance,5501 South McColl Road,,Edinburg,TX,78539,956-362-8677,956-362-2420,https://www.dhrhealth.com/services/transplant,Y,Approved,N,KI,KI,,N
+4,TXDS,TX1,Transplant Hospital,Dell Seton Medical Center at The University of Texas at Austin,1500 Red River Street,,Austin,TX,78701,512-324-7000,833-340-0748,https://healthcare.ascension.org/locations/texas/txaus/austin-dell-seton-medical-center-at-the-university-of-texas,Y,Approved,N,"KI, PA",KI,,N
+4,TXFW,TX1,Transplant Hospital,Texas Health Harris Methodist Fort Worth Hospital,1301 Pennsylvania Avenue,,Fort Worth,TX,76104,817-250-2000,,https://www.texashealth.org/en/Locations/texas-health-fort-worth,Y,Approved,N,KI,KI,,N
+4,TXGC,OP1,Independent OPO,LifeGift Organ Donation Center,2510 Westridge Street,,Houston,TX,77054,713-523-4438,713-737-8100,http://www.lifegift.org,Y,Approved,N,,,,N
+4,TXHD,TX1,Transplant Hospital,Medical City Dallas Hospital,7777 Forest Lane,,Dallas,TX,75230-2505,972-566-7199,,http://www.medicalcityhospital.com,Y,Approved,N,"HR, KI, LI, PA",KI,KI,N
+4,TXHH,TX1,Transplant Hospital,"Memorial Hermann Hospital, University of Texas at Houston",6411 Fannin,,Houston,TX,77030,713-704-4000,,https://www.memorialhermann.org/services/specialties/transplant,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,"HR, KI, LI",N
+4,TXHI,TX1,Transplant Hospital,CHI St. Luke's Health Baylor College of Medicine Medical Center,6720 Bertner Avenue,,Houston,TX,77030,713-785-8537,,https://www.chistlukeshealth.org/,Y,Approved,N,"HL, HR, KI, LI, LU",KI,LU,N
+4,TXHS,TX1,Transplant Hospital,Methodist Specialty and Transplant Hospital,8026 Floyd Curl Drive,,San Antonio,TX,78229,210-575-8110,,http://www.texastransplant.org,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,,N
+4,TXJS,IT1,Hospital Based Lab,Tissue Antigen Laboratory at UT Galveston,301 University Boulevard,,Galveston,TX,77555-0536,409-747-9550,409-747-9555,,N,Approved,N,,,,N
+4,TXJS,TX1,Transplant Hospital,University of Texas Medical Branch at Galveston,301 University Boulevard,,Galveston,TX,77555,409-772-1011,,https://www.utmb.edu/,Y,Approved,N,"HR, KI, PA",KI,,N
+4,TXLM,TX1,Transplant Hospital,Covenant Medical Center,3615 - 19th Street,,Lubbock,TX,79410,806-725-0000,806-723-7188,http://www.covenanthealth.org,Y,Approved,N,KI,,,N
+4,TXLP,IT1,Hospital Based Lab,Histo & Immunogenetics Lab at Las Palmas Medical Center,,Suite 650,El Paso,TX,79902,915-264-7817,915-599-4383,,N,Approved,N,,,,N
+4,TXLP,TX1,Transplant Hospital,Las Palmas Medical Center,1801 North Oregon Street,,El Paso,TX,79902,915-264-7800,915-599-4381,https://laspalmasdelsolhealthcare.com/service/transplant,Y,Approved,N,KI,KI,,N
+4,TXMC,IT1,Hospital Based Lab,Transplant Immunology Laboratory at Methodist Dallas Medical Center,1441 N. Beckley,,Dallas,TX,75203-1201,214-947-3540,214-947-3549,,N,Approved,N,,,,N
+4,TXMC,TX1,Transplant Hospital,Methodist Dallas Medical Center,1441 North Beckley Avenue,,Dallas,TX,75203-1201,214-947-1800,,https://www.methodisthealthsystem.org/medical-services/transplant/,Y,Approved,N,"KI, LI, PA",KI,,N
+4,TXMH,IT1,Hospital Based Lab,Histocompatibility and Immunology Lab at Methodist Hospital,6565 Fannin Street,,Houston,TX,77030,713-790-2156,,,N,Approved,N,,,,N
+4,TXMH,TX1,Transplant Hospital,Houston Methodist Hospital,6565 Fannin Street,,Houston,TX,77030-2707,713-394-6000,,https://www.houstonmethodist.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",,N
+4,TXMS,TT1,Independent Lab,Texas Medical Specialty,7777 Forest Lane,Building C Suite 768,Dallas,TX,75230,972-566-5761,972-566-7720,http://www.texasmedicalspecialty.com,Y,Approved,N,,,,N
+4,TXPL,TX1,Transplant Hospital,Medical City Fort Worth,909 9th Avenue,,Fort Worth,TX,76104,817-834-8500,,http://plazamedicalcenter.com,Y,Approved,N,"KI, PA",KI,,N
+4,TXPM,TX1,Transplant Hospital,Parkland Health and Hospital System,5200 Harry Hines Boulevard,,Dallas,TX,75235,214-590-8000,214-266-9866,http://www.parklandhospital.com/,Y,Approved,N,KI,,,N
+4,TXSA,OP1,Independent OPO,Texas Organ Sharing Alliance,5051 Hamilton Wolfe Road,,San Antonio,TX,78229,210-614-7030,210-614-2129,http://www.txorgansharing.org,Y,Approved,N,,,,N
+4,TXSB,OP1,Independent OPO,Southwest Transplant Alliance,8190 Manderville Lane,,Dallas,TX,75231,214-522-0255,214-522-0430,http://www.organ.org,Y,Approved,N,,,,N
+4,TXSB,TT1,Independent Lab,Southwest Transplant Alliance Lab,8190 Manderville Lane,,Dallas,TX,75231,214-522-0255,,,Y,Approved,N,,,,N
+4,TXSI,TT1,Independent Lab,Southwest Immunodiagnostics,8122 Datapoint Drive,Suite 912,San Antonio,TX,78229,210-614-3703,210-614-3707,,Y,Approved,N,,,,N
+4,TXSP,IT1,Hospital Based Lab,UT Southwestern Histocompatibility Laboratory,2330 Inwood Road,Suite EB3.230,Dallas,TX,75390-8886,214-648-0900,,,N,Approved,N,,,,N
+4,TXSP,TX1,Transplant Hospital,UT Southwestern Medical Center/William P. Clements Jr. University Hospital,6201 Harry Hines Boulevard,,Dallas,TX,75390,214-633-5555,214-645-1901,https://utswmed.org/locations/clements/william-p-clements-jr-university-hospital/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",LU,N
+4,TXSR,TT1,Independent Lab,Histocompatibility and Immunogenetics Lab/University Health System,4502 Medical Drive,,San Antonio,TX,78229,210-358-0760,210-358-0777,,Y,Approved,N,,,,N
+4,TXSW,IT1,Hospital Based Lab,Histocompatibility Laboratory at Scott and White Memorial Hospital,2401 South 31st Street,,Temple,TX,76508,254-724-3905,254-724-8437,,N,Approved,N,,,,N
+4,TXSW,TX1,Transplant Hospital,Scott and White Memorial Hospital,2401 S 31st Street,,Temple,TX,76508,254-724-2111,,http://www.sw.org,Y,Approved,N,"HR, KI, PA",KI,,N
+4,TXTC,TX1,Transplant Hospital,Texas Children's Hospital,6621 Fannin Street,,Houston,TX,77030,832-824-1000,,http://www.texaschildrens.org,Y,Approved,N,"HL, HR, KI, LI, LU, UT","LI, UT","HR, KI, LI, LU",Y
+4,TXTH,TT1,Independent Lab,Memorial Hermann-Texas Medical Center,6411 Fannin St. R1-305,,Houston,TX,77030,713-704-2721,713-704-2753,http://www.memorialhermann.org/transplant,Y,Approved,N,,,,N
+4,TXTX,IT1,Hospital Based Lab,Transplant Immunology Laboratory at Baylor University Medical Center,3500 Gaston Avenue,,Dallas,TX,75246,214-820-2119,214-820-6384,,N,Approved,N,,,,N
+4,TXTX,TX1,Transplant Hospital,Baylor University Medical Center,3410 Worth Street,Suite 950,Dallas,TX,75246,214-820-2050,,https://www.bswhealth.com/specialties/transplant,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI, UT","KI, LI, UT",LU,N
+4,TXUC,TX1,Transplant Hospital,University Children's Health,4502 Medical Drive,,San Antonio,TX,78229,210-567-5777,210-720-4149,https://www.universityhealthsystem.com/,Y,Approved,N,"KI, LI",,"KI, LI",Y
+4,TXVA,TX1,Transplant Hospital,Michael E. DeBakey VA Medical Center,2002 Holcombe Boulevard,,Houston,TX,77030,713-791-1414,713-794-7352,https://www.houston.va.gov/,Y,Approved,Y,"HR, KI, LI",KI,,N
+5,UTLD,TX1,Transplant Hospital,Intermountain Medical Center,5121 South Cottonwood Street,,Murray,UT,84107,801-507-7000,,https://intermountainhealthcare.org/locations/intermountain-medical-center/medical-services/transplant-services/,Y,Approved,N,"HR, KI, LI, PA","KI, LI",,N
+5,UTMC,IT1,Hospital Based Lab,Histocompatibility and Immunogenetics Laboratory at the University of Utah,"417 Wakara Way, Suite 3220",,Salt Lake City,UT,84108,801-581-3116,801-585-3670,http://uuhsc.utah.edu/hlalab/index.html,N,Approved,N,,,,N
+5,UTMC,TX1,Transplant Hospital,University of Utah Medical Center,50 North Medical Drive,,Salt Lake City,UT,84132,801-581-2121,,http://healthcare.utah.edu/transplant/,Y,Approved,N,"HL, HR, KI, LI, LU, PA",KI,,N
+5,UTOP,OP1,Independent OPO,DonorConnect,"6065 Fashion Blvd, Ste 125",,Murray,UT,84107,801-521-1755,801-364-8815,http://www.donorconnect.life,Y,Approved,N,,,,N
+5,UTPC,TX1,Transplant Hospital,Primary Children's Hospital,100 North Mario Capecchi Drive,,Salt Lake City,UT,84113-1100,801-662-1000,801-662-5404,http://www.primarychildrens.org,Y,Approved,N,"HR, KI, LI","KI, LI","HR, KI, LI",Y
+11,VACH,TX1,Transplant Hospital,Children's Hospital of the King's Daughters,601 Children's Lane,,Norfolk,VA,23507,757-668-7000,,http://www.chkd.org/,Y,Approved,N,KI,,KI,Y
+2,VAFH,TX1,Transplant Hospital,Inova Fairfax Hospital,3300 Gallows Road,,Falls Church,VA,22042,703-776-4001,,http://www.inova.com,Y,Approved,N,"HL, HR, KI, LU, PA",KI,"HR, LU",N
+11,VAHD,TX1,Transplant Hospital,Henrico Doctors' Hospital,1602 Skipwith Road,,Richmond,VA,23229,804-289-4500,,http://www.henricodoctors.com,Y,Approved,N,KI,KI,,N
+11,VAMC,IT1,Hospital Based Lab,VCU Medical Center Histocompatibility and Immunogenetics Laboratory,757 North 5th Street Suite 100,,Richmond,VA,23219,804-828-9543,804-828-9577,,N,Approved,N,,,,N
+11,VAMC,TX1,Transplant Hospital,"VCU Health System Authority, VCUMC",1250 East Marshall Street,,Richmond,VA,23298,804-828-9000,,http://www.vcuhealth.org,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI",KI,N
+11,VAMV,TX1,Transplant Hospital,Hunter Holmes McGuire Veterans Administration Medical Center,1201 Broad Rock Boulevard,,Richmond,VA,23249-0001,804-675-5000,,https://www.richmond.va.gov/,Y,Approved,Y,HR,,,N
+11,VANG,IT1,Hospital Based Lab,HLA Immunology Laboratory at Sentara Norfolk General Hospital,600 Gresham Drive,,Norfolk,VA,23507,757-388-3114,757-388-3277,,N,Approved,N,,,,N
+11,VANG,TX1,Transplant Hospital,Sentara Norfolk General Hospital,600 Gresham Drive,,Norfolk,VA,23507,757-388-3000,,http://www.sentara.com/transplant,Y,Approved,N,"HR, KI, PA",KI,,N
+11,VATB,OP1,Independent OPO,LifeNet Health,1864 Concert Drive,,Virginia Beach,VA,23453,757-464-4761,757-301-6582,http://www.lifenethealth.org,Y,Approved,N,,,,N
+11,VAUV,IT1,Hospital Based Lab,Tissue Typing Laboratory at The University of Virginia HSC,Town Center Four   994 Research Park Bou,,Charlottesville,VA,22911,434-924-5086,434-982-4147,,N,Approved,N,,,,N
+11,VAUV,TX1,Transplant Hospital,University of Virginia Health Sciences Center,1215 Lee Street,,Charlottesville,VA,22908,434-924-8604,,http://uvahealth.com/services/transplant-services,Y,Approved,N,"HL, HR, KI, LI, LU, PA, PI","KI, LI","HR, KI, LI",N
+5,VPFA,PUV,Public Organization,Transplant Families,Transplant Families 24654 North Lake Ple,,Peoria,AZ,85383,,,https://transplantfamilies.org,Y,Approved,N,,,,N
+9,VPHR,PUV,Public Organization,New York Cardiothoracic Transplant Consortium,250 Jordan Road,,Troy,NY,12180,518-533-7876,,http://nycardiothoracic.org/,Y,Approved,N,,,,N
+9,VPKI,PUV,Public Organization,"New York Center for Kidney Transplantation, Inc",P.O. Box 333,,Lake Grove,NY,11755,631-371-9810,,https://nykidney.org/,Y,Approved,N,,,,N
+10,VPKK,PUV,Public Organization,Kidneys for Kids,1321 Broadway Street Suite 300,,Bay City,MI,48708,989-493-6111,,,Y,Approved,N,,,,N
+4,VPLB,PUV,Public Organization,The Living Bank,4545 Post Oak Place Drive,,Houston,TX,77027,7139619431,,,Y,Approved,N,,,,N
+11,VPMA,PUV,Public Organization,Association for Multicultural Affairs in Transplantation,10825 Midlothian Turnpike Suite 201R,,Richmond,VA,23235,844-654-2628,,https://www.amat1.org/,Y,Approved,N,,,,N
+9,VPNK,PUV,Public Organization,National Kidney Foundation,30 East 33rd Street,,New York,NY,10016,212-889-2210,212-779-0068,http://www.kidney.org,Y,Approved,N,,,,N
+9,VPNY,PUV,Public Organization,New York Center for Liver Transplantation,250 Jordan Road,,Troy,NY,12180,518-533-7877,518-533-7870,http://www.nyclt.org,Y,Approved,N,,,,N
+10,VPOC,PUV,Public Organization,Ohio Solid Organ Transplantation Consortium,1144 E. Home Road,Suite B,Springfield,OH,45503-2797,614-504-5705,614-504-5707,http://www.osotc.org,Y,Approved,N,,,,N
+3,VPTR,PUV,Public Organization,Transplant Recipients International Organization,17560 Buckingham Garden Drive,,Lithia,FL,33547,813-800-8746,813-438-4930,http://www.trioweb.org,Y,Approved,N,,,,N
+6,WABC,TT1,Independent Lab,Bloodworks Northwest Immunogenetics Laboratory,921 Terry Avenue,,Seattle,WA,98104-1256,206-689-6580,206-292-6582,https://www.bloodworksnw.org/labs/immunogenetics,Y,Approved,N,,,,N
+6,WACH,TX1,Transplant Hospital,Seattle Children's Hospital,4800 Sand Point Way NE,,Seattle,WA,98105,206-987-2000,,http://www.seattlechildrens.org,Y,Approved,N,"HR, KI, LI, PA",KI,"HR, KI, LI, PA",Y
+6,WALC,OP1,Independent OPO,LifeCenter Northwest,"3650 131st Avenue, SE",Suite 200,Bellevue,WA,98006,425-201-6563,425-688-7641,http://www.lcnw.org,Y,Approved,N,,,,N
+6,WASH,TX1,Transplant Hospital,Providence Sacred Heart Medical Center & Children's Hospital,101 West 8th Avenue,,Spokane,WA,99204,509-474-3131,,http://www.shmc.org/,Y,Approved,N,"HR, KI",KI,,N
+6,WASM,TX1,Transplant Hospital,Swedish Medical Center,747 Broadway,,Seattle,WA,98122-4307,206-386-6000,,http://www.swedish.org,Y,Approved,N,"KI, LI, PA",KI,,N
+6,WAST,TT1,Independent Lab,Vitalant-Spokane,210 W. Cataldo Avenue,,Spokane,WA,99201-2217,509-232-4490,509-232-4528,http://www.vitalant.org,Y,Approved,N,,,,N
+6,WAUW,TX1,Transplant Hospital,University of Washington Medical Center,1959 NE Pacific Street,,Seattle,WA,98195-6174,206-598-8181,206-598-7923,http://www.uwmedicine.org/services/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",LU,N
+6,WAVM,TX1,Transplant Hospital,Virginia Mason Medical Center,1100 9th Avenue,,Seattle,WA,98111,206-341-0925,206-341-0886,https://www.vmfh.org/,Y,Approved,N,"KI, PA",KI,,N
+7,WIBC,TT1,Independent Lab,"Versiti Blood Health, Inc.",638 N. 18th Street,,Milwaukee,WI,53233-2121,414-933-5000,414-937-6202,https://versiti.org/products-services/diagnostic-laboratories,Y,Approved,N,,,,N
+7,WICH,TX1,Transplant Hospital,Children's Hospital of Wisconsin,8915 West Connell Court,,Milwaukee,WI,53226,414-266-2000,,https://childrenswi.org/,Y,Approved,N,"HR, KI, LI",,"HR, KI, LI",Y
+7,WIDN,OP1,Independent OPO,"Versiti Blood Health, Inc.",638 North 18th Street,,Milwaukee,WI,53233,414-937-6999,414-937-6998,https://www.versiti.org/ways-to-give/our-communities/wisconsin,Y,Approved,N,,,,N
+7,WISE,TX1,Transplant Hospital,Froedtert Memorial Lutheran Hospital,9200 West Wisconsin Avenue,,Milwaukee,WI,53226,414-805-3000,,http://www.froedtert.com,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI",,N
+7,WISL,IT1,Hospital Based Lab,HLA Laboratory at Aurora St. Luke's Medical Center,2900 W. Oklahoma Avenue,,Milwaukee,WI,53215,414-649-7825,414-385-1902,,N,Approved,N,,,,N
+7,WISL,TX1,Transplant Hospital,Aurora St. Luke's Medical Center,2900 West Oklahoma Avenue,,Milwaukee,WI,53215,414-649-3700,,http://www.aurorahealthcare.org/,Y,Approved,N,"HR, KI, LI, PA",KI,,N
+7,WIUW,IO1,Hospital Based OPO,UW Health Organ and Tissue Donation,448 Science Drive,Suite 250,Madison,WI,53711-9135,608-265-0356,608-262-9099,https://www.uwhealth.org/services/organ-tissue-donation,Y,Approved,N,,,,N
+7,WIUW,IT1,Hospital Based Lab,Histocompatibility Laboratory at the University of Wisconsin,448 Science Drive,Suite 250,Madison,WI,53711-9135,608-263-8815,608-263-9610,https://care.pathology.wisc.edu/hla/,N,Approved,N,,,,N
+7,WIUW,TX1,Transplant Hospital,University of Wisconsin Hospital and Clinics,600 Highland Avenue,,Madison,WI,53792,608-263-6400,,http://www.uwhealth.org/,Y,Approved,N,"HL, HR, KI, LI, LU, PA","KI, LI","HR, KI, LI, LU, PA",N
+2,WVCA,TX1,Transplant Hospital,Charleston Area Medical Center,501 Morris Street,,Charleston,WV,25325-1393,304-388-7823,304-388-7820,http://www.camc.org,Y,Approved,N,KI,KI,,N
+2,WVWU,TX1,Transplant Hospital,West Virginia University Hospitals Inc.,1 Medical Center Drive,,Morgantown,WV,26505,304-974-3004,,http://www.wvumedicine.org,Y,Approved,N,"HR, KI",KI,,N

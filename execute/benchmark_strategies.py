@@ -25,6 +25,7 @@ from network_simulator.allocation import STRATEGIES, Strategy
 from network_simulator.clinical.progression import simulate_round_progression
 from network_simulator.compatibility_markers import OrganType
 from network_simulator.GraphBuilder import GraphBuilder
+from network_simulator.Network import Network
 from network_simulator.OrganGenerator import OrganGenerator
 from network_simulator.OrganList import OrganList
 from network_simulator.PatientGenerator import PatientGenerator
@@ -80,6 +81,10 @@ class TrialMetrics:
     tier_seen: Dict[str, int] = field(default_factory=lambda: {t: 0 for t in PRIORITY_TIERS})
     tier_matched: Dict[str, int] = field(default_factory=lambda: {t: 0 for t in PRIORITY_TIERS})
     runtime_seconds: float = 0.0
+    # (round number, wait list size at the end of that round) - only populated when run_trial's
+    # snapshot_interval_rounds is set; this is what shows a growth/backlog *trajectory* rather
+    # than just an end-of-run count.
+    wait_list_size_snapshots: List[Tuple[int, int]] = field(default_factory=list)
 
     def tier_match_rates(self) -> Dict[str, float]:
         return {t: (self.tier_matched[t] / self.tier_seen[t] if self.tier_seen[t] else 0.0)
@@ -97,36 +102,53 @@ class TrialMetrics:
 
 
 def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 10,
-             patients_per_round: int = 15, harvests_per_round: int = 5) -> TrialMetrics:
+             patients_per_round: int = 15, harvests_per_round: int = 5,
+             network: Optional[Network] = None, patient_nodes: Optional[List[int]] = None,
+             organ_nodes: Optional[List[int]] = None,
+             snapshot_interval_rounds: Optional[int] = None) -> TrialMetrics:
     """
     Runs one multi-round simulation for a single strategy: builds one
     network, then repeats (generate patients -> harvest organs -> allocate
     -> increment wait times on the remainder) for `rounds` rounds.
 
-    :param int seed: seeds the network topology and every round's arrivals;
-        reused identically across strategies within a benchmark trial
+    :param int seed: seeds every round's arrivals (and network topology, if `network` isn't
+        passed); reused identically across strategies within a benchmark trial
     :param Strategy strategy: the (matcher, scorer) pairing to evaluate
-    :param int num_nodes: hospitals in the generated network
+    :param int num_nodes: hospitals in the generated network - ignored if `network` is passed
     :param int rounds: number of arrival/allocation rounds to simulate
     :param int patients_per_round: new patients generated each round
     :param int harvests_per_round: bodies harvested for organs each round
+    :param network: optional pre-built network (e.g. the real imported hospital network - see
+        execute.import_hospitals) to use instead of building a synthetic one via GraphBuilder.
+        Useful when the network itself doesn't change across seeds/strategies and shouldn't be
+        rebuilt every trial.
+    :param patient_nodes: optional node ids patients may be located at, forwarded to
+        PatientGenerator as its `eligible_nodes` - e.g. real transplant-hospital nodes only
+    :param organ_nodes: optional node ids organs may originate at, forwarded to OrganGenerator
+        as its `eligible_nodes` - e.g. real transplant-hospital + OPO nodes
+    :param snapshot_interval_rounds: if set, records (round number, wait list size) into
+        TrialMetrics.wait_list_size_snapshots every time the round number is a multiple of this
+        (e.g. 52 for a yearly snapshot) - shows a growth trajectory, not just an end-of-run count
     :return: aggregate metrics for the trial
     """
     rng = random.Random(seed)
-    network = GraphBuilder.graph_builder(num_nodes, rng=rng)
+    if network is None:
+        network = GraphBuilder.graph_builder(num_nodes, rng=rng)
     wait_list = WaitList()
     metrics = TrialMetrics()
     priority_range = 100 + patients_per_round  # matches PatientGenerator's randrange(100 + n)
 
     start = time.perf_counter()
-    for _ in range(rounds):
-        new_patients = PatientGenerator.generate_patients(network, patients_per_round, rng)
+    for round_number in range(1, rounds + 1):
+        new_patients = PatientGenerator.generate_patients(network, patients_per_round, rng,
+                                                          eligible_nodes=patient_nodes)
         wait_list.add_patients(new_patients)
         for patient in new_patients:
             metrics.tier_seen[_priority_tier(patient.priority, priority_range)] += 1
 
         organ_list = OrganList()
-        OrganGenerator.generate_organs_to_list(network, harvests_per_round, organ_list, rng)
+        OrganGenerator.generate_organs_to_list(network, harvests_per_round, organ_list, rng,
+                                               eligible_nodes=organ_nodes)
 
         result = strategy.allocate(organ_list, wait_list, network)
         for organ, patient in result.matches:
@@ -149,6 +171,9 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
                 metrics.deaths_low_acuity += 1
 
         wait_list.increment_wait_times()
+
+        if snapshot_interval_rounds and round_number % snapshot_interval_rounds == 0:
+            metrics.wait_list_size_snapshots.append((round_number, len(wait_list.wait_list)))
 
     metrics.runtime_seconds = time.perf_counter() - start
     return metrics
