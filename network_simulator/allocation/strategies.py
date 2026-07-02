@@ -13,10 +13,21 @@ from dataclasses import dataclass
 from network_simulator.allocation.base import AllocationResult, MatchingAlgorithm, ScoringFunction
 from network_simulator.allocation.matchers.greedy import GreedyMatcher
 from network_simulator.allocation.matchers.optimal import OptimalMatcher
-from network_simulator.allocation.scoring import CompositeScore, PriorityScore
+from network_simulator.allocation.scoring import (
+    AcuityScore,
+    CompositeScore,
+    PriorityScore,
+    ScoreWeights,
+)
 from network_simulator.Network import Network
 from network_simulator.OrganList import OrganList
 from network_simulator.WaitList import WaitList
+
+# Composite weighting that leans on acuity (0..1, scaled up to compete with the
+# raw wait-time term) rather than the synthetic priority int - a
+# clinically-oriented blend of near-term risk, waiting time, and travel cost.
+_ACUITY_COMPOSITE_WEIGHTS = ScoreWeights(urgency=0.0, acuity=100.0,
+                                         wait_time=2.0, geography=-0.5)
 
 
 @dataclass
@@ -35,9 +46,15 @@ class Strategy:
 # optimal_priority: isolates the matching-algorithm effect (same scorer as baseline)
 # optimal_composite: isolates the scoring-model effect on top of optimal matching
 # greedy_composite: isolates the scoring-model effect on top of greedy matching
+# optimal_acuity: "sickest first" - ranks by near-term death risk (the
+#     life-saving policy the pre-clinical model couldn't express)
+# composite_acuity: acuity + waiting time + geography combined, optimally matched
 STRATEGIES = {
     'baseline':          Strategy('baseline', GreedyMatcher(), PriorityScore()),
     'optimal_priority':  Strategy('optimal_priority', OptimalMatcher(), PriorityScore()),
     'optimal_composite': Strategy('optimal_composite', OptimalMatcher(), CompositeScore()),
     'greedy_composite':  Strategy('greedy_composite', GreedyMatcher(), CompositeScore()),
+    'optimal_acuity':    Strategy('optimal_acuity', OptimalMatcher(), AcuityScore()),
+    'composite_acuity':  Strategy('composite_acuity', OptimalMatcher(),
+                                  CompositeScore(weights=_ACUITY_COMPOSITE_WEIGHTS)),
 }
