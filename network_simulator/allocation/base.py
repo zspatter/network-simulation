@@ -8,13 +8,15 @@ axis fixed while varying the other.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Protocol, Tuple
+from typing import Dict, List, Optional, Protocol, Tuple
 
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
+
+feasible_match = Tuple[Patient, float]  # (patient, transit_hours)
 
 
 class ScoringFunction(Protocol):
@@ -51,5 +53,13 @@ class MatchingAlgorithm(Protocol):
     name: str
 
     def allocate(self, organ_list: OrganList, wait_list: WaitList,
-                network: Network, scorer: ScoringFunction) -> AllocationResult:
+                network: Network, scorer: ScoringFunction,
+                feasibility: Optional[Dict[Organ, List[feasible_match]]] = None
+                ) -> AllocationResult:
+        """
+        :param feasibility: optional pre-computed {organ: [(patient, transit_hours), ...]}
+            (see allocation.feasibility.feasible_matches_by_organ). When provided, used
+            as-is instead of being recomputed - lets a caller (e.g. TieredMatcher) restrict
+            candidates to a geographic tier without duplicating matching logic.
+        """
         ...

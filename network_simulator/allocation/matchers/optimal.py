@@ -13,11 +13,11 @@ scipy.optimize.linear_sum_assignment would require padding tricks to express.
 """
 from __future__ import annotations
 
-from typing import Dict, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 import networkx as nx  # type: ignore
 
-from network_simulator.allocation.base import AllocationResult, ScoringFunction
+from network_simulator.allocation.base import AllocationResult, ScoringFunction, feasible_match
 from network_simulator.allocation.feasibility import feasible_matches_by_organ
 from network_simulator.Network import Network
 from network_simulator.Organ import Organ
@@ -34,9 +34,12 @@ class OptimalMatcher:
     name = 'optimal'
 
     def allocate(self, organ_list: OrganList, wait_list: WaitList,
-                network: Network, scorer: ScoringFunction) -> AllocationResult:
+                network: Network, scorer: ScoringFunction,
+                feasibility: Optional[Dict[Organ, List[feasible_match]]] = None
+                ) -> AllocationResult:
         result = AllocationResult()
-        feasibility = feasible_matches_by_organ(organ_list, wait_list, network)
+        if feasibility is None:
+            feasibility = feasible_matches_by_organ(organ_list, wait_list, network)
 
         graph: nx.Graph = nx.Graph()
         for organ, candidates in feasibility.items():

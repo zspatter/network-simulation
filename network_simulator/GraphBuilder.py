@@ -13,7 +13,14 @@ class GraphBuilder:
     A class that builds networks with variable number of nodes
     and random adjacency lists
     """
-    
+
+    # Real OPTN allocation used 11 arbitrary geographic regions before their removal (see
+    # network_simulator.allocation.geography). Synthetic networks have no real geography to
+    # assign regions from, so nodes are partitioned round-robin by node_id - arbitrary by
+    # construction, which is actually a faithful stand-in: the real regions weren't
+    # distance-based either, just historically drawn boundaries.
+    NUM_SYNTHETIC_REGIONS = 11
+
     @staticmethod
     def graph_builder(n: int, max_weight: Optional[int] = None,
                       rng: Optional[random.Random] = None) -> Network:
@@ -36,7 +43,8 @@ class GraphBuilder:
 
         for x in range(1, n + 1):
             adjacency_dict = GraphBuilder.generate_random_adjacency_dict(x, n, max_weight, rng)
-            node = Node(x, 'Node #' + str(x), adjacency_dict)
+            region = ((x - 1) % GraphBuilder.NUM_SYNTHETIC_REGIONS) + 1
+            node = Node(x, 'Node #' + str(x), adjacency_dict, region=region)
             network_dict[x] = node
         network = Network(network_dict)
         return network

@@ -6,11 +6,12 @@ candidates by raw priority or by a composite of urgency/wait-time/geography.
 """
 from __future__ import annotations
 
-from typing import Set
+from typing import Dict, List, Optional, Set
 
-from network_simulator.allocation.base import AllocationResult, ScoringFunction
+from network_simulator.allocation.base import AllocationResult, ScoringFunction, feasible_match
 from network_simulator.allocation.feasibility import feasible_matches_by_organ
 from network_simulator.Network import Network
+from network_simulator.Organ import Organ
 from network_simulator.OrganList import OrganList
 from network_simulator.Patient import Patient
 from network_simulator.WaitList import WaitList
@@ -20,9 +21,12 @@ class GreedyMatcher:
     name = 'greedy'
 
     def allocate(self, organ_list: OrganList, wait_list: WaitList,
-                network: Network, scorer: ScoringFunction) -> AllocationResult:
+                network: Network, scorer: ScoringFunction,
+                feasibility: Optional[Dict[Organ, List[feasible_match]]] = None
+                ) -> AllocationResult:
         result = AllocationResult()
-        feasibility = feasible_matches_by_organ(organ_list, wait_list, network)
+        if feasibility is None:
+            feasibility = feasible_matches_by_organ(organ_list, wait_list, network)
         claimed_patients: Set[Patient] = set()
 
         for organ in organ_list.organ_list:

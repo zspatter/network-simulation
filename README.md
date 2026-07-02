@@ -56,7 +56,7 @@ The smallest element within the network is a Node object. Each node represents a
 2. `label` - describes/names the node
 3. `adjacency dictionary` - where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive)
 4. `status` - indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well
-5. `region` / `city` / `state` / `latitude` / `longitude` - optional real-world metadata, populated when a node represents an actual hospital imported from coordinates (see `import_hospitals.py`)
+5. `region` / `city` / `state` / `latitude` / `longitude` - real-world metadata; `region` drives `allocation.geography`'s legacy-region constraint (see [Geographic Allocation Constraints](#geographic-allocation-constraints)) and is populated for every network - real hospital imports get the actual historical OPTN region (`import_hospitals.py`), synthetic networks get an arbitrary round-robin assignment (`GraphBuilder`); `city`/`state`/`latitude`/`longitude` remain optional, populated only for real hospital imports
 
 ### <ins>Network</ins>
 The network is a graph that is represented as a collection of nodes. The network represents the entire network of hospitals. The network will be traversed from node to node to. The weights of individual edges traveled will be added together to represent the total cost of the traveled path.
@@ -94,13 +94,39 @@ Edge weight is always **estimated transit time in hours** - the same unit `Organ
 - **Matchers** (`allocation.matchers`) - *how* matches are chosen:
   - `GreedyMatcher` - processes organs one at a time, assigning each to its highest-scoring available patient (the project's original behavior)
   - `OptimalMatcher` - solves one allocation batch as a maximum-weight bipartite matching (via `networkx`), so an earlier low-value match can't crowd out a better one available for a later organ
+  - `TieredMatcher` - wraps either matcher with a hard geographic constraint (see [Geographic Allocation Constraints](#geographic-allocation-constraints) below): an organ is only offered outside its current tier once no candidate remains inside it, mirroring the real "match run" waterfall (local, then regional, then national) instead of a single global optimization that treats geography as just another score input
 - **Scorers** (`allocation.scoring`) - *how* a match is valued:
   - `PriorityScore` - ranks purely by the patient's priority attribute (the original behavior)
   - `AcuityScore` - ranks by medical acuity (near-term death risk): a "sickest first" policy
-  - `CompositeScore` - combines priority, acuity, time already spent on the wait list, and travel cost, inspired by real OPTN/UNOS allocation policy
+  - `CompositeScore` - combines priority, acuity, time already spent on the wait list, and travel cost, inspired by real OPTN/UNOS allocation policy, using hand-picked uniform weights across every organ
+  - `RealWorldScore` - scores each organ on its *own* real allocation scale instead of one uniform formula: kidney (KAS-style wait-time + cPRA sensitization points), liver (MELD directly), heart (status tier, inverted), lung (LAS directly - LAS *is* the real composite lung allocation score). Geography enters only as a small continuous "placement efficiency" term here; hard geographic constraints are the `TieredMatcher`'s job, not the scorer's - see below.
 - `feasibility.feasible_matches_by_organ` is the single source of truth every matcher builds its candidates from - all four feasibility criteria above are applied there once, so comparing strategies only ever measures differences in matching/scoring, never differences in what counts as a valid match.
 
-`STRATEGIES` (in `allocation.strategies`) exposes six named combinations - `baseline`, `optimal_priority`, `optimal_composite`, `greedy_composite`, `optimal_acuity`, and `composite_acuity` - that `execute/benchmark_strategies.py` runs across many randomized, seeded multi-round simulations to compare on organs transplanted, organs wasted, **wait-list deaths** (total and among high-acuity patients), median wait to transplant, and a life-years-saved proxy. `baseline` reproduces the project's original greedy/priority-only behavior, so every other strategy can be measured against it.
+`STRATEGIES` (in `allocation.strategies`) exposes ten named combinations that `execute/benchmark_strategies.py` runs across many randomized, seeded multi-round simulations to compare on organs transplanted, organs wasted, **wait-list deaths** (total and among high-acuity patients), median wait to transplant, and a life-years-saved proxy:
+
+- `baseline`, `optimal_priority`, `optimal_composite`, `greedy_composite`, `optimal_acuity`, `composite_acuity` - as before; `baseline` reproduces the project's original greedy/priority-only behavior.
+- `real_world_region`, `real_world_circle`, `real_world_unconstrained`, `optimal_real_world_circle` - hold `RealWorldScore` fixed and vary only the geographic constraint, to directly measure what that constraint costs or buys (see below). `real_world_circle` - strict adherence to the geographic model most organs are allocated under today - is the benchmark's default statistical-significance reference (see [Statistical Rigor](#statistical-rigor)), not `baseline`.
+
+#### Geographic Allocation Constraints
+
+Real OPTN policy historically allocated within fixed, arbitrary boundaries - 11 "Regions" and 58 Donation Service Areas (DSAs) - which HRSA found in 2018 "have not and cannot be justified" and directed removed. They were eliminated from kidney/pancreas policy in 2021 and from liver/lung/heart policy in 2018-2020, replaced by concentric distance **circles** (150/250/500 nautical miles from the donor hospital) - still current for kidney, pancreas, and heart. Lung moved further, in March 2023, to **continuous distribution**, where distance is one continuously-weighted point factor with no hard boundary at all; liver/heart continuous distribution is in progress. Sources: [Removal of DSA and Region from Kidney Allocation Policy](https://www.hrsa.gov/optn/professionals/resources/kidney-pancreas/kidney-allocation-system/removal-dsa-region-kidney-allocation-policy), [Continuous Distribution overview](https://www.hrsa.gov/optn/policies-bylaws/policy-issues/continuous-distribution), [Continuous distribution - heart](https://optn.transplant.hrsa.gov/policies-bylaws/a-closer-look/continuous-distribution/continuous-distribution-heart/).
+
+`network_simulator.allocation.geography` gives the benchmark three points on that spectrum, each a `TierClassifier` consumed by `TieredMatcher`:
+- `region_tier` - strict adherence to the legacy arbitrary-region model (`Node.region`; synthetic networks get an arbitrary round-robin region assignment from `GraphBuilder`, real hospital networks use the actual historical OPTN region data imported by `import_hospitals.py`)
+- `circle_tier` - strict adherence to the current distance-circle model, via documented transit-hour thresholds approximating the real 150/250/500 NM circles
+- `national_tier` - no hard constraint (single tier); pairing this with `RealWorldScore`'s soft geography term approximates where continuous distribution is headed
+
+Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrained` in the benchmark report (same scorer, only the constraint differs) directly answers "what does this geographic constraint cost or buy us," in lives saved, wait times, and fairness spread.
+
+### <ins>Statistical Rigor</ins>
+`execute/benchmark_stats.py` (pure Python, no new dependency) turns the benchmark's per-strategy averages into defensible comparisons instead of just eyeballing means:
+- **Paired permutation testing** (`paired_permutation_test`) - strategies within one benchmark run share seeds (identical network topology and arrivals; see `run_trial`), so comparisons are paired, not independent-sample. A distribution-free sign-flip test avoids assuming normality for count metrics like deaths.
+- **Bootstrap confidence intervals** (`bootstrap_ci`) on the mean difference, not just a point estimate.
+- **Paired effect size** (`paired_effect_size`, Cohen's d) reported alongside p-values, so "statistically significant" isn't conflated with "practically meaningful."
+- **Holm-Bonferroni correction** (`holm_bonferroni`) across the multiple strategies compared against one reference in a single run, controlling the family-wise error rate.
+- **Sample-size planning** (`required_sample_size`) - given a pilot run's observed variance, computes how many seeds are actually needed to detect a minimum effect of interest, rather than guessing at a seed count.
+
+`benchmark_strategies.compare_to_reference` runs this for every strategy against `real_world_circle` (current real allocation policy for most organs) on the two outcomes the README already centers as the "lives saved" question - `waitlist_deaths` and `life_years_saved` - and `print_significance_report` prints the result as a second plain-text table alongside the main comparison.
 
 ### <ins>Clinical Realism</ins>
 `network_simulator.clinical` grounds the simulation in real-world data so "which strategy is best" is measured the way real allocation policy is judged - by lives saved, not just organ throughput:
@@ -121,7 +147,8 @@ All scripts live under `execute/` and are run as `python execute/<script>.py` fr
 **Interactive & benchmark**
 - `simulator.py` - the interactive console simulator described above.
 - `simulation.py` - a small non-interactive scripted demo: builds a hand-written hospital network, generates patients/organs, and runs one allocation pass end-to-end.
-- `benchmark_strategies.py` - runs every strategy in `STRATEGIES` across many seeded multi-round simulations and prints the comparison table described in [Allocation Strategies](#allocation-strategies). Also importable (`run_trial`, `run_benchmark`) for custom comparisons.
+- `benchmark_strategies.py` - runs every strategy in `STRATEGIES` across many seeded multi-round simulations and prints the comparison table described in [Allocation Strategies](#allocation-strategies), followed by the paired-significance table described in [Statistical Rigor](#statistical-rigor). Also importable (`run_trial`, `run_benchmark`, `compare_to_reference`) for custom comparisons.
+- `benchmark_stats.py` - the pure-Python statistical helpers (permutation test, bootstrap CI, effect size, Holm-Bonferroni correction, sample-size planning) `benchmark_strategies.py` uses - see [Statistical Rigor](#statistical-rigor).
 
 **Real hospital network data pipeline**
 - `import_hospitals.py` - builds a `Network` of real US transplant hospitals from `import/workbooks/National_Transplant_Hospitals_coordinates.xlsx`, with edge weights computed directly from coordinates via `network_simulator.distance` (no scraping).

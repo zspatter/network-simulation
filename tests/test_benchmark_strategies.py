@@ -1,9 +1,16 @@
 import sys
 from os.path import abspath, dirname, join
 
+import pytest
+
 sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
-from benchmark_strategies import TrialMetrics, run_benchmark, run_trial  # noqa: E402
+from benchmark_strategies import (  # noqa: E402
+    TrialMetrics,
+    compare_to_reference,
+    run_benchmark,
+    run_trial,
+)
 
 from network_simulator.allocation import STRATEGIES  # noqa: E402
 
@@ -48,8 +55,8 @@ def test_run_trial_is_reproducible_for_the_same_seed():
 
 
 def test_run_benchmark_aggregates_every_strategy():
-    report = run_benchmark(seeds=range(2), num_nodes=10, rounds=4,
-                           patients_per_round=10, harvests_per_round=2)
+    report, trials_by_strategy = run_benchmark(seeds=range(2), num_nodes=10, rounds=4,
+                                               patients_per_round=10, harvests_per_round=2)
 
     assert {row.strategy_name for row in report} == set(STRATEGIES.keys())
     for row in report:
@@ -58,3 +65,35 @@ def test_run_benchmark_aggregates_every_strategy():
         assert row.deaths_mean >= 0
         assert row.deaths_high_acuity_mean >= 0
         assert row.life_years_mean >= 0
+
+    # trials_by_strategy carries the raw per-seed values the aggregates were computed
+    # from - needed for compare_to_reference's paired (same-seed) comparisons
+    assert set(trials_by_strategy.keys()) == set(STRATEGIES.keys())
+    for trials in trials_by_strategy.values():
+        assert len(trials) == 2
+        assert all(isinstance(trial, TrialMetrics) for trial in trials)
+
+
+def test_compare_to_reference_pairs_every_other_strategy_against_the_reference():
+    _, trials_by_strategy = run_benchmark(seeds=range(5), num_nodes=10, rounds=4,
+                                          patients_per_round=10, harvests_per_round=2)
+
+    results = compare_to_reference(trials_by_strategy, reference='real_world_circle',
+                                   metrics=('waitlist_deaths',), num_resamples=200)
+
+    compared_strategies = {r.strategy_name for r in results}
+    assert compared_strategies == set(STRATEGIES.keys()) - {'real_world_circle'}
+    for result in results:
+        assert result.metric == 'waitlist_deaths'
+        assert 0.0 <= result.p_value <= 1.0
+        assert 0.0 <= result.adjusted_p_value <= 1.0
+        assert result.adjusted_p_value >= result.p_value
+        assert result.ci_low <= result.ci_high
+
+
+def test_compare_to_reference_rejects_an_unknown_reference():
+    _, trials_by_strategy = run_benchmark(seeds=range(2), num_nodes=10, rounds=2,
+                                          patients_per_round=5, harvests_per_round=2)
+
+    with pytest.raises(ValueError):
+        compare_to_reference(trials_by_strategy, reference='not_a_real_strategy')

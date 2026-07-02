@@ -12,7 +12,14 @@ import random
 import statistics
 import time
 from dataclasses import dataclass, field
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, List, Optional, Tuple
+
+from benchmark_stats import (
+    bootstrap_ci,
+    holm_bonferroni,
+    paired_effect_size,
+    paired_permutation_test,
+)
 
 from network_simulator.allocation import STRATEGIES, Strategy
 from network_simulator.clinical.progression import simulate_round_progression
@@ -164,21 +171,29 @@ class AggregatedMetrics:
 
 
 def run_benchmark(strategy_names: Optional[Iterable[str]] = None,
-                  seeds: Iterable[int] = range(10), **trial_kwargs) -> List[AggregatedMetrics]:
+                  seeds: Iterable[int] = range(30), **trial_kwargs
+                  ) -> Tuple[List[AggregatedMetrics], Dict[str, List[TrialMetrics]]]:
     """
     Runs run_trial() for every (strategy, seed) pair and aggregates the
-    results per strategy.
+    results per strategy. 30 seeds (up from an earlier 10) balances runtime
+    against statistical power - see compare_to_reference/required_sample_size
+    in benchmark_stats for sizing this deliberately rather than guessing.
 
     :param strategy_names: subset of STRATEGIES to compare (defaults to all)
     :param seeds: seeds to run each strategy over
     :param trial_kwargs: forwarded to run_trial (num_nodes, rounds, etc.)
+    :return: (per-strategy aggregated metrics, per-strategy per-seed raw trials -
+        the latter is what compare_to_reference needs for paired comparisons,
+        since aggregates alone can't be re-paired by seed)
     """
     names = list(strategy_names) if strategy_names is not None else list(STRATEGIES.keys())
     aggregated = []
+    trials_by_strategy: Dict[str, List[TrialMetrics]] = {}
 
     for name in names:
         strategy = STRATEGIES[name]
         trials = [run_trial(seed, strategy, **trial_kwargs) for seed in seeds]
+        trials_by_strategy[name] = trials
 
         transplanted = [t.organs_transplanted for t in trials]
         aggregated.append(AggregatedMetrics(
@@ -194,7 +209,7 @@ def run_benchmark(strategy_names: Optional[Iterable[str]] = None,
                 fairness_spread_mean=statistics.mean(t.fairness_spread() for t in trials),
                 runtime_mean=statistics.mean(t.runtime_seconds for t in trials)))
 
-    return aggregated
+    return aggregated, trials_by_strategy
 
 
 def print_report(aggregated: List[AggregatedMetrics]) -> None:
@@ -203,19 +218,118 @@ def print_report(aggregated: List[AggregatedMetrics]) -> None:
     with the life-and-death outcomes (deaths, high-acuity deaths) that
     distinguish allocation policies, not just organ throughput.
     """
-    header = (f"{'strategy':<20}{'transplanted':>13}{'wasted':>8}{'deaths':>8}"
+    header = (f"{'strategy':<28}{'transplanted':>13}{'wasted':>8}{'deaths':>8}"
               f"{'hi-acuity deaths':>18}{'median wait':>13}{'life-years':>12}"
               f"{'runtime (s)':>13}")
     print(header)
     print('-' * len(header))
     for row in aggregated:
-        print(f'{row.strategy_name:<20}{row.transplanted_mean:>13.1f}'
+        print(f'{row.strategy_name:<28}{row.transplanted_mean:>13.1f}'
              f'{row.wasted_mean:>8.1f}{row.deaths_mean:>8.1f}'
              f'{row.deaths_high_acuity_mean:>18.1f}{row.median_wait_mean:>13.1f}'
              f'{row.life_years_mean:>12.1f}{row.runtime_mean:>13.4f}')
 
 
+# The two outcomes the README already centers as the "lives saved" question - kept to just
+# these two (rather than every metric) to avoid a combinatorial explosion of comparisons.
+SIGNIFICANCE_METRICS = ('waitlist_deaths', 'life_years_saved')
+
+# real_world_circle (strict adherence to the current distance-circle model - see
+# network_simulator.allocation.geography) is the default significance reference: the
+# question worth a corrected p-value is "does this beat what US policy actually does
+# today," not "does this beat this project's original synthetic baseline."
+DEFAULT_REFERENCE_STRATEGY = 'real_world_circle'
+
+
+@dataclass
+class SignificanceResult:
+    """One strategy's paired comparison against the reference, for one metric."""
+    strategy_name: str
+    metric: str
+    mean_diff: float
+    ci_low: float
+    ci_high: float
+    effect_size: float
+    p_value: float
+    adjusted_p_value: float = 1.0
+
+    def is_significant(self, alpha: float = 0.05) -> bool:
+        return self.adjusted_p_value < alpha
+
+
+def compare_to_reference(trials_by_strategy: Dict[str, List[TrialMetrics]],
+                         reference: str = DEFAULT_REFERENCE_STRATEGY,
+                         metrics: Iterable[str] = SIGNIFICANCE_METRICS,
+                         num_resamples: int = 2000,
+                         rng: Optional[random.Random] = None) -> List[SignificanceResult]:
+    """
+    Paired comparison of every other strategy in trials_by_strategy against `reference`,
+    seed-for-seed (see run_trial's seed reuse - within one benchmark run, strategies see
+    identical network/arrival/harvest seeds, so per-seed differences isolate the
+    allocation decision). Holm-corrects p-values within each metric across all compared
+    strategies (not across metrics, since those answer different questions).
+
+    :param trials_by_strategy: per-strategy per-seed trials, as returned by run_benchmark
+    :param reference: strategy name every other strategy is compared against
+    :param metrics: TrialMetrics attribute names to compare
+    :param num_resamples: forwarded to paired_permutation_test/bootstrap_ci
+    :param rng: optional seeded source (defaults to a fresh random.Random per call)
+    """
+    if reference not in trials_by_strategy:
+        raise ValueError(f'reference strategy {reference!r} not found in trials_by_strategy')
+
+    source = rng or random.Random()
+    reference_trials = trials_by_strategy[reference]
+    results: List[SignificanceResult] = []
+
+    for metric in metrics:
+        reference_values = [getattr(trial, metric) for trial in reference_trials]
+        raw_p_by_strategy: Dict[str, float] = {}
+        pending: Dict[str, SignificanceResult] = {}
+
+        for name, trials in trials_by_strategy.items():
+            if name == reference:
+                continue
+            values = [getattr(trial, metric) for trial in trials]
+            diffs = [value - ref for value, ref in zip(values, reference_values)]
+
+            p_value = paired_permutation_test(diffs, num_resamples=num_resamples, rng=source)
+            ci_low, ci_high = bootstrap_ci(diffs, num_resamples=num_resamples, rng=source)
+
+            raw_p_by_strategy[name] = p_value
+            pending[name] = SignificanceResult(
+                    strategy_name=name, metric=metric, mean_diff=statistics.mean(diffs),
+                    ci_low=ci_low, ci_high=ci_high, effect_size=paired_effect_size(diffs),
+                    p_value=p_value)
+
+        adjusted = holm_bonferroni(raw_p_by_strategy)
+        for name, result in pending.items():
+            result.adjusted_p_value = adjusted[name]
+            results.append(result)
+
+    return results
+
+
+def print_significance_report(results: List[SignificanceResult], alpha: float = 0.05,
+                              reference: str = DEFAULT_REFERENCE_STRATEGY) -> None:
+    """Plain text table of compare_to_reference's output - no plots, per scope."""
+    print(f"\nSignificance vs. '{reference}' (Holm-corrected within each metric, "
+         f"alpha={alpha}):")
+    header = (f"{'strategy':<28}{'metric':<18}{'mean diff':>11}{'95% CI':>20}"
+              f"{'effect size':>13}{'adj. p':>9}  sig")
+    print(header)
+    print('-' * len(header))
+    for row in results:
+        ci = f'[{row.ci_low:.2f}, {row.ci_high:.2f}]'
+        marker = '*' if row.is_significant(alpha) else ''
+        print(f'{row.strategy_name:<28}{row.metric:<18}{row.mean_diff:>11.2f}{ci:>20}'
+             f'{row.effect_size:>13.2f}{row.adjusted_p_value:>9.3f}  {marker}')
+
+
 if __name__ == '__main__':
-    report = run_benchmark(seeds=range(10), num_nodes=30, rounds=12,
-                           patients_per_round=40, harvests_per_round=12)
+    report, trials_by_strategy = run_benchmark(seeds=range(30), num_nodes=30, rounds=12,
+                                               patients_per_round=40, harvests_per_round=12)
     print_report(report)
+
+    significance = compare_to_reference(trials_by_strategy)
+    print_significance_report(significance)
