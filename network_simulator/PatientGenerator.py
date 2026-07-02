@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from network_simulator.clinical.frequencies import random_us_blood_type, random_waitlist_organ
 from network_simulator.clinical.hla import cpra, patient_unacceptable_antigens
+from network_simulator.clinical.progression import initialize_urgency
 from network_simulator.clinical.size import body_size
 from network_simulator.Network import Network
 from network_simulator.Patient import Patient
@@ -41,15 +42,17 @@ class PatientGenerator:
 
         for x in range(n):
             unacceptable = patient_unacceptable_antigens(rng)
-            patients.append(Patient(patient_name="generated patient #" + str(x + 1),
-                                    illness="N/A",
-                                    organ_needed=random_waitlist_organ(rng),
-                                    blood_type=random_us_blood_type(rng),
-                                    priority=source.randrange(100 + n),
-                                    location=source.choice(nodes),
-                                    body_size=body_size(rng),
-                                    unacceptable_antigens=unacceptable,
-                                    cpra=cpra(unacceptable)))
+            patient = Patient(patient_name="generated patient #" + str(x + 1),
+                              illness="N/A",
+                              organ_needed=random_waitlist_organ(rng),
+                              blood_type=random_us_blood_type(rng),
+                              priority=source.randrange(100 + n),
+                              location=source.choice(nodes),
+                              body_size=body_size(rng),
+                              unacceptable_antigens=unacceptable,
+                              cpra=cpra(unacceptable))
+            initialize_urgency(patient, rng)
+            patients.append(patient)
         return patients
 
     @staticmethod
