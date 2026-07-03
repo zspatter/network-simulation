@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
+from benchmark_stats import min_achievable_p, seeds_for_significance
 from benchmark_strategies import (
     AggregatedMetrics,
     SignificanceResult,
@@ -105,8 +106,11 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
                              "network_simulator.allocation.STRATEGIES), or an explicit "
                              "comma-separated list of strategy names")
     parser.add_argument('--seeds', type=int, default=None,
-                        help='Seeds per horizon (default: 5 for the 1-year horizon, 3 for '
-                             'longer ones - runtime compounds with horizon length)')
+                        help='Seeds per horizon (default: 8 for the 1-year horizon, 3 for '
+                             'longer ones - runtime compounds with horizon length; note the '
+                             'significance test needs >=7 seeds to be able to reach p<0.05 '
+                             'at all, so low seed counts get a descriptive-only significance '
+                             'table)')
     parser.add_argument('--scale', type=float, default=DEFAULT_SCALE,
                         help='Fraction of real national weekly arrival/donor volume to '
                              f'simulate (default: {DEFAULT_SCALE}). 1.0 = literal national '
@@ -142,8 +146,18 @@ def resolve_strategy_names(spec: str) -> List[str]:
 
 
 def default_seeds_for_horizon(years: int) -> int:
-    """Fewer seeds for longer horizons, since per-trial runtime compounds with horizon length."""
-    return 5 if years == 1 else 3
+    """
+    Fewer seeds for longer horizons, since per-trial runtime compounds with horizon length.
+
+    The 1-year default is 8 because the sign-flip permutation test's p-value floor is
+    2/2^n: at the old default of 5 seeds, Holm-corrected significance at 0.05 was
+    mathematically unattainable no matter how large the true effect (see
+    benchmark_stats.seeds_for_significance - 7 is the minimum for 3 comparisons). Longer
+    horizons keep a cheap 3-seed default for the descriptive tables; the report annotates
+    their significance section as unattainable rather than presenting it as a negative
+    finding.
+    """
+    return 8 if years == 1 else 3
 
 
 def build_network(membership_csv_path: str) -> Tuple[Network, Set[int], Set[int]]:
@@ -194,8 +208,27 @@ def _final_wait_list_size_mean(trials: List[TrialMetrics]) -> float:
     return statistics.mean(finals) if finals else 0.0
 
 
-def _trajectory_rows(trials_by_strategy: Dict[str, List[TrialMetrics]]) -> List[List[str]]:
-    """One row per (strategy, year), averaging wait-list size across seeds at that year mark."""
+def _summary_rows(result: HorizonResult) -> List[List[str]]:
+    """Human-readable summary table rows (markdown/PDF): thousands separators throughout.
+    summary.csv formats its own raw values - separators inside numbers aren't CSV-safe."""
+    rows: List[List[str]] = []
+    for row in result.aggregated:
+        final_size = _final_wait_list_size_mean(result.trials_by_strategy[row.strategy_name])
+        rows.append([row.strategy_name, f'{row.transplanted_mean:,.0f}',
+                    f'{row.wasted_mean:,.0f}', f'{row.deaths_mean:,.0f}',
+                    f'{row.deaths_high_acuity_mean:,.0f}', f'{row.median_wait_mean:.1f}',
+                    f'{row.life_years_mean:,.0f}', f'{final_size:,.0f}'])
+    return rows
+
+
+def _trajectory_rows(trials_by_strategy: Dict[str, List[TrialMetrics]],
+                     thousands_separators: bool = True) -> List[List[str]]:
+    """One row per (strategy, year), averaging wait-list size across seeds at that year mark.
+
+    :param bool thousands_separators: True for the human-readable markdown/PDF tables;
+        trajectory.csv passes False, since separators inside numbers aren't CSV-safe
+    """
+    size_format = ',.0f' if thousands_separators else '.0f'
     rows: List[List[str]] = []
     for name, trials in trials_by_strategy.items():
         sizes_by_round: Dict[int, List[int]] = {}
@@ -204,15 +237,42 @@ def _trajectory_rows(trials_by_strategy: Dict[str, List[TrialMetrics]]) -> List[
                 sizes_by_round.setdefault(round_number, []).append(size)
         for round_number in sorted(sizes_by_round):
             year = round_number // ROUNDS_PER_YEAR
-            rows.append([name, str(year), f'{statistics.mean(sizes_by_round[round_number]):.0f}'])
+            rows.append([name, str(year),
+                        format(statistics.mean(sizes_by_round[round_number]), size_format)])
     return rows
 
 
 def _significance_rows(results: List[SignificanceResult]) -> List[List[str]]:
-    return [[r.strategy_name, r.metric, f'{r.mean_diff:.2f}',
-            f'[{r.ci_low:.2f}, {r.ci_high:.2f}]', f'{r.effect_size:.2f}',
-            f'{r.adjusted_p_value:.3f}', '*' if r.is_significant() else '']
+    return [[r.strategy_name, r.metric, f'{r.mean_diff:,.2f}',
+            f'[{r.ci_low:,.2f}, {r.ci_high:,.2f}]', f'{r.effect_size:.2f}',
+            f'{r.adjusted_p_value:.3f}', 'yes' if r.is_significant() else 'no']
            for r in results]
+
+
+def _significance_floor_note(seeds: int, results: List[SignificanceResult],
+                             alpha: float = 0.05) -> Optional[str]:
+    """
+    A plain-language warning when significance is mathematically unattainable: the
+    sign-flip permutation test's p-value floor is 2/2^seeds, and Holm correction
+    multiplies the best-ranked comparison by the comparison count - so at low seed counts
+    every row is guaranteed non-significant regardless of how large the true effect is
+    (an early report presented exactly that as a negative finding).
+
+    :return: the warning string, or None when `seeds` gives the test a real chance
+    """
+    comparisons = len({r.strategy_name for r in results})
+    if comparisons == 0:
+        return None
+    floor = min(1.0, min_achievable_p(seeds) * comparisons)
+    if floor <= alpha:
+        return None
+    return (f'**Note**: with {seeds} seeds and {comparisons} comparisons, the smallest '
+            f'Holm-adjusted p-value this test can produce is {floor:.3f} - significance at '
+            f'{alpha} is mathematically unattainable at this seed count, so "no significant '
+            f'result" here is a property of the sample size, not evidence about the '
+            f'strategies. Rerun with `--seeds {seeds_for_significance(alpha, comparisons)}` '
+            f'or more to give the test a real chance; until then, read the confidence '
+            f'intervals and effect sizes as the primary evidence.')
 
 
 def _markdown_table(headers: Sequence[str], rows: Sequence[Sequence[str]]) -> str:
@@ -254,10 +314,10 @@ def _methodology_section(network_node_count: int, transplant_hospital_count: int
         'Organizations - geocoded via the US Census Bureau geocoder (Nominatim fallback for '
         'addresses Census could not match). See `execute/import_hospitals.py`.\n'
         f'- **Arrival calibration** (OPTN/SRTR 2024, real national rates: '
-        f'{NATIONAL_WEEKLY_NEW_PATIENTS} new patients/week from 70,600/year across all organs, '
-        f'{NATIONAL_WEEKLY_DECEASED_DONORS} deceased donors/week from 16,989/year): this report '
-        f'simulates {scale_note} - {patients_per_round} patients/week, {harvests_per_round} '
-        'donors/week. One simulated round = 1 week.\n'
+        f'{NATIONAL_WEEKLY_NEW_PATIENTS:,} new patients/week from 70,600/year across all '
+        f'organs, {NATIONAL_WEEKLY_DECEASED_DONORS:,} deceased donors/week from 16,989/year): '
+        f'this report simulates {scale_note} - {patients_per_round:,} patients/week, '
+        f'{harvests_per_round:,} donors/week. One simulated round = 1 week.\n'
         '- **Strategies compared**:\n'
         f'{strategy_lines}\n'
         '- **Seeds per horizon** (fewer for longer horizons - runtime compounds with horizon '
@@ -286,23 +346,20 @@ def build_markdown_report(horizon_results: List[HorizonResult], network_node_cou
     for result in horizon_results:
         sections.append(f'## {result.years}-Year Horizon ({result.seeds} seed(s))')
 
-        summary_rows = []
-        for row in result.aggregated:
-            final_size = _final_wait_list_size_mean(result.trials_by_strategy[row.strategy_name])
-            summary_rows.append([row.strategy_name, f'{row.transplanted_mean:.0f}',
-                                f'{row.wasted_mean:.0f}', f'{row.deaths_mean:.0f}',
-                                f'{row.deaths_high_acuity_mean:.0f}',
-                                f'{row.median_wait_mean:.1f}', f'{row.life_years_mean:.0f}',
-                                f'{final_size:.0f}'])
-        sections.append('### Summary\n' + _markdown_table(summary_headers, summary_rows))
+        sections.append('### Summary\n' + _markdown_table(summary_headers,
+                                                          _summary_rows(result)))
 
         sections.append('### Wait-List Size Trajectory (by year)\n' + _markdown_table(
                 trajectory_headers, _trajectory_rows(result.trials_by_strategy)))
 
         if result.significance:
-            sections.append(f'### Significance vs. `{DEFAULT_REFERENCE_STRATEGY}`\n'
-                            + _markdown_table(significance_headers,
-                                              _significance_rows(result.significance)))
+            significance_section = (f'### Significance vs. `{DEFAULT_REFERENCE_STRATEGY}`\n'
+                                    + _markdown_table(significance_headers,
+                                                      _significance_rows(result.significance)))
+            floor_note = _significance_floor_note(result.seeds, result.significance)
+            if floor_note:
+                significance_section += '\n\n' + floor_note
+            sections.append(significance_section)
 
     return '\n\n'.join(sections) + '\n'
 
@@ -327,7 +384,7 @@ def write_csv_outputs(horizon_results: List[HorizonResult], output_dir: Path) ->
         writer = csv.writer(f)
         writer.writerow(['horizon_years', 'strategy', 'year', 'wait_list_size'])
         for result in horizon_results:
-            for row in _trajectory_rows(result.trials_by_strategy):
+            for row in _trajectory_rows(result.trials_by_strategy, thousands_separators=False):
                 writer.writerow([result.years, *row])
 
     with (output_dir / 'significance.csv').open('w', newline='') as f:

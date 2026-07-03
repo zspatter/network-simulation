@@ -8,6 +8,7 @@ sign-flip permutation test and a paired effect size, not a two-sample t-test.
 """
 from __future__ import annotations
 
+import itertools
 import math
 import random
 import statistics
@@ -21,18 +22,34 @@ def paired_permutation_test(diffs: List[float], num_resamples: int = 2000,
     0. Distribution-free - appropriate here since outcome metrics (deaths, life-years) are
     counts, not normally distributed.
 
+    With n pairs there are only 2^n sign patterns, and the identity and full-flip patterns
+    always tie the observed mean - so 2/2^n is the smallest two-sided p this test can ever
+    produce (see min_achievable_p / seeds_for_significance). When 2^n fits within the
+    resample budget the test enumerates every pattern and returns the exact p instead of a
+    Monte Carlo estimate - at the small seed counts this project runs, the estimate's noise
+    was the only thing distinguishing runs.
+
     :param diffs: per-seed (strategy - reference) differences for one metric
-    :param int num_resamples: number of random sign-flip resamples
-    :param random.Random rng: optional seeded source (defaults to the global module)
+    :param int num_resamples: number of random sign-flip resamples (Monte Carlo path only)
+    :param random.Random rng: optional seeded source (defaults to the global module;
+        Monte Carlo path only)
     :return: two-sided p-value in (0, 1]
     """
     if not diffs:
         return 1.0
-    source = rng or random
     observed = abs(statistics.mean(diffs))
     if observed == 0.0:
         return 1.0
 
+    n = len(diffs)
+    if 2 ** n <= num_resamples:
+        # Exact: enumerating all 2^n patterns costs no more than the Monte Carlo budget.
+        at_least_as_extreme = sum(
+                1 for signs in itertools.product((1, -1), repeat=n)
+                if abs(statistics.mean(s * d for s, d in zip(signs, diffs))) >= observed - 1e-12)
+        return at_least_as_extreme / 2 ** n
+
+    source = rng or random
     at_least_as_extreme = 0
     for _ in range(num_resamples):
         resampled = [d if source.random() < 0.5 else -d for d in diffs]
@@ -41,6 +58,39 @@ def paired_permutation_test(diffs: List[float], num_resamples: int = 2000,
 
     # +1/+1 (Monte Carlo) smoothing avoids reporting p=0.0 from a finite resample count
     return (at_least_as_extreme + 1) / (num_resamples + 1)
+
+
+def min_achievable_p(num_pairs: int) -> float:
+    """
+    The smallest two-sided p-value paired_permutation_test can produce with this many
+    pairs: 2/2^n (identity + full flip always tie the observed mean). Below ~6 pairs this
+    floor sits above the conventional 0.05, meaning "not significant" is guaranteed by the
+    sample size alone and says nothing about the effect - callers should surface that
+    rather than let an unreachable threshold masquerade as a negative finding.
+
+    :param int num_pairs: number of paired differences (seeds)
+    :return: the floor p-value in (0, 1]
+    """
+    if num_pairs <= 0:
+        return 1.0
+    return min(1.0, 2 / 2 ** num_pairs)
+
+
+def seeds_for_significance(alpha: float = 0.05, comparisons: int = 1) -> int:
+    """
+    Smallest seed count at which paired_permutation_test can possibly reach `alpha` after
+    Holm correction across `comparisons` comparisons: the best-ranked comparison's Holm
+    multiplier is `comparisons`, so the floor is comparisons * 2/2^n <= alpha.
+
+    :param float alpha: two-sided significance level
+    :param int comparisons: comparisons Holm-corrected together (strategies vs. reference)
+    :return: minimum number of seeds for significance to be attainable at all
+    """
+    if not 0.0 < alpha < 1.0:
+        raise ValueError('alpha must be in (0, 1)')
+    if comparisons < 1:
+        raise ValueError('comparisons must be >= 1')
+    return math.ceil(math.log2(2 * comparisons / alpha))
 
 
 def bootstrap_ci(values: List[float], num_resamples: int = 2000, confidence: float = 0.95,

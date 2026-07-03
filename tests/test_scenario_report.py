@@ -53,7 +53,9 @@ def test_default_seeds_for_horizon_is_smaller_for_longer_horizons():
     five_year = scenario_report.default_seeds_for_horizon(5)
     ten_year = scenario_report.default_seeds_for_horizon(10)
 
-    assert one_year == 5
+    # 8, not fewer: significance via the sign-flip test needs >= 7 seeds to be attainable
+    # at all with 3 Holm-corrected comparisons (see benchmark_stats.seeds_for_significance)
+    assert one_year == 8
     assert five_year < one_year
     assert ten_year == five_year
 
@@ -124,8 +126,70 @@ def test_significance_rows_marks_significant_results():
 
     rows = scenario_report._significance_rows(results)
 
-    assert rows[0][-1] == '*'
-    assert rows[1][-1] == ''
+    # explicit yes/no, not '*'/'' - an empty cell reads as a rendering bug, not a finding
+    assert rows[0][-1] == 'yes'
+    assert rows[1][-1] == 'no'
+
+
+def test_significance_rows_use_thousands_separators():
+    results = [SignificanceResult(strategy_name='a', metric='life_years_saved',
+                                  mean_diff=1105.67, ci_low=453.0, ci_high=1839.0,
+                                  effect_size=1.59, p_value=0.25, adjusted_p_value=0.75)]
+
+    rows = scenario_report._significance_rows(results)
+
+    assert rows[0][2] == '1,105.67'
+    assert rows[0][3] == '[453.00, 1,839.00]'
+
+
+def test_significance_floor_note_warns_when_significance_is_unattainable():
+    results = [SignificanceResult(strategy_name=name, metric='waitlist_deaths', mean_diff=1.0,
+                                  ci_low=0.0, ci_high=2.0, effect_size=0.5, p_value=0.25,
+                                  adjusted_p_value=0.75)
+              for name in ('a', 'b', 'c')]
+
+    note = scenario_report._significance_floor_note(3, results)
+
+    # 3 comparisons * 2/2^3 = 0.75 floor -> unattainable, and the fix is spelled out
+    assert note is not None
+    assert 'mathematically unattainable' in note
+    assert '0.750' in note
+    assert '--seeds 7' in note
+
+
+def test_significance_floor_note_is_silent_when_seeds_suffice():
+    results = [SignificanceResult(strategy_name='a', metric='waitlist_deaths', mean_diff=1.0,
+                                  ci_low=0.0, ci_high=2.0, effect_size=0.5, p_value=0.01,
+                                  adjusted_p_value=0.01)]
+
+    assert scenario_report._significance_floor_note(8, results) is None
+
+
+def test_summary_rows_use_thousands_separators():
+    trials = {'real_world_circle': [TrialMetrics(wait_list_size_snapshots=[(52, 11863)])]}
+    result = scenario_report.HorizonResult(
+            years=1, seeds=1,
+            aggregated=[_fake_aggregated('real_world_circle', transplanted_mean=20978.0,
+                                         life_years_mean=245904.0)],
+            trials_by_strategy=trials, significance=[])
+
+    rows = scenario_report._summary_rows(result)
+
+    assert rows[0][1] == '20,978'
+    assert rows[0][6] == '245,904'
+    assert rows[0][7] == '11,863'
+
+
+def test_trajectory_rows_separators_are_optional_for_csv_output():
+    trials_by_strategy = {
+        'real_world_circle': [TrialMetrics(wait_list_size_snapshots=[(52, 11863)])],
+    }
+
+    human = scenario_report._trajectory_rows(trials_by_strategy)
+    machine = scenario_report._trajectory_rows(trials_by_strategy, thousands_separators=False)
+
+    assert human[0][2] == '11,863'
+    assert machine[0][2] == '11863'
 
 
 def _fake_aggregated(strategy_name, **overrides):

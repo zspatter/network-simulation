@@ -13,8 +13,9 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, Tabl
 from scenario_report import (
     DEFAULT_REFERENCE_STRATEGY,
     HorizonResult,
-    _final_wait_list_size_mean,
+    _significance_floor_note,
     _significance_rows,
+    _summary_rows,
     _trajectory_rows,
 )
 
@@ -54,16 +55,8 @@ def write_pdf_report(horizon_results: List[HorizonResult], output_path: Path,
         story.append(Paragraph(f'{result.years}-Year Horizon ({result.seeds} seed(s))',
                                styles['Heading2']))
 
-        summary_rows = [summary_headers]
-        for row in result.aggregated:
-            final_size = _final_wait_list_size_mean(result.trials_by_strategy[row.strategy_name])
-            summary_rows.append([row.strategy_name, f'{row.transplanted_mean:.0f}',
-                                f'{row.wasted_mean:.0f}', f'{row.deaths_mean:.0f}',
-                                f'{row.deaths_high_acuity_mean:.0f}',
-                                f'{row.median_wait_mean:.1f}', f'{row.life_years_mean:.0f}',
-                                f'{final_size:.0f}'])
         story.append(Paragraph('Summary', styles['Heading3']))
-        story.append(Table(summary_rows, style=_TABLE_STYLE))
+        story.append(Table([summary_headers] + _summary_rows(result), style=_TABLE_STYLE))
         story.append(Spacer(1, 12))
 
         trajectory_rows = [trajectory_headers] + _trajectory_rows(result.trials_by_strategy)
@@ -76,6 +69,12 @@ def write_pdf_report(horizon_results: List[HorizonResult], output_path: Path,
             story.append(Paragraph(f'Significance vs. {DEFAULT_REFERENCE_STRATEGY}',
                                    styles['Heading3']))
             story.append(Table(significance_rows, style=_TABLE_STYLE))
+            floor_note = _significance_floor_note(result.seeds, result.significance)
+            if floor_note:
+                story.append(Spacer(1, 6))
+                # The markdown emphasis markers render literally in reportlab - strip them.
+                story.append(Paragraph(floor_note.replace('**', '').replace('`', ''),
+                                       styles['BodyText']))
 
         story.append(Spacer(1, 20))
 

@@ -9,9 +9,11 @@ sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 from benchmark_stats import (  # noqa: E402
     bootstrap_ci,
     holm_bonferroni,
+    min_achievable_p,
     paired_effect_size,
     paired_permutation_test,
     required_sample_size,
+    seeds_for_significance,
 )
 
 
@@ -33,6 +35,42 @@ def test_paired_permutation_test_does_not_reject_identical_paired_samples():
 
 def test_paired_permutation_test_returns_one_for_empty_input():
     assert paired_permutation_test([]) == 1.0
+
+
+def test_paired_permutation_test_is_exact_for_small_samples():
+    # 3 pairs -> 8 sign patterns, of which only the identity and full flip tie the
+    # observed |mean| = 2.0 -> exactly 2/8. A Monte Carlo estimate of the form
+    # (k+1)/(num_resamples+1) can never equal 0.25 exactly, so this also proves the
+    # enumeration path ran (and that rng is irrelevant to it).
+    assert paired_permutation_test([1.0, 2.0, 3.0], rng=random.Random(1)) == 0.25
+    assert paired_permutation_test([1.0, 2.0, 3.0], rng=random.Random(99)) == 0.25
+
+
+def test_min_achievable_p_matches_the_sign_flip_floor():
+    assert min_achievable_p(0) == 1.0
+    assert min_achievable_p(1) == 1.0  # 2/2 - a single pair can never reject
+    assert min_achievable_p(3) == 0.25
+    assert min_achievable_p(5) == 0.0625
+
+
+def test_min_achievable_p_is_the_actual_permutation_test_minimum():
+    # All-same-sign diffs with distinct magnitudes are the most extreme observable case;
+    # the test's p should land exactly on the documented floor.
+    for n in (3, 4, 5, 6):
+        diffs = [float(i) for i in range(1, n + 1)]
+        assert paired_permutation_test(diffs) == min_achievable_p(n)
+
+
+def test_seeds_for_significance_accounts_for_holm_correction():
+    assert seeds_for_significance(alpha=0.05, comparisons=1) == 6   # 2/2^6 = 0.031
+    assert seeds_for_significance(alpha=0.05, comparisons=3) == 7   # 3 * 2/2^7 = 0.047
+
+
+def test_seeds_for_significance_rejects_invalid_inputs():
+    with pytest.raises(ValueError):
+        seeds_for_significance(alpha=0.0)
+    with pytest.raises(ValueError):
+        seeds_for_significance(comparisons=0)
 
 
 def test_bootstrap_ci_contains_the_known_mean_of_a_synthetic_distribution():
