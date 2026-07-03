@@ -16,7 +16,6 @@ build/
 dist/
 .venv/
 venv/
-.direnv/
 
 # Generated scenario reports (regenerate via execute/scenario_report.py).
 # reports/example/ is the one committed sample set - a 1/5/10-year run.
