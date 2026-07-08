@@ -1,7 +1,7 @@
 import random
 from typing import List, Optional
 
-from network_simulator.clinical.frequencies import random_us_blood_type, random_waitlist_organ
+from network_simulator.clinical.frequencies import random_arrival_organ, random_us_blood_type
 from network_simulator.clinical.hla import cpra, patient_unacceptable_antigens
 from network_simulator.clinical.progression import initialize_urgency
 from network_simulator.clinical.size import body_size
@@ -17,9 +17,10 @@ class PatientGenerator:
     and are assigned a random blood type and priority value.
 
     Organ need and blood type are drawn from real US frequency distributions
-    (see network_simulator.clinical.frequencies) rather than uniformly, so a
-    generated wait list is kidney-dominant and blood-type-skewed like the
-    real one.
+    (see network_simulator.clinical.frequencies) rather than uniformly. Organ
+    need follows the wait-list *additions* mix (a flow), not the prevalence
+    snapshot (a stock), so arrivals aren't over-weighted toward the long-waiting
+    kidney candidates that dominate the standing list - see random_arrival_organ.
     """
 
     @staticmethod
@@ -48,7 +49,7 @@ class PatientGenerator:
             unacceptable = patient_unacceptable_antigens(rng)
             patient = Patient(patient_name="generated patient #" + str(x + 1),
                               illness="N/A",
-                              organ_needed=random_waitlist_organ(rng),
+                              organ_needed=random_arrival_organ(rng),
                               blood_type=random_us_blood_type(rng),
                               priority=source.randrange(100 + n),
                               location=source.choice(nodes),

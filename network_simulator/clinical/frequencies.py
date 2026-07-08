@@ -41,7 +41,10 @@ US_BLOOD_TYPE_WEIGHTS: Dict[Tuple[BloodTypeLetter, BloodTypePolarity], float] = 
     (BloodTypeLetter.AB, BloodTypePolarity.NEG): 0.6,
 }
 
-# US wait-list composition by organ (percent). Kidney-dominant.
+# US wait-list *prevalence* by organ (percent) - the standing-list snapshot. Kidney-dominant.
+# This is a STOCK, not a flow: it describes who is on the list at a moment, not who joins it.
+# Kept for validating a simulated steady-state composition against reality; it is NOT what
+# arrivals are drawn from (see US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS and the note there).
 US_WAITLIST_ORGAN_WEIGHTS: Dict[OrganType, float] = {
     OrganType.Kidney:     85.0,
     OrganType.Liver:      9.0,
@@ -49,6 +52,24 @@ US_WAITLIST_ORGAN_WEIGHTS: Dict[OrganType, float] = {
     OrganType.Pancreas:   1.7,
     OrganType.Lungs:      0.9,
     OrganType.Intestines: 0.2,
+}
+
+# US wait-list *additions* by organ (percent) - the flow new patients are generated from.
+# This is deliberately LESS kidney-dominated than the prevalence snapshot above: kidney
+# candidates wait far longer (dialysis sustains them for years) so they accumulate on the
+# standing list out of all proportion to their arrival rate. By Little's law the standing mix
+# is roughly (arrival rate x mean wait), so sampling arrivals from the standing mix - as the
+# model originally did - over-generates kidney arrivals and inflates the backlog. These are
+# documented approximations reflecting that shorter-wait organs (liver/heart/lung) make up a
+# larger share of arrivals than of prevalence; VERIFY against the exact OPTN annual
+# additions-by-organ table before using the absolute counts in a published report.
+US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS: Dict[OrganType, float] = {
+    OrganType.Kidney:     63.0,
+    OrganType.Liver:      18.0,
+    OrganType.Heart:      8.0,
+    OrganType.Lungs:      6.0,
+    OrganType.Pancreas:   3.0,
+    OrganType.Intestines: 2.0,
 }
 
 # Probability that a given organ is recovered (suitable for transplant) from a
@@ -100,11 +121,28 @@ def random_us_blood_type(rng: Optional[random.Random] = None) -> BloodType:
 
 def random_waitlist_organ(rng: Optional[random.Random] = None) -> OrganType:
     """
-    Returns an OrganType sampled from the US wait-list composition (kidney-dominant).
+    Returns an OrganType sampled from the US wait-list *prevalence* snapshot
+    (kidney-dominant). This is the standing-list mix - use random_arrival_organ to
+    generate new patients, since arrivals are a flow, not a stock (see
+    US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS).
 
     :param random.Random rng: optional seeded source (defaults to the global module)
-    :return: an OrganType with realistic wait-list frequency
+    :return: an OrganType with realistic standing-wait-list frequency
     """
     organs = list(US_WAITLIST_ORGAN_WEIGHTS.keys())
     weights = list(US_WAITLIST_ORGAN_WEIGHTS.values())
+    return weighted_choice(organs, weights, rng)
+
+
+def random_arrival_organ(rng: Optional[random.Random] = None) -> OrganType:
+    """
+    Returns an OrganType sampled from the US wait-list *additions* mix - the organ a
+    newly listed patient needs. Less kidney-dominated than the prevalence snapshot;
+    see US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS for why this distinction matters.
+
+    :param random.Random rng: optional seeded source (defaults to the global module)
+    :return: an OrganType with realistic new-listing frequency
+    """
+    organs = list(US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS.keys())
+    weights = list(US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS.values())
     return weighted_choice(organs, weights, rng)

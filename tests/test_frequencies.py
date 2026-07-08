@@ -4,7 +4,9 @@ from collections import Counter
 from network_simulator.clinical.frequencies import (
     DONOR_RECOVERY_PROBABILITIES,
     US_BLOOD_TYPE_WEIGHTS,
+    US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS,
     US_WAITLIST_ORGAN_WEIGHTS,
+    random_arrival_organ,
     random_us_blood_type,
     random_waitlist_organ,
     weighted_choice,
@@ -57,6 +59,27 @@ def test_random_waitlist_organ_is_kidney_dominant():
     assert abs(kidney_share - US_WAITLIST_ORGAN_WEIGHTS[OrganType.Kidney] / total_weight) < 0.03
     # kidney dominates every other organ need combined
     assert counts[OrganType.Kidney] > n / 2
+
+
+def test_random_arrival_organ_matches_additions_mix():
+    rng = random.Random(11)
+    n = 40000
+    counts = Counter(random_arrival_organ(rng) for _ in range(n))
+
+    total_weight = sum(US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS.values())
+    kidney_share = counts[OrganType.Kidney] / n
+    assert abs(kidney_share
+               - US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS[OrganType.Kidney] / total_weight) < 0.03
+
+
+def test_arrivals_are_less_kidney_dominated_than_prevalence():
+    # the flow (additions) must be less kidney-heavy than the stock (prevalence);
+    # sampling arrivals from prevalence is exactly the bug this split fixes
+    prevalence_total = sum(US_WAITLIST_ORGAN_WEIGHTS.values())
+    additions_total = sum(US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS.values())
+    prevalence_kidney = US_WAITLIST_ORGAN_WEIGHTS[OrganType.Kidney] / prevalence_total
+    additions_kidney = US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS[OrganType.Kidney] / additions_total
+    assert additions_kidney < prevalence_kidney
 
 
 def test_donor_recovery_probabilities_are_ordered_and_valid():
