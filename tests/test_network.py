@@ -1,3 +1,4 @@
+from network_simulator.distance import estimate_transit_hours, haversine_km
 from network_simulator.Network import Network, Node
 
 
@@ -392,3 +393,46 @@ def test__str__():
     assert 'A' in text
     assert 'B' in text
     assert text.endswith('\n===============================\n')
+
+
+def test_transit_from_uses_coordinates_when_present():
+    # An absurd edge weight (99h) is deliberately ignored: a coordinate-bearing
+    # network computes direct point-to-point transit, not a graph-edge sum.
+    node1 = Node(1, latitude=41.88, longitude=-87.63,
+                 adjacency_dict={2: {'weight': 99, 'status': True}})
+    node2 = Node(2, latitude=42.36, longitude=-71.06,
+                 adjacency_dict={1: {'weight': 99, 'status': True}})
+    net = Network({1: node1, 2: node2})
+
+    transit = net.transit_from(1)
+    expected = estimate_transit_hours(haversine_km(41.88, -87.63, 42.36, -71.06))
+    assert transit[2] == expected
+    assert transit[2] < 99  # not the fictitious edge weight
+    # source-to-itself is the ground handling floor, not zero (no teleporting)
+    assert transit[1] == estimate_transit_hours(0.0)
+
+
+def test_transit_from_falls_back_to_shortest_path_without_coordinates():
+    # No coordinates -> the graph edge weights are the distance model (Dijkstra sum).
+    node1 = Node(1, adjacency_dict={2: {'weight': 4, 'status': True}})
+    node2 = Node(2, adjacency_dict={1: {'weight': 4, 'status': True},
+                                    3: {'weight': 5, 'status': True}})
+    node3 = Node(3, adjacency_dict={2: {'weight': 5, 'status': True}})
+    net = Network({1: node1, 2: node2, 3: node3})
+
+    transit = net.transit_from(1)
+    assert transit[1] == 0
+    assert transit[2] == 4
+    assert transit[3] == 9  # 1 -> 2 -> 3
+
+
+def test_transit_from_is_cached_until_a_mutation_invalidates_it():
+    node1 = Node(1, adjacency_dict={2: {'weight': 4, 'status': True}})
+    node2 = Node(2, adjacency_dict={1: {'weight': 4, 'status': True}})
+    net = Network({1: node1, 2: node2})
+
+    first = net.transit_from(1)
+    assert net.transit_from(1) is first  # served from cache (same object)
+
+    net.mark_node_inactive(2, feedback=False)  # a mutation must invalidate the cache
+    assert net.transit_from(1) is not first
