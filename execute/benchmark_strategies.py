@@ -22,6 +22,7 @@ from benchmark_stats import (
 )
 
 from network_simulator.allocation import STRATEGIES, Strategy
+from network_simulator.clinical import acceptance
 from network_simulator.clinical.living_donor import simulate_living_donor_transplants
 from network_simulator.clinical.progression import simulate_round_progression
 from network_simulator.clinical.removal import simulate_round_removals
@@ -82,6 +83,9 @@ class TrialMetrics:
     # state. Strategy-independent, tracked so the wait-list trajectory is realistic.
     other_removals: int = 0
     living_donor_transplants: int = 0
+    # organs matched to a recipient but then declined/discarded (a subset of organs_wasted);
+    # only nonzero when run_trial's realistic_outcomes is enabled - see clinical.acceptance
+    organs_discarded: int = 0
     deaths_by_organ: Dict[OrganType, int] = field(
             default_factory=lambda: {organ: 0 for organ in OrganType})
     wait_times_to_transplant: List[int] = field(default_factory=list)
@@ -114,7 +118,8 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
              organ_nodes: Optional[List[int]] = None,
              snapshot_interval_rounds: Optional[int] = None,
              other_removal_annual_rate: float = 0.0,
-             living_donors_per_round: int = 0) -> TrialMetrics:
+             living_donors_per_round: int = 0,
+             realistic_outcomes: bool = False) -> TrialMetrics:
     """
     Runs one multi-round simulation for a single strategy: builds one
     network, then repeats (generate patients -> harvest organs -> allocate
@@ -145,6 +150,12 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
     :param living_donors_per_round: number of living-donor transplants per round, drawn off
         eligible kidney/liver waiters; 0 disables it (default) - see
         network_simulator.clinical.living_donor.
+    :param realistic_outcomes: when True, each matched organ may be declined/discarded with a
+        cold-ischemia-dependent probability (a matched-but-discarded organ counts as wasted and
+        its patient stays on the list), and transplanted organs' life-years are scaled down by a
+        cold-ischemia graft-survival penalty. Off by default (so the bare strategy comparison and
+        tests are unaffected); the reality-calibrated scenario report enables it - see
+        network_simulator.clinical.acceptance.
     :return: aggregate metrics for the trial
     """
     rng = random.Random(seed)
@@ -167,15 +178,36 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
                                                eligible_nodes=organ_nodes)
 
         result = strategy.allocate(organ_list, wait_list, network)
+        transplanted_patients = []
         for organ, patient in result.matches:
+            transit_hours = 0.0
+            if realistic_outcomes:
+                transit_hours = network.transit_from(organ.origin_location)[patient.location]
+                if acceptance.is_discarded(organ.organ_type, transit_hours, rng):
+                    # declined down the match run -> wasted; the patient keeps waiting
+                    metrics.organs_wasted += 1
+                    metrics.organs_discarded += 1
+                    continue
+
+            life_years = LIFE_YEARS_BY_ORGAN[patient.organ_needed]
+            if realistic_outcomes:
+                life_years *= acceptance.graft_survival_factor(transit_hours)
+
             metrics.organs_transplanted += 1
             metrics.total_priority_served += patient.priority
-            metrics.life_years_saved += LIFE_YEARS_BY_ORGAN[patient.organ_needed]
+            metrics.life_years_saved += life_years
             metrics.wait_times_to_transplant.append(patient.rounds_waited)
             metrics.tier_matched[_priority_tier(patient.priority, priority_range)] += 1
+            transplanted_patients.append(patient)
         metrics.organs_wasted += len(result.unmatched_organs)
 
-        result.apply(wait_list, organ_list)
+        if realistic_outcomes:
+            # only the accepted recipients leave the list; discarded organs' patients stay
+            for patient in transplanted_patients:
+                wait_list.remove_patient(patient)
+            organ_list.empty_list()
+        else:
+            result.apply(wait_list, organ_list)
 
         # patients still waiting deteriorate and some die before a match arrives
         for patient in simulate_round_progression(wait_list, rng):

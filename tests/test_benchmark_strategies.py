@@ -34,6 +34,49 @@ def test_run_trial_accounts_for_every_organ():
     assert metrics.runtime_seconds >= 0
 
 
+def test_run_trial_realistic_outcomes_discards_some_organs_and_keeps_those_patients():
+    # with realistic_outcomes some matched organs are declined/discarded (counted as wasted,
+    # not transplanted) and their would-be recipients keep waiting
+    off = run_trial(seed=3, strategy=STRATEGIES['real_world_circle'], num_nodes=12, rounds=6,
+                    patients_per_round=20, harvests_per_round=6)
+    on = run_trial(seed=3, strategy=STRATEGIES['real_world_circle'], num_nodes=12, rounds=6,
+                   patients_per_round=20, harvests_per_round=6, realistic_outcomes=True)
+
+    assert off.organs_discarded == 0
+    assert on.organs_discarded > 0
+    # discards are a subset of wasted organs, and modeling them can only reduce transplants
+    assert on.organs_discarded <= on.organs_wasted
+    assert on.organs_transplanted <= off.organs_transplanted
+
+
+def test_run_trial_conserves_every_patient_across_all_exits():
+    # Conservation invariant: every patient who arrives must end the trial as exactly one of
+    # {still waiting, deceased-donor transplanted, living-donor transplanted, died, removed}.
+    # None may be lost or double-counted - this guards the removal / living-donor / discard
+    # channels against silently dropping or duplicating patients.
+    rounds, patients_per_round = 8, 14
+    metrics = run_trial(seed=5, strategy=STRATEGIES['real_world_circle'], num_nodes=12,
+                        rounds=rounds, patients_per_round=patients_per_round,
+                        harvests_per_round=5, snapshot_interval_rounds=rounds,
+                        other_removal_annual_rate=0.05, living_donors_per_round=2,
+                        realistic_outcomes=True)
+
+    arrivals = patients_per_round * rounds
+    final_waiting = metrics.wait_list_size_snapshots[-1][1]
+    accounted = (final_waiting + metrics.organs_transplanted
+                 + metrics.living_donor_transplants + metrics.waitlist_deaths
+                 + metrics.other_removals)
+    assert accounted == arrivals
+
+
+def test_run_trial_extra_outflows_are_off_by_default():
+    metrics = run_trial(seed=4, strategy=STRATEGIES['baseline'], num_nodes=10, rounds=4,
+                        patients_per_round=10, harvests_per_round=3)
+    assert metrics.organs_discarded == 0
+    assert metrics.other_removals == 0
+    assert metrics.living_donor_transplants == 0
+
+
 def test_run_trial_death_metrics_are_internally_consistent():
     # scarce organs + many rounds so high-acuity patients accumulate and die
     metrics = run_trial(seed=2, strategy=STRATEGIES['baseline'], num_nodes=10, rounds=10,

@@ -202,7 +202,8 @@ def run_horizon(years: int, strategy_names: List[str], seeds: int, network: Netw
             network=network, patient_nodes=patient_nodes, organ_nodes=organ_nodes,
             snapshot_interval_rounds=ROUNDS_PER_YEAR,
             living_donors_per_round=living_donors_per_round,
-            other_removal_annual_rate=other_removal_annual_rate)
+            other_removal_annual_rate=other_removal_annual_rate,
+            realistic_outcomes=True)
 
     significance: List[SignificanceResult] = []
     if seeds >= 2 and DEFAULT_REFERENCE_STRATEGY in trials_by_strategy:
