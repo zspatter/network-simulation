@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import heapq
 from itertools import count
-from typing import List, Optional, Tuple
+from typing import List, Optional, Set, Tuple
 
 from network_simulator.Organ import Organ
 from network_simulator.Patient import Patient
@@ -36,6 +36,9 @@ class WaitList:
 
         self.label = label
         self.wait_list = wait_list
+        # O(1) membership by patient_id, mirroring self.wait_list, so add_patient
+        # is O(1) instead of an O(n) `in` scan (and add_patients O(n) not O(n^2)).
+        self._member_ids: Set[int] = {patient.patient_id for patient in self.wait_list}
 
     def get_prioritized_patients(self, organ: Organ) -> List[prioritized_patient]:
         """
@@ -71,8 +74,9 @@ class WaitList:
 
         :param Patient patient: object to be added
         """
-        if isinstance(patient, Patient) and patient not in self.wait_list:
+        if isinstance(patient, Patient) and patient.patient_id not in self._member_ids:
             self.wait_list.append(patient)
+            self._member_ids.add(patient.patient_id)
             return
         print('This patient is already in the wait list!')
 
@@ -86,8 +90,9 @@ class WaitList:
 
         :param Patient patient: object to be removed
         """
-        if isinstance(patient, Patient) and patient in self.wait_list:
+        if isinstance(patient, Patient) and patient.patient_id in self._member_ids:
             self.wait_list.remove(patient)
+            self._member_ids.discard(patient.patient_id)
             return
         print('This patient isn\'t in the wait list!')
 

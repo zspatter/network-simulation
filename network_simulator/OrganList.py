@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import List, Optional, Set
 
 from network_simulator.Organ import Organ
 
@@ -30,6 +30,8 @@ class OrganList:
             label = 'Default list of organs'
         self.label = label
         self.organ_list = organ_list
+        # O(1) membership by organ_id, mirroring self.organ_list (see WaitList).
+        self._member_ids: Set[int] = {organ.organ_id for organ in self.organ_list}
 
     def add_organ(self, organ: Organ) -> None:
         """
@@ -37,8 +39,9 @@ class OrganList:
 
         :param Organ organ: object to be added to the organ list
         """
-        if isinstance(organ, Organ) and organ not in self.organ_list:
+        if isinstance(organ, Organ) and organ.organ_id not in self._member_ids:
             self.organ_list.append(organ)
+            self._member_ids.add(organ.organ_id)
             return
         print('This organ is already in the organ list!')
 
@@ -52,8 +55,9 @@ class OrganList:
 
         :param Organ organ: object to be removed from the organ list
         """
-        if isinstance(organ, Organ) and organ in self.organ_list:
+        if isinstance(organ, Organ) and organ.organ_id in self._member_ids:
             self.organ_list.remove(organ)
+            self._member_ids.discard(organ.organ_id)
             return
         print('This organ isn\'t in the organ list!')
 
@@ -62,6 +66,7 @@ class OrganList:
         Clears entire organ_list (utility function for the organ allocator)
         """
         self.organ_list = list()
+        self._member_ids = set()
 
     def __str__(self) -> str:
         string = ''
