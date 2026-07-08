@@ -26,6 +26,7 @@ from benchmark_strategies import (
 from import_hospitals import filter_physical_locations, import_nodes, read_membership_csv
 
 from network_simulator.allocation import STRATEGIES
+from network_simulator.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
 from network_simulator.Network import Network
 
 # ---- Real-world calibration (OPTN/SRTR 2024 data - see README for full sourcing) ----
@@ -35,6 +36,9 @@ NATIONAL_WEEKLY_NEW_PATIENTS = round(70_600 / 52)
 # 16,989 deceased donors in 2024 -> per week. OrganGenerator already splits organ recovery via
 # clinical.frequencies.DONOR_RECOVERY_PROBABILITIES.
 NATIONAL_WEEKLY_DECEASED_DONORS = round(16_989 / 52)
+# ~7,000 living-donor transplants/year (overwhelmingly kidney) -> per week. A wait-list outflow
+# the deceased-donor pipeline never captures - see network_simulator.clinical.living_donor.
+NATIONAL_WEEKLY_LIVING_DONORS = round(7_000 / 52)
 ROUNDS_PER_YEAR = 52  # one round = 7 days (clinical.mortality.ROUND_DURATION_DAYS)
 
 # Full national scale (--scale 1.0) is real but expensive: a single real_world_circle/1-year/
@@ -46,13 +50,14 @@ ROUNDS_PER_YEAR = 52  # one round = 7 days (clinical.mortality.ROUND_DURATION_DA
 DEFAULT_SCALE = 0.1
 
 
-def scaled_weekly_rates(scale: float) -> Tuple[int, int]:
+def scaled_weekly_rates(scale: float) -> Tuple[int, int, int]:
     """
     :param float scale: fraction of real national weekly volume (1.0 == literal national figures)
-    :return: (patients_per_round, harvests_per_round) at that scale
+    :return: (patients_per_round, harvests_per_round, living_donors_per_round) at that scale
     """
     return (round(NATIONAL_WEEKLY_NEW_PATIENTS * scale),
-           round(NATIONAL_WEEKLY_DECEASED_DONORS * scale))
+           round(NATIONAL_WEEKLY_DECEASED_DONORS * scale),
+           round(NATIONAL_WEEKLY_LIVING_DONORS * scale))
 
 DEFAULT_MEMBERSHIP_CSV = (Path(__file__).parent / 'import' / 'optn_membership'
                           / 'optn_membership_2026-07-02.csv')
@@ -178,19 +183,26 @@ class HorizonResult:
 
 def run_horizon(years: int, strategy_names: List[str], seeds: int, network: Network,
                 patient_nodes: List[int], organ_nodes: List[int], patients_per_round: int,
-                harvests_per_round: int) -> HorizonResult:
+                harvests_per_round: int, living_donors_per_round: int = 0,
+                other_removal_annual_rate: float = OTHER_REMOVAL_ANNUAL_RATE) -> HorizonResult:
     """
     Runs every strategy in strategy_names over `years` simulated years (rounds = years * 52),
     on the given real network. Arrival/donor rates are the caller's responsibility (see
     scaled_weekly_rates()) rather than hardcoded here, so this stays cheap to call with a small
     rate in tests instead of paying national-scale cost for a two-node sanity check.
+
+    The non-transplant outflow channels (living-donor transplants, non-death removals) are
+    enabled here, since this is the reality-calibrated path - unlike the bare strategy benchmark,
+    which leaves them off to isolate the allocation decision.
     """
     rounds = years * ROUNDS_PER_YEAR
     aggregated, trials_by_strategy = run_benchmark(
             strategy_names=strategy_names, seeds=range(seeds), rounds=rounds,
             patients_per_round=patients_per_round, harvests_per_round=harvests_per_round,
             network=network, patient_nodes=patient_nodes, organ_nodes=organ_nodes,
-            snapshot_interval_rounds=ROUNDS_PER_YEAR)
+            snapshot_interval_rounds=ROUNDS_PER_YEAR,
+            living_donors_per_round=living_donors_per_round,
+            other_removal_annual_rate=other_removal_annual_rate)
 
     significance: List[SignificanceResult] = []
     if seeds >= 2 and DEFAULT_REFERENCE_STRATEGY in trials_by_strategy:
@@ -404,7 +416,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     horizon_years = [int(y.strip()) for y in args.horizon_years.split(',')]
     strategy_names = resolve_strategy_names(args.strategies)
     formats = [f.strip() for f in args.formats.split(',')]
-    patients_per_round, harvests_per_round = scaled_weekly_rates(args.scale)
+    patients_per_round, harvests_per_round, living_donors_per_round = scaled_weekly_rates(
+            args.scale)
 
     print(f'Building the real hospital network from {args.membership_csv} ...')
     network, transplant_hospital_ids, opo_ids = build_network(args.membership_csv)
@@ -413,7 +426,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     print(f'  {len(network.network_dict)} nodes ({len(transplant_hospital_ids)} transplant '
          f'hospitals, {len(opo_ids)} OPOs)')
     print(f'  scale={args.scale} -> {patients_per_round} patients/week, '
-         f'{harvests_per_round} donors/week')
+         f'{harvests_per_round} donors/week, {living_donors_per_round} living donors/week, '
+         f'{OTHER_REMOVAL_ANNUAL_RATE:.0%}/yr other removals')
 
     output_dir = Path(args.output_dir) if args.output_dir \
         else Path('reports') / time.strftime('%Y-%m-%d_%H%M%S')
@@ -428,7 +442,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         start = time.perf_counter()
         horizon_results.append(
                 run_horizon(years, strategy_names, seeds, network, patient_nodes, organ_nodes,
-                           patients_per_round, harvests_per_round))
+                           patients_per_round, harvests_per_round,
+                           living_donors_per_round=living_donors_per_round))
         print(f'  done in {time.perf_counter() - start:.1f}s')
 
     if 'markdown' in formats:

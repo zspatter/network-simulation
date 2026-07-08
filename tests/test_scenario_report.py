@@ -35,17 +35,19 @@ def test_resolve_strategy_names_rejects_unknown_names():
 
 
 def test_scaled_weekly_rates_scales_down_from_national_figures():
-    patients, donors = scenario_report.scaled_weekly_rates(0.1)
+    patients, donors, living = scenario_report.scaled_weekly_rates(0.1)
 
     assert patients == round(scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS * 0.1)
     assert donors == round(scenario_report.NATIONAL_WEEKLY_DECEASED_DONORS * 0.1)
+    assert living == round(scenario_report.NATIONAL_WEEKLY_LIVING_DONORS * 0.1)
 
 
 def test_scaled_weekly_rates_at_full_scale_matches_national_figures():
-    patients, donors = scenario_report.scaled_weekly_rates(1.0)
+    patients, donors, living = scenario_report.scaled_weekly_rates(1.0)
 
     assert patients == scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS
     assert donors == scenario_report.NATIONAL_WEEKLY_DECEASED_DONORS
+    assert living == scenario_report.NATIONAL_WEEKLY_LIVING_DONORS
 
 
 def test_default_seeds_for_horizon_is_smaller_for_longer_horizons():

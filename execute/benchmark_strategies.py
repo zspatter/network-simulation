@@ -22,7 +22,9 @@ from benchmark_stats import (
 )
 
 from network_simulator.allocation import STRATEGIES, Strategy
+from network_simulator.clinical.living_donor import simulate_living_donor_transplants
 from network_simulator.clinical.progression import simulate_round_progression
+from network_simulator.clinical.removal import simulate_round_removals
 from network_simulator.compatibility_markers import OrganType
 from network_simulator.GraphBuilder import GraphBuilder
 from network_simulator.Network import Network
@@ -75,6 +77,11 @@ class TrialMetrics:
     waitlist_deaths: int = 0
     deaths_high_acuity: int = 0
     deaths_low_acuity: int = 0
+    # non-transplant, non-death exits (too sick / improved / transferred / declined) and
+    # living-donor transplants - the outflow channels that keep the real list near steady
+    # state. Strategy-independent, tracked so the wait-list trajectory is realistic.
+    other_removals: int = 0
+    living_donor_transplants: int = 0
     deaths_by_organ: Dict[OrganType, int] = field(
             default_factory=lambda: {organ: 0 for organ in OrganType})
     wait_times_to_transplant: List[int] = field(default_factory=list)
@@ -105,7 +112,9 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
              patients_per_round: int = 15, harvests_per_round: int = 5,
              network: Optional[Network] = None, patient_nodes: Optional[List[int]] = None,
              organ_nodes: Optional[List[int]] = None,
-             snapshot_interval_rounds: Optional[int] = None) -> TrialMetrics:
+             snapshot_interval_rounds: Optional[int] = None,
+             other_removal_annual_rate: float = 0.0,
+             living_donors_per_round: int = 0) -> TrialMetrics:
     """
     Runs one multi-round simulation for a single strategy: builds one
     network, then repeats (generate patients -> harvest organs -> allocate
@@ -129,6 +138,13 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
     :param snapshot_interval_rounds: if set, records (round number, wait list size) into
         TrialMetrics.wait_list_size_snapshots every time the round number is a multiple of this
         (e.g. 52 for a yearly snapshot) - shows a growth trajectory, not just an end-of-run count
+    :param other_removal_annual_rate: annualized hazard of a non-death, non-transplant wait-list
+        removal (too sick / improved / transferred / declined); 0 disables it (default, so the
+        toy benchmark and tests are unaffected). The reality-calibrated scenario report enables it
+        - see network_simulator.clinical.removal.
+    :param living_donors_per_round: number of living-donor transplants per round, drawn off
+        eligible kidney/liver waiters; 0 disables it (default) - see
+        network_simulator.clinical.living_donor.
     :return: aggregate metrics for the trial
     """
     rng = random.Random(seed)
@@ -169,6 +185,14 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
                 metrics.deaths_high_acuity += 1
             else:
                 metrics.deaths_low_acuity += 1
+
+        # the other real outflow channels (kept off by default; enabled for the
+        # reality-calibrated scenario report): non-death removals, then living-donor
+        # transplants, off the patients who survived the death roll this round
+        metrics.other_removals += len(
+                simulate_round_removals(wait_list, other_removal_annual_rate, rng))
+        metrics.living_donor_transplants += len(
+                simulate_living_donor_transplants(wait_list, living_donors_per_round, rng))
 
         wait_list.increment_wait_times()
 
