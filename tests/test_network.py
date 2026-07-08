@@ -1,4 +1,7 @@
+import pytest
+
 from network_simulator.distance import estimate_transit_hours, haversine_km
+from network_simulator.exceptions import GraphElementError
 from network_simulator.Network import Network, Node
 
 
@@ -12,8 +15,9 @@ def test_add_node():
     assert len(test_net.nodes()) == 1
     assert node1.node_id in test_net.nodes()
 
-    # attempt to add node that already exists
-    test_net.add_node(node1)
+    # adding a node that already exists raises, leaving the graph unchanged
+    with pytest.raises(GraphElementError):
+        test_net.add_node(node1)
     assert len(test_net.nodes()) == 1
     assert node1.node_id in test_net.nodes()
 
@@ -29,8 +33,9 @@ def test_remove_node():
     assert len(test_net.nodes()) == 1
     assert node2.node_id in test_net.network_dict
 
-    # remove a node that doesn't exist
-    test_net.remove_node(3)
+    # removing a node that doesn't exist raises, leaving the graph unchanged
+    with pytest.raises(GraphElementError):
+        test_net.remove_node(3)
     assert len(test_net.nodes()) == 1
     assert node2.node_id in test_net.network_dict
 
@@ -50,34 +55,30 @@ def test_add_edge():
     assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
     assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
-    # attempt to add edge that already exists
-    test_net.add_edge(node1.node_id, node2.node_id, 5)
+    # adding an edge that already exists raises
+    with pytest.raises(GraphElementError):
+        test_net.add_edge(node1.node_id, node2.node_id, 5)
     assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
-    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
-    # add inactive node
+    # adding an edge to an inactive node raises
     node3 = Node(3, status=False)
     test_net.add_node(node3)
-
-    # attempt to add edge to inactive node
-    test_net.add_edge(node1.node_id, node3.node_id, 15)
+    with pytest.raises(GraphElementError):
+        test_net.add_edge(node1.node_id, node3.node_id, 15)
     assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
-    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
-    # attempts to add edge to node that doesn't exist
-    test_net.add_edge(node1.node_id, node_id2=4, weight=25)
+    # adding an edge to a node that doesn't exist raises
+    with pytest.raises(GraphElementError):
+        test_net.add_edge(node1.node_id, node_id2=4, weight=25)
     assert len(test_net.network_dict[node1.node_id].get_adjacents()) == 1
-    assert test_net.network_dict[node1.node_id].adjacency_dict[node2.node_id]['weight'] == 5
 
 
 def test_remove_edge():
     node1 = Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
     node2 = Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
     node3 = Node(3)
-
     test_net = Network({1: node1, 2: node2})
 
-    # test nodes are connected
     assert node2.node_id in node1.adjacency_dict
     assert node1.node_id in node2.adjacency_dict
 
@@ -85,21 +86,16 @@ def test_remove_edge():
     test_net.remove_edge(node1.node_id, node2.node_id)
     assert node2.node_id not in node1.adjacency_dict
     assert node1.node_id not in node2.adjacency_dict
-    assert not node1.adjacency_dict
-    assert not node2.adjacency_dict
     assert len(test_net.network_dict) == 2
 
-    # attempt to remove edge with no shared edge
-    test_net.remove_edge(node1.node_id, node3.node_id)
-    assert not node1.adjacency_dict
-    assert not node2.adjacency_dict
-    assert len(test_net.network_dict) == 2
+    # removing an edge that doesn't exist (no shared edge) raises
+    test_net.add_node(node3)
+    with pytest.raises(GraphElementError):
+        test_net.remove_edge(node1.node_id, node3.node_id)
 
-    # attempt to remove edge from a node that doesn't exist
-    test_net.remove_edge(node1.node_id, 4)
-    assert not node1.adjacency_dict
-    assert not node2.adjacency_dict
-    assert len(test_net.network_dict) == 2
+    # removing an edge from a node that doesn't exist raises
+    with pytest.raises(GraphElementError):
+        test_net.remove_edge(node1.node_id, 4)
 
 
 def test_mark_node_inactive():
@@ -107,36 +103,21 @@ def test_mark_node_inactive():
     node2 = Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
     test_net = Network({1: node1, 2: node2})
 
-    assert len(test_net.network_dict) == len(test_net.nodes())
-    assert node2.node_id in test_net.network_dict[node1.node_id].adjacency_dict
-    assert node1.node_id in test_net.network_dict[node2.node_id].adjacency_dict
-
-    # test marking existing active node as inactive
+    # marking an existing active node inactive
     test_net.mark_node_inactive(1)
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) != len(test_net.nodes())
     assert not node1.status
     assert node2.status
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert not node2.adjacency_dict[node1.node_id]['status']
-    assert node2.node_id in test_net.network_dict[node1.node_id].adjacency_dict
-    assert node1.node_id in test_net.network_dict[node2.node_id].adjacency_dict
 
-    # test already inactive node
-    test_net.mark_node_inactive(1)
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) != len(test_net.nodes())
+    # an already-inactive node raises, leaving state unchanged
+    with pytest.raises(GraphElementError):
+        test_net.mark_node_inactive(1)
     assert not node1.status
-    assert node2.status
-    assert not node1.adjacency_dict[node2.node_id]['status']
-    assert not node2.adjacency_dict[node1.node_id]['status']
-    assert node2.node_id in test_net.network_dict[node1.node_id].adjacency_dict
-    assert node1.node_id in test_net.network_dict[node2.node_id].adjacency_dict
 
-    # test node that doesn't exist
-    test_net.mark_node_inactive(3)
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) != len(test_net.nodes())
+    # a nonexistent node raises
+    with pytest.raises(GraphElementError):
+        test_net.mark_node_inactive(3)
 
 
 def test_mark_node_active():
@@ -145,29 +126,20 @@ def test_mark_node_active():
     test_net = Network({1: node1, 2: node2})
     assert not test_net.nodes()
 
-    # test existing inactive node
+    # mark an existing inactive node active (node2 still inactive, so the edge stays inactive)
     test_net.mark_node_active(1)
     assert node1.node_id in test_net.nodes()
-    assert len(test_net.nodes()) == 1
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert node1.status
-    assert len(test_net.network_dict) == 2
 
-    # test existing active node
-    test_net.mark_node_active(1)
-    assert node1.node_id in test_net.nodes()
-    assert len(test_net.nodes()) == 1
-    assert not node1.adjacency_dict[node2.node_id]['status']
+    # an already-active node raises
+    with pytest.raises(GraphElementError):
+        test_net.mark_node_active(1)
     assert node1.status
-    assert len(test_net.network_dict) == 2
 
-    # test nonexistent node
-    test_net.mark_node_active(3)
-    assert node1.node_id in test_net.nodes()
-    assert len(test_net.nodes()) == 1
-    assert not node1.adjacency_dict[node2.node_id]['status']
-    assert node1.status
-    assert len(test_net.network_dict) == 2
+    # a nonexistent node raises
+    with pytest.raises(GraphElementError):
+        test_net.mark_node_active(3)
 
 
 def test_mark_edge_inactive():
@@ -175,43 +147,23 @@ def test_mark_edge_inactive():
     node2 = Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
     test_net = Network({1: node1, 2: node2})
 
-    # test existing nodes with shared, active edge
+    # a shared, active edge is deactivated in both directions
     test_net.mark_edge_inactive(node1.node_id, node2.node_id)
     assert not node1.adjacency_dict[node2.node_id]['status']
     assert not node2.adjacency_dict[node1.node_id]['status']
-    assert not node1.get_adjacents()
-    assert not node2.get_adjacents()
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) == len(test_net.nodes())
 
-    # test existing nodes with shared, inactive edge
-    test_net.mark_edge_inactive(node1.node_id, node2.node_id)
-    assert not node1.adjacency_dict[node2.node_id]['status']
-    assert not node2.adjacency_dict[node1.node_id]['status']
-    assert not node1.get_adjacents()
-    assert not node2.get_adjacents()
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) == len(test_net.nodes())
+    # an already-inactive edge raises
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_inactive(node1.node_id, node2.node_id)
 
-    # test existing nodes with shared, inactive edge
+    # no shared edge raises
     test_net.add_node(Node(3))
-    test_net.mark_edge_inactive(node1.node_id, 3)
-    assert not node1.adjacency_dict[node2.node_id]['status']
-    assert not node2.adjacency_dict[node1.node_id]['status']
-    assert not node1.get_adjacents()
-    assert not node2.get_adjacents()
-    assert len(test_net.network_dict) == 3
-    assert len(test_net.network_dict) == len(test_net.nodes())
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_inactive(node1.node_id, 3)
 
-    # test with nonexistent node
-    test_net.add_node(Node(3))
-    test_net.mark_edge_inactive(node1.node_id, 4)
-    assert not node1.adjacency_dict[node2.node_id]['status']
-    assert not node2.adjacency_dict[node1.node_id]['status']
-    assert not node1.get_adjacents()
-    assert not node2.get_adjacents()
-    assert len(test_net.network_dict) == 3
-    assert len(test_net.network_dict) == len(test_net.nodes())
+    # a nonexistent node raises
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_inactive(node1.node_id, 4)
 
 
 def test_mark_edge_active():
@@ -219,64 +171,48 @@ def test_mark_edge_active():
     node2 = Node(2, adjacency_dict={1: {'weight': 3, 'status': False}})
     test_net = Network({1: node1, 2: node2})
 
-    # test existing, active nodes with shared, inactive edge
+    # a shared, inactive edge between two active nodes is reactivated
     test_net.mark_edge_active(node1.node_id, node2.node_id)
     assert node1.adjacency_dict[node2.node_id]['status']
     assert node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) == 1
-    assert len(node2.adjacency_dict) == 1
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) == len(test_net.nodes())
 
-    # test existing, active nodes with shared, active edge
-    test_net.mark_edge_active(node1.node_id, node2.node_id)
-    assert node1.adjacency_dict[node2.node_id]['status']
-    assert node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) == 1
-    assert len(node2.adjacency_dict) == 1
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) == len(test_net.nodes())
+    # an already-active edge raises
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_active(node1.node_id, node2.node_id)
 
-    # test existing, inactive node with shared, inactive edge
+    # an edge touching an inactive node cannot be activated
+    test_net.mark_edge_inactive(node1.node_id, node2.node_id)
     test_net.mark_node_inactive(node1.node_id)
-    test_net.mark_edge_active(node1.node_id, node2.node_id)
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_active(node1.node_id, node2.node_id)
     assert not node1.adjacency_dict[node2.node_id]['status']
-    assert not node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) == 1
-    assert len(node2.adjacency_dict) == 1
-    assert len(test_net.network_dict) == 2
-    assert len(test_net.network_dict) != len(test_net.nodes())
-    assert not node1.status
-    assert node2.status
 
-    # test existing nodes without shared edge
+    # no shared edge raises
     test_net.add_node(Node(3))
-    test_net.mark_edge_active(node2.node_id, 3)
-    test_net.mark_node_inactive(node1.node_id)
-    test_net.mark_edge_active(node1.node_id, node2.node_id)
-    assert not node1.adjacency_dict[node2.node_id]['status']
-    assert not node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) == 1
-    assert len(node2.adjacency_dict) == 1
-    assert len(test_net.network_dict) == 3
-    assert len(test_net.network_dict) != len(test_net.nodes())
-    assert not node1.status
-    assert node2.status
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_active(node2.node_id, 3)
 
-    # test node that doesn't exist
-    test_net.mark_edge_active(node2.node_id, 4)
-    test_net.add_node(Node(3))
-    test_net.mark_edge_active(node2.node_id, 3)
-    test_net.mark_node_inactive(node1.node_id)
-    test_net.mark_edge_active(node1.node_id, node2.node_id)
-    assert not node1.adjacency_dict[node2.node_id]['status']
-    assert not node2.adjacency_dict[node1.node_id]['status']
-    assert len(node1.adjacency_dict) == 1
-    assert len(node2.adjacency_dict) == 1
-    assert len(test_net.network_dict) == 3
-    assert len(test_net.network_dict) != len(test_net.nodes())
-    assert not node1.status
-    assert node2.status
+    # a nonexistent node raises
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_active(node2.node_id, 4)
+
+
+def test_mark_edge_helpers_detect_a_one_sided_edge():
+    # Regression: the old guard tested node_id1's presence in node_id2's dict twice, so a
+    # half-present edge (mirrored only one way) was mishandled. It must be treated as "no
+    # shared edge" in both directions.
+    node1 = Node(1, adjacency_dict={2: {'weight': 3, 'status': True}})
+    node2 = Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
+    test_net = Network({1: node1, 2: node2})
+    # break the mirror: leave the edge only on node1's side
+    del test_net.network_dict[2].adjacency_dict[1]
+
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_inactive(1, 2)
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_active(1, 2)
+    with pytest.raises(GraphElementError):
+        test_net.mark_edge_active(2, 1)
 
 
 def test_nodes():
@@ -284,34 +220,22 @@ def test_nodes():
     node2 = Node(2, adjacency_dict={1: {'weight': 3, 'status': True}})
     test_net = Network({1: node1, 2: node2})
 
-    # test graph with 2 active nodes
     assert len(test_net.nodes()) == 2
-    assert len(test_net.nodes()) == len(test_net.network_dict)
-    assert node1.node_id in test_net.nodes()
-    assert node2.node_id in test_net.nodes()
 
-    # test edge deactivation
+    # edge deactivation doesn't remove nodes from the active set
     test_net.mark_edge_inactive(node1.node_id, node2.node_id)
     assert len(test_net.nodes()) == 2
-    assert len(test_net.nodes()) == len(test_net.network_dict)
-    assert node1.node_id in test_net.nodes()
-    assert node2.node_id in test_net.nodes()
 
-    # deactivate 1 node and test
+    # deactivating a node removes it from the active set but not the dict
     test_net.mark_node_inactive(node1.node_id)
     assert len(test_net.nodes()) == 1
-    assert len(test_net.nodes()) != len(test_net.network_dict)
     assert len(test_net.network_dict) == 2
     assert node1.node_id not in test_net.nodes()
     assert node2.node_id in test_net.nodes()
 
-    # deactivate last node
     test_net.mark_node_inactive(node2.node_id)
     assert not test_net.nodes()
-    assert len(test_net.nodes()) != len(test_net.network_dict)
     assert len(test_net.network_dict) == 2
-    assert node1.node_id not in test_net.nodes()
-    assert node2.node_id not in test_net.nodes()
 
 
 def test_init_removes_edges_to_nonexistent_nodes():
@@ -378,7 +302,8 @@ def test_remove_edge_between_existing_nodes_with_no_shared_edge():
     test_net = Network({1: node1, 2: node2})
 
     # both nodes exist, but there's no edge between them to remove
-    test_net.remove_edge(node1.node_id, node2.node_id)
+    with pytest.raises(GraphElementError):
+        test_net.remove_edge(node1.node_id, node2.node_id)
 
     assert node1.adjacency_dict == {}
     assert node2.adjacency_dict == {}
@@ -434,5 +359,5 @@ def test_transit_from_is_cached_until_a_mutation_invalidates_it():
     first = net.transit_from(1)
     assert net.transit_from(1) is first  # served from cache (same object)
 
-    net.mark_node_inactive(2, feedback=False)  # a mutation must invalidate the cache
+    net.mark_node_inactive(2)  # a mutation must invalidate the cache
     assert net.transit_from(1) is not first

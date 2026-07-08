@@ -2,6 +2,7 @@ import time
 
 from network_simulator.ConnectivityChecker import ConnectivityChecker
 from network_simulator.Dijkstra import Dijkstra
+from network_simulator.exceptions import GraphElementError
 from network_simulator.GraphBuilder import GraphBuilder
 from network_simulator.Network import Network
 from network_simulator.Node import Node
@@ -10,6 +11,19 @@ from network_simulator.Node import Node
 ANSI_CYAN = "\033[36m"
 ANSI_YELLOW = '\033[33;1m'
 ANSI_RESET = "\033[0m"
+
+
+def demo(action):
+    """
+    Runs a Network mutation and prints any GraphElementError it raises, rather
+    than letting an intentionally-invalid demonstration abort the script. Network
+    mutators now raise instead of printing, so the caller decides how to present a
+    failure - here, this demo just echoes it.
+    """
+    try:
+        action()
+    except GraphElementError as error:
+        print(error)
 
 """
 The lines below behave as the main method in Java
@@ -198,38 +212,36 @@ print('\t---ADJACENCY LISTS MIRROR TEST---')
 print(init_tester)
 
 print('\t---MARK NODE INACTIVE TESTS---')
-init_tester.mark_node_inactive(1)
-init_tester.mark_node_inactive(1)
-init_tester.mark_node_inactive(6)
-
-init_tester.mark_node_inactive(6)
-
+demo(lambda: init_tester.mark_node_inactive(1))
+demo(lambda: init_tester.mark_node_inactive(1))  # already inactive -> error printed
+demo(lambda: init_tester.mark_node_inactive(6))  # nonexistent -> error printed
+demo(lambda: init_tester.mark_node_inactive(6))
 print(init_tester)
 
 print('\t---MARK NODE ACTIVE TESTS---')
-init_tester.mark_node_active(1)
-init_tester.mark_node_active(1)
-init_tester.mark_node_active(6)
+demo(lambda: init_tester.mark_node_active(1))
+demo(lambda: init_tester.mark_node_active(1))  # already active -> error printed
+demo(lambda: init_tester.mark_node_active(6))  # nonexistent -> error printed
 print(init_tester)
 
 print('\t---MARK EDGE INACTIVE TESTS---')
-init_tester.mark_edge_inactive(1, 5)
-init_tester.mark_edge_inactive(1, 5)
-init_tester.mark_edge_inactive(3, 5)
-init_tester.mark_edge_inactive(1, 6)
+demo(lambda: init_tester.mark_edge_inactive(1, 5))
+demo(lambda: init_tester.mark_edge_inactive(1, 5))  # already inactive -> error printed
+demo(lambda: init_tester.mark_edge_inactive(3, 5))  # no shared edge -> error printed
+demo(lambda: init_tester.mark_edge_inactive(1, 6))  # nonexistent -> error printed
 print(init_tester)
 
 print('\t---MARK EDGE ACTIVE TESTS---')
-init_tester.mark_edge_active(1, 5)
-init_tester.mark_edge_active(1, 5)
-init_tester.mark_node_inactive(3)
-init_tester.mark_edge_active(1, 3)
-init_tester.mark_edge_active(3, 5)
+demo(lambda: init_tester.mark_edge_active(1, 5))
+demo(lambda: init_tester.mark_edge_active(1, 5))  # already active -> error printed
+demo(lambda: init_tester.mark_node_inactive(3))
+demo(lambda: init_tester.mark_edge_active(1, 3))  # node 3 inactive -> error printed
+demo(lambda: init_tester.mark_edge_active(3, 5))  # no shared edge -> error printed
 print(init_tester)
 
 print('\t---BREAK CONNECTIVITY VIA STATUS---')
-init_tester.mark_edge_inactive(1, 2)
-init_tester.mark_edge_inactive(1, 5)
+demo(lambda: init_tester.mark_edge_inactive(1, 2))
+demo(lambda: init_tester.mark_edge_inactive(1, 5))
 
 print('\nDisconnected through inactive edges:')
 print('\tRecursive depth_first_search: ' + str(ConnectivityChecker.is_connected(init_tester)))

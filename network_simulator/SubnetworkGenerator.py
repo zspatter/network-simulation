@@ -34,7 +34,7 @@ class SubnetworkGenerator:
             return NotImplemented
 
         for node in active_nodes:
-            subnetwork.mark_node_active(node, feedback=False)
+            subnetwork.mark_node_active(node)
 
         return subnetwork
 
@@ -58,4 +58,4 @@ class SubnetworkGenerator:
         :param Network network: graph that is the foundation for subnetworks
         """
         for node in network.nodes():
-            network.mark_node_inactive(node, feedback=False)
+            network.mark_node_inactive(node)

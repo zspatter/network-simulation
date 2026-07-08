@@ -164,84 +164,45 @@ class Network:
         active_nodes = [node for node in nodes if self.network_dict[node].status]
         return sorted(active_nodes)
 
-    def add_node(self, node: Node, feedback: bool = True) -> None:
+    def add_node(self, node: Node) -> None:
         """
-        Adds a node with the passed parameters to the graph. If the
-        node_id is already present in the graph, an error message
-        is printed to the console.
+        Adds a node to the graph, wiring up (in both directions) any edges its
+        adjacency dict already names.
 
         :param Node node: node that will be added to the graph
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if a node with the same id is already present
         """
-        try:
-            # if node_id is unique, add it to the network
-            if node.node_id not in self.network_dict:
-                self._invalidate_transit_cache()
-                self.network_dict[node.node_id] = node
+        if node.node_id in self.network_dict:
+            raise GraphElementError(f'Node ID: #{node.node_id} is already present in this '
+                                    f'network! This node could not be added.')
 
-                # adds edges to the new node from the nodes in the adjacency list
-                # (this ensures the edge is represented in both directions)
-                for key in node.adjacency_dict:
-                    self.network_dict[key].adjacency_dict[node.node_id] = \
-                        node.adjacency_dict[key]
+        self._invalidate_transit_cache()
+        self.network_dict[node.node_id] = node
+        # ensure each named edge is represented on the neighbour as well
+        for key in node.adjacency_dict:
+            self.network_dict[key].adjacency_dict[node.node_id] = node.adjacency_dict[key]
 
-                if feedback:
-                    print(f'Node ID: #{node.node_id} has been added to this '
-                          f'network!')
-
-            # if node already exists
-            else:
-                raise GraphElementError(f'Node ID: #{node.node_id} '
-                                        f'is already present in this network! '
-                                        f'This node could not be added.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
-
-    def remove_node(self, node_id: int, feedback: bool = True) -> None:
+    def remove_node(self, node_id: int) -> None:
         """
-        Removes the node with the passed node_id from the graph. If node_id
-        is not present in the graph, an error message is printed to the console.
+        Removes the node with the passed node_id and every edge incident to it.
 
         :param int node_id: unique identifier within a given graph
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if the node is not present in the graph
         """
-        try:
-            # if node is present in graph
-            if node_id in self.network_dict:
-                self._invalidate_transit_cache()
-                # gathers list of adjacent node id's
-                adjacency_dict = self.network_dict[node_id].get_adjacents()
+        if node_id not in self.network_dict:
+            raise GraphElementError(f'Node ID: #{node_id} is not present in this network! '
+                                    f'This node does not exist and could not be removed.')
 
-                # removes edges store on adjacent objects
-                for key in adjacency_dict:
-                    del self.network_dict[key].adjacency_dict[node_id]
-
-                # removes node object
-                del self.network_dict[node_id]
-                if feedback:
-                    print(f'Node ID: #{node_id} and all of it\'s edges has been removed!')
-
-            # if node is not present in graph
-            else:
-                raise GraphElementError(f'Node ID: #{node_id} is not present'
-                                        f' in this network! This node does not exist and '
-                                        f'could not be removed.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
+        self._invalidate_transit_cache()
+        # drop the mirrored edge stored on each neighbour, then the node itself
+        for key in self.network_dict[node_id].get_adjacents():
+            del self.network_dict[key].adjacency_dict[node_id]
+        del self.network_dict[node_id]
 
     def add_edge(self, node_id1: int, node_id2: int, weight: int,
-                 regional_weight: Optional[int] = None, feedback: bool = True) -> None:
+                 regional_weight: Optional[int] = None) -> None:
         """
-        Adds an edge between two nodes with a specified weight. It is
-        assumed that the added edge will be active. If there already
-        exists an edge between the two nodes, an error message is printed
-        to the console.
+        Adds an active edge between two nodes with a specified weight.
 
         :param int node_id1: unique identifier within a given graph
             (one of the vertices to be connected by the added edge)
@@ -250,30 +211,18 @@ class Network:
         :param int weight: cost associated with the edge
         :param int regional_weight: optional regional weight which can
                 be included in the adjacency dicts
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if a node is missing/inactive or the edge already exists
         """
-        try:
-            # if nodes are in graph
-            if node_id1 in self.network_dict and node_id2 in self.network_dict:
-                self.add_edge_to_dict(node_id1, node_id2, weight,
-                                      regional_weight, feedback)
-            # if node(s) don't exist
-            else:
-                raise GraphElementError('One of the passed nodes does '
-                                        'not exist! As a result, there '
-                                        'cannot be an edge, so it cannot '
-                                        'be added.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
+        if node_id1 not in self.network_dict or node_id2 not in self.network_dict:
+            raise GraphElementError('One of the passed nodes does not exist! As a result, '
+                                    'there cannot be an edge, so it cannot be added.')
+        self.add_edge_to_dict(node_id1, node_id2, weight, regional_weight)
 
     def add_edge_to_dict(self, node_id1: int, node_id2: int, weight: int,
-                         regional_weight: Optional[int] = None, feedback: bool = True) -> None:
+                         regional_weight: Optional[int] = None) -> None:
         """
-        Verifies param node IDs can be added to the graph (and adds them).
-        If there is a comparability issue, an exception is raised.
+        Writes an edge into both nodes' adjacency dicts, once the connecting
+        nodes are confirmed active and no edge already exists.
 
         :param int node_id1: unique identifier within a given graph
             (one of the vertices to be connected by the added edge)
@@ -282,146 +231,78 @@ class Network:
         :param int weight: cost associated with the edge
         :param int regional_weight: optional regional weight which can
                 be included in the adjacency dicts
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if a connecting node is inactive or the edge already exists
         """
-        # if nodes are active
-        if node_id1 in self.nodes() and node_id2 in self.nodes():
-            # if there is not an edge already connecting node 1 and node 2
-            if node_id2 not in self.network_dict[node_id1].get_adjacents() \
-                    and node_id1 not in self.network_dict[node_id2].get_adjacents():
+        active_nodes = self.nodes()
+        if node_id1 not in active_nodes or node_id2 not in active_nodes:
+            raise GraphElementError('One of the connecting nodes is inactive! As a result, '
+                                    'this edge cannot be added.')
 
-                self._invalidate_transit_cache()
-                self.network_dict[node_id1].adjacency_dict[node_id2] = \
-                    {'weight': weight, 'status': True}
-                self.network_dict[node_id2].adjacency_dict[node_id1] = \
-                    {'weight': weight, 'status': True}
+        if node_id2 in self.network_dict[node_id1].get_adjacents() \
+                or node_id1 in self.network_dict[node_id2].get_adjacents():
+            raise GraphElementError(f'There already exists an edge between Node ID: '
+                                    f'#{node_id1} and Node ID: #{node_id2}! This edge '
+                                    f'could not be added.')
 
-                if regional_weight:
-                    self.network_dict[node_id1].adjacency_dict[node_id2][
-                        'regional weight'] = regional_weight
-                    self.network_dict[node_id2].adjacency_dict[node_id1][
-                        'regional weight'] = regional_weight
+        self._invalidate_transit_cache()
+        self.network_dict[node_id1].adjacency_dict[node_id2] = {'weight': weight, 'status': True}
+        self.network_dict[node_id2].adjacency_dict[node_id1] = {'weight': weight, 'status': True}
+        if regional_weight:
+            self.network_dict[node_id1].adjacency_dict[node_id2]['regional weight'] = \
+                regional_weight
+            self.network_dict[node_id2].adjacency_dict[node_id1]['regional weight'] = \
+                regional_weight
 
-                if feedback:
-                    print(f'An edge has been added between Node ID: '
-                          f'#{node_id1} and Node ID: #{node_id2} with'
-                          f'a weight of {weight}!')
-
-            # if there is already an edge connecting the nodes
-            else:
-                raise GraphElementError(f'There already exists an '
-                                        f'edge between Node ID: '
-                                        f'#{node_id1} and Node ID: '
-                                        f'#{node_id2}! This edge '
-                                        f'could not be added.')
-        # if node(s) inactive
-        else:
-            raise GraphElementError('One of the connecting nodes '
-                                    'is inactive! As a result, this'
-                                    ' edge cannot be added.')
-
-    def remove_edge(self, node_id1: int, node_id2: int,
-                    feedback: bool = True) -> None:
+    def remove_edge(self, node_id1: int, node_id2: int) -> None:
         """
-        Removes an edge between two nodes from the graph. If the edge
-        does not exist, an error message is printed to the console
-        indicating that the edge cannot be removed.
+        Removes the edge between two nodes from the graph.
 
         :param int node_id1: unique identifier within a given graph
             (one of the vertices connected by the edge to be removed)
         :param int node_id2: unique identifier within a given graph
             (one of the vertices connected by the edge to be removed)
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if a node is missing or no edge connects them
         """
+        if node_id1 not in self.network_dict or node_id2 not in self.network_dict:
+            raise GraphElementError('One of the passed nodes does not exist! As a result, '
+                                    'there cannot be an edge, so it cannot be removed.')
+        self.remove_edge_from_dict(node_id1, node_id2)
 
-        # TODO what if edge is only in one adjacency dict?
-        try:
-            # if nodes are in graph
-            if node_id1 in self.network_dict and node_id2 in self.network_dict:
-
-                self.remove_edge_from_dict(node_id1, node_id2, feedback)
-
-            # if node(s) doesn't exist
-            else:
-                raise GraphElementError('One of the passed nodes does '
-                                        'not exist! As a result, there '
-                                        'cannot be an edge, so it cannot '
-                                        'be marked as inactive.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
-
-    def remove_edge_from_dict(self, node_id1: int, node_id2: int,
-                              feedback: bool = True) -> None:
+    def remove_edge_from_dict(self, node_id1: int, node_id2: int) -> None:
         """
-        If there is a shared edge between node params, it is removed
+        Removes a shared edge from both nodes' adjacency dicts.
 
         :param int node_id1: unique identifier within a given graph
             (one of the vertices connected by the edge to be removed)
         :param int node_id2: unique identifier within a given graph
             (one of the vertices connected by the edge to be removed)
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if no edge connects the two nodes
         """
-        # if shared edge exists
-        if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
-                and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
+        # the edge must be present in both adjacency dicts (an undirected edge is mirrored)
+        if node_id2 in self.network_dict[node_id1].adjacency_dict \
+                and node_id1 in self.network_dict[node_id2].adjacency_dict:
             self._invalidate_transit_cache()
             del self.network_dict[node_id1].adjacency_dict[node_id2]
             del self.network_dict[node_id2].adjacency_dict[node_id1]
-
-            if feedback:
-                print(f'The edge between Node ID: #{node_id1} '
-                      f'and Node ID: #{node_id2} has been removed!')
-
-        # if shared edge doesn't exist
         else:
-            raise GraphElementError(f'There is no edge connecting '
-                                    f'Node ID: #{node_id1} and Node '
-                                    f'ID: #{node_id2}, so there is '
-                                    f'no edge to remove!')
+            raise GraphElementError(f'There is no edge connecting Node ID: #{node_id1} and '
+                                    f'Node ID: #{node_id2}, so there is no edge to remove!')
 
-    def mark_node_inactive(self, node_id: int, feedback: bool = True) -> None:
+    def mark_node_inactive(self, node_id: int) -> None:
         """
-        Marks all edges in the adjacency list of the specified node as
-        inactive, then mirrors that status in the other adjacency lists.
-        Finally, the specified node's status is marked as inactive. If
-        the node is already inactive, an error message indicating this
-        prints to the console. If the node is not present in the graph,
-        an error message prints to the console.
+        Marks the node and all of its edges inactive (mirrored on neighbours).
 
         :param int node_id: unique identifier within a given graph
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if the node is missing or already inactive
         """
-        try:
-            # if node exists and is active
-            if node_id in self.network_dict and self.network_dict[node_id].status:
-                self.mark_node_edges_inactive(node_id)
+        if node_id not in self.network_dict:
+            raise GraphElementError(f'Node ID: #{node_id} is not present in this network! '
+                                    f'Node could not be marked inactive.')
+        if not self.network_dict[node_id].status:
+            raise GraphElementError(f'Node ID: #{node_id} is already inactive!')
 
-                # marks node status as inactive
-                self.network_dict[node_id].status = False
-                if feedback:
-                    print(f'Node ID: #{node_id} and all of it\'s edges has '
-                          f'been marked inactive!')
-
-            # if node exists and is inactive
-            elif node_id in self.network_dict and not self.network_dict[node_id].status:
-                raise GraphElementError(f'Node ID: #{node_id} is '
-                                        f'already inactive!')
-
-            # if node doesn't exist
-            else:
-                raise GraphElementError(f'Node ID: #{node_id} is not present'
-                                        f' in this network! Node could not '
-                                        f'be marked inactive.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
+        self.mark_node_edges_inactive(node_id)
+        self.network_dict[node_id].status = False
 
     def mark_node_edges_inactive(self, node_id: int) -> None:
         """
@@ -438,173 +319,87 @@ class Network:
             self.network_dict[key].adjacency_dict[node_id]['status'] = False
             self.network_dict[node_id].adjacency_dict[key]['status'] = False
 
-    def mark_node_active(self, node_id: int, feedback: bool = True) -> None:
+    def mark_node_active(self, node_id: int) -> None:
         """
-        Marks all adjacent edges connected with another active node as
-        active, then marks the specified node as active. If the node is
-        already active, an error message prints to the console. If the
-        node is not present in the graph, an error message prints to the
-        console.
+        Marks the node active, reactivating each edge whose other endpoint is
+        also active.
 
         :param int node_id: unique identifier within a given graph
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if the node is missing or already active
         """
-        try:
-            # if node exists and is inactive
-            if node_id in self.network_dict and not self.network_dict[node_id].status:
-                self._invalidate_transit_cache()
-                # gathers list of adjacent node id's
-                adjacency_dict = self.network_dict[node_id].adjacency_dict
+        if node_id not in self.network_dict:
+            raise GraphElementError(f'Node ID: #{node_id} is not present in this network! '
+                                    f'Node could not be marked active.')
+        if self.network_dict[node_id].status:
+            raise GraphElementError(f'Node ID: #{node_id} is already active! '
+                                    f'This node could not be marked active.')
 
-                # marks all edges of node as active, and mirrors
-                # the status on all adjacents edges connected to the node
-                for key in adjacency_dict:
-                    if self.network_dict[key].status:
-                        self.network_dict[key].adjacency_dict[node_id]['status'] = True
-                        self.network_dict[node_id].adjacency_dict[key]['status'] = True
+        self._invalidate_transit_cache()
+        for key in self.network_dict[node_id].adjacency_dict:
+            if self.network_dict[key].status:
+                self.network_dict[key].adjacency_dict[node_id]['status'] = True
+                self.network_dict[node_id].adjacency_dict[key]['status'] = True
+        self.network_dict[node_id].status = True
 
-                # marks node status as inactive
-                self.network_dict[node_id].status = True
-                if feedback:
-                    print(f'Node ID: #{node_id} and all of it\'s edges has been '
-                          f'marked active!')
+    def _shared_edge_exists(self, node_id1: int, node_id2: int) -> bool:
+        """True iff an edge between the two nodes is present in both adjacency dicts."""
+        return node_id2 in self.network_dict[node_id1].adjacency_dict \
+            and node_id1 in self.network_dict[node_id2].adjacency_dict
 
-            # if node exists and is active
-            elif node_id in self.network_dict and self.network_dict[node_id].status:
-                raise GraphElementError(f'Node ID: #{node_id} is already active! '
-                                        f'This node could not be marked active')
-
-            # if node doesn't exist
-            else:
-                raise GraphElementError(f'Node ID: #{node_id} is not present '
-                                        f'in this network! Node could not be '
-                                        f'marked active.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
-
-    def mark_edge_inactive(self, node_id1: int, node_id2: int,
-                           feedback: bool = True) -> None:
+    def mark_edge_inactive(self, node_id1: int, node_id2: int) -> None:
         """
-        Marks the specified edge as inactive in both adjacency lists iff
-        a shared edge exists and both edges are active. If not, an error
-        message is printed to the console indicating which conditions are
-        not met.
+        Marks the shared edge inactive in both adjacency dicts.
 
         :param int node_id1: unique identifier within a given graph
         :param int node_id2: unique identifier within a given graph
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if a node is missing, no shared edge exists,
+            or the edge is already inactive
         """
-        try:
-            # if node exists
-            if node_id1 in self.network_dict and node_id2 in self.network_dict:
-                # if shared edge exists
-                if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
-                        and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
+        if node_id1 not in self.network_dict or node_id2 not in self.network_dict:
+            raise GraphElementError('One of the passed nodes does not exist! As a result, '
+                                    'there cannot be an edge, so it cannot be marked inactive.')
+        if not self._shared_edge_exists(node_id1, node_id2):
+            raise GraphElementError(f'There is not a shared edge between Node ID: #{node_id1} '
+                                    f'and Node ID: #{node_id2}! As a result, the edge cannot '
+                                    f'be marked inactive.')
+        if not (self.network_dict[node_id1].adjacency_dict[node_id2]['status']
+                and self.network_dict[node_id2].adjacency_dict[node_id1]['status']):
+            raise GraphElementError(f'The edge connecting Node ID: #{node_id1} and Node ID: '
+                                    f'#{node_id2} is already inactive! As a result, the edge '
+                                    f'cannot be marked inactive.')
 
-                    # if both edges are active
-                    if self.network_dict[node_id1].adjacency_dict[node_id2]['status'] \
-                            and self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
+        self._invalidate_transit_cache()
+        self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = False
+        self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
 
-                        self._invalidate_transit_cache()
-                        self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = False
-                        self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = False
-
-                        if feedback:
-                            print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
-                                  f'#{node_id2} has been marked inactive!')
-
-                    # if the edges are inactive
-                    else:
-                        raise GraphElementError(f'The edge connecting Node'
-                                                f' ID: #{node_id1} and Node'
-                                                f' ID: #{node_id2} is already'
-                                                f' inactive! As a result, the'
-                                                f' edge cannot be marked inactive.')
-
-                # if a shared edge doesn't exist
-                else:
-                    raise GraphElementError(f'There is not a shared edge '
-                                            f'between Node ID: #{node_id1} '
-                                            f'and Node ID: #{node_id2}! As '
-                                            f'a result, the edge cannot be '
-                                            f'marked inactive.')
-
-            # if node doesn't exist
-            else:
-                raise GraphElementError('One of the passed nodes does '
-                                        'not exist! As a result, there '
-                                        'cannot be an edge, so it cannot '
-                                        'be marked as inactive.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
-
-    def mark_edge_active(self, node_id1: int, node_id2: int,
-                         feedback: bool = True) -> None:
+    def mark_edge_active(self, node_id1: int, node_id2: int) -> None:
         """
-        Marks the specified edge as active in both adjacency lists iff
-        both connected nodes are active and the edge is inactive.
+        Marks the shared edge active in both adjacency dicts.
 
         :param int node_id1: unique identifier within a given graph
         :param int node_id2: unique identifier within a given graph
-        :param bool feedback: optional param indicating whether feedback
-            should be print to the console
+        :raises GraphElementError: if a node is missing, no shared edge exists,
+            a connecting node is inactive, or the edge is already active
         """
-        try:
-            # if nodes exist
-            if node_id1 in self.network_dict and node_id2 in self.network_dict:
-                # if shared edge exists
-                if node_id1 in self.network_dict[node_id2].adjacency_dict.keys() \
-                        and node_id1 in self.network_dict[node_id2].adjacency_dict.keys():
+        if node_id1 not in self.network_dict or node_id2 not in self.network_dict:
+            raise GraphElementError('One of the passed nodes does not exist! As a result, '
+                                    'there cannot be an edge, so it cannot be marked active.')
+        if not self._shared_edge_exists(node_id1, node_id2):
+            raise GraphElementError(f'There is not a shared edge between Node ID: #{node_id1} '
+                                    f'and Node ID: #{node_id2}! As a result, the edge cannot '
+                                    f'be marked active.')
+        if not (self.network_dict[node_id1].status and self.network_dict[node_id2].status):
+            raise GraphElementError('One of the connecting nodes is inactive! As a result, '
+                                    'this edge cannot be marked active.')
+        if self.network_dict[node_id1].adjacency_dict[node_id2]['status'] \
+                or self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
+            raise GraphElementError(f'The edge connecting Node ID: #{node_id1} and Node ID: '
+                                    f'#{node_id2} is already active! As a result, the edge '
+                                    f'cannot be marked active.')
 
-                    # if both nodes are active
-                    if self.network_dict[node_id1].status and self.network_dict[node_id2].status:
-                        # if both edges are inactive
-                        if not self.network_dict[node_id1].adjacency_dict[node_id2]['status'] and \
-                                not self.network_dict[node_id2].adjacency_dict[node_id1]['status']:
-
-                            self._invalidate_transit_cache()
-                            self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
-                            self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
-
-                            if feedback:
-                                print(f'The edge connecting Node ID: #{node_id1} and Node ID: '
-                                      f'#{node_id2} has been marked active!')
-
-                        # if the edges are active
-                        else:
-                            raise GraphElementError(f'The edge connecting Node '
-                                                    f'ID: #{node_id1} and Node '
-                                                    f'ID: #{node_id2} is already '
-                                                    f'active! As a result, the '
-                                                    f'edge cannot be marked active.')
-                    # if at least one node is inactive
-                    else:
-                        raise GraphElementError('One of the connecting nodes '
-                                                'is active! As a result, this'
-                                                ' edge must remain active.')
-                # if shared edge does not exist
-                else:
-                    raise GraphElementError(f'There is not a shared edge '
-                                            f'between Node ID: #{node_id1}'
-                                            f' and Node ID: #{node_id2}! As'
-                                            f' a result, the edge cannot be '
-                                            f'marked active.')
-            # if node doesn't exist
-            else:
-                raise GraphElementError('One of the passed nodes does '
-                                        'not exist! As a result, there '
-                                        'cannot be an edge, so it cannot '
-                                        'be marked as inactive.')
-
-        except GraphElementError as e:
-            if feedback:
-                print(e)
+        self._invalidate_transit_cache()
+        self.network_dict[node_id1].adjacency_dict[node_id2]['status'] = True
+        self.network_dict[node_id2].adjacency_dict[node_id1]['status'] = True
 
     def __str__(self) -> str:
         """

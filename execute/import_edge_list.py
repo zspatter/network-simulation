@@ -1,6 +1,7 @@
 import csv
 from os.path import abspath, join
 
+from network_simulator.exceptions import GraphElementError
 from network_simulator.Network import Network
 from network_simulator.Node import Node
 
@@ -26,17 +27,21 @@ def get_nodes(data):
 def build_network(nodes, data):
     network = Network()
     for node in nodes:
-        network.add_node(node=Node(node), feedback=False)
+        network.add_node(node=Node(node))
 
     return add_edges(network=network, data=data)
 
 
 def add_edges(network, data):
     for x in range(len(data[0])):
-        network.add_edge(node_id1=data[0][x],
-                         node_id2=data[1][x],
-                         weight=data[2][x] if data[2][x] else 1,
-                         feedback=False)
+        # an edge list may name a pair more than once (or in both directions);
+        # skip the duplicate rather than fail the whole import
+        try:
+            network.add_edge(node_id1=data[0][x],
+                             node_id2=data[1][x],
+                             weight=data[2][x] if data[2][x] else 1)
+        except GraphElementError:
+            continue
 
     return network
 

@@ -167,8 +167,7 @@ def import_nodes(rows, neighbor_regions):
                           city=row['city'],
                           state=row['state'],
                           latitude=latitude,
-                          longitude=longitude),
-                feedback=False)
+                          longitude=longitude))
 
         if row['organizationType'] == 'Transplant Hospital':
             transplant_hospital_ids.add(node_id)
@@ -203,8 +202,7 @@ def generate_distance_vector(network, neighbor_regions):
             network.add_edge(node_id1=source.node_id,
                              node_id2=adjacent.node_id,
                              weight=estimate_transit_hours(km),
-                             regional_weight=regional_weight,
-                             feedback=False)
+                             regional_weight=regional_weight)
 
 
 def node_pair_generator(network):
