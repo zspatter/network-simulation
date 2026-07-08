@@ -73,96 +73,27 @@ class Patient:
 
     def __eq__(self, other) -> bool:
         """
-        Rich comparison returns true iff all attributes are equal
+        Two patients are equal iff they are the same patient (same patient_id).
+        Identity semantics - not field-by-field - so equality is consistent with
+        __hash__ and stays stable as a patient's mutable per-round state (wait
+        time, acuity, urgency, sensitization, size) evolves; a patient who has
+        deteriorated is still the same patient. This is what lets matchers track
+        claimed patients in a set reliably across rounds.
 
         :param Patient other: object to compare
-        :return: boolean indicating equivalence
+        :return: boolean indicating whether this is the same patient
         """
         if isinstance(other, Patient):
-            return self.patient_id == other.patient_id \
-                   and self.patient_name == other.patient_name \
-                   and self.illness == other.illness \
-                   and self.organ_needed == other.organ_needed \
-                   and self.blood_type == other.blood_type \
-                   and self.priority == other.priority \
-                   and self.location == other.location \
-                   and self.rounds_waited == other.rounds_waited
+            return self.patient_id == other.patient_id
         return NotImplemented
 
     def __hash__(self) -> int:
         """
-        Hashes by patient_id (the class's unique identifier). Defining
-        __eq__ without __hash__ makes instances unhashable by default, which
-        would block using Patient in sets/dicts - e.g. allocation matchers
-        that need to track which patients have already been claimed within
-        a batch.
+        Hashes by patient_id, the unique identifier, consistent with __eq__.
+        Defining __eq__ without __hash__ makes instances unhashable by default,
+        which would block using Patient in the sets/dicts allocation matchers use
+        to track which patients have already been claimed within a batch.
 
         :return: hash of the patient's unique identifier
         """
         return hash(self.patient_id)
-
-    def __ne__(self, other) -> bool:
-        """
-        Rich comparison returns true if any attributes differ
-
-        :param Patient other: object to compare
-        :return: boolean indicating non-equivalence
-        """
-        if isinstance(other, Patient):
-            return not (self.patient_id == other.patient_id
-                        and self.patient_name == other.patient_name
-                        and self.illness == other.illness
-                        and self.organ_needed == other.organ_needed
-                        and self.blood_type == other.blood_type
-                        and self.priority == other.priority
-                        and self.location == other.location
-                        and self.rounds_waited == other.rounds_waited)
-        return NotImplemented
-
-    def __lt__(self, other) -> bool:
-        """
-        Rich comparison returns true if this object's priority attribute
-        is less than other's priority attribute
-
-        :param Patient other: object to compare
-        :return: boolean indicating if this object is less than other
-        """
-        if isinstance(other, Patient):
-            return self.priority < other.priority
-        return NotImplemented
-
-    def __le__(self, other) -> bool:
-        """
-        Rich comparison returns true if this object's priority attribute
-        is less than or equal to other's priority attribute
-
-        :param Patient other: object to compare
-        :return: boolean indicating if this object is less than or equal to other
-        """
-        if isinstance(other, Patient):
-            return self.priority <= other.priority
-        return NotImplemented
-
-    def __gt__(self, other) -> bool:
-        """
-        Rich comparison returns true if this object's priority attribute
-        is greater than other's priority attribute
-
-        :param Patient other: object to compare
-        :return: boolean indicating if this object is greater than other
-        """
-        if isinstance(other, Patient):
-            return self.priority > other.priority
-        return NotImplemented
-
-    def __ge__(self, other) -> bool:
-        """
-        Rich comparison returns true if this object's priority attribute
-        is greater than or equal to other's priority attribute
-
-        :param Patient other: object to compare
-        :return: boolean indicating if this object is greater than or equal to other
-        """
-        if isinstance(other, Patient):
-            return self.priority >= other.priority
-        return NotImplemented

@@ -7,59 +7,21 @@ from network_simulator.Patient import Patient
 blood_type = BloodType(BloodTypeLetter.A, BloodTypePolarity.POS)
 patient1 = Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 200, 1)
 patient2 = Patient('name', 'N/A', OrganType.Pancreas.value, blood_type, 100, 1)
-patient2.patient_id = patient1.patient_id
 
 
-def test__eq__():
-    patient2_clone = copy.deepcopy(patient2)
-    patient2_clone.patient_id = patient1.patient_id
-    patient2_clone.priority = patient1.priority
-
-    assert patient1 == patient2_clone
-    assert patient2_clone == patient2_clone
-    assert not patient2 == patient2_clone
+def test__eq__is_identity_by_patient_id():
+    clone = copy.deepcopy(patient1)  # same patient_id
+    assert patient1 == clone
+    assert patient1 == patient1
+    # a genuinely different patient is not equal, even with identical other fields
+    assert not patient1 == patient2
     assert not patient1 == 3.14
 
 
 def test__ne__():
     assert patient1 != patient2
-    assert patient2 != patient1
     assert not patient1 != patient1
     assert patient1 != 3.14
-
-
-def test__lt__():
-    assert patient2 < patient1
-    assert not patient1 < patient2
-
-
-def test_le__():
-    assert patient2 <= patient1
-    assert patient2 <= patient2
-    assert not patient1 <= patient2
-
-
-def test__gt__():
-    assert patient1 > patient2
-    assert not patient2 > patient1
-
-
-def test__ge__():
-    assert patient1 >= patient2
-    assert patient1 >= patient1
-    assert not patient2 >= patient1
-
-
-def test_comparisons_return_notimplemented_for_non_patient():
-    # __eq__/__ne__ fall back to identity comparison when NotImplemented is
-    # returned (so `== `/`!=` never raise), but the ordering operators have
-    # no such fallback and would raise TypeError if compared directly -
-    # calling the dunder methods lets us verify the NotImplemented branch
-    # itself without tripping that.
-    assert patient1.__lt__(3.14) is NotImplemented
-    assert patient1.__le__(3.14) is NotImplemented
-    assert patient1.__gt__(3.14) is NotImplemented
-    assert patient1.__ge__(3.14) is NotImplemented
 
 
 def test__hash__is_consistent_with_equality():
@@ -73,14 +35,14 @@ def test__hash__distinguishes_different_patients():
     assert len({patient1, patient2}) == 2
 
 
-def test_clinical_fields_are_excluded_from_equality():
-    # clinical state is mutable per-round; a patient who has deteriorated is
-    # still the same patient, so acuity/urgency/sensitization/size must not
-    # affect equality or hashing (see Patient class docstring)
+def test_mutable_state_never_changes_identity():
+    # equality is by patient_id alone, so any change to mutable per-round state -
+    # priority, wait time, or the clinical fields - leaves a patient equal to itself
     clone = copy.deepcopy(patient1)
+    clone.priority = 999
+    clone.rounds_waited = 40
     clone.acuity = 0.9
     clone.raw_urgency = 38.0
-    clone.rounds_waited = patient1.rounds_waited  # rounds_waited IS in equality
     clone.body_size = 95.0
     clone.unacceptable_antigens = frozenset({1, 2, 3})
     clone.cpra = 0.99
