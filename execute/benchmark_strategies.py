@@ -21,7 +21,7 @@ from benchmark_stats import (
     paired_permutation_test,
 )
 
-from network_simulator.allocation import STRATEGIES, Strategy
+from network_simulator.allocation import STRATEGIES, AllocationResult, Strategy
 from network_simulator.clinical import acceptance
 from network_simulator.clinical.living_donor import simulate_living_donor_transplants
 from network_simulator.clinical.progression import simulate_round_progression
@@ -112,6 +112,100 @@ class TrialMetrics:
             if self.wait_times_to_transplant else 0.0
 
 
+@dataclass
+class TrialConfig:
+    """Per-round knobs for one trial, bundled so the round helpers take a short signature."""
+    patients_per_round: int
+    harvests_per_round: int
+    patient_nodes: Optional[List[int]]
+    organ_nodes: Optional[List[int]]
+    other_removal_annual_rate: float
+    living_donors_per_round: int
+    realistic_outcomes: bool
+    priority_range: int
+
+
+def _record_allocation(result: AllocationResult, network: Network, wait_list: WaitList,
+                       organ_list: OrganList, metrics: TrialMetrics, config: TrialConfig,
+                       rng: random.Random) -> None:
+    """
+    Accrues transplant/discard/waste metrics for one allocation and removes the recipients who
+    actually received an organ. With realistic_outcomes a matched organ may be declined
+    (cold-ischemia-dependent) and discarded - counted as wasted, its patient kept waiting - and
+    a transplanted organ's life-years are scaled by a cold-ischemia graft-survival penalty.
+    """
+    transplanted_patients = []
+    for organ, patient in result.matches:
+        transit_hours = 0.0
+        if config.realistic_outcomes:
+            transit_hours = network.transit_from(organ.origin_location)[patient.location]
+            if acceptance.is_discarded(organ.organ_type, transit_hours, rng):
+                # declined down the match run -> wasted; the patient keeps waiting
+                metrics.organs_wasted += 1
+                metrics.organs_discarded += 1
+                continue
+
+        life_years = LIFE_YEARS_BY_ORGAN[patient.organ_needed]
+        if config.realistic_outcomes:
+            life_years *= acceptance.graft_survival_factor(transit_hours)
+
+        metrics.organs_transplanted += 1
+        metrics.total_priority_served += patient.priority
+        metrics.life_years_saved += life_years
+        metrics.wait_times_to_transplant.append(patient.rounds_waited)
+        metrics.tier_matched[_priority_tier(patient.priority, config.priority_range)] += 1
+        transplanted_patients.append(patient)
+    metrics.organs_wasted += len(result.unmatched_organs)
+
+    if config.realistic_outcomes:
+        # only the accepted recipients leave the list; discarded organs' patients stay
+        for patient in transplanted_patients:
+            wait_list.remove_patient(patient)
+        organ_list.empty_list()
+    else:
+        result.apply(wait_list, organ_list)
+
+
+def _record_outflows(wait_list: WaitList, metrics: TrialMetrics, config: TrialConfig,
+                     rng: random.Random) -> None:
+    """One round's non-allocation exits: deaths (with deterioration), then non-death removals,
+    then living-donor transplants off the survivors."""
+    for patient in simulate_round_progression(wait_list, rng):
+        metrics.waitlist_deaths += 1
+        metrics.deaths_by_organ[patient.organ_needed] += 1
+        if patient.acuity >= HIGH_ACUITY_THRESHOLD:
+            metrics.deaths_high_acuity += 1
+        else:
+            metrics.deaths_low_acuity += 1
+
+    metrics.other_removals += len(
+            simulate_round_removals(wait_list, config.other_removal_annual_rate, rng))
+    metrics.living_donor_transplants += len(
+            simulate_living_donor_transplants(wait_list, config.living_donors_per_round, rng))
+
+
+def _simulate_round(strategy: Strategy, network: Network, wait_list: WaitList,
+                    metrics: TrialMetrics, config: TrialConfig, rng: random.Random) -> None:
+    """One round: generate arrivals, harvest and allocate organs, then deterioration/outflow.
+    Mutates wait_list and metrics. Kept as three named steps so a round is testable and the
+    rng draw order (arrivals -> organs -> allocation/discard -> deaths -> removals -> living)
+    stays explicit and reproducible."""
+    new_patients = PatientGenerator.generate_patients(
+            network, config.patients_per_round, rng, eligible_nodes=config.patient_nodes)
+    wait_list.add_patients(new_patients)
+    for patient in new_patients:
+        metrics.tier_seen[_priority_tier(patient.priority, config.priority_range)] += 1
+
+    organ_list = OrganList()
+    OrganGenerator.generate_organs_to_list(
+            network, config.harvests_per_round, organ_list, rng, eligible_nodes=config.organ_nodes)
+
+    result = strategy.allocate(organ_list, wait_list, network)
+    _record_allocation(result, network, wait_list, organ_list, metrics, config, rng)
+    _record_outflows(wait_list, metrics, config, rng)
+    wait_list.increment_wait_times()
+
+
 def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 10,
              patients_per_round: int = 15, harvests_per_round: int = 5,
              network: Optional[Network] = None, patient_nodes: Optional[List[int]] = None,
@@ -163,70 +257,17 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
         network = GraphBuilder.graph_builder(num_nodes, rng=rng)
     wait_list = WaitList()
     metrics = TrialMetrics()
-    priority_range = 100 + patients_per_round  # matches PatientGenerator's randrange(100 + n)
+    config = TrialConfig(
+            patients_per_round=patients_per_round, harvests_per_round=harvests_per_round,
+            patient_nodes=patient_nodes, organ_nodes=organ_nodes,
+            other_removal_annual_rate=other_removal_annual_rate,
+            living_donors_per_round=living_donors_per_round,
+            realistic_outcomes=realistic_outcomes,
+            priority_range=100 + patients_per_round)  # matches PatientGenerator's randrange(100+n)
 
     start = time.perf_counter()
     for round_number in range(1, rounds + 1):
-        new_patients = PatientGenerator.generate_patients(network, patients_per_round, rng,
-                                                          eligible_nodes=patient_nodes)
-        wait_list.add_patients(new_patients)
-        for patient in new_patients:
-            metrics.tier_seen[_priority_tier(patient.priority, priority_range)] += 1
-
-        organ_list = OrganList()
-        OrganGenerator.generate_organs_to_list(network, harvests_per_round, organ_list, rng,
-                                               eligible_nodes=organ_nodes)
-
-        result = strategy.allocate(organ_list, wait_list, network)
-        transplanted_patients = []
-        for organ, patient in result.matches:
-            transit_hours = 0.0
-            if realistic_outcomes:
-                transit_hours = network.transit_from(organ.origin_location)[patient.location]
-                if acceptance.is_discarded(organ.organ_type, transit_hours, rng):
-                    # declined down the match run -> wasted; the patient keeps waiting
-                    metrics.organs_wasted += 1
-                    metrics.organs_discarded += 1
-                    continue
-
-            life_years = LIFE_YEARS_BY_ORGAN[patient.organ_needed]
-            if realistic_outcomes:
-                life_years *= acceptance.graft_survival_factor(transit_hours)
-
-            metrics.organs_transplanted += 1
-            metrics.total_priority_served += patient.priority
-            metrics.life_years_saved += life_years
-            metrics.wait_times_to_transplant.append(patient.rounds_waited)
-            metrics.tier_matched[_priority_tier(patient.priority, priority_range)] += 1
-            transplanted_patients.append(patient)
-        metrics.organs_wasted += len(result.unmatched_organs)
-
-        if realistic_outcomes:
-            # only the accepted recipients leave the list; discarded organs' patients stay
-            for patient in transplanted_patients:
-                wait_list.remove_patient(patient)
-            organ_list.empty_list()
-        else:
-            result.apply(wait_list, organ_list)
-
-        # patients still waiting deteriorate and some die before a match arrives
-        for patient in simulate_round_progression(wait_list, rng):
-            metrics.waitlist_deaths += 1
-            metrics.deaths_by_organ[patient.organ_needed] += 1
-            if patient.acuity >= HIGH_ACUITY_THRESHOLD:
-                metrics.deaths_high_acuity += 1
-            else:
-                metrics.deaths_low_acuity += 1
-
-        # the other real outflow channels (kept off by default; enabled for the
-        # reality-calibrated scenario report): non-death removals, then living-donor
-        # transplants, off the patients who survived the death roll this round
-        metrics.other_removals += len(
-                simulate_round_removals(wait_list, other_removal_annual_rate, rng))
-        metrics.living_donor_transplants += len(
-                simulate_living_donor_transplants(wait_list, living_donors_per_round, rng))
-
-        wait_list.increment_wait_times()
+        _simulate_round(strategy, network, wait_list, metrics, config, rng)
 
         if snapshot_interval_rounds and round_number % snapshot_interval_rounds == 0:
             metrics.wait_list_size_snapshots.append((round_number, len(wait_list.wait_list)))
