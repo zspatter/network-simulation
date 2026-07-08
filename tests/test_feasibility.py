@@ -37,7 +37,7 @@ def test_feasible_matches_filters_by_organ_type_and_blood_type():
 
 
 def test_feasible_matches_respects_operation_buffer():
-    # Heart: viability 6h, operation buffer 5h -> only ~1h of transit budget remains
+    # Heart: viability 6h, operation buffer 1.5h -> 4.5h of transit budget remains
     organ_list = OrganList()
 
     close_network = _network(weight=1.0)
@@ -48,7 +48,8 @@ def test_feasible_matches_respects_operation_buffer():
     matches = feasible_matches_by_organ(organ_list, wait_list, close_network)
     assert (close_patient, 1.0) in matches[close_organ]
 
-    far_network = _network(weight=3.0)
+    # 5h transit exceeds the 4.5h budget (6h viability - 1.5h operation buffer)
+    far_network = _network(weight=5.0)
     matches = feasible_matches_by_organ(organ_list, wait_list, far_network)
     feasible_patients = [patient for patient, _ in matches[close_organ]]
     assert close_patient not in feasible_patients

@@ -99,27 +99,31 @@ class Organ:
     @staticmethod
     def get_operation_buffer(organ_type: OrganType) -> float:
         """
-        Gets the operation buffer for each organ individually: the number of
-        hours a match needs to reserve, on top of transit time, for the
-        transplant procedure itself once the organ arrives. A feasible match
-        requires organ.viability - transit_hours >= operation_buffer.
+        Gets the operation buffer for each organ: the hours of the recipient
+        operation that are spent *within the cold-ischemia window*, i.e. from the
+        organ's arrival until reperfusion restarts its blood supply. A feasible
+        match requires organ.viability - transit_hours >= operation_buffer.
 
-        Sourced from typical operating-room durations: kidney ~4h,
-        pancreas ~3-6h, heart ~4-6h, lung ~6h (longer for double-lung),
-        liver ~6-12h. Intestines is a rough placeholder pending a dedicated
-        source - transplant literature generally groups it with liver/
-        multivisceral procedures as similarly long and complex.
+        This is the implant-to-reperfusion portion only, NOT total operating-room
+        time. The whole transplant procedure runs several hours longer, but
+        reperfusion happens partway through (once the vascular anastomoses are
+        complete), and everything after reperfusion no longer draws down the cold-
+        ischemia budget that viability (max cold ischemia time) represents. Sizing
+        this as the full OR duration would double-count and, against a realistic
+        transit model, make short-window thoracic organs (heart/lung) essentially
+        untransplantable. Approximate anastomosis-to-reperfusion times: kidney ~1h,
+        heart/lung/pancreas ~1.5h, liver/intestine ~2h.
 
         :param OrganType organ_type: constant corresponding to an organ type
-        :return: hours to reserve for the transplant procedure
+        :return: hours of the recipient operation that consume the cold-ischemia budget
         """
         operation_buffer = {
-            OrganType.Heart.value:      5.0,
-            OrganType.Kidney.value:     4.0,
-            OrganType.Liver.value:      8.0,
-            OrganType.Lungs.value:      6.0,
-            OrganType.Pancreas.value:   4.0,
-            OrganType.Intestines.value: 7.0}
+            OrganType.Heart.value:      1.5,
+            OrganType.Kidney.value:     1.0,
+            OrganType.Liver.value:      2.0,
+            OrganType.Lungs.value:      1.5,
+            OrganType.Pancreas.value:   1.5,
+            OrganType.Intestines.value: 2.0}
 
         return operation_buffer[organ_type.value]
 

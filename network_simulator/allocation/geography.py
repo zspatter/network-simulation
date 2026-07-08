@@ -29,12 +29,11 @@ from network_simulator.Patient import Patient
 TierFn = Callable[[Organ, Patient, float, 'Network'], int]
 
 # Approximate transit-hour thresholds standing in for the real 150/250/500 NM circles.
-# Not derived by inverting distance.py's two-speed (ground/air) model: that model's
-# ground->air switch at 400km makes km->hours non-monotonic (a farther-but-air-eligible
-# point can be *faster* than a nearer ground-only one), so a literal NM->hours conversion
-# would produce non-monotonic tier boundaries. These are round, documented approximations
-# instead - the same style of simplifying assumption distance.py itself uses - chosen so
-# tier 0/1/2 increase in the same order of magnitude as the real 150/250/500 NM circles.
+# distance.py's transit model is now monotonic in distance (see its docstring), so these
+# map to well-defined distance bands - roughly a local ground trip (~120 km) and an air
+# radius (~1,900 km) here - but they remain round, documented approximations chosen so
+# tier 0/1/2 grow in the same order of magnitude as the real 150/250/500 NM circles,
+# rather than a literal NM->hours conversion of a specific aircraft.
 LOCAL_THRESHOLD_HOURS = 2.0
 REGIONAL_THRESHOLD_HOURS = 5.0
 

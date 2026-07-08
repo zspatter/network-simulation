@@ -39,12 +39,21 @@ def test_get_viability():
 
 
 def test_get_operation_buffer():
-    assert Organ.get_operation_buffer(OrganType.Heart) == 5.0
-    assert Organ.get_operation_buffer(OrganType.Kidney) == 4.0
-    assert Organ.get_operation_buffer(OrganType.Liver) == 8.0
-    assert Organ.get_operation_buffer(OrganType.Lungs) == 6.0
-    assert Organ.get_operation_buffer(OrganType.Pancreas) == 4.0
-    assert Organ.get_operation_buffer(OrganType.Intestines) == 7.0
+    # implant-to-reperfusion portion that consumes cold-ischemia time (not full OR time)
+    assert Organ.get_operation_buffer(OrganType.Heart) == 1.5
+    assert Organ.get_operation_buffer(OrganType.Kidney) == 1.0
+    assert Organ.get_operation_buffer(OrganType.Liver) == 2.0
+    assert Organ.get_operation_buffer(OrganType.Lungs) == 1.5
+    assert Organ.get_operation_buffer(OrganType.Pancreas) == 1.5
+    assert Organ.get_operation_buffer(OrganType.Intestines) == 2.0
+
+
+def test_operation_buffer_leaves_transit_room_within_viability():
+    # every organ must leave at least an hour of transit budget, or nothing could
+    # ever be transplanted under a realistic transit model
+    for organ_type in OrganType:
+        budget = Organ.get_viability(organ_type) - Organ.get_operation_buffer(organ_type)
+        assert budget >= 1.0
 
 
 def test__str__():

@@ -1,21 +1,48 @@
 """
-Great-circle distance and a simplified transit-time estimate between two
-coordinates. Used to derive Network edge weights directly from hospital
+Great-circle distance and a door-to-door organ-transport time estimate between
+two coordinates. Used to derive Network edge weights directly from hospital
 coordinates (see Network's docstring for the hours-based weight convention)
 instead of scraping a distance-lookup site.
+
+Transit is modeled as the faster of two competing modes:
+
+  ground: GROUND_HANDLING_HOURS + (GROUND_CIRCUITY * great_circle_km) / GROUND_SPEED_KMH
+  air:    AIR_OVERHEAD_HOURS    +  great_circle_km / AIR_SPEED_KMH
+  transit = min(ground, air)
+
+This is deliberately more faithful than a single distance->speed ratio in three
+ways that matter for whether geography actually binds a match:
+
+  1. Real *fixed* overhead. An organ is not teleported the instant it is
+     recovered: it is packaged, driven to an airport, flown, and driven from the
+     destination airport to the recipient hospital, with coordination throughout.
+     Air transport therefore carries a multi-hour fixed cost (AIR_OVERHEAD_HOURS)
+     independent of flight distance - which is exactly what makes a short hop
+     ground-preferable and a long haul air-preferable.
+  2. Road circuity. Ground distance is not the great-circle line; real road
+     distance runs ~GROUND_CIRCUITY times longer.
+  3. Monotonic and continuous in distance. Because ground has a low fixed cost
+     and high marginal cost while air is the reverse, their min crosses over once
+     (~190 km here) and never inverts - a farther hospital is never "closer" in
+     time, unlike the old two-tier model's discontinuity at its ground->air
+     switch. This is what let the old model treat a 1,200 km flight as more
+     "local" than a 300 km drive.
+
+Values are documented simulation approximations, not routing-grade.
 """
 import math
 
 EARTH_RADIUS_KM = 6371.0088
 
-# Simplified two-tier speed model standing in for real routing: organ
-# transport typically stays on the ground up to roughly a 4-hour drive
-# (~400 km), and switches to chartered/commercial air beyond that. This is a
-# documented simplifying assumption for simulation purposes, not
-# routing-grade.
-GROUND_TRANSPORT_THRESHOLD_KM = 400.0
-GROUND_SPEED_KMH = 90.0  # effective ground-courier speed, including transfer overhead
-AIR_SPEED_KMH = 700.0  # effective fixed-wing speed, including ground-to-tarmac overhead
+# Ground courier: package/load at origin, then drive real (circuitous) roads.
+GROUND_HANDLING_HOURS = 0.5   # organ packaging + loading before the vehicle moves
+GROUND_CIRCUITY = 1.25        # road distance / great-circle distance
+GROUND_SPEED_KMH = 105.0      # effective courier speed incl. urgency, net of stops
+
+# Charter air: fixed cost is both hospital<->airport ground legs plus taxi/climb/
+# descent and flight coordination; marginal cost is cruise over the great circle.
+AIR_OVERHEAD_HOURS = 2.5      # fixed door-to-door air overhead, independent of distance
+AIR_SPEED_KMH = 750.0         # effective fixed-wing cruise
 
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -38,14 +65,14 @@ def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 def estimate_transit_hours(distance_km: float) -> float:
     """
-    Rough organ-transport time estimate, in hours. Below
-    GROUND_TRANSPORT_THRESHOLD_KM this assumes ground transport; beyond it,
-    air transport. Exists so Network edge weights and Organ.viability are
-    expressed in the same unit (hours) - see the unit-mismatch note in
-    Network's docstring.
+    Door-to-door organ-transport time estimate, in hours: the faster of the
+    ground and air modes (see the module docstring for the model and why it is
+    monotonic in distance). Expressed in hours so Network edge weights and
+    Organ.viability share a unit - see the note in Network's docstring.
 
     :param float distance_km: great-circle distance, in kilometers
     :return: estimated transit time, in hours
     """
-    speed_kmh = GROUND_SPEED_KMH if distance_km <= GROUND_TRANSPORT_THRESHOLD_KM else AIR_SPEED_KMH
-    return distance_km / speed_kmh
+    ground_hours = GROUND_HANDLING_HOURS + (GROUND_CIRCUITY * distance_km) / GROUND_SPEED_KMH
+    air_hours = AIR_OVERHEAD_HOURS + distance_km / AIR_SPEED_KMH
+    return min(ground_hours, air_hours)
