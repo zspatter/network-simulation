@@ -18,6 +18,7 @@ from network_simulator.allocation.matchers.tiered import TieredMatcher
 from network_simulator.allocation.scoring import (
     AcuityScore,
     CompositeScore,
+    ContinuousDistributionScore,
     PriorityScore,
     RealWorldScore,
     ScoreWeights,
@@ -83,4 +84,10 @@ STRATEGIES = {
     'optimal_real_world_circle': Strategy('optimal_real_world_circle',
                                           TieredMatcher(OptimalMatcher(), circle_tier),
                                           RealWorldScore()),
+    # continuous_distribution: no hard geographic tier - geography is one continuously-weighted
+    # term in a single score (medical urgency + wait + proximity + sensitization), optimally
+    # matched. Models where OPTN policy is headed (already live for lung). execute/
+    # frontier_analysis.py sweeps its weights to trace the medical-vs-geography trade-off.
+    'continuous_distribution': Strategy('continuous_distribution',
+                                        OptimalMatcher(), ContinuousDistributionScore()),
 }

@@ -143,3 +143,36 @@ class RealWorldScore:
         policy_points_fn = _POLICY_POINTS_BY_ORGAN.get(patient.organ_needed, _fallback_points)
         policy_points = max(_MIN_POLICY_FLOOR, policy_points_fn(patient))
         return policy_points + _GEOGRAPHY_EFFICIENCY_WEIGHT * transit_hours
+
+
+@dataclass
+class ContinuousDistributionScore:
+    """
+    A "continuous distribution" allocation score: a single weighted sum of point factors -
+    medical urgency, waiting time, geographic proximity, and sensitization - with NO hard
+    geographic boundary, which is the direction OPTN policy is moving (lung has been fully
+    continuous-distribution since March 2023; heart and liver are in progress). Unlike the
+    circle/region models (a hard tier constraint applied by TieredMatcher), geography here is
+    just one more continuously-weighted term, so an exceptionally sick distant candidate can
+    still out-score a marginal local one.
+
+    All factors are placed on a roughly 0-100 scale so the weights are directly comparable.
+    The weights are intentionally exposed as fields so a sweep can trace the medical-benefit-
+    versus-geography trade-off frontier (see execute/frontier_analysis.py): raising
+    proximity_weight keeps organs local (lower transit, less cold-ischemia waste) at the cost
+    of skipping sicker faraway candidates.
+    """
+    medical_weight: float = 1.0        # coefficient on acuity (near-term death risk), 0..1
+    wait_weight: float = 0.5           # coefficient on rounds_waited
+    proximity_weight: float = 1.0      # coefficient on geographic proximity (closer scores higher)
+    sensitization_weight: float = 0.5  # coefficient on cPRA (hard-to-match candidates), 0..1
+    name: str = 'continuous_distribution'
+
+    def score(self, patient: Patient, organ: Organ, transit_hours: float) -> float:
+        # proximity in (0, 1]: 1 at the door, decaying smoothly with transit - continuous, with
+        # no boundary. Every term is scaled onto ~0..100 so the weights are directly comparable.
+        proximity = 1.0 / (1.0 + transit_hours)
+        return (self.medical_weight * patient.acuity * 100.0
+                + self.wait_weight * patient.rounds_waited
+                + self.proximity_weight * proximity * 100.0
+                + self.sensitization_weight * patient.cpra * 100.0)

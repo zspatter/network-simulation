@@ -91,6 +91,9 @@ class TrialMetrics:
     deaths_by_organ: Dict[OrganType, int] = field(
             default_factory=lambda: {organ: 0 for organ in OrganType})
     wait_times_to_transplant: List[int] = field(default_factory=list)
+    # transit hours for each transplanted organ (only populated under realistic_outcomes) -
+    # the geographic-efficiency axis for the continuous-distribution frontier sweep
+    transit_of_transplants: List[float] = field(default_factory=list)
     tier_seen: Dict[str, int] = field(default_factory=lambda: {t: 0 for t in PRIORITY_TIERS})
     tier_matched: Dict[str, int] = field(default_factory=lambda: {t: 0 for t in PRIORITY_TIERS})
     runtime_seconds: float = 0.0
@@ -155,6 +158,7 @@ def _record_allocation(result: AllocationResult, network: Network, wait_list: Wa
         metrics.total_priority_served += patient.priority
         metrics.life_years_saved += life_years
         metrics.wait_times_to_transplant.append(patient.rounds_waited)
+        metrics.transit_of_transplants.append(transit_hours)
         metrics.tier_matched[_priority_tier(patient.priority, config.priority_range)] += 1
         transplanted_patients.append(patient)
     metrics.organs_wasted += len(result.unmatched_organs)

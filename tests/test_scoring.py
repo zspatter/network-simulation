@@ -1,6 +1,7 @@
 from network_simulator.allocation.scoring import (
     AcuityScore,
     CompositeScore,
+    ContinuousDistributionScore,
     PriorityScore,
     RealWorldScore,
     ScoreWeights,
@@ -25,6 +26,38 @@ def test_acuity_score_returns_patient_acuity():
     organ = Organ(OrganType.Liver, o_neg, location=1)
 
     assert AcuityScore().score(patient, organ, transit_hours=3.0) == 0.73
+
+
+def test_continuous_distribution_proximity_decreases_with_transit():
+    patient = Patient('name', 'n/a', OrganType.Kidney, o_neg, 100, 1, acuity=0.5, cpra=0.3)
+    patient.rounds_waited = 10
+    organ = Organ(OrganType.Kidney, o_neg, location=1)
+    scorer = ContinuousDistributionScore()
+
+    near = scorer.score(patient, organ, transit_hours=0.5)
+    far = scorer.score(patient, organ, transit_hours=10.0)
+    # geography is a continuous term with no hard boundary: closer scores strictly higher,
+    # all else equal
+    assert near > far
+
+
+def test_continuous_distribution_zero_proximity_weight_ignores_geography():
+    patient = Patient('name', 'n/a', OrganType.Liver, o_neg, 100, 1, acuity=0.6, cpra=0.2)
+    organ = Organ(OrganType.Liver, o_neg, location=1)
+    scorer = ContinuousDistributionScore(proximity_weight=0.0)
+
+    # with proximity_weight 0, transit does not affect the score at all
+    assert scorer.score(patient, organ, 0.5) == scorer.score(patient, organ, 20.0)
+
+
+def test_continuous_distribution_weights_are_additive_and_comparable():
+    patient = Patient('name', 'n/a', OrganType.Heart, o_neg, 100, 1, acuity=1.0, cpra=1.0)
+    patient.rounds_waited = 0
+    organ = Organ(OrganType.Heart, o_neg, location=1)
+    # acuity 1.0 * 100 * medical_weight + proximity(1/(1+0))=1 *100 * proximity + cpra 1*100*sens
+    scorer = ContinuousDistributionScore(medical_weight=1.0, wait_weight=0.0,
+                                         proximity_weight=1.0, sensitization_weight=1.0)
+    assert scorer.score(patient, organ, transit_hours=0.0) == 100.0 + 100.0 + 100.0
 
 
 def test_composite_score_default_weights_ignore_acuity():
