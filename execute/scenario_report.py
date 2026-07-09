@@ -10,6 +10,7 @@ Run directly: `python execute/scenario_report.py`
 import argparse
 import csv
 import os
+import pickle
 import statistics
 import time
 from dataclasses import dataclass, field
@@ -169,10 +170,30 @@ def default_seeds_for_horizon(years: int) -> int:
     return 8 if years == 1 else 3
 
 
-def build_network(membership_csv_path: str) -> Tuple[Network, Set[int], Set[int]]:
-    """Builds the real network via import_hospitals' pipeline - see that module's docstring."""
+def build_network(membership_csv_path: str,
+                  use_cache: bool = True) -> Tuple[Network, Set[int], Set[int]]:
+    """
+    Builds the real network via import_hospitals' pipeline (see that module's docstring),
+    caching the geocoded result next to the CSV so subsequent runs don't re-hit the (slow,
+    occasionally-flaky) geocoder. The membership CSV never changes between runs, so the built
+    network is a pure function of it; the cache is invalidated by pointing at a different CSV.
+
+    :param str membership_csv_path: path to the OPTN membership CSV
+    :param bool use_cache: read/write the pickled network cache (default True); pass False to
+        force a fresh geocode
+    """
+    cache_path = Path(membership_csv_path).with_suffix('.network_cache.pkl')
+    if use_cache and cache_path.exists():
+        with cache_path.open('rb') as cache_file:
+            return pickle.load(cache_file)
+
     rows = filter_physical_locations(read_membership_csv(membership_csv_path))
-    return import_nodes(rows, NEIGHBOR_REGIONS)
+    result = import_nodes(rows, NEIGHBOR_REGIONS)
+
+    if use_cache:
+        with cache_path.open('wb') as cache_file:
+            pickle.dump(result, cache_file)
+    return result
 
 
 @dataclass

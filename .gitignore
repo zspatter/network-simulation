@@ -22,5 +22,8 @@ venv/
 reports/*
 !reports/example/
 
+# Cached geocoded network (rebuilt from the membership CSV on demand)
+*.network_cache.pkl
+
 # Claude Code personal settings
 .claude/settings.local.json
