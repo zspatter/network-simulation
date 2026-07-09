@@ -25,6 +25,16 @@ reports/*
 # Cached geocoded network (rebuilt from the membership CSV on demand)
 *.network_cache.pkl
 
+# Generated network exports - shelved networks, GEXF, edge lists. Regenerate via
+# execute/generate_networks.py, export_*.py, and import_hospitals.py. The dirs are kept
+# (via .gitkeep) so the export scripts have somewhere to write.
+execute/export/shelve/*
+execute/export/gexf/*
+execute/export/edgelist/*
+!execute/export/shelve/.gitkeep
+!execute/export/gexf/.gitkeep
+!execute/export/edgelist/.gitkeep
+
 # Mutation-testing cache
 .mutmut-cache
 
