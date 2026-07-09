@@ -1,71 +1,47 @@
-from pathlib import Path
+"""
+Tallies OPTN membership rows by state and region, for the GEXF attribute annotation in
+export_hospital_network.py. Reads the same membership CSV and physical-location filter as
+import_hospitals.py, so the counts correspond to what's actually in the exported network.
+"""
 import shelve
+from pathlib import Path
 
-import openpyxl
-
-
-def get_unique_states(worksheet):
-    column = 'A'
-    states = set()
-
-    for x in range(2, worksheet.max_row + 1):
-        states.add(worksheet[f'{column}{x}'].value)
-
-    return sorted(states)
+from import_hospitals import filter_physical_locations, read_membership_csv
 
 
-def get_unique_regions(worksheet):
-    column = 'E'
-    regions = set()
+def get_unique_states(rows):
+    return sorted({row['state'] for row in rows})
 
-    for x in range(2, worksheet.max_row + 1):
-        regions.add(int(worksheet[f'{column}{x}'].value))
 
-    return sorted(regions)
+def get_unique_regions(rows):
+    return sorted({int(row['region']) for row in rows})
 
 
 def set_default_values(collection):
-    collection_dict = {}
-
-    for x in collection:
-        collection_dict[x] = 0
-
-    return collection_dict
+    return {item: 0 for item in collection}
 
 
-def quantify_by_state(worksheet, state_dict):
-    column = 'A'
-
-    for x in range(2, worksheet.max_row + 1):
-        state = worksheet[f'{column}{x}'].value
-        state_dict[state] += 1
-
+def quantify_by_state(rows, state_dict):
+    for row in rows:
+        state_dict[row['state']] += 1
     return state_dict
 
 
-def quantify_by_region(worksheet, region_dict):
-    column = 'E'
-
-    for x in range(2, worksheet.max_row + 1):
-        region = int(worksheet[f'{column}{x}'].value)
-        region_dict[region] += 1
-
+def quantify_by_region(rows, region_dict):
+    for row in rows:
+        region_dict[int(row['region'])] += 1
     return region_dict
 
 
 if __name__ == '__main__':
-    path = Path('./import/workbooks/National_Transplant_Hospitals.xlsx')
-    wb = openpyxl.load_workbook(path)
-    sheet = wb.active
+    csv_path = Path('./import/optn_membership/optn_membership_2026-07-02.csv')
+    membership_rows = filter_physical_locations(read_membership_csv(csv_path))
 
-    unique_states = get_unique_states(sheet)
-    unique_regions = get_unique_regions(sheet)
+    unique_states = get_unique_states(membership_rows)
+    unique_regions = get_unique_regions(membership_rows)
 
-    states = set_default_values(unique_states)
-    regions = set_default_values(unique_regions)
-
-    states = quantify_by_state(sheet, states)
-    regions = quantify_by_region(sheet, regions)
+    states = quantify_by_state(membership_rows, set_default_values(unique_states))
+    regions = quantify_by_region(membership_rows, set_default_values(unique_regions))
 
     export_path = Path('./export/shelve/hospital_quantities')
     db = shelve.open(str(export_path))

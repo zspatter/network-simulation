@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  schedule:
+    # Weekly drift check, independent of any commit landing here: unpinned
+    # dev deps, runner images and CPython patch releases all move on their
+    # own. Off the exact hour per GitHub's scheduling guidance.
+    - cron: '29 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# a superseded run is cancelled by the next push to the same ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.x"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e .[dev]
+      - run: ruff check organflow execute tests
+      - run: mypy organflow
+      - run: pytest --cov=organflow --cov-report=term-missing
+
+  # Scheduled workflows are auto-disabled after 60 days without repository
+  # activity, and scheduled runs themselves don't count as activity, so the
+  # weekly drift check would silently die two months into any quiet stretch.
+  # Re-enabling an already-enabled workflow resets that clock. Dispatch runs
+  # it too so the step stays testable by hand; push/PR runs skip it.
+  keepalive:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Reset the 60-day scheduled-workflow timer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow enable ci.yml --repo "$GITHUB_REPOSITORY"

@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.GraphConverter import GraphConverter
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.OrganList import OrganList
-from network_simulator.PatientGenerator import PatientGenerator
-from network_simulator.SubnetworkGenerator import SubnetworkGenerator
-from network_simulator.WaitList import WaitList
+from organflow.GraphBuilder import GraphBuilder
+from organflow.GraphConverter import GraphConverter
+from organflow.OrganGenerator import OrganGenerator
+from organflow.OrganList import OrganList
+from organflow.PatientGenerator import PatientGenerator
+from organflow.SubnetworkGenerator import SubnetworkGenerator
+from organflow.WaitList import WaitList
 
 # node1 = Node(1, "A",
 #              {2: {'weight': 3, 'status': True},

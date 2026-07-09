@@ -1,6 +1,9 @@
-from network_simulator.Network import Node, Network
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.OrganList import OrganList
+import random
+
+from organflow.compatibility_markers import DonorType
+from organflow.Network import Network, Node
+from organflow.OrganGenerator import OrganGenerator
+from organflow.OrganList import OrganList
 
 test_net = Network()
 test_net.add_node(Node(1))
@@ -10,7 +13,8 @@ n = 3
 def test_generate_organs():
     organs = OrganGenerator.generate_organs(graph=test_net, n=n)
 
-    assert len(organs) <= n * 6
+    # at most 7 organs per donor: one of each of the 6 types, but kidney yields 2
+    assert len(organs) <= n * 7
     for organ in organs:
         assert organ.current_location in test_net.nodes()
         assert 0 <= organ.organ_type.value <= 5
@@ -28,3 +32,48 @@ def test_generate_organs_to_list():
         assert 0 <= organ.organ_type.value <= 5
         assert 0 <= organ.blood_type.blood_type_letter.value <= 3
         assert 0 <= organ.blood_type.blood_type_polarity.value <= 1
+
+
+def test_generated_organs_carry_a_donor_type_and_both_pathways_appear():
+    # over many donors both DBD and DCD show up, and every organ from one donor shares its
+    # donor's pathway (a donor-level attribute)
+    organs = OrganGenerator.generate_organs(graph=test_net, n=60, rng=random.Random(0))
+    donor_types = {organ.donor_type for organ in organs}
+    assert donor_types == {DonorType.DBD, DonorType.DCD}
+
+
+def test_generated_organs_carry_a_bounded_quality_index_that_tracks_pathway():
+    # every organ gets a donor-quality index in [0, 100]; the index is a donor-level attribute,
+    # and DCD donors are more marginal on average, so their organs' mean index is higher
+    organs = OrganGenerator.generate_organs(graph=test_net, n=200, rng=random.Random(0))
+    assert all(0.0 <= organ.quality_index <= 100.0 for organ in organs)
+
+    dbd = [o.quality_index for o in organs if o.donor_type is DonorType.DBD]
+    dcd = [o.quality_index for o in organs if o.donor_type is DonorType.DCD]
+    assert dbd and dcd
+    assert sum(dcd) / len(dcd) > sum(dbd) / len(dbd)
+
+
+def test_generate_organs_restricts_location_to_eligible_nodes():
+    multi_node_net = Network()
+    multi_node_net.add_node(Node(1))
+    multi_node_net.add_node(Node(2))
+    multi_node_net.add_node(Node(3))
+
+    organs = OrganGenerator.generate_organs(graph=multi_node_net, n=10, eligible_nodes=[2])
+
+    assert organs  # n=10 donors virtually guarantees at least one recovered organ
+    assert all(organ.current_location == 2 for organ in organs)
+
+
+def test_generate_organs_to_list_restricts_location_to_eligible_nodes():
+    multi_node_net = Network()
+    multi_node_net.add_node(Node(1))
+    multi_node_net.add_node(Node(2))
+    multi_node_net.add_node(Node(3))
+    organ_list = OrganList()
+
+    OrganGenerator.generate_organs_to_list(graph=multi_node_net, n=10, organ_list=organ_list,
+                                           eligible_nodes=[2])
+
+    assert all(organ.current_location == 2 for organ in organ_list.organ_list)

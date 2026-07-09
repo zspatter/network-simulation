@@ -1,14 +1,42 @@
-
-__pycache__/Node.cpython-37.pyc
-__pycache__/Network.cpython-37.pyc
-*__pycache__/*.pyc
-*.pyc
-.cpython-37.pyc
-network_simulator/__pycache__/*
-execute/__pycache__/*
-tests/__pycache__/*
+__pycache__/
+*.py[cod]
 
 .DS_Store
-.idea/*
-.mypy_cache/*
+.idea/
+~$*
+
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
 .coverage
+htmlcov/
+
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Generated scenario reports (regenerate via execute/scenario_report.py).
+# reports/example/ is the one committed sample set - a 1/5/10-year run.
+reports/*
+!reports/example/
+
+# Cached geocoded network (rebuilt from the membership CSV on demand)
+*.network_cache.pkl
+
+# Generated network exports - shelved networks, GEXF, edge lists. Regenerate via
+# execute/generate_networks.py, export_*.py, and import_hospitals.py. The dirs are kept
+# (via .gitkeep) so the export scripts have somewhere to write.
+execute/export/shelve/*
+execute/export/gexf/*
+execute/export/edgelist/*
+!execute/export/shelve/.gitkeep
+!execute/export/gexf/.gitkeep
+!execute/export/edgelist/.gitkeep
+
+# Mutation-testing cache
+.mutmut-cache
+
+# Claude Code personal settings
+.claude/settings.local.json

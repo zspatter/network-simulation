@@ -1,11 +1,11 @@
-from network_simulator.BloodType import BloodType
-from network_simulator.Network import Node, Network
-from network_simulator.Organ import Organ
-from network_simulator.OrganList import OrganList
-from network_simulator.Patient import Patient
-from network_simulator.SubnetworkGenerator import SubnetworkGenerator
-from network_simulator.WaitList import WaitList
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Network import Network, Node
+from organflow.Organ import Organ
+from organflow.OrganList import OrganList
+from organflow.Patient import Patient
+from organflow.SubnetworkGenerator import SubnetworkGenerator
+from organflow.WaitList import WaitList
 
 node_a = Node(1, 'A',
               {2: {'weight': 1, 'status': True},
@@ -52,3 +52,7 @@ def test_generate_subnetwork():
 
     for node in organ_nodes:
         assert node in network.nodes()
+
+
+def test_generate_subnetwork_rejects_unsupported_collection_type():
+    assert SubnetworkGenerator.generate_subnetwork(network, [patient_a]) is NotImplemented

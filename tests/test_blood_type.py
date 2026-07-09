@@ -1,5 +1,5 @@
-from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 o_pos = BloodType(BloodTypeLetter.O, BloodTypePolarity.POS)
@@ -56,3 +56,14 @@ def test__ne__():
     assert o_neg != o_pos
     assert not o_neg != o_neg
     assert o_neg != 3.14
+
+
+def test__str__():
+    assert str(o_neg) == 'O-'
+    assert str(o_pos) == 'O+'
+    assert str(a_neg) == 'A-'
+    assert str(a_pos) == 'A+'
+    assert str(b_neg) == 'B-'
+    assert str(b_pos) == 'B+'
+    assert str(ab_neg) == 'AB-'
+    assert str(ab_pos) == 'AB+'

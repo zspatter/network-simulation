@@ -1,105 +1,208 @@
-import logging
+"""
+Builds a Network of real US transplant-system locations from the OPTN membership directory
+(https://www.hrsa.gov/optn/about/membership/optn-membership-database), geocoded via the free US
+Census Bureau geocoder (https://geocoding.geo.census.gov - no API key needed). Replaces the old
+2019 xlsx + Bing Maps pipeline: Bing Maps' free/basic tier was retired by Microsoft on June 30,
+2025, and the Census geocoder is strictly more precise besides, since it geocodes the full
+street address rather than just city/state (a city-center point).
+
+Only two OPTN membership `organizationType`s are physical locations this simulation models:
+'Transplant Hospital' (where patients wait and transplants happen) and 'Independent OPO' /
+'Hospital Based OPO' (Organ Procurement Organizations - who actually coordinate organ recovery;
+a transplant hospital performs transplants but doesn't necessarily procure the organ itself).
+Everything else in the membership directory (labs, business/individual/public/scientific
+members) isn't a location this simulation places patients or organs at.
+
+Some rows share a `centerCode` (e.g. a hospital-based OPO co-located with its affiliated
+transplant hospital) but are still distinct physical addresses - checked directly against the
+membership CSV - so every row gets its own Node rather than being deduplicated by centerCode.
+"""
+import csv
+import io
 import shelve
+import time
 from os.path import abspath, join
 
-import openpyxl
 import requests
-from bs4 import BeautifulSoup
-from openpyxl.utils import get_column_letter
-from requests_html import HTMLSession
 
-from network_simulator.Network import Network
-from network_simulator.Node import Node
+from organflow.distance import estimate_transit_hours, haversine_km
+from organflow.Network import Network
+from organflow.Node import Node
+
+PHYSICAL_LOCATION_TYPES = {'Transplant Hospital', 'Independent OPO', 'Hospital Based OPO'}
+
+CENSUS_BATCH_URL = 'https://geocoding.geo.census.gov/geocoder/locations/addressbatch'
+CENSUS_BENCHMARK = 'Public_AR_Current'
+
+# Fallback for the ~10% of hospital addresses the Census geocoder can't match - large campus
+# addresses (e.g. "One Medical Center Drive") often aren't in TIGER/Line's street reference data
+# at all, no matter how the query is reformatted (verified directly - zip+4 vs 5-digit zip vs no
+# zip made no difference). Nominatim (OpenStreetMap) resolves all of these in testing. Its usage
+# policy caps free use at 1 request/second and requires a descriptive User-Agent identifying the
+# application - fine here since this only runs for a handful of per-row fallback lookups, not the
+# whole batch.
+NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
+NOMINATIM_USER_AGENT = 'organflow (hospital network data refresh)'
+NOMINATIM_RATE_LIMIT_SECONDS = 1.0
 
 
-def set_default_indices():
+def read_membership_csv(path):
     """
-    Sets default dict for columns (placeholders for indices)
+    Reads the OPTN membership CSV into a list of row dicts (one dict per member, keyed by the
+    CSV's header names - region, centerCode, organizationType, accountName, address1, city,
+    state, zipCode, membershipStatus, etc.).
+
+    :param str path: path to the OPTN membership CSV export
+    :return: list of row dicts
     """
-    fields = ('unique id',
-              'hospital name',
-              'city',
-              'state',
-              'region')
-    columns = {}
-    for field in fields:
-        columns.setdefault(field, None)
-
-    return columns
+    with open(path, newline='', encoding='utf-8-sig') as csv_in:
+        return list(csv.DictReader(csv_in))
 
 
-def get_column_indices(worksheet, columns):
+def filter_physical_locations(rows):
     """
-    Gets index for each column for reading data
+    Keeps only rows that are both a real physical location this simulation models
+    (PHYSICAL_LOCATION_TYPES) and currently Approved (drops "Interim Approval-Pending BOD
+    Action" rows - not yet real capacity).
 
-    :param Worksheet worksheet: worksheet to read
-    :param dict columns: expected columns to store indices
+    :param rows: rows from read_membership_csv()
+    :return: filtered rows
     """
-    for x in range(1, 9):
-        cell = worksheet[f'{get_column_letter(x)}1'].value
-        if cell and cell.lower() in columns:
-            columns[cell.lower()] = get_column_letter(x)
+    return [row for row in rows
+           if row['membershipStatus'] == 'Approved'
+           and row['organizationType'] in PHYSICAL_LOCATION_TYPES]
 
 
-def import_nodes(worksheet):
+def geocode_addresses(rows):
     """
-    Imports node from each row and adds it to the network. These nodes
-    only contain the following fields: node_id, hospital_name, region,
-    city, and state. (adjacency_dict is handled in generate_distance_vector()
-    and status is assumed to be True)
+    Batch-geocodes every row's street address via the free US Census Bureau geocoder in a
+    single request (rather than one request per row), then individually retries via Nominatim
+    (rate-limited) any address the Census geocoder couldn't match.
 
-    :param Worksheet worksheet: worksheet to read data from
-    :return: Network
+    :param rows: row dicts with 'address1', 'city', 'state', 'zipCode' keys
+    :return: {row index (0-based, matching `rows` order): (latitude, longitude)} - a row is
+        omitted only if neither geocoder could match its address
     """
+    coordinates = _geocode_via_census(rows)
+
+    missing = [index for index in range(len(rows)) if index not in coordinates]
+    for index in missing:
+        coordinate = _geocode_via_nominatim(rows[index])
+        if coordinate:
+            coordinates[index] = coordinate
+        time.sleep(NOMINATIM_RATE_LIMIT_SECONDS)
+
+    return coordinates
+
+
+def _geocode_via_census(rows):
+    """One batch call to the Census geocoder - see geocode_addresses()."""
+    batch_csv = io.StringIO()
+    writer = csv.writer(batch_csv)
+    for index, row in enumerate(rows):
+        writer.writerow([index, row['address1'], row['city'], row['state'], row['zipCode']])
+
+    response = requests.post(
+            CENSUS_BATCH_URL,
+            files={'addressFile': ('batch.csv', batch_csv.getvalue(), 'text/csv')},
+            data={'benchmark': CENSUS_BENCHMARK})
+    response.raise_for_status()
+
+    coordinates = {}
+    for line in csv.reader(io.StringIO(response.text)):
+        if not line or line[2] != 'Match':
+            continue
+        longitude, latitude = line[5].split(',')
+        coordinates[int(line[0])] = (float(latitude), float(longitude))
+    return coordinates
+
+
+def _geocode_via_nominatim(row):
+    """
+    One rate-limited fallback lookup via Nominatim - see geocode_addresses(). Institutional
+    campus addresses (e.g. "One Medical Center Drive") are frequently missing from Census'
+    TIGER/Line street reference data outright, regardless of how the query is formatted, but
+    Nominatim's broader (OpenStreetMap-derived) index resolves them.
+
+    :param dict row: a single row dict with 'address1', 'city', 'state' keys
+    :return: (latitude, longitude), or None if Nominatim also found no match
+    """
+    query = f"{row['address1']}, {row['city']}, {row['state']}"
+    response = requests.get(NOMINATIM_URL, params={'q': query, 'format': 'json', 'limit': 1},
+                            headers={'User-Agent': NOMINATIM_USER_AGENT})
+    response.raise_for_status()
+
+    matches = response.json()
+    if not matches:
+        return None
+    return float(matches[0]['lat']), float(matches[0]['lon'])
+
+
+def import_nodes(rows, neighbor_regions):
+    """
+    Builds a Network from membership rows already filtered by filter_physical_locations(): one
+    Node per row (sequential node_id over successfully-geocoded rows only), then wires edges via
+    generate_distance_vector().
+
+    :param rows: filtered rows (see filter_physical_locations())
+    :param dict neighbor_regions: {region: [adjacent region, ...]}, forwarded to
+        get_adjacent_regional_weight() via generate_distance_vector()
+    :return: (Network, transplant_hospital_ids, opo_ids) - the latter two are the node_id sets
+        by role, for restricting where patients vs. organs are generated - see
+        organflow.PatientGenerator/OrganGenerator's eligible_nodes parameter
+    """
+    coordinates = geocode_addresses(rows)
+    geocoded_rows = [(row, coordinates[index]) for index, row in enumerate(rows)
+                     if index in coordinates]
+
     network = Network()
-    for x in range(2, worksheet.max_row + 1):
+    transplant_hospital_ids = set()
+    opo_ids = set()
+
+    for node_id, (row, (latitude, longitude)) in enumerate(geocoded_rows, start=1):
         network.add_node(
-                node=Node(node_id=int(worksheet[f'{column_indices["unique id"]}{x}'].value),
-                          hospital_name=worksheet[f'{column_indices["hospital name"]}{x}'].value,
-                          region=int(worksheet[f'{column_indices["region"]}{x}'].value),
-                          city=worksheet[f'{column_indices["city"]}{x}'].value,
-                          state=worksheet[f'{column_indices["state"]}{x}'].value),
-                feedback=False)
+                node=Node(node_id=node_id,
+                          hospital_name=row['accountName'],
+                          region=int(row['region']),
+                          city=row['city'],
+                          state=row['state'],
+                          latitude=latitude,
+                          longitude=longitude))
 
-    generate_distance_vector(network=network)
-    return network
+        if row['organizationType'] == 'Transplant Hospital':
+            transplant_hospital_ids.add(node_id)
+        else:
+            opo_ids.add(node_id)
+
+    generate_distance_vector(network=network, neighbor_regions=neighbor_regions)
+    return network, transplant_hospital_ids, opo_ids
 
 
-def generate_distance_vector(network):
+def generate_distance_vector(network, neighbor_regions):
     """
-    Finds weight from any given node to all other given node in the
-    network using the city, state, and region parameters
+    Computes the weight (estimated transit hours - see
+    organflow.distance) between every pair of nodes directly from
+    their coordinates via the haversine formula. This replaces the old
+    pipeline that scraped driving/straight-line distances from a
+    third-party site and cached them in a shelve-backed distance matrix.
 
     :param Network network:
+    :param dict neighbor_regions: {region: [adjacent region, ...]}, forwarded to
+        get_adjacent_regional_weight()
     """
     for source, adjacent in node_pair_generator(network=network):
-        weight = lookup_weight(source=source,
-                               adjacent=adjacent)
-        regional_weight = get_adjacent_regional_weight(source=source,
-                                                       adjacent=adjacent)
+        if source.node_id >= adjacent.node_id:
+            continue  # undirected edge; only needs to be added once per pair
 
-        if weight and regional_weight:
+        regional_weight = get_adjacent_regional_weight(source=source, adjacent=adjacent,
+                                                        neighbor_regions=neighbor_regions)
+        if regional_weight:
+            km = haversine_km(source.latitude, source.longitude,
+                              adjacent.latitude, adjacent.longitude)
             network.add_edge(node_id1=source.node_id,
                              node_id2=adjacent.node_id,
-                             weight=weight,
-                             regional_weight=regional_weight,
-                             feedback=False)
-
-
-def lookup_weight(source, adjacent):
-    """
-    Determines weight between source and adjacent nodes. Only returns
-    a value if there is a weight specified between the nodes.
-
-    :param Node source: source node
-    :param Node adjacent: destination node
-    """
-    source_location = (source.city, source.state, source.region)
-    adjacent_location = (adjacent.city, adjacent.state, adjacent.region)
-
-    if source_location in distance_matrix \
-            and adjacent_location in distance_matrix[source_location]:
-        return distance_matrix[source_location][adjacent_location]
+                             weight=estimate_transit_hours(km),
+                             regional_weight=regional_weight)
 
 
 def node_pair_generator(network):
@@ -117,13 +220,14 @@ def node_pair_generator(network):
             yield source, adjacent
 
 
-def get_adjacent_regional_weight(source, adjacent, weight=None):
+def get_adjacent_regional_weight(source, adjacent, neighbor_regions, weight=None):
     """
     Calculates weight based up on city, state, and region fields for
     both the node and adjacent
 
     :param Node source: current source node
     :param Node adjacent: current destination node
+    :param dict neighbor_regions: {region: [adjacent region, ...]}
     :param float weight: default max weight
     :return: weight
     """
@@ -144,179 +248,7 @@ def get_adjacent_regional_weight(source, adjacent, weight=None):
     return weight
 
 
-def get_unique_locations(worksheet):
-    """
-    Returns a list of all unique city/state/region combinations for hospitals
-
-    :param Worksheet worksheet: worksheet containing information about
-                city/state/region of hospitals in network
-    """
-    # creates a set of unique locations
-    locations = set()
-    for x in range(2, worksheet.max_row + 1):
-        locations.add((worksheet.cell(row=x, column=column_indices['city']).value,
-                       worksheet.cell(row=x, column=column_indices['state']).value,
-                       int(worksheet.cell(row=x, column=column_indices['region']).value)))
-
-    return sort_locations(list(locations))
-
-
-def sort_locations(locations):
-    """
-    Sorts locations collection by region -> state --> city in ascending
-    order. This ensures the consistent results with successive executions
-    by ordering the collection.
-
-    :param list locations: list of unqiue (city, state, region) tuples
-    """
-    # sorts collection by region/state/city in ascending order
-    sorted_locations = sorted(locations, key=lambda tup: tup[0])
-    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[1])
-    sorted_locations = sorted(sorted_locations, key=lambda tup: tup[2])
-
-    return sorted_locations
-
-
-def set_default_distances(locations):
-    """
-    Sets default distances in the distance matrix (distance_dict)
-
-    :param locations: list of unique locations
-    """
-    distance_dict = dict()
-    for location in locations:
-        _, _, origin_region = location
-        adjacents = dict()
-        for destination_city, destination_state, region in locations:
-            if region == origin_region or region in neighbor_regions[origin_region]:
-                adjacents.setdefault((destination_city, destination_state, region), None)
-        distance_dict[location] = adjacents
-    return distance_dict
-
-
-def get_distances(distance_vector):
-    """
-    Finds the distance between all connected nodes
-
-    :param dict distance_vector: distance matrix with default weights
-    """
-    for source in sort_locations(distance_vector.keys()):
-        source_city, source_state, source_region = source
-        for destination in distance_vector[source]:
-            destination_city, destination_state, destination_region = destination
-            # if city/state are same for source and destination
-            if source == destination:
-                distance_vector[source][destination] = 1
-                distance_vector[destination][source] = 1
-            # verify source/destination are adjacent regions and distance
-            # values are not already set
-            elif destination_region in neighbor_regions[source_region] \
-                    and not (distance_vector[source][destination]
-                             or distance_vector[destination][source]):
-                distance = get_distance(source_city=source_city,
-                                        source_state=source_state,
-                                        destination_city=destination_city,
-                                        destination_state=destination_state)
-                # verify distance value
-                if distance:
-                    print(f"{f'{source_city}, {source_state}':<30}"
-                          f"{f'{destination_city}, {destination_state}':<30}"
-                          f"{f'{distance:,.2f} km':>12}")
-                    distance_vector[source][destination] = distance
-                    distance_vector[destination][source] = distance
-
-    return distance_vector
-
-
-def get_distance(source_city, source_state, destination_city, destination_state):
-    """
-    Gathers the distance in km between the source and destination locations
-
-    :param str source_city: name of source city
-    :param str source_state: name of source state
-    :param str destination_city: name of destination city
-    :param str destination_state: name of destination state
-    """
-    url = f'https://www.distance-cities.com/searchbd' \
-          f'?from={source_city}%2C{source_state}' \
-          f'&to={destination_city}%2C{destination_state}'
-    url = url.replace(' ', '%2C')
-
-    islands = ['Puerto Rico', 'Hawaii']
-    if source_state in islands or destination_state in islands:
-        logging.info(msg=f'{source_city}, {source_state} '
-                         f'--> {destination_city}, {destination_state}: '
-                         f'\t{url}')
-
-    try:
-        headers = {'Accept':     'text/html',
-                   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) "
-                                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                                 "Chrome/72.0.3626.121 Safari/537.36"}
-
-        res = requests.get(url=url, headers=headers)
-        res.raise_for_status()
-
-        soup = BeautifulSoup(res.content, features='lxml')
-        distance_elem = soup.select('#rkm')
-
-        if distance_elem:
-            value = float(distance_elem[0].text.split()[0].replace(',', ''))
-            return value
-        # if #rkm isn't found, must retrieve straight distance (no driving distance available)
-        # this requires retrieval of JS vars, so requests_html is used
-        else:
-            session = HTMLSession()
-            r = session.get(url)
-            r.html.render(retries=50, timeout=120)
-            straight_distance = r.html.find('#straightkm', first=True)
-            logging.info(msg=f'{source_city}, {source_state} '
-                             f'--> {destination_city}, {destination_state}: '
-                             f'\t{straight_distance.text} km')
-            if straight_distance.text:
-                return float(straight_distance.text.replace(',', ''))
-
-        logging.warning(msg=f'failed {source_city}, {source_state} '
-                            f'--> {destination_city}, {destination_state}'.upper())
-    except requests.exceptions.HTTPError as e:
-        print(f'Error downloading webpage {url}', e)
-        logging.warning(msg=f'Error downloading webpage {url}')
-        logging.exception(msg=e)
-
-
-def logger_config():
-    """
-    Sets up root logger and disables propagation from dependencies
-    """
-    logging.basicConfig(filename='scrape_distances.log',
-                        level=logging.INFO,
-                        format=' %(asctime)s.%(msecs)03d - %(levelname)s - '
-                               '<%(funcName)s>: %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-    logging.getLogger('requests').propagate = False
-    logging.getLogger("urllib3").propagate = False
-    logging.getLogger("pyppeteer").setLevel(logging.ERROR)
-
-
-def patch_pyppeteer():
-    """
-    Disables pyppeteer's timeout (terminates at 20 seconds otherwise)
-    """
-    import pyppeteer.connection
-    original_method = pyppeteer.connection.websockets.client.connect
-
-    def new_method(*args, **kwargs):
-        kwargs['ping_interval'] = None
-        kwargs['ping_timeout'] = None
-        return original_method(*args, **kwargs)
-
-    pyppeteer.connection.websockets.client.connect = new_method
-
-
 if __name__ == '__main__':
-    logger_config()
-    patch_pyppeteer()
-
     neighbor_regions = {1:  [9],
                         2:  [9, 10, 11],
                         3:  [4, 8, 11],  # 3 -> 8?
@@ -330,25 +262,16 @@ if __name__ == '__main__':
                         11: [2, 3, 10]}  # 11 -> 7/8?
 
     root = join(abspath('.'), 'export', 'shelve')
-    db = shelve.open(join(root, 'distance_vector'))
 
-    path = join(abspath('.'), 'import', 'workbooks',
-                'National_Transplant_Hospitals.xlsx')
-    workbook = openpyxl.load_workbook(filename=path)
-    sheet = workbook.active
+    csv_path = join(abspath('.'), 'import', 'optn_membership', 'optn_membership_2026-07-02.csv')
+    membership_rows = filter_physical_locations(read_membership_csv(csv_path))
 
-    column_indices = set_default_indices()
-    get_column_indices(worksheet=sheet, columns=column_indices)
+    hospital_network, transplant_hospital_ids, opo_ids = import_nodes(
+            rows=membership_rows, neighbor_regions=neighbor_regions)
 
-    print('\n'.join(map(str, column_indices.items())))
+    with shelve.open(join(root, 'distance_vector')) as db:
+        db['hospital_network2'] = hospital_network
+        db['transplant_hospital_ids'] = transplant_hospital_ids
+        db['opo_ids'] = opo_ids
 
-    # cities = get_unique_locations(worksheet=sheet)
-    # distance_matrix = set_default_distances(locations=cities)
-    # distance_matrix = get_distances(distance_vector=distance_matrix)
-    # db['distance_vector2'] = distance_matrix
-
-    distance_matrix = db['distance_vector2']
-
-    hospital_network = import_nodes(worksheet=sheet)
-    db['hospital_network2'] = hospital_network
     print(hospital_network)

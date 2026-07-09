@@ -1,4 +1,4 @@
-from network_simulator.Node import Node
+from organflow.Node import Node
 
 
 def test_is_adjacent():
@@ -24,7 +24,7 @@ def test_get_adjacents():
     node_1 = Node(1, 'A', adjacency_dict)
 
     adjacents = node_1.get_adjacents()
-    assert len(adjacents) is len(adjacency_dict)
+    assert len(adjacents) == len(adjacency_dict)
 
     for key in adjacency_dict:
         assert key in adjacents
@@ -41,3 +41,8 @@ def test_str():
 
     for key in node_1.get_adjacents():
         assert 'Node     #' + str(key) in string
+
+
+def test_str_inactive_node_returns_empty_string():
+    node_1 = Node(1, 'A', status=False)
+    assert node_1.__str__() == ''
