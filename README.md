@@ -52,49 +52,7 @@ pip install -e .[report]   # optional: adds reportlab, for scenario_report.py's 
 - `tests/` - one test module per source module, plus property, metamorphic, and calibration suites; run via `pytest`.
 - `docs/` - the model reference: [METHODOLOGY.md](docs/METHODOLOGY.md) (every constant, source, calibration target, and validation result), [DATA_PROVENANCE.md](docs/DATA_PROVENANCE.md) (data sources with citations), [FINDINGS.md](docs/FINDINGS.md) (the engineering + realism audit), and [ADRs](docs/adr/) (dated decision records).
 
-## Classes
-
-### <ins>Node</ins>
-The smallest element within the network is a Node object. Each node represents a specific hospital where both patients and organs can be located. These will represent the 'addresses' of sources and destinations within the graph based on an organ's location and the matched patient's location.
-
-**<ins>Nodes consist of</ins>:**
-1. `node ID` - a unique identifier
-2. `label` - describes/names the node
-3. `adjacency dictionary` - where the adjacent node's id is the key and another dictionary with two entries is the value. This allows each edge to have two important attributes - weight and status (active or inactive)
-4. `status` - indicates if a node is active or inactive. If the node is inactive, all edges contained in the adjacency list are consequently inactive as well
-5. `region` / `city` / `state` / `latitude` / `longitude` - real-world metadata; `region` drives `allocation.geography`'s legacy-region constraint (see [Geographic Allocation Constraints](#geographic-allocation-constraints)) and is populated for every network - real hospital imports get the actual historical OPTN region (`import_hospitals.py`), synthetic networks get an arbitrary round-robin assignment (`GraphBuilder`); `city`/`state`/`latitude`/`longitude` remain optional, populated only for real hospital imports
-
-### <ins>Network</ins>
-The network is a graph that is represented as a collection of nodes. The network represents the entire network of hospitals. The network will be traversed from node to node to. The weights of individual edges traveled will be added together to represent the total cost of the traveled path.
-
-**<ins>Networks consist of</ins>:**
-1. `network dictionary` - contains a collection of `node IDs` that point to their corresponding `Node` objects
-2. `label` - describes/names the graph
-
-Edge weight is always **estimated transit time in hours** - the same unit `Organ.viability` is expressed in - whether the network is randomly generated (`GraphBuilder`) or built from real hospital coordinates (`import_hospitals.py`, via `organflow.distance`'s haversine calculation). That shared unit is what makes an organ's remaining viability and a Dijkstra shortest-path cost directly comparable.
-
-### <ins>BloodType, Organ, Patient</ins>
-- `BloodType` - a letter (O/A/B/AB) and polarity (+/-) pair; checks ABO/Rh compatibility between a prospective donor and recipient in both directions.
-- `Organ` - a single donated organ available for transplant: type, blood type, remaining viability (hours), origin/current location, and its transit path once matched. Also carries donor clinical attributes used by the mechanistic feasibility gates: `hla_antigens` (the donor's HLA antigen set) and `donor_size` (body size, for heart/lung size matching).
-- `Patient` - an individual on the wait list: name, illness, organ needed, blood type, a legacy `priority` int, location, and `rounds_waited` (incremented once per simulation round). Also carries the clinical state populated by the generator and evolved each round by the deterioration model: `acuity` (0-1 near-term death risk, normalized across organ types), `raw_urgency` (the organ-native score - MELD/LAS/status tier), `body_size`, `unacceptable_antigens` (the patient's anti-HLA antibodies), and `cpra` (their computed sensitization percentage). These clinical fields are deliberately excluded from equality/hashing, since they're mutable per-round state - see the class docstrings for why.
-
-### <ins>OrganList, WaitList</ins>
-- `OrganList` - the collection of organs currently available to be allocated.
-- `WaitList` - the collection of patients currently waiting for a transplant. `get_prioritized_patients` returns a max-heap by legacy `priority`; `increment_wait_times` bumps every remaining patient's `rounds_waited` once per round.
-
-### <ins>Other Classes</ins>
--  `Dijkstra` - finds all shortest paths from a source node in a given graph
--  `GraphBuilder` - builds a random network with N nodes (edge weights are synthetic but expressed in the same "hours" unit as real networks)
--  `OrganGenerator` - harvests organs from N deceased donors using per-organ recovery probabilities (kidney recovered from nearly every donor and yields two; heart/lung less often) and adds them to an `OrganList`. Donor location is drawn uniformly from every network node by default, or from an optional `eligible_nodes` subset - e.g. on the real hospital network, donors may originate at a transplant hospital or an Organ Procurement Organization (OPO), but not e.g. a lab (see [Scenario Reports](#scenario-reports)).
--  `PatientGenerator` - generates N patients with realistic organ need / blood type / body size / HLA sensitization / initial urgency, plus a location, and adds them to a `WaitList`. Location is likewise uniform over every node by default, or restricted to an optional `eligible_nodes` subset - e.g. only real transplant-hospital nodes, since only they maintain a wait list.
--  `ConnectivityChecker` - determines if a given graph is connected 
--  `SubnetworkGenerator` - takes a `Network` and a collection (`OrganList` or `WaitList`) and creates a subnetwork containing only nodes where elements of the collection are present
--  `GraphConverter` - converts a `Network` to a `NetworkX` (graph library) object, optionally including hospital attributes (city/state/region/counts) for visualization or analysis
--  `distance` - computes real-world hospital distances (haversine) and a door-to-door transit-time estimate directly from coordinates, instead of scraping a distance-lookup site. Transit is the faster of a ground mode (packaging + road-circuity-adjusted drive) and an air mode (a multi-hour fixed overhead for both airport ground legs plus cruise) - `min(ground, air)`, which is monotonic and continuous in distance and carries the real fixed logistics cost, so geography actually binds thoracic organs (heart/lung reach ~half the network within their cold-ischemia window) while kidneys still travel nationally
--  `clinical` - real-world grounding: frequency distributions, HLA crossmatch + size-matching feasibility gates, and the organ-specific urgency / deterioration / wait-list-mortality model (see [Clinical Realism](#clinical-realism))
--  `exceptions` - `GraphElementError`, raised (and caught internally, with an optional printed message) for invalid graph operations like adding a duplicate node or edge
-
-### <ins>Allocation Strategies</ins>
+## <ins>Allocation Strategies</ins>
 `organflow.allocation` decides *which* feasible organ/patient pairs to actually form. A strategy is a (matcher, scorer) pair - the two axes are independent, so strategies can be compared to see whether a result is driven by the matching algorithm, the scoring model, or both:
 
 - **Matchers** (`allocation.matchers`) - *how* matches are chosen:
@@ -124,7 +82,7 @@ Real OPTN policy historically allocated within fixed, arbitrary boundaries - 11 
 
 Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrained` in the benchmark report (same scorer, only the constraint differs) directly answers "what does this geographic constraint cost or buy us," in lives saved, wait times, and fairness spread.
 
-### <ins>Statistical Rigor</ins>
+## <ins>Statistical Rigor</ins>
 `execute/benchmark_stats.py` (pure Python, no new dependency) turns the benchmark's per-strategy averages into defensible comparisons instead of just eyeballing means:
 - **Paired permutation testing** (`paired_permutation_test`) - strategies within one benchmark run share seeds (identical network topology and arrivals; see `run_trial`), so comparisons are paired, not independent-sample. A distribution-free sign-flip test avoids assuming normality for count metrics like deaths.
 - **Bootstrap confidence intervals** (`bootstrap_ci`) on the mean difference, not just a point estimate.
@@ -134,7 +92,7 @@ Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrai
 
 `benchmark_strategies.compare_to_reference` runs this for every strategy against `real_world_circle` (current real allocation policy for most organs) on the two outcomes the README already centers as the "lives saved" question - `waitlist_deaths` and `life_years_saved` - and `print_significance_report` prints the result as a second plain-text table alongside the main comparison.
 
-### <ins>Scenario Reports</ins>
+## <ins>Scenario Reports</ins>
 `execute/scenario_report.py` answers a different question than the benchmark above: not "is this difference statistically significant at toy scale," but "what does this strategy actually buy the country, over years, on the real network" - a shareable, regenerable snapshot document rather than a hypothesis test.
 
 - **Real network**: builds the network once via `import_hospitals.py`'s pipeline (see [Real Hospital Network Data Pipeline](#scripts) below) and reuses it across every strategy/seed/horizon in the run, since (unlike the benchmark's per-seed synthetic topology) the real network doesn't change.
@@ -150,7 +108,7 @@ Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrai
 - **Configurable horizons and seeds**: `--horizon-years` (default `1,5,10`), `--seeds` (default 5 for the 1-year horizon, 3 for longer ones - runtime compounds with horizon length).
 - **Output**: a Markdown report (methodology, per-horizon summary table, year-by-year wait-list-size trajectory, and a significance table reusing `compare_to_reference` when seeds ≥ 2) plus matching CSVs (`--formats markdown,csv`, the default) for pivoting in Excel/pandas; PDF is opt-in (`--formats markdown,csv,pdf`) via the optional `reportlab` dependency, rendered by `scenario_report_pdf.py` so the default path never imports it.
 
-### <ins>Clinical Realism</ins>
+## <ins>Clinical Realism</ins>
 `organflow.clinical` grounds the simulation in real-world data so "which strategy is best" is measured the way real allocation policy is judged - by lives saved, not just organ throughput:
 
 - `frequencies` - US-population blood-type distribution, organ demand, and per-organ donor recovery probabilities drive generation, replacing uniform sampling. A single seeded `weighted_choice` helper backs every weighted draw, so generation stays deterministic and testable. Organ need is drawn from the wait-list **additions** mix (a flow), which is deliberately less kidney-dominated than the **prevalence** snapshot (a stock): kidney candidates wait far longer, so they accumulate on the standing list out of proportion to their arrival rate (Little's law), and sampling arrivals from the prevalence mix over-generates kidney arrivals and inflates the backlog.
@@ -160,8 +118,10 @@ Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrai
 
 All of the above is deterministic under a single seeded `random.Random` per trial: the same seed reproduces the same network, arrivals, matches, and deaths, which is what lets the benchmark attribute differences in outcome to the *strategy* rather than to noise.
 
-### <ins>Simulator</ins>
-The `Simulator` (`execute/simulator.py`) is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `organflow.allocation` classes, including choosing which allocation strategy to use. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
+## <ins>Simulator</ins>
+`execute/simulator.py` (`SimulatorSession`) is an interactive console tool for exploring a single allocation pass by hand: build a synthetic network of N hospitals, generate a wait list, harvest organs from N donors, and allocate them with a strategy you pick from the menu (any entry in `STRATEGIES`). It uses the same generators and allocation framework as the benchmark, so it exercises the real feasibility gates and every current strategy.
+
+It is a **single-round demonstrator**, not the full model: it does not run the multi-round clinical dynamics (deterioration, wait-list mortality, non-death removals, living-donor transplants, organ discard) that drive the lives-saved comparison - those live in the round loop of `benchmark_strategies.py` / `scenario_report.py`. Reach for the simulator to get a feel for how a strategy forms matches; reach for the benchmark or scenario report for outcomes.
 
 ## Scripts
 
