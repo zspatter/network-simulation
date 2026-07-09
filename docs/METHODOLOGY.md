@@ -66,9 +66,12 @@ but not for kidney (30 h budget reaches every hospital). `organflow/distance.py`
 | Arrival organ mix (flow) | Kidney 50,481 / Liver 15,395 / Heart 6,068 / Lung 3,822 / Pancreas 1,979 / Intestine 128 | OPTN/SRTR 2024 ADR new registrations |
 | Prevalence organ mix (stock) | 85% kidney (validation only) | OPTN/SRTR waitlist snapshot |
 | Donor recovery / donor | Kidney 0.95 (×2) / Liver 0.75 / Heart 0.30 / Lung 0.20 / Pancreas 0.10 / Intestine 0.03 | per-organ recovery likelihood |
+| Donor pathway | DBD 57% / DCD 43% | OPTN/SRTR 2024 (9,705 DBD / 7,284 DCD) |
 
 Arrivals are drawn from the **additions** mix, not the prevalence snapshot — see
-[ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). `organflow/clinical/frequencies.py`.
+[ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). DCD organs (donation after circulatory
+death) are discarded more and graft worse than DBD — see
+[ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md). `organflow/clinical/frequencies.py`.
 
 ### Urgency, mortality, and the non-transplant exits
 
@@ -78,7 +81,7 @@ Arrivals are drawn from the **additions** mix, not the prevalence snapshot — s
 | Mortality hazard | 0.05/yr (acuity→0) … 12.0/yr (acuity→1), geometric | reproduces e.g. liver MELD 90-day mortality bands |
 | Non-death removal | 5%/yr competing risk | too sick / improved / transferred / declined |
 | Living-donor transplants | ~7,000/yr (kidney/liver) | OPTN/SRTR 2024 (7,024 living donors) |
-| Organ discard (non-use) | Kidney 29.3% / Pancreas 25.1% / Liver 11.5% / Lung 11.3% / Intestine 4.9% / Heart 1.9% | OPTN/SRTR 2024 ADR, Deceased Organ Donation |
+| Organ discard (non-use) | Kidney 29.3% / Pancreas 25.1% / Liver 11.5% / Lung 11.3% / Intestine 4.9% / Heart 1.9% (population average; ×0.78 for DBD, ×1.30 for DCD) | OPTN/SRTR 2024 ADR, Deceased Organ Donation |
 
 `clinical/urgency.py`, `clinical/mortality.py`, `clinical/removal.py`, `clinical/living_donor.py`,
 `clinical/acceptance.py`.

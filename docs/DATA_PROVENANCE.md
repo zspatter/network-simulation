@@ -26,7 +26,8 @@ Donation chapters). These pin the arrival, discard, donor, and living-donor cons
 |---|---|---|
 | New waitlist registrations, total | 70,600 | `scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS` |
 | New registrations by organ | Kidney 50,481 · Liver 15,395 · Heart 6,068 · Lung 3,822 · Pancreas 1,979¹ · Intestine 128 | `frequencies.US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS` |
-| Deceased donors | 16,989 (DBD 9,705 · DCD 7,284) | `scenario_report.NATIONAL_WEEKLY_DECEASED_DONORS` |
+| Deceased donors | 16,989 | `scenario_report.NATIONAL_WEEKLY_DECEASED_DONORS` |
+| Donor pathway split | DBD 9,705 · DCD 7,284 (~57% / 43%) | `frequencies.DONOR_TYPE_WEIGHTS` (drives per-organ DCD discard/graft — see [ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md)) |
 | Living donors | 7,024 | `scenario_report.NATIONAL_WEEKLY_LIVING_DONORS` (~7,000) |
 | Deceased-donor transplants | 42,048 | validation target |
 | Organ non-use (discard) rate, overall | 20.7% | validation target |
