@@ -48,8 +48,9 @@ pip install -e .[report]   # optional: adds reportlab, for scenario_report.py's 
 ## Project Layout
 
 - `network_simulator/` - the installable package: the graph/domain model, generators, the allocation-strategy framework, and the clinical-realism model (see below).
-- `execute/` - runnable scripts: the interactive simulator, the strategy benchmark, the real-hospital-network data pipeline, and a handful of smaller demo/export utilities (see [Scripts](#scripts)).
-- `tests/` - one test module per source module; run via `pytest`.
+- `execute/` - runnable scripts: the interactive simulator, the strategy benchmark, the real-hospital-network data pipeline, the analysis tools (validation, sensitivity, frontier), and a handful of smaller demo/export utilities (see [Scripts](#scripts)).
+- `tests/` - one test module per source module, plus property, metamorphic, and calibration suites; run via `pytest`.
+- `docs/` - the model reference: [METHODOLOGY.md](docs/METHODOLOGY.md) (every constant, source, calibration target, and validation result), [DATA_PROVENANCE.md](docs/DATA_PROVENANCE.md) (data sources with citations), [FINDINGS.md](docs/FINDINGS.md) (the engineering + realism audit), and [ADRs](docs/adr/) (dated decision records).
 
 ## Classes
 
@@ -172,6 +173,11 @@ All scripts live under `execute/` and are run as `python execute/<script>.py` fr
 - `benchmark_strategies.py` - runs every strategy in `STRATEGIES` across many seeded multi-round simulations and prints the comparison table described in [Allocation Strategies](#allocation-strategies), followed by the paired-significance table described in [Statistical Rigor](#statistical-rigor). Also importable (`run_trial`, `run_benchmark`, `compare_to_reference`) for custom comparisons.
 - `benchmark_stats.py` - the pure-Python statistical helpers (permutation test, bootstrap CI, effect size, Holm-Bonferroni correction, sample-size planning) `benchmark_strategies.py` uses - see [Statistical Rigor](#statistical-rigor).
 - `benchmark_performance.py` - a runtime benchmark harness for the simulation hot paths. Runs fixed, seeded workloads and can diff a run against a saved baseline (`--out`/`--compare`), recording a workload *fingerprint* (organs transplanted, deaths, final wait-list size) alongside timing so a behavior-preserving optimization can be proven apples-to-apples (identical fingerprint, lower time) rather than eyeballed.
+
+**Analysis & validation** (see [docs/METHODOLOGY.md](docs/METHODOLOGY.md))
+- `validate_realism.py` - runs the reality-calibrated model on the real network and prints a model-vs-OPTN-2024 table (deceased/living transplants, deaths, non-use rate, wait-list size). The regenerable companion to `tests/test_calibration.py`.
+- `sensitivity_analysis.py` - perturbs each documented-approximation constant ±25% one at a time and reports the swing in the headline outcomes, so a conclusion can be reported with the assumptions it leans on.
+- `frontier_analysis.py` - sweeps the geographic weight of the continuous-distribution scorer and traces the medical-benefit-vs-geography trade-off frontier.
 - `scenario_report.py` / `scenario_report_pdf.py` - the national scenario report generator described in [Scenario Reports](#scenario-reports); `scenario_report_pdf.py` holds the optional PDF rendering so the `reportlab` import only happens when `--formats` includes `pdf`.
 
 **Real hospital network data pipeline**
