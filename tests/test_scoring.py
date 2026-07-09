@@ -149,3 +149,23 @@ def test_real_world_score_prefers_the_closer_candidate_when_native_points_tie():
     scorer = RealWorldScore()
     assert scorer.score(patient_near, organ, transit_hours=1.0) > \
         scorer.score(patient_far, organ, transit_hours=10.0)
+
+
+def test_real_world_score_gives_pediatric_candidates_a_fixed_bonus():
+    from organflow.allocation.scoring import _PEDIATRIC_BONUS
+    organ = Organ(OrganType.Liver, o_neg, location=1)
+    adult = Patient('adult', 'n/a', OrganType.Liver, o_neg, 0, 1, raw_urgency=20.0)
+    child = Patient('child', 'n/a', OrganType.Liver, o_neg, 0, 1, raw_urgency=20.0,
+                    is_pediatric=True)
+
+    scorer = RealWorldScore()
+    assert scorer.score(child, organ, 2.0) == scorer.score(adult, organ, 2.0) + _PEDIATRIC_BONUS
+
+
+def test_continuous_distribution_gives_pediatric_candidates_its_pediatric_weight():
+    organ = Organ(OrganType.Heart, o_neg, location=1)
+    adult = Patient('adult', 'n/a', OrganType.Heart, o_neg, 100, 1, acuity=0.5)
+    child = Patient('child', 'n/a', OrganType.Heart, o_neg, 100, 1, acuity=0.5, is_pediatric=True)
+
+    scorer = ContinuousDistributionScore(pediatric_weight=30.0)
+    assert scorer.score(child, organ, 1.0) == scorer.score(adult, organ, 1.0) + 30.0

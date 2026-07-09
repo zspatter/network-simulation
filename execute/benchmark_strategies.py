@@ -88,6 +88,11 @@ class TrialMetrics:
     # organs matched to a recipient but then declined/discarded (a subset of organs_wasted);
     # only nonzero when run_trial's realistic_outcomes is enabled - see clinical.acceptance
     organs_discarded: int = 0
+    # pediatric candidates seen / transplanted / died - lets the benchmark measure whether the
+    # pediatric priority in the policy scorers actually helps kids (see allocation.scoring)
+    pediatric_seen: int = 0
+    pediatric_transplanted: int = 0
+    pediatric_deaths: int = 0
     deaths_by_organ: Dict[OrganType, int] = field(
             default_factory=lambda: {organ: 0 for organ in OrganType})
     wait_times_to_transplant: List[int] = field(default_factory=list)
@@ -160,6 +165,8 @@ def _record_allocation(result: AllocationResult, network: Network, wait_list: Wa
         metrics.wait_times_to_transplant.append(patient.rounds_waited)
         metrics.transit_of_transplants.append(transit_hours)
         metrics.tier_matched[_priority_tier(patient.priority, config.priority_range)] += 1
+        if patient.is_pediatric:
+            metrics.pediatric_transplanted += 1
         transplanted_patients.append(patient)
     metrics.organs_wasted += len(result.unmatched_organs)
 
@@ -183,6 +190,8 @@ def _record_outflows(wait_list: WaitList, metrics: TrialMetrics, config: TrialCo
             metrics.deaths_high_acuity += 1
         else:
             metrics.deaths_low_acuity += 1
+        if patient.is_pediatric:
+            metrics.pediatric_deaths += 1
 
     metrics.other_removals += len(
             simulate_round_removals(wait_list, config.other_removal_annual_rate, rng))
@@ -201,6 +210,8 @@ def _simulate_round(strategy: Strategy, network: Network, wait_list: WaitList,
     wait_list.add_patients(new_patients)
     for patient in new_patients:
         metrics.tier_seen[_priority_tier(patient.priority, config.priority_range)] += 1
+        if patient.is_pediatric:
+            metrics.pediatric_seen += 1
 
     organ_list = OrganList()
     OrganGenerator.generate_organs_to_list(

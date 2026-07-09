@@ -84,6 +84,13 @@ _GEOGRAPHY_EFFICIENCY_WEIGHT = -0.1
 # penalty (kidney's 30h viability cap * 0.1 = 3.0, the largest of any organ).
 _MIN_POLICY_FLOOR = 5.0
 
+# Flat priority bonus added to a pediatric candidate's policy points, mirroring the strong
+# pediatric priority real allocation gives (large for kidney/heart). It is large but not
+# absolute; on the low-numbered heart status scale it is effectively decisive, on the wider
+# kidney/lung scales it is a strong-but-beatable boost - which is roughly how real policy
+# treats peds across organs.
+_PEDIATRIC_BONUS = 25.0
+
 
 def _kidney_points(patient: Patient) -> float:
     wait_points = float(patient.rounds_waited)
@@ -142,6 +149,8 @@ class RealWorldScore:
     def score(self, patient: Patient, organ: Organ, transit_hours: float) -> float:
         policy_points_fn = _POLICY_POINTS_BY_ORGAN.get(patient.organ_needed, _fallback_points)
         policy_points = max(_MIN_POLICY_FLOOR, policy_points_fn(patient))
+        if patient.is_pediatric:
+            policy_points += _PEDIATRIC_BONUS
         return policy_points + _GEOGRAPHY_EFFICIENCY_WEIGHT * transit_hours
 
 
@@ -166,6 +175,7 @@ class ContinuousDistributionScore:
     wait_weight: float = 0.5           # coefficient on rounds_waited
     proximity_weight: float = 1.0      # coefficient on geographic proximity (closer scores higher)
     sensitization_weight: float = 0.5  # coefficient on cPRA (hard-to-match candidates), 0..1
+    pediatric_weight: float = 30.0     # flat bonus for pediatric candidates (0..100 scale)
     name: str = 'continuous_distribution'
 
     def score(self, patient: Patient, organ: Organ, transit_hours: float) -> float:
@@ -175,4 +185,5 @@ class ContinuousDistributionScore:
         return (self.medical_weight * patient.acuity * 100.0
                 + self.wait_weight * patient.rounds_waited
                 + self.proximity_weight * proximity * 100.0
-                + self.sensitization_weight * patient.cpra * 100.0)
+                + self.sensitization_weight * patient.cpra * 100.0
+                + self.pediatric_weight * (1.0 if patient.is_pediatric else 0.0))

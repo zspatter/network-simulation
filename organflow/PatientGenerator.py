@@ -1,7 +1,11 @@
 import random
 from typing import List, Optional
 
-from organflow.clinical.frequencies import random_arrival_organ, random_us_blood_type
+from organflow.clinical.frequencies import (
+    is_pediatric_arrival,
+    random_arrival_organ,
+    random_us_blood_type,
+)
 from organflow.clinical.hla import cpra, patient_unacceptable_antigens
 from organflow.clinical.progression import initialize_urgency
 from organflow.clinical.size import body_size
@@ -47,15 +51,17 @@ class PatientGenerator:
 
         for x in range(n):
             unacceptable = patient_unacceptable_antigens(rng)
+            organ_needed = random_arrival_organ(rng)
             patient = Patient(patient_name="generated patient #" + str(x + 1),
                               illness="N/A",
-                              organ_needed=random_arrival_organ(rng),
+                              organ_needed=organ_needed,
                               blood_type=random_us_blood_type(rng),
                               priority=source.randrange(100 + n),
                               location=source.choice(nodes),
                               body_size=body_size(rng),
                               unacceptable_antigens=unacceptable,
-                              cpra=cpra(unacceptable))
+                              cpra=cpra(unacceptable),
+                              is_pediatric=is_pediatric_arrival(organ_needed, rng))
             initialize_urgency(patient, rng)
             patients.append(patient)
         return patients

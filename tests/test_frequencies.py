@@ -4,9 +4,11 @@ from collections import Counter
 from organflow.clinical.frequencies import (
     DONOR_RECOVERY_PROBABILITIES,
     DONOR_TYPE_WEIGHTS,
+    PEDIATRIC_FRACTION_BY_ORGAN,
     US_BLOOD_TYPE_WEIGHTS,
     US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS,
     US_WAITLIST_ORGAN_WEIGHTS,
+    is_pediatric_arrival,
     random_arrival_organ,
     random_donor_type,
     random_us_blood_type,
@@ -100,6 +102,18 @@ def test_random_donor_type_matches_the_2024_split():
     # DBD is the majority pathway, but DCD is a large minority (~43%)
     assert counts[DonorType.DBD] > counts[DonorType.DCD]
     assert counts[DonorType.DCD] / n > 0.35
+
+
+def test_is_pediatric_arrival_matches_the_per_organ_fraction():
+    rng = random.Random(21)
+    n = 40000
+    kidney_peds = sum(is_pediatric_arrival(OrganType.Kidney, rng) for _ in range(n)) / n
+    intestine_peds = sum(is_pediatric_arrival(OrganType.Intestines, rng) for _ in range(n)) / n
+
+    assert abs(kidney_peds - PEDIATRIC_FRACTION_BY_ORGAN[OrganType.Kidney]) < 0.01
+    # intestinal failure is heavily pediatric, kidney barely so
+    assert intestine_peds > kidney_peds
+    assert abs(intestine_peds - PEDIATRIC_FRACTION_BY_ORGAN[OrganType.Intestines]) < 0.02
 
 
 def test_donor_recovery_probabilities_are_ordered_and_valid():

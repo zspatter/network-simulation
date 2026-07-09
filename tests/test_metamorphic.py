@@ -12,9 +12,13 @@ sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 from benchmark_strategies import run_trial  # noqa: E402
 
-from organflow.allocation import STRATEGIES  # noqa: E402
+from organflow.allocation import STRATEGIES, Strategy  # noqa: E402
 from organflow.allocation.matchers.optimal import OptimalMatcher  # noqa: E402
-from organflow.allocation.scoring import AcuityScore, PriorityScore  # noqa: E402
+from organflow.allocation.scoring import (  # noqa: E402
+    AcuityScore,
+    ContinuousDistributionScore,
+    PriorityScore,
+)
 from organflow.BloodType import BloodType  # noqa: E402
 from organflow.compatibility_markers import (  # noqa: E402
     BloodTypeLetter,
@@ -80,6 +84,27 @@ def test_more_donor_supply_does_not_increase_wait_list_deaths():
     scarce = _mean_deaths(harvests_per_round=2, seeds=range(6))
     abundant = _mean_deaths(harvests_per_round=15, seeds=range(6))
     assert abundant <= scarce
+
+
+def _pediatric_transplanted(pediatric_weight, seeds):
+    # same matcher, same seeds - only the pediatric weight differs, so any change in pediatric
+    # transplants is attributable to the priority, not to the strategy or arrivals
+    strategy = Strategy(f'cd_peds{pediatric_weight}', OptimalMatcher(),
+                        ContinuousDistributionScore(pediatric_weight=pediatric_weight))
+    return sum(run_trial(seed=seed, strategy=strategy, num_nodes=12, rounds=10,
+                         patients_per_round=40, harvests_per_round=8).pediatric_transplanted
+               for seed in seeds)
+
+
+def test_pediatric_priority_transplants_more_children():
+    # under organ scarcity, adding a pediatric priority to the scorer must transplant at least
+    # as many pediatric candidates as ignoring it - the whole point of the priority
+    seeds = range(6)
+    without_priority = _pediatric_transplanted(0.0, seeds)
+    with_priority = _pediatric_transplanted(100.0, seeds)
+
+    assert with_priority > 0
+    assert with_priority > without_priority
 
 
 def test_acuity_scorer_ranks_a_sicker_patient_at_least_as_high():

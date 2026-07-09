@@ -76,6 +76,19 @@ US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS: Dict[OrganType, float] = {
     OrganType.Intestines: 128.0,
 }
 
+# Fraction of new listings that are pediatric (< 18), by organ. Peds are a small share of the
+# kidney/lung lists but a large share of intestine listings (intestinal failure is heavily
+# pediatric) and a meaningful share for heart/liver. Documented approximations - VERIFY against
+# the exact OPTN pediatric-additions figures before quoting the absolute pediatric counts.
+PEDIATRIC_FRACTION_BY_ORGAN: Dict[OrganType, float] = {
+    OrganType.Kidney:     0.02,
+    OrganType.Liver:      0.06,
+    OrganType.Heart:      0.11,
+    OrganType.Lungs:      0.02,
+    OrganType.Pancreas:   0.005,
+    OrganType.Intestines: 0.25,
+}
+
 # Probability that a given organ is recovered (suitable for transplant) from a
 # single deceased donor, evaluated independently per organ. Kidney also yields
 # two organs per donor (see KIDNEYS_PER_DONOR). Tuned so aggregate supply stays
@@ -171,3 +184,16 @@ def random_donor_type(rng: Optional[random.Random] = None) -> DonorType:
     types = list(DONOR_TYPE_WEIGHTS.keys())
     weights = list(DONOR_TYPE_WEIGHTS.values())
     return weighted_choice(types, weights, rng)
+
+
+def is_pediatric_arrival(organ_type: OrganType, rng: Optional[random.Random] = None) -> bool:
+    """
+    Draws whether a newly listed patient for `organ_type` is pediatric, using the
+    organ-specific PEDIATRIC_FRACTION_BY_ORGAN.
+
+    :param OrganType organ_type: the organ the patient needs
+    :param random.Random rng: optional seeded source (defaults to the global module)
+    :return: True if the patient is pediatric
+    """
+    source = rng or random
+    return source.random() < PEDIATRIC_FRACTION_BY_ORGAN.get(organ_type, 0.0)

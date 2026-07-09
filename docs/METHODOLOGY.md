@@ -67,11 +67,14 @@ but not for kidney (30 h budget reaches every hospital). `organflow/distance.py`
 | Prevalence organ mix (stock) | 85% kidney (validation only) | OPTN/SRTR waitlist snapshot |
 | Donor recovery / donor | Kidney 0.95 (×2) / Liver 0.75 / Heart 0.30 / Lung 0.20 / Pancreas 0.10 / Intestine 0.03 | per-organ recovery likelihood |
 | Donor pathway | DBD 57% / DCD 43% | OPTN/SRTR 2024 (9,705 DBD / 7,284 DCD) |
+| Pediatric share of arrivals | Intestine 25% · Heart 11% · Liver 6% · Kidney/Lung 2% · Pancreas 0.5% | documented approximation (VERIFY vs OPTN) |
 
 Arrivals are drawn from the **additions** mix, not the prevalence snapshot — see
 [ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). DCD organs (donation after circulatory
 death) are discarded more and graft worse than DBD — see
-[ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md). `organflow/clinical/frequencies.py`.
+[ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md). Pediatric candidates (< 18) get a priority
+bonus in the policy scorers (`RealWorldScore`, `ContinuousDistributionScore`) — see
+[ADR-0009](adr/0009-pediatric-priority.md). `organflow/clinical/frequencies.py`.
 
 ### Urgency, mortality, and the non-transplant exits
 
