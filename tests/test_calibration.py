@@ -76,13 +76,13 @@ def test_most_arrivals_are_absorbed_by_the_real_outflow_channels():
     assert outflow / arrivals > 0.8
 
 
-def test_organ_discard_rate_is_in_a_realistic_band():
+def test_organ_discard_rate_matches_the_2024_optn_non_use_rate():
     metrics = _realistic_trial(rounds=52 * 4)
     recovered = metrics.organs_transplanted + metrics.organs_wasted
     discard_rate = metrics.organs_discarded / recovered
-    # OPTN/SRTR overall discard runs roughly 10-25%; the model blends organ-specific
-    # base rates with a cold-ischemia term, so allow a slightly wider guard band
-    assert 0.08 < discard_rate < 0.30
+    # OPTN/SRTR 2024 overall non-use was 20.7%; the organ-specific base rates are calibrated
+    # to that, so realized decline/discard should land in a band centered near it
+    assert 0.14 < discard_rate < 0.27
 
 
 def test_every_real_outflow_channel_is_exercised():

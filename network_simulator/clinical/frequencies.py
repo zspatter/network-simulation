@@ -54,22 +54,25 @@ US_WAITLIST_ORGAN_WEIGHTS: Dict[OrganType, float] = {
     OrganType.Intestines: 0.2,
 }
 
-# US wait-list *additions* by organ (percent) - the flow new patients are generated from.
-# This is deliberately LESS kidney-dominated than the prevalence snapshot above: kidney
-# candidates wait far longer (dialysis sustains them for years) so they accumulate on the
-# standing list out of all proportion to their arrival rate. By Little's law the standing mix
-# is roughly (arrival rate x mean wait), so sampling arrivals from the standing mix - as the
-# model originally did - over-generates kidney arrivals and inflates the backlog. These are
-# documented approximations reflecting that shorter-wait organs (liver/heart/lung) make up a
-# larger share of arrivals than of prevalence; VERIFY against the exact OPTN annual
-# additions-by-organ table before using the absolute counts in a published report.
+# US wait-list *additions* by organ - the flow new patients are generated from. These are the
+# actual 2024 new-registration counts (used directly as sampling weights; weighted_choice
+# normalizes them). Source: OPTN/SRTR 2024 Annual Data Report, Overview
+# (https://srtr.hrsa.gov/adr/2024/Overview/), retrieved 2026-07-08. Kidney-pancreas (1,667)
+# is folded into Pancreas with pancreas-alone/after-kidney (312), since a one-organ-per-patient
+# model can't represent the dual need and the pancreas is the distinguishing organ.
+#
+# This flow is far less kidney-dominated than the prevalence snapshot above (65% vs 85% kidney):
+# kidney candidates wait far longer (dialysis sustains them for years) so they accumulate on the
+# standing list out of all proportion to their arrival rate. By Little's law the standing mix is
+# roughly (arrival rate x mean wait), so sampling arrivals from the standing mix - as the model
+# originally did - over-generates kidney arrivals and inflates the backlog.
 US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS: Dict[OrganType, float] = {
-    OrganType.Kidney:     63.0,
-    OrganType.Liver:      18.0,
-    OrganType.Heart:      8.0,
-    OrganType.Lungs:      6.0,
-    OrganType.Pancreas:   3.0,
-    OrganType.Intestines: 2.0,
+    OrganType.Kidney:     50_481.0,
+    OrganType.Liver:      15_395.0,
+    OrganType.Heart:      6_068.0,
+    OrganType.Lungs:      3_822.0,
+    OrganType.Pancreas:   1_979.0,  # kidney-pancreas (1,667) + pancreas alone/after-kidney (312)
+    OrganType.Intestines: 128.0,
 }
 
 # Probability that a given organ is recovered (suitable for transplant) from a

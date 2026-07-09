@@ -32,22 +32,27 @@ from typing import Dict, Optional
 
 from network_simulator.compatibility_markers import OrganType
 
-# Baseline probability a recovered organ is ultimately discarded (declined down the
-# match run), before the cold-ischemia adjustment. Kidney/pancreas run high; thoracic
-# organs low. Documented approximations in the range OPTN/SRTR report.
+# Baseline probability a recovered organ is ultimately not transplanted (discarded/declined
+# down the match run). These are the actual 2024 non-use rates by organ. Source: OPTN/SRTR
+# 2024 Annual Data Report, Deceased Organ Donation (https://srtr.hrsa.gov/adr/2024/DOD/),
+# retrieved 2026-07-08. Kidney/pancreas run high (~29% / ~25%); hearts are almost always used
+# (~2%). Overall non-use across organs was 20.7%.
 BASE_DISCARD_PROB: Dict[OrganType, float] = {
-    OrganType.Kidney:     0.20,
-    OrganType.Liver:      0.09,
-    OrganType.Heart:      0.04,
-    OrganType.Lungs:      0.06,
-    OrganType.Pancreas:   0.25,
-    OrganType.Intestines: 0.10,
+    OrganType.Kidney:     0.293,
+    OrganType.Liver:      0.115,
+    OrganType.Heart:      0.019,
+    OrganType.Lungs:      0.113,
+    OrganType.Pancreas:   0.251,
+    OrganType.Intestines: 0.049,
 }
 _DEFAULT_BASE_DISCARD = 0.15
 
-# Extra discard probability per hour of transit (accumulated cold ischemia degrades the
-# organ and makes a decline more likely). Small, and the total is capped below certainty.
-ISCHEMIA_DISCARD_PER_HOUR = 0.015
+# Extra discard probability per hour of transit. The base rates above are *observed* averages
+# that already embed real cold-ischemia effects, so this term is deliberately small - it exists
+# so the simulation's counterfactuals (e.g. dropping the geographic constraint and shipping
+# organs farther) still show geography raising discard, rather than to re-derive the baseline.
+# It biases realized discard modestly above the observed base; the total is capped below 1.
+ISCHEMIA_DISCARD_PER_HOUR = 0.004
 MAX_DISCARD_PROB = 0.95
 
 # Graft-survival penalty per hour of cold ischemia, floored so a long haul still yields a
