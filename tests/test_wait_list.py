@@ -15,6 +15,16 @@ def test__init__():
     assert len(wait_list.wait_list) == 0
 
 
+def test__init__seeds_from_a_preexisting_list_preserving_order():
+    p1 = Patient('a', 'n/a', OrganType.Kidney, o_neg, 100, 1)
+    p2 = Patient('b', 'n/a', OrganType.Liver, o_neg, 200, 1)
+    wait_list = WaitList([p1, p2])
+
+    assert wait_list.wait_list == [p1, p2]  # arrival order preserved
+    wait_list.remove_patient(p1)
+    assert wait_list.wait_list == [p2]
+
+
 def test_get_prioritized_patients():
     wait_list = WaitList()
     # O- patient can't receive an AB+ organ - constructed only to prove the queue

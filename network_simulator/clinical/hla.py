@@ -72,7 +72,9 @@ def crossmatch_positive(organ_antigens: FrozenSet[int],
     :param unacceptable: the recipient's unacceptable-antigen set
     :return: True if incompatible, False if the pair is crossmatch-negative
     """
-    return bool(organ_antigens & unacceptable)
+    # ~70% of candidates are unsensitized (empty antibody set); short-circuit before building
+    # the set intersection, since this runs once per candidate kidney in feasibility.
+    return bool(unacceptable) and bool(organ_antigens & unacceptable)
 
 
 def cpra(unacceptable: FrozenSet[int]) -> float:

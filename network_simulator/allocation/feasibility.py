@@ -97,13 +97,22 @@ def feasible_matches_by_organ(organ_list: OrganList, wait_list: WaitList,
             candidates.extend(index.get((organ.organ_type, letter_value, polarity_value), ()))
         candidates.sort(key=lambda item: item[0])
 
+        max_transit = organ.viability - operation_buffer  # transit budget after the operation
+
         organ_matches: List[feasible_match] = []
         for _, patient in candidates:
             transit_hours = weights[patient.location]
-            if organ.viability - transit_hours < operation_buffer:
+            if transit_hours > max_transit:
                 continue
 
-            if not all(gate(organ, patient) for gate in organ_gates):
+            # plain loop rather than all(<genexpr>): this runs per candidate, and the genexpr
+            # object churn dominated once the wait list reached the thousands
+            passes_gates = True
+            for gate in organ_gates:
+                if not gate(organ, patient):
+                    passes_gates = False
+                    break
+            if not passes_gates:
                 continue
 
             organ_matches.append((patient, transit_hours))
