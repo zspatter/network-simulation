@@ -3,15 +3,22 @@ from collections import Counter
 
 from organflow.clinical.frequencies import (
     DONOR_RECOVERY_PROBABILITIES,
+    DONOR_TYPE_WEIGHTS,
     US_BLOOD_TYPE_WEIGHTS,
     US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS,
     US_WAITLIST_ORGAN_WEIGHTS,
     random_arrival_organ,
+    random_donor_type,
     random_us_blood_type,
     random_waitlist_organ,
     weighted_choice,
 )
-from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.compatibility_markers import (
+    BloodTypeLetter,
+    BloodTypePolarity,
+    DonorType,
+    OrganType,
+)
 
 
 def test_weighted_choice_is_deterministic_for_same_seed():
@@ -80,6 +87,19 @@ def test_arrivals_are_less_kidney_dominated_than_prevalence():
     prevalence_kidney = US_WAITLIST_ORGAN_WEIGHTS[OrganType.Kidney] / prevalence_total
     additions_kidney = US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS[OrganType.Kidney] / additions_total
     assert additions_kidney < prevalence_kidney
+
+
+def test_random_donor_type_matches_the_2024_split():
+    rng = random.Random(13)
+    n = 40000
+    counts = Counter(random_donor_type(rng) for _ in range(n))
+
+    total = sum(DONOR_TYPE_WEIGHTS.values())
+    dbd_share = counts[DonorType.DBD] / n
+    assert abs(dbd_share - DONOR_TYPE_WEIGHTS[DonorType.DBD] / total) < 0.03
+    # DBD is the majority pathway, but DCD is a large minority (~43%)
+    assert counts[DonorType.DBD] > counts[DonorType.DCD]
+    assert counts[DonorType.DCD] / n > 0.35
 
 
 def test_donor_recovery_probabilities_are_ordered_and_valid():

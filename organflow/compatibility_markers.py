@@ -29,6 +29,18 @@ class OrganType(Enum):
         return (rng or random).choice(list(OrganType.__iter__()))
 
 
+class DonorType(Enum):
+    """
+    Deceased-donor pathway. DBD = donation after brain death; DCD = donation after
+    circulatory death. DCD organs spend a warm-ischemia interval between withdrawal of
+    support and cold perfusion, so they are recovered later, discarded more often, and have
+    somewhat poorer graft outcomes - all modeled in clinical.acceptance. DCD is now a large
+    and growing share of US deceased donors (7,284 of 16,989 in 2024 - see clinical.frequencies).
+    """
+    DBD = 0
+    DCD = 1
+
+
 class BloodTypeLetter(Enum):
     """
     This enum contains flags that indicate blood type letter

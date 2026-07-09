@@ -24,6 +24,7 @@ from organflow.BloodType import BloodType
 from organflow.compatibility_markers import (
     BloodTypeLetter,
     BloodTypePolarity,
+    DonorType,
     OrganType,
 )
 
@@ -90,6 +91,15 @@ DONOR_RECOVERY_PROBABILITIES: Dict[OrganType, float] = {
 
 KIDNEYS_PER_DONOR = 2
 
+# Deceased-donor pathway split (donation after brain death vs. after circulatory death).
+# 2024 counts: 9,705 DBD and 7,284 DCD of 16,989 deceased donors (~57% / 43%). DCD is a large,
+# growing share; DCD organs are recovered later, discarded more, and graft slightly worse - see
+# clinical.acceptance. Source: OPTN/SRTR 2024 ADR, Deceased Organ Donation.
+DONOR_TYPE_WEIGHTS: Dict[DonorType, float] = {
+    DonorType.DBD: 9_705.0,
+    DonorType.DCD: 7_284.0,
+}
+
 
 def weighted_choice(items: Sequence[T], weights: Sequence[float],
                     rng: Optional[random.Random] = None) -> T:
@@ -149,3 +159,15 @@ def random_arrival_organ(rng: Optional[random.Random] = None) -> OrganType:
     organs = list(US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS.keys())
     weights = list(US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS.values())
     return weighted_choice(organs, weights, rng)
+
+
+def random_donor_type(rng: Optional[random.Random] = None) -> DonorType:
+    """
+    Returns a deceased-donor pathway (DBD/DCD) sampled from the US 2024 split (~57% DBD).
+
+    :param random.Random rng: optional seeded source (defaults to the global module)
+    :return: a DonorType with realistic frequency
+    """
+    types = list(DONOR_TYPE_WEIGHTS.keys())
+    weights = list(DONOR_TYPE_WEIGHTS.values())
+    return weighted_choice(types, weights, rng)

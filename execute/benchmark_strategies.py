@@ -144,7 +144,7 @@ def _record_allocation(result: AllocationResult, network: Network, wait_list: Wa
         transit_hours = 0.0
         if config.realistic_outcomes:
             transit_hours = network.transit_from(organ.origin_location)[patient.location]
-            if acceptance.is_discarded(organ.organ_type, transit_hours, rng):
+            if acceptance.is_discarded(organ.organ_type, transit_hours, organ.donor_type, rng):
                 # declined down the match run -> wasted; the patient keeps waiting
                 metrics.organs_wasted += 1
                 metrics.organs_discarded += 1
@@ -152,7 +152,7 @@ def _record_allocation(result: AllocationResult, network: Network, wait_list: Wa
 
         life_years = LIFE_YEARS_BY_ORGAN[patient.organ_needed]
         if config.realistic_outcomes:
-            life_years *= acceptance.graft_survival_factor(transit_hours)
+            life_years *= acceptance.graft_survival_factor(transit_hours, organ.donor_type)
 
         metrics.organs_transplanted += 1
         metrics.total_priority_served += patient.priority

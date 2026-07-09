@@ -1,3 +1,6 @@
+import random
+
+from organflow.compatibility_markers import DonorType
 from organflow.Network import Network, Node
 from organflow.OrganGenerator import OrganGenerator
 from organflow.OrganList import OrganList
@@ -29,6 +32,14 @@ def test_generate_organs_to_list():
         assert 0 <= organ.organ_type.value <= 5
         assert 0 <= organ.blood_type.blood_type_letter.value <= 3
         assert 0 <= organ.blood_type.blood_type_polarity.value <= 1
+
+
+def test_generated_organs_carry_a_donor_type_and_both_pathways_appear():
+    # over many donors both DBD and DCD show up, and every organ from one donor shares its
+    # donor's pathway (a donor-level attribute)
+    organs = OrganGenerator.generate_organs(graph=test_net, n=60, rng=random.Random(0))
+    donor_types = {organ.donor_type for organ in organs}
+    assert donor_types == {DonorType.DBD, DonorType.DCD}
 
 
 def test_generate_organs_restricts_location_to_eligible_nodes():

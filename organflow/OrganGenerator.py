@@ -4,6 +4,7 @@ from typing import List, Optional
 from organflow.clinical.frequencies import (
     DONOR_RECOVERY_PROBABILITIES,
     KIDNEYS_PER_DONOR,
+    random_donor_type,
     random_us_blood_type,
 )
 from organflow.clinical.hla import donor_antigens
@@ -57,6 +58,7 @@ class OrganGenerator:
             # donor-level attributes shared across every organ from this donor
             antigens = donor_antigens(rng)
             donor_body_size = body_size(rng)
+            donor_type = random_donor_type(rng)
 
             for organ_type in OrganType:
                 # determines if this organ is suitable for recovery from this donor
@@ -67,7 +69,8 @@ class OrganGenerator:
                                             blood_type=blood_type,
                                             location=location_id,
                                             hla_antigens=antigens,
-                                            donor_size=donor_body_size))
+                                            donor_size=donor_body_size,
+                                            donor_type=donor_type))
         return organs
 
     @staticmethod
