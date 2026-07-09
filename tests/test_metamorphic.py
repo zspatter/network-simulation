@@ -12,22 +12,22 @@ sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 from benchmark_strategies import run_trial  # noqa: E402
 
-from network_simulator.allocation import STRATEGIES  # noqa: E402
-from network_simulator.allocation.matchers.optimal import OptimalMatcher  # noqa: E402
-from network_simulator.allocation.scoring import AcuityScore, PriorityScore  # noqa: E402
-from network_simulator.BloodType import BloodType  # noqa: E402
-from network_simulator.compatibility_markers import (  # noqa: E402
+from organflow.allocation import STRATEGIES  # noqa: E402
+from organflow.allocation.matchers.optimal import OptimalMatcher  # noqa: E402
+from organflow.allocation.scoring import AcuityScore, PriorityScore  # noqa: E402
+from organflow.BloodType import BloodType  # noqa: E402
+from organflow.compatibility_markers import (  # noqa: E402
     BloodTypeLetter,
     BloodTypePolarity,
     OrganType,
 )
-from network_simulator.GraphBuilder import GraphBuilder  # noqa: E402
-from network_simulator.Organ import Organ  # noqa: E402
-from network_simulator.OrganGenerator import OrganGenerator  # noqa: E402
-from network_simulator.OrganList import OrganList  # noqa: E402
-from network_simulator.Patient import Patient  # noqa: E402
-from network_simulator.PatientGenerator import PatientGenerator  # noqa: E402
-from network_simulator.WaitList import WaitList  # noqa: E402
+from organflow.GraphBuilder import GraphBuilder  # noqa: E402
+from organflow.Organ import Organ  # noqa: E402
+from organflow.OrganGenerator import OrganGenerator  # noqa: E402
+from organflow.OrganList import OrganList  # noqa: E402
+from organflow.Patient import Patient  # noqa: E402
+from organflow.PatientGenerator import PatientGenerator  # noqa: E402
+from organflow.WaitList import WaitList  # noqa: E402
 
 
 def _network_and_waitlist(seed, n_patients):

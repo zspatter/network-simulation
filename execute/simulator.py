@@ -1,9 +1,9 @@
-from network_simulator.allocation import STRATEGIES
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.OrganList import OrganList
-from network_simulator.PatientGenerator import PatientGenerator
-from network_simulator.WaitList import WaitList
+from organflow.allocation import STRATEGIES
+from organflow.GraphBuilder import GraphBuilder
+from organflow.OrganGenerator import OrganGenerator
+from organflow.OrganList import OrganList
+from organflow.PatientGenerator import PatientGenerator
+from organflow.WaitList import WaitList
 
 ANSI_YELLOW, ANSI_YELLOW_BOLD, ANSI_RED = '\033[33m', '\033[33;1m', '\033[31m'
 ANSI_RED_BOLD, ANSI_BOLD, ANSI_RESET = '\033[31;1m', '\033[1m', '\033[0m'
@@ -218,7 +218,7 @@ class SimulatorSession:
     def select_strategy(self) -> None:
         """
         Lets the user choose which allocation strategy allocate_organs() should
-        use (see network_simulator.allocation.STRATEGIES). The selection
+        use (see organflow.allocation.STRATEGIES). The selection
         persists across harvests until changed again.
         """
         print(f'\n{ANSI_YELLOW}Available strategies:{ANSI_RESET}')

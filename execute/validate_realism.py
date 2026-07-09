@@ -23,8 +23,8 @@ from typing import Dict, List, Optional, Sequence
 from benchmark_strategies import run_trial
 from scenario_report import DEFAULT_MEMBERSHIP_CSV, build_network, scaled_weekly_rates
 
-from network_simulator.allocation import STRATEGIES
-from network_simulator.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
+from organflow.allocation import STRATEGIES
+from organflow.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
 
 # ---- Published 2024 OPTN/SRTR national figures (full scale) ----
 OPTN_2024 = {

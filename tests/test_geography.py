@@ -1,16 +1,16 @@
-from network_simulator.allocation.geography import (
+from organflow.allocation.geography import (
     LOCAL_THRESHOLD_HOURS,
     REGIONAL_THRESHOLD_HOURS,
     circle_tier,
     national_tier,
     region_tier,
 )
-from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
-from network_simulator.Network import Network
-from network_simulator.Node import Node
-from network_simulator.Organ import Organ
-from network_simulator.Patient import Patient
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Network import Network
+from organflow.Node import Node
+from organflow.Organ import Organ
+from organflow.Patient import Patient
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 

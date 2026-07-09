@@ -22,11 +22,11 @@ from typing import Callable, Dict, List, Optional, Sequence
 
 from benchmark_strategies import run_trial
 
-from network_simulator import distance
-from network_simulator.allocation import STRATEGIES
-from network_simulator.clinical import acceptance, frequencies, mortality, removal
-from network_simulator.Network import Network
-from network_simulator.Node import Node
+from organflow import distance
+from organflow.allocation import STRATEGIES
+from organflow.clinical import acceptance, frequencies, mortality, removal
+from organflow.Network import Network
+from organflow.Node import Node
 
 _CITIES = [(1, 'Chicago', 41.88, -87.63), (2, 'Boston', 42.36, -71.06),
            (3, 'Los Angeles', 34.05, -118.24), (4, 'Houston', 29.76, -95.37),

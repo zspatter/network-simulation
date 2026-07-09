@@ -1,7 +1,7 @@
 import random
 from collections import Counter
 
-from network_simulator.clinical.hla import (
+from organflow.clinical.hla import (
     ANTIGEN_POOL_SIZE,
     DONOR_ANTIGEN_COUNT,
     cpra,

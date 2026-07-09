@@ -1,7 +1,7 @@
 import random
 
-from network_simulator.clinical import urgency
-from network_simulator.compatibility_markers import OrganType
+from organflow.clinical import urgency
+from organflow.compatibility_markers import OrganType
 
 
 def test_initial_raw_urgency_in_native_ranges():

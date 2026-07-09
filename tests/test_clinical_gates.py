@@ -1,8 +1,8 @@
-from network_simulator.BloodType import BloodType
-from network_simulator.clinical.gates import GATES_BY_ORGAN, crossmatch_gate, size_gate
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
-from network_simulator.Organ import Organ
-from network_simulator.Patient import Patient
+from organflow.BloodType import BloodType
+from organflow.clinical.gates import GATES_BY_ORGAN, crossmatch_gate, size_gate
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Organ import Organ
+from organflow.Patient import Patient
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 

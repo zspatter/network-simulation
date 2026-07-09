@@ -1,7 +1,7 @@
-# Network Simulation
+# OrganFlow
 [![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/getit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/zspatter/network-simulation/actions/workflows/ci.yml/badge.svg)](https://github.com/zspatter/network-simulation/actions/workflows/ci.yml)
+[![CI](https://github.com/zspatter/organflow/actions/workflows/ci.yml/badge.svg)](https://github.com/zspatter/organflow/actions/workflows/ci.yml)
 
 This project simulates the US deceased-organ-donor transplant matching process across a network of hospitals, and uses that simulation to **compare allocation strategies** - i.e. to answer, empirically, "what's the best way to allocate scarce organs?" rather than assume there's one obvious answer.
 
@@ -11,9 +11,9 @@ At a high level: a network of hospitals is generated (or imported from real coor
 1. The patient's need must be of the same organ type (kidney, lungs, heart, etc.)
 2. The patient must be of a compatible blood type (example: patient: AB-, organ: B-)
 3. The organ must be able to be transported to the patient's hospital and still leave enough of its cold-ischemia budget for the implant-to-reperfusion step before it's no longer viable (both are organ-specific - see `Organ.get_viability`/`Organ.get_operation_buffer`; the operation buffer is the portion of the recipient operation that runs *within* the cold-ischemia window, not the full OR time)
-4. Organ-specific clinical constraints must be met: donor/recipient **size** compatibility for heart and lung, and a negative **HLA crossmatch** (sensitization) for kidney - see `network_simulator.clinical`
+4. Organ-specific clinical constraints must be met: donor/recipient **size** compatibility for heart and lung, and a negative **HLA crossmatch** (sensitization) for kidney - see `organflow.clinical`
 
-**<ins>Which feasible match is chosen depends on the selected allocation strategy</ins>** (see `network_simulator.allocation`) - see [Allocation Strategies](#allocation-strategies) below.
+**<ins>Which feasible match is chosen depends on the selected allocation strategy</ins>** (see `organflow.allocation`) - see [Allocation Strategies](#allocation-strategies) below.
 
 Patients and donor organs are generated from **real US frequency distributions** (blood type, kidney-dominated organ demand, per-organ donor recovery), and patients carry an organ-specific **medical urgency** (MELD for liver, LAS for lung, status tiers for heart) that **deteriorates while they wait**; patients who wait too long **die on the wait list**. This makes the benchmark's central question - which strategy saves the most lives - answerable, not just which strategy transplants the most organs. See [Clinical Realism](#clinical-realism).
 
@@ -38,16 +38,16 @@ pip install -e .[report]   # optional: adds reportlab, for scenario_report.py's 
   ```bash
   python execute/scenario_report.py
   ```
-- **Run the test suite** (100% line/branch coverage on `network_simulator`):
+- **Run the test suite** (100% line/branch coverage on `organflow`):
   ```bash
-  pytest --cov=network_simulator --cov-report=term-missing
-  mypy network_simulator
-  ruff check network_simulator execute tests
+  pytest --cov=organflow --cov-report=term-missing
+  mypy organflow
+  ruff check organflow execute tests
   ```
 
 ## Project Layout
 
-- `network_simulator/` - the installable package: the graph/domain model, generators, the allocation-strategy framework, and the clinical-realism model (see below).
+- `organflow/` - the installable package: the graph/domain model, generators, the allocation-strategy framework, and the clinical-realism model (see below).
 - `execute/` - runnable scripts: the interactive simulator, the strategy benchmark, the real-hospital-network data pipeline, the analysis tools (validation, sensitivity, frontier), and a handful of smaller demo/export utilities (see [Scripts](#scripts)).
 - `tests/` - one test module per source module, plus property, metamorphic, and calibration suites; run via `pytest`.
 - `docs/` - the model reference: [METHODOLOGY.md](docs/METHODOLOGY.md) (every constant, source, calibration target, and validation result), [DATA_PROVENANCE.md](docs/DATA_PROVENANCE.md) (data sources with citations), [FINDINGS.md](docs/FINDINGS.md) (the engineering + realism audit), and [ADRs](docs/adr/) (dated decision records).
@@ -71,7 +71,7 @@ The network is a graph that is represented as a collection of nodes. The network
 1. `network dictionary` - contains a collection of `node IDs` that point to their corresponding `Node` objects
 2. `label` - describes/names the graph
 
-Edge weight is always **estimated transit time in hours** - the same unit `Organ.viability` is expressed in - whether the network is randomly generated (`GraphBuilder`) or built from real hospital coordinates (`import_hospitals.py`, via `network_simulator.distance`'s haversine calculation). That shared unit is what makes an organ's remaining viability and a Dijkstra shortest-path cost directly comparable.
+Edge weight is always **estimated transit time in hours** - the same unit `Organ.viability` is expressed in - whether the network is randomly generated (`GraphBuilder`) or built from real hospital coordinates (`import_hospitals.py`, via `organflow.distance`'s haversine calculation). That shared unit is what makes an organ's remaining viability and a Dijkstra shortest-path cost directly comparable.
 
 ### <ins>BloodType, Organ, Patient</ins>
 - `BloodType` - a letter (O/A/B/AB) and polarity (+/-) pair; checks ABO/Rh compatibility between a prospective donor and recipient in both directions.
@@ -95,7 +95,7 @@ Edge weight is always **estimated transit time in hours** - the same unit `Organ
 -  `exceptions` - `GraphElementError`, raised (and caught internally, with an optional printed message) for invalid graph operations like adding a duplicate node or edge
 
 ### <ins>Allocation Strategies</ins>
-`network_simulator.allocation` decides *which* feasible organ/patient pairs to actually form. A strategy is a (matcher, scorer) pair - the two axes are independent, so strategies can be compared to see whether a result is driven by the matching algorithm, the scoring model, or both:
+`organflow.allocation` decides *which* feasible organ/patient pairs to actually form. A strategy is a (matcher, scorer) pair - the two axes are independent, so strategies can be compared to see whether a result is driven by the matching algorithm, the scoring model, or both:
 
 - **Matchers** (`allocation.matchers`) - *how* matches are chosen:
   - `GreedyMatcher` - processes organs one at a time, assigning each to its highest-scoring available patient (the project's original behavior)
@@ -117,7 +117,7 @@ Edge weight is always **estimated transit time in hours** - the same unit `Organ
 
 Real OPTN policy historically allocated within fixed, arbitrary boundaries - 11 "Regions" and 58 Donation Service Areas (DSAs) - which HRSA found in 2018 "have not and cannot be justified" and directed removed. They were eliminated from kidney/pancreas policy in 2021 and from liver/lung/heart policy in 2018-2020, replaced by concentric distance **circles** (150/250/500 nautical miles from the donor hospital) - still current for kidney, pancreas, and heart. Lung moved further, in March 2023, to **continuous distribution**, where distance is one continuously-weighted point factor with no hard boundary at all; liver/heart continuous distribution is in progress. Sources: [Removal of DSA and Region from Kidney Allocation Policy](https://www.hrsa.gov/optn/professionals/resources/kidney-pancreas/kidney-allocation-system/removal-dsa-region-kidney-allocation-policy), [Continuous Distribution overview](https://www.hrsa.gov/optn/policies-bylaws/policy-issues/continuous-distribution), [Continuous distribution - heart](https://optn.transplant.hrsa.gov/policies-bylaws/a-closer-look/continuous-distribution/continuous-distribution-heart/).
 
-`network_simulator.allocation.geography` gives the benchmark three points on that spectrum, each a `TierClassifier` consumed by `TieredMatcher`:
+`organflow.allocation.geography` gives the benchmark three points on that spectrum, each a `TierClassifier` consumed by `TieredMatcher`:
 - `region_tier` - strict adherence to the legacy arbitrary-region model (`Node.region`; synthetic networks get an arbitrary round-robin region assignment from `GraphBuilder`, real hospital networks use the actual historical OPTN region data imported by `import_hospitals.py`)
 - `circle_tier` - strict adherence to the current distance-circle model, via documented transit-hour thresholds approximating the real 150/250/500 NM circles
 - `national_tier` - no hard constraint (single tier); pairing this with `RealWorldScore`'s soft geography term approximates where continuous distribution is headed
@@ -151,7 +151,7 @@ Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrai
 - **Output**: a Markdown report (methodology, per-horizon summary table, year-by-year wait-list-size trajectory, and a significance table reusing `compare_to_reference` when seeds ≥ 2) plus matching CSVs (`--formats markdown,csv`, the default) for pivoting in Excel/pandas; PDF is opt-in (`--formats markdown,csv,pdf`) via the optional `reportlab` dependency, rendered by `scenario_report_pdf.py` so the default path never imports it.
 
 ### <ins>Clinical Realism</ins>
-`network_simulator.clinical` grounds the simulation in real-world data so "which strategy is best" is measured the way real allocation policy is judged - by lives saved, not just organ throughput:
+`organflow.clinical` grounds the simulation in real-world data so "which strategy is best" is measured the way real allocation policy is judged - by lives saved, not just organ throughput:
 
 - `frequencies` - US-population blood-type distribution, organ demand, and per-organ donor recovery probabilities drive generation, replacing uniform sampling. A single seeded `weighted_choice` helper backs every weighted draw, so generation stays deterministic and testable. Organ need is drawn from the wait-list **additions** mix (a flow), which is deliberately less kidney-dominated than the **prevalence** snapshot (a stock): kidney candidates wait far longer, so they accumulate on the standing list out of proportion to their arrival rate (Little's law), and sampling arrivals from the prevalence mix over-generates kidney arrivals and inflates the backlog.
 - `removal` / `living_donor` - the wait-list outflow channels besides transplant and death: a non-death removal competing risk (too sick to transplant / condition improved / transferred / declined) and living-donor transplants (overwhelmingly kidney). A model with only transplant and death as exits cannot balance arrivals except by growing the list - and its death count - unrealistically; these are what let it approach a steady state. Both are strategy-independent and enabled on the reality-calibrated scenario-report path, left off in the bare strategy benchmark so they don't muddy the allocation comparison.
@@ -161,7 +161,7 @@ Comparing `real_world_region` vs. `real_world_circle` vs. `real_world_unconstrai
 All of the above is deterministic under a single seeded `random.Random` per trial: the same seed reproduces the same network, arrivals, matches, and deaths, which is what lets the benchmark attribute differences in outcome to the *strategy* rather than to noise.
 
 ### <ins>Simulator</ins>
-The `Simulator` (`execute/simulator.py`) is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `network_simulator.allocation` classes, including choosing which allocation strategy to use. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
+The `Simulator` (`execute/simulator.py`) is designed to create an interactive experience that can be executed through any console. The simulator does this by harnessing the functionality of the `GraphBuilder`, `PatientGenerator`, `OrganGenerator`, and `organflow.allocation` classes, including choosing which allocation strategy to use. This allows users to choose the number of nodes in the network, number of patients on the wait list, and number of bodies to harvest organs from all on the fly.
 
 ## Scripts
 
@@ -181,7 +181,7 @@ All scripts live under `execute/` and are run as `python execute/<script>.py` fr
 - `scenario_report.py` / `scenario_report_pdf.py` - the national scenario report generator described in [Scenario Reports](#scenario-reports); `scenario_report_pdf.py` holds the optional PDF rendering so the `reportlab` import only happens when `--formats` includes `pdf`.
 
 **Real hospital network data pipeline**
-- `import_hospitals.py` - builds a `Network` of real US transplant-system locations from the OPTN membership directory CSV (`import/optn_membership/`, downloaded from `hrsa.gov/optn/about/membership/optn-membership-database`), keeping only `Transplant Hospital` and `Independent OPO`/`Hospital Based OPO` rows (the only member types that are physical locations this simulation places patients or organs at - see the module docstring for why some rows share a `centerCode` but still get separate nodes). Coordinates come from the free US Census Bureau batch geocoder, with a rate-limited Nominatim (OpenStreetMap) fallback for the institutional-campus addresses Census can't match (e.g. "One Medical Center Drive") - no API key needed for either. Edge weights are computed directly from those coordinates via `network_simulator.distance` (no scraping). This replaced an older 2019 xlsx + Bing Maps pipeline; Bing Maps' free/basic tier was retired by Microsoft on June 30, 2025.
+- `import_hospitals.py` - builds a `Network` of real US transplant-system locations from the OPTN membership directory CSV (`import/optn_membership/`, downloaded from `hrsa.gov/optn/about/membership/optn-membership-database`), keeping only `Transplant Hospital` and `Independent OPO`/`Hospital Based OPO` rows (the only member types that are physical locations this simulation places patients or organs at - see the module docstring for why some rows share a `centerCode` but still get separate nodes). Coordinates come from the free US Census Bureau batch geocoder, with a rate-limited Nominatim (OpenStreetMap) fallback for the institutional-campus addresses Census can't match (e.g. "One Medical Center Drive") - no API key needed for either. Edge weights are computed directly from those coordinates via `organflow.distance` (no scraping). This replaced an older 2019 xlsx + Bing Maps pipeline; Bing Maps' free/basic tier was retired by Microsoft on June 30, 2025.
 - `export_hospital_network.py` / `export_edgelist.py` - export a previously-built (shelve-serialized) network to GEXF or a plain edge-list file for use in external graph tools.
 - `hospital_count.py` - tallies hospitals per US state/region from the same membership CSV.
 - `generate_networks.py` - generates and serializes a batch of random networks (with their patient/organ populations) for reuse across scripts.

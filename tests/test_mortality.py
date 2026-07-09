@@ -1,7 +1,7 @@
 import random
 
-from network_simulator.clinical import mortality, urgency
-from network_simulator.compatibility_markers import OrganType
+from organflow.clinical import mortality, urgency
+from organflow.compatibility_markers import OrganType
 
 
 def test_per_round_death_prob_monotonic_in_acuity():

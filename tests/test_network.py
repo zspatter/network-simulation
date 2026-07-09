@@ -1,8 +1,8 @@
 import pytest
 
-from network_simulator.distance import estimate_transit_hours, haversine_km
-from network_simulator.exceptions import GraphElementError
-from network_simulator.Network import Network, Node
+from organflow.distance import estimate_transit_hours, haversine_km
+from organflow.exceptions import GraphElementError
+from organflow.Network import Network, Node
 
 
 def test_add_node():

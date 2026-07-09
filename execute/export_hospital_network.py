@@ -4,7 +4,7 @@ from pathlib import Path
 
 import networkx
 
-from network_simulator.GraphConverter import GraphConverter
+from organflow.GraphConverter import GraphConverter
 
 
 def export_gexf(import_path='.',

@@ -1,16 +1,16 @@
-from network_simulator.allocation import STRATEGIES
-from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
-from network_simulator.Dijkstra import Dijkstra
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.Network import Network
-from network_simulator.Node import Node
-from network_simulator.Organ import Organ
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.OrganList import OrganList
-from network_simulator.Patient import Patient
-from network_simulator.PatientGenerator import PatientGenerator
-from network_simulator.WaitList import WaitList
+from organflow.allocation import STRATEGIES
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Dijkstra import Dijkstra
+from organflow.GraphBuilder import GraphBuilder
+from organflow.Network import Network
+from organflow.Node import Node
+from organflow.Organ import Organ
+from organflow.OrganGenerator import OrganGenerator
+from organflow.OrganList import OrganList
+from organflow.Patient import Patient
+from organflow.PatientGenerator import PatientGenerator
+from organflow.WaitList import WaitList
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"

@@ -1,13 +1,13 @@
 import random
 
-from network_simulator.BloodType import BloodType
-from network_simulator.clinical.living_donor import (
+from organflow.BloodType import BloodType
+from organflow.clinical.living_donor import (
     LIVING_DONOR_ORGAN_WEIGHTS,
     simulate_living_donor_transplants,
 )
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
-from network_simulator.Patient import Patient
-from network_simulator.WaitList import WaitList
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Patient import Patient
+from organflow.WaitList import WaitList
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 

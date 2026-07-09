@@ -1,4 +1,4 @@
-from network_simulator.Node import Node
+from organflow.Node import Node
 
 
 def test_is_adjacent():

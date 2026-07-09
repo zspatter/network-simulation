@@ -32,7 +32,7 @@ from typing import Dict, List, Optional, Sequence
 
 from benchmark_strategies import run_trial
 
-from network_simulator.allocation import STRATEGIES
+from organflow.allocation import STRATEGIES
 
 
 @dataclass

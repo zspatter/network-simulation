@@ -56,7 +56,7 @@ air    = 2.5 h fixed overhead + great_circle_km / 750 km·h⁻¹
 
 Measured on the real 297-node network: mean transit 4.8 h, coast-to-coast ~15 h. This makes
 geography bind for the short-window organs (heart/lung reach ~50% of hospitals within budget)
-but not for kidney (30 h budget reaches every hospital). `network_simulator/distance.py`.
+but not for kidney (30 h budget reaches every hospital). `organflow/distance.py`.
 
 ### Generation frequencies
 
@@ -68,7 +68,7 @@ but not for kidney (30 h budget reaches every hospital). `network_simulator/dist
 | Donor recovery / donor | Kidney 0.95 (×2) / Liver 0.75 / Heart 0.30 / Lung 0.20 / Pancreas 0.10 / Intestine 0.03 | per-organ recovery likelihood |
 
 Arrivals are drawn from the **additions** mix, not the prevalence snapshot — see
-[ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). `network_simulator/clinical/frequencies.py`.
+[ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). `organflow/clinical/frequencies.py`.
 
 ### Urgency, mortality, and the non-transplant exits
 

@@ -1,15 +1,15 @@
 import time
 
-from network_simulator.allocation.matchers.optimal import OptimalMatcher
-from network_simulator.allocation.scoring import CompositeScore, PriorityScore, ScoreWeights
-from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
-from network_simulator.Network import Network
-from network_simulator.Node import Node
-from network_simulator.Organ import Organ
-from network_simulator.OrganList import OrganList
-from network_simulator.Patient import Patient
-from network_simulator.WaitList import WaitList
+from organflow.allocation.matchers.optimal import OptimalMatcher
+from organflow.allocation.scoring import CompositeScore, PriorityScore, ScoreWeights
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Network import Network
+from organflow.Node import Node
+from organflow.Organ import Organ
+from organflow.OrganList import OrganList
+from organflow.Patient import Patient
+from organflow.WaitList import WaitList
 from tests.allocation_scenarios import build_scenario
 
 

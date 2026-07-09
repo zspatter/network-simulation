@@ -1,5 +1,5 @@
-from network_simulator.ConnectivityChecker import ConnectivityChecker
-from network_simulator.Network import Network, Node
+from organflow.ConnectivityChecker import ConnectivityChecker
+from organflow.Network import Network, Node
 
 
 def test_is_connected():

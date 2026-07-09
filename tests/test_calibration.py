@@ -18,10 +18,10 @@ sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 from benchmark_strategies import run_trial  # noqa: E402
 
-from network_simulator.allocation import STRATEGIES  # noqa: E402
-from network_simulator.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE  # noqa: E402
-from network_simulator.Network import Network  # noqa: E402
-from network_simulator.Node import Node  # noqa: E402
+from organflow.allocation import STRATEGIES  # noqa: E402
+from organflow.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE  # noqa: E402
+from organflow.Network import Network  # noqa: E402
+from organflow.Node import Node  # noqa: E402
 
 # A handful of real US metros spread coast to coast, so transit spans local through
 # cross-country. A coordinate network needs no edges: Network.transit_from computes

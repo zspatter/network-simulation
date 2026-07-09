@@ -27,9 +27,9 @@ from benchmark_strategies import (
 )
 from import_hospitals import filter_physical_locations, import_nodes, read_membership_csv
 
-from network_simulator.allocation import STRATEGIES
-from network_simulator.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
-from network_simulator.Network import Network
+from organflow.allocation import STRATEGIES
+from organflow.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
+from organflow.Network import Network
 
 # ---- Real-world calibration (OPTN/SRTR 2024 data - see README for full sourcing) ----
 # 70,600 new waitlist additions across all organs in 2024 -> per week. PatientGenerator already
@@ -39,7 +39,7 @@ NATIONAL_WEEKLY_NEW_PATIENTS = round(70_600 / 52)
 # clinical.frequencies.DONOR_RECOVERY_PROBABILITIES.
 NATIONAL_WEEKLY_DECEASED_DONORS = round(16_989 / 52)
 # ~7,000 living-donor transplants/year (overwhelmingly kidney) -> per week. A wait-list outflow
-# the deceased-donor pipeline never captures - see network_simulator.clinical.living_donor.
+# the deceased-donor pipeline never captures - see organflow.clinical.living_donor.
 NATIONAL_WEEKLY_LIVING_DONORS = round(7_000 / 52)
 ROUNDS_PER_YEAR = 52  # one round = 7 days (clinical.mortality.ROUND_DURATION_DAYS)
 
@@ -110,7 +110,7 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
                         help='Comma-separated simulated-year horizons (default: 1,5,10)')
     parser.add_argument('--strategies', default='curated',
                         help="'curated' (default, the 4-tier delta), 'all' (every strategy in "
-                             "network_simulator.allocation.STRATEGIES), or an explicit "
+                             "organflow.allocation.STRATEGIES), or an explicit "
                              "comma-separated list of strategy names")
     parser.add_argument('--seeds', type=int, default=None,
                         help='Seeds per horizon (default: 8 for the 1-year horizon, 3 for '

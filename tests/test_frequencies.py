@@ -1,7 +1,7 @@
 import random
 from collections import Counter
 
-from network_simulator.clinical.frequencies import (
+from organflow.clinical.frequencies import (
     DONOR_RECOVERY_PROBABILITIES,
     US_BLOOD_TYPE_WEIGHTS,
     US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS,
@@ -11,7 +11,7 @@ from network_simulator.clinical.frequencies import (
     random_waitlist_organ,
     weighted_choice,
 )
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
 
 
 def test_weighted_choice_is_deterministic_for_same_seed():

@@ -1,6 +1,6 @@
-from network_simulator.Network import Network, Node
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.OrganList import OrganList
+from organflow.Network import Network, Node
+from organflow.OrganGenerator import OrganGenerator
+from organflow.OrganList import OrganList
 
 test_net = Network()
 test_net.add_node(Node(1))

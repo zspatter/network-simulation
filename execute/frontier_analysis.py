@@ -26,12 +26,12 @@ from typing import List, Optional, Sequence
 
 from benchmark_strategies import run_trial
 
-from network_simulator.allocation import Strategy
-from network_simulator.allocation.matchers.optimal import OptimalMatcher
-from network_simulator.allocation.scoring import ContinuousDistributionScore
-from network_simulator.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
-from network_simulator.Network import Network
-from network_simulator.Node import Node
+from organflow.allocation import Strategy
+from organflow.allocation.matchers.optimal import OptimalMatcher
+from organflow.allocation.scoring import ContinuousDistributionScore
+from organflow.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
+from organflow.Network import Network
+from organflow.Node import Node
 
 _CITIES = [(1, 'Chicago', 41.88, -87.63), (2, 'Boston', 42.36, -71.06),
            (3, 'Los Angeles', 34.05, -118.24), (4, 'Houston', 29.76, -95.37),

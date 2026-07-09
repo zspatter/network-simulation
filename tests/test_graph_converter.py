@@ -1,5 +1,5 @@
-from network_simulator.GraphConverter import GraphConverter
-from network_simulator.Network import Network, Node
+from organflow.GraphConverter import GraphConverter
+from organflow.Network import Network, Node
 
 node_a = Node(1, 'A',
               {2: {'weight': 1, 'status': True},

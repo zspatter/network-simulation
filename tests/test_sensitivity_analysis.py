@@ -5,7 +5,7 @@ sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 import sensitivity_analysis  # noqa: E402
 
-from network_simulator.clinical import acceptance, removal  # noqa: E402
+from organflow.clinical import acceptance, removal  # noqa: E402
 
 
 def test_scalar_knob_perturbs_and_restores_the_constant():

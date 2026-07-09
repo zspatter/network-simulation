@@ -1,7 +1,7 @@
-from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
-from network_simulator.Organ import Organ
-from network_simulator.OrganList import OrganList
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Organ import Organ
+from organflow.OrganList import OrganList
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 

@@ -1,11 +1,11 @@
 import time
 
-from network_simulator.ConnectivityChecker import ConnectivityChecker
-from network_simulator.Dijkstra import Dijkstra
-from network_simulator.exceptions import GraphElementError
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.Network import Network
-from network_simulator.Node import Node
+from organflow.ConnectivityChecker import ConnectivityChecker
+from organflow.Dijkstra import Dijkstra
+from organflow.exceptions import GraphElementError
+from organflow.GraphBuilder import GraphBuilder
+from organflow.Network import Network
+from organflow.Node import Node
 
 # ansi codes to format console output
 ANSI_CYAN = "\033[36m"

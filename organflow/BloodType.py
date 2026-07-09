@@ -1,0 +1,80 @@
+from __future__ import annotations
+
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity
+
+
+class BloodType:
+    """
+    A class representing a given blood type.
+
+    Possible blood types: O-, O+, A-, A+, B-, B+, AB-, AB+
+    """
+
+    def __init__(self, blood_type_letter: BloodTypeLetter,
+                 blood_type_polarity: BloodTypePolarity) -> None:
+        self.blood_type_letter: BloodTypeLetter = blood_type_letter
+        self.blood_type_polarity: BloodTypePolarity = blood_type_polarity
+
+    def is_compatible_donor(self, blood_type: BloodType) -> bool:
+        """
+        Determines if this blood type can donate to the parameter's blood type.
+        This simply calls the is_compatible_recipient function on the parameter
+        and passes itself as an argument.
+
+        :param BloodType blood_type: blood type of potential recipient
+        :return: bool indicating whether self can donate to the passed BloodType
+        """
+        return blood_type.is_compatible_recipient(self)
+
+    def is_compatible_recipient(self, blood_type: BloodType) -> bool:
+        """
+        Determines if this blood type can receive a donation from the parameter's
+        blood type using bitwise operations
+
+        :param BloodTyp blood_type: blood type of potential donor
+        :return: bool indicating whether self can receive a donation from the passed BloodType
+        """
+        return ((self.blood_type_letter.value | blood_type.blood_type_letter.value)
+                == self.blood_type_letter.value) \
+               and self.blood_type_polarity.value >= blood_type.blood_type_polarity.value
+
+    def __str__(self) -> str:
+        """
+        Builds a string representing blood type (ex: 'AB+')
+
+        :return: str representing blood type
+        """
+        polarity = ''
+
+        if self.blood_type_polarity.value == 0:
+            polarity = '-'
+        elif self.blood_type_polarity.value == 1:
+            polarity = '+'
+
+        return f'{self.blood_type_letter.name}{polarity}'
+
+    def __eq__(self, other) -> bool:
+        """
+        Rich comparison returns true iff all attributes are equal
+
+        :param BloodType other: other object to compare
+        :return: bool indicating if the objects are equivalent
+        """
+        if isinstance(other, BloodType):
+            return self.blood_type_letter.value == other.blood_type_letter.value \
+                   and self.blood_type_polarity.value == other.blood_type_polarity.value
+
+        return NotImplemented
+
+    def __ne__(self, other) -> bool:
+        """
+        Rich comparison returns true if any of the attributes differ
+
+        :param BloodType other: other object to compare
+        :return: bool indicating if the objects are not equivalent
+        """
+        if isinstance(other, BloodType):
+            return not (self.blood_type_letter.value == other.blood_type_letter.value
+                        and self.blood_type_polarity.value == other.blood_type_polarity.value)
+
+        return NotImplemented

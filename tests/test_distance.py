@@ -1,6 +1,6 @@
 import math
 
-from network_simulator.distance import (
+from organflow.distance import (
     AIR_OVERHEAD_HOURS,
     AIR_SPEED_KMH,
     GROUND_CIRCUITY,

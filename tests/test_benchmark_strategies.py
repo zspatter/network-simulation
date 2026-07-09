@@ -16,10 +16,10 @@ from benchmark_strategies import (  # noqa: E402
     run_trial,
 )
 
-from network_simulator.allocation import STRATEGIES  # noqa: E402
-from network_simulator.GraphBuilder import GraphBuilder  # noqa: E402
-from network_simulator.OrganGenerator import OrganGenerator  # noqa: E402
-from network_simulator.PatientGenerator import PatientGenerator  # noqa: E402
+from organflow.allocation import STRATEGIES  # noqa: E402
+from organflow.GraphBuilder import GraphBuilder  # noqa: E402
+from organflow.OrganGenerator import OrganGenerator  # noqa: E402
+from organflow.PatientGenerator import PatientGenerator  # noqa: E402
 
 
 def test_run_trial_accounts_for_every_organ():

@@ -2,7 +2,7 @@
 simulation.py / network_demo.py / subnetwork_demo.py / networkx_demo.py are top-level
 scripts (no functions, no `if __name__ == '__main__':` guard) that exercise the core API
 end-to-end and print results - README categorizes them as demo/utility scripts, not
-covered by network_simulator's 100%-coverage mandate. Importing them directly would run
+covered by organflow's 100%-coverage mandate. Importing them directly would run
 their side effects at collection time and pollute global state across tests, so each is
 smoke-tested as a subprocess instead: does it still run start-to-finish without error.
 """

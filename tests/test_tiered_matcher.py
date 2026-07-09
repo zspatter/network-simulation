@@ -1,15 +1,15 @@
-from network_simulator.allocation.geography import national_tier, region_tier
-from network_simulator.allocation.matchers.greedy import GreedyMatcher
-from network_simulator.allocation.matchers.tiered import TieredMatcher
-from network_simulator.allocation.scoring import PriorityScore
-from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
-from network_simulator.Network import Network
-from network_simulator.Node import Node
-from network_simulator.Organ import Organ
-from network_simulator.OrganList import OrganList
-from network_simulator.Patient import Patient
-from network_simulator.WaitList import WaitList
+from organflow.allocation.geography import national_tier, region_tier
+from organflow.allocation.matchers.greedy import GreedyMatcher
+from organflow.allocation.matchers.tiered import TieredMatcher
+from organflow.allocation.scoring import PriorityScore
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
+from organflow.Network import Network
+from organflow.Node import Node
+from organflow.Organ import Organ
+from organflow.OrganList import OrganList
+from organflow.Patient import Patient
+from organflow.WaitList import WaitList
 
 o_neg = BloodType(BloodTypeLetter.O, BloodTypePolarity.NEG)
 

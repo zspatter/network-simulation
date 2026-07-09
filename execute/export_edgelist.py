@@ -6,7 +6,7 @@ def generate_edge_list(network, output_path=Path('edgelist.txt')):
     """
     Takes a network object and exports it's edge list to the output path
 
-    :param network_simulator.Network network: source network
+    :param organflow.Network network: source network
     :param Path output_path: path to resulting output
     """
     with output_path.open('w') as out:
@@ -21,7 +21,7 @@ def unique_edge_list(network):
     Generates an edge list with only unique edges. This removes duplicates
     resulting from the bidirectional nature of the edges.
 
-    :param network_simulator.Network network: source network
+    :param organflow.Network network: source network
     :return: list edge_list: unique set of edges
     """
     edge_list = []

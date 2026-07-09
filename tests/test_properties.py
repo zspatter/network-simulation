@@ -8,17 +8,17 @@ import random
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from network_simulator.allocation.feasibility import feasible_matches_by_organ
-from network_simulator.allocation.matchers.greedy import GreedyMatcher
-from network_simulator.allocation.matchers.optimal import OptimalMatcher
-from network_simulator.allocation.scoring import PriorityScore
-from network_simulator.BloodType import BloodType
-from network_simulator.compatibility_markers import BloodTypeLetter, BloodTypePolarity
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.OrganList import OrganList
-from network_simulator.PatientGenerator import PatientGenerator
-from network_simulator.WaitList import WaitList
+from organflow.allocation.feasibility import feasible_matches_by_organ
+from organflow.allocation.matchers.greedy import GreedyMatcher
+from organflow.allocation.matchers.optimal import OptimalMatcher
+from organflow.allocation.scoring import PriorityScore
+from organflow.BloodType import BloodType
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity
+from organflow.GraphBuilder import GraphBuilder
+from organflow.OrganGenerator import OrganGenerator
+from organflow.OrganList import OrganList
+from organflow.PatientGenerator import PatientGenerator
+from organflow.WaitList import WaitList
 
 _LETTERS = list(BloodTypeLetter)
 _POLARITIES = list(BloodTypePolarity)

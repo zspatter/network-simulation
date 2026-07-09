@@ -25,9 +25,9 @@ from os.path import abspath, join
 
 import requests
 
-from network_simulator.distance import estimate_transit_hours, haversine_km
-from network_simulator.Network import Network
-from network_simulator.Node import Node
+from organflow.distance import estimate_transit_hours, haversine_km
+from organflow.Network import Network
+from organflow.Node import Node
 
 PHYSICAL_LOCATION_TYPES = {'Transplant Hospital', 'Independent OPO', 'Hospital Based OPO'}
 
@@ -42,7 +42,7 @@ CENSUS_BENCHMARK = 'Public_AR_Current'
 # application - fine here since this only runs for a handful of per-row fallback lookups, not the
 # whole batch.
 NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
-NOMINATIM_USER_AGENT = 'network-simulation (hospital network data refresh)'
+NOMINATIM_USER_AGENT = 'organflow (hospital network data refresh)'
 NOMINATIM_RATE_LIMIT_SECONDS = 1.0
 
 
@@ -149,7 +149,7 @@ def import_nodes(rows, neighbor_regions):
         get_adjacent_regional_weight() via generate_distance_vector()
     :return: (Network, transplant_hospital_ids, opo_ids) - the latter two are the node_id sets
         by role, for restricting where patients vs. organs are generated - see
-        network_simulator.PatientGenerator/OrganGenerator's eligible_nodes parameter
+        organflow.PatientGenerator/OrganGenerator's eligible_nodes parameter
     """
     coordinates = geocode_addresses(rows)
     geocoded_rows = [(row, coordinates[index]) for index, row in enumerate(rows)
@@ -181,7 +181,7 @@ def import_nodes(rows, neighbor_regions):
 def generate_distance_vector(network, neighbor_regions):
     """
     Computes the weight (estimated transit hours - see
-    network_simulator.distance) between every pair of nodes directly from
+    organflow.distance) between every pair of nodes directly from
     their coordinates via the haversine formula. This replaces the old
     pipeline that scraped driving/straight-line distances from a
     third-party site and cached them in a shelve-backed distance matrix.

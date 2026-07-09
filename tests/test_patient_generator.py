@@ -1,6 +1,6 @@
-from network_simulator.Network import Network, Node
-from network_simulator.PatientGenerator import PatientGenerator
-from network_simulator.WaitList import WaitList
+from organflow.Network import Network, Node
+from organflow.PatientGenerator import PatientGenerator
+from organflow.WaitList import WaitList
 
 test_net = Network()
 test_net.add_node(Node(1))

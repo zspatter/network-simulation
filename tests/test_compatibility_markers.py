@@ -1,6 +1,6 @@
 import random
 
-from network_simulator.compatibility_markers import (
+from organflow.compatibility_markers import (
     BloodTypeLetter,
     BloodTypePolarity,
     OrganType,

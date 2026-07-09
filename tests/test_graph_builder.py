@@ -1,4 +1,4 @@
-from network_simulator.GraphBuilder import GraphBuilder
+from organflow.GraphBuilder import GraphBuilder
 
 
 def test_generate_random_adjacency_dict():

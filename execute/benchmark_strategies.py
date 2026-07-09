@@ -1,5 +1,5 @@
 """
-Compares allocation strategies (network_simulator.allocation.STRATEGIES)
+Compares allocation strategies (organflow.allocation.STRATEGIES)
 over many randomized multi-round simulations. Each trial seeds one
 random.Random that drives network topology and every round's patient/organ
 arrivals identically across strategies, so only the allocation decision
@@ -23,18 +23,18 @@ from benchmark_stats import (
     paired_permutation_test,
 )
 
-from network_simulator.allocation import STRATEGIES, AllocationResult, Strategy
-from network_simulator.clinical import acceptance
-from network_simulator.clinical.living_donor import simulate_living_donor_transplants
-from network_simulator.clinical.progression import simulate_round_progression
-from network_simulator.clinical.removal import simulate_round_removals
-from network_simulator.compatibility_markers import OrganType
-from network_simulator.GraphBuilder import GraphBuilder
-from network_simulator.Network import Network
-from network_simulator.OrganGenerator import OrganGenerator
-from network_simulator.OrganList import OrganList
-from network_simulator.PatientGenerator import PatientGenerator
-from network_simulator.WaitList import WaitList
+from organflow.allocation import STRATEGIES, AllocationResult, Strategy
+from organflow.clinical import acceptance
+from organflow.clinical.living_donor import simulate_living_donor_transplants
+from organflow.clinical.progression import simulate_round_progression
+from organflow.clinical.removal import simulate_round_removals
+from organflow.compatibility_markers import OrganType
+from organflow.GraphBuilder import GraphBuilder
+from organflow.Network import Network
+from organflow.OrganGenerator import OrganGenerator
+from organflow.OrganList import OrganList
+from organflow.PatientGenerator import PatientGenerator
+from organflow.WaitList import WaitList
 
 PRIORITY_TIERS = ('low', 'medium', 'high')
 
@@ -246,16 +246,16 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
     :param other_removal_annual_rate: annualized hazard of a non-death, non-transplant wait-list
         removal (too sick / improved / transferred / declined); 0 disables it (default, so the
         toy benchmark and tests are unaffected). The reality-calibrated scenario report enables it
-        - see network_simulator.clinical.removal.
+        - see organflow.clinical.removal.
     :param living_donors_per_round: number of living-donor transplants per round, drawn off
         eligible kidney/liver waiters; 0 disables it (default) - see
-        network_simulator.clinical.living_donor.
+        organflow.clinical.living_donor.
     :param realistic_outcomes: when True, each matched organ may be declined/discarded with a
         cold-ischemia-dependent probability (a matched-but-discarded organ counts as wasted and
         its patient stays on the list), and transplanted organs' life-years are scaled down by a
         cold-ischemia graft-survival penalty. Off by default (so the bare strategy comparison and
         tests are unaffected); the reality-calibrated scenario report enables it - see
-        network_simulator.clinical.acceptance.
+        organflow.clinical.acceptance.
     :return: aggregate metrics for the trial
     """
     rng = random.Random(seed)
@@ -386,7 +386,7 @@ def print_report(aggregated: List[AggregatedMetrics]) -> None:
 SIGNIFICANCE_METRICS = ('waitlist_deaths', 'life_years_saved')
 
 # real_world_circle (strict adherence to the current distance-circle model - see
-# network_simulator.allocation.geography) is the default significance reference: the
+# organflow.allocation.geography) is the default significance reference: the
 # question worth a corrected p-value is "does this beat what US policy actually does
 # today," not "does this beat this project's original synthetic baseline."
 DEFAULT_REFERENCE_STRATEGY = 'real_world_circle'

@@ -5,8 +5,8 @@ sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 import import_hospitals  # noqa: E402
 
-from network_simulator.Network import Network  # noqa: E402
-from network_simulator.Node import Node  # noqa: E402
+from organflow.Network import Network  # noqa: E402
+from organflow.Node import Node  # noqa: E402
 
 
 class _FakeResponse:

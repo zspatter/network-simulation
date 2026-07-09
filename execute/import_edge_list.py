@@ -1,9 +1,9 @@
 import csv
 from os.path import abspath, join
 
-from network_simulator.exceptions import GraphElementError
-from network_simulator.Network import Network
-from network_simulator.Node import Node
+from organflow.exceptions import GraphElementError
+from organflow.Network import Network
+from organflow.Node import Node
 
 
 def import_edge_list(path, delimiter='\t'):

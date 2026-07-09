@@ -31,8 +31,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -e .[dev]
-      - run: mypy network_simulator
-      - run: pytest --cov=network_simulator --cov-report=term-missing
+      - run: ruff check organflow execute tests
+      - run: mypy organflow
+      - run: pytest --cov=organflow --cov-report=term-missing
 
   # Scheduled workflows are auto-disabled after 60 days without repository
   # activity, and scheduled runs themselves don't count as activity, so the

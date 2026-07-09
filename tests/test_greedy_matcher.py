@@ -1,5 +1,5 @@
-from network_simulator.allocation.matchers.greedy import GreedyMatcher
-from network_simulator.allocation.scoring import PriorityScore
+from organflow.allocation.matchers.greedy import GreedyMatcher
+from organflow.allocation.scoring import PriorityScore
 from tests.allocation_scenarios import build_scenario
 
 

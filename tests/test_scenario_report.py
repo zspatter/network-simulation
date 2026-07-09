@@ -9,8 +9,8 @@ import import_hospitals  # noqa: E402
 import scenario_report  # noqa: E402
 from benchmark_strategies import AggregatedMetrics, SignificanceResult, TrialMetrics  # noqa: E402
 
-from network_simulator.allocation import STRATEGIES  # noqa: E402
-from network_simulator.GraphBuilder import GraphBuilder  # noqa: E402
+from organflow.allocation import STRATEGIES  # noqa: E402
+from organflow.GraphBuilder import GraphBuilder  # noqa: E402
 
 
 def test_resolve_strategy_names_curated_matches_the_documented_tiers():

@@ -1,7 +1,7 @@
 import random
 
-from network_simulator.clinical import acceptance
-from network_simulator.compatibility_markers import OrganType
+from organflow.clinical import acceptance
+from organflow.compatibility_markers import OrganType
 
 
 def test_discard_probability_rises_with_cold_ischemia():

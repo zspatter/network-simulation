@@ -1,7 +1,7 @@
 """
 Pure-Python statistical helpers for comparing allocation strategies
 (execute/benchmark_strategies.py). No new dependency - this follows the same precedent as
-network_simulator.allocation.matchers.optimal, which uses networkx instead of scipy for
+organflow.allocation.matchers.optimal, which uses networkx instead of scipy for
 its own reasons. Two strategies run over the *same* seeds within a benchmark (see
 run_benchmark's seed reuse), so comparisons here are paired, not independent-sample: a
 sign-flip permutation test and a paired effect size, not a two-sample t-test.

@@ -1,7 +1,7 @@
 import random
 
-from network_simulator.clinical.size import SIZE_TOLERANCE, body_size, size_compatible
-from network_simulator.compatibility_markers import OrganType
+from organflow.clinical.size import SIZE_TOLERANCE, body_size, size_compatible
+from organflow.compatibility_markers import OrganType
 
 
 def test_body_size_in_plausible_adult_range():

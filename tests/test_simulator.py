@@ -12,8 +12,8 @@ sys.path.insert(0, join(dirname(dirname(abspath(__file__))), 'execute'))
 
 import simulator  # noqa: E402
 
-from network_simulator.allocation import STRATEGIES  # noqa: E402
-from network_simulator.GraphBuilder import GraphBuilder  # noqa: E402
+from organflow.allocation import STRATEGIES  # noqa: E402
+from organflow.GraphBuilder import GraphBuilder  # noqa: E402
 
 
 def _feed_inputs(monkeypatch, *responses):
