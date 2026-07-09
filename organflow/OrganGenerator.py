@@ -5,6 +5,7 @@ from organflow.clinical.frequencies import (
     DONOR_RECOVERY_PROBABILITIES,
     KIDNEYS_PER_DONOR,
     random_donor_type,
+    random_quality_index,
     random_us_blood_type,
 )
 from organflow.clinical.hla import donor_antigens
@@ -55,10 +56,13 @@ class OrganGenerator:
         for _ in range(n):
             location_id = source.choice(nodes)
             blood_type = random_us_blood_type(rng)
-            # donor-level attributes shared across every organ from this donor
+            # donor-level attributes shared across every organ from this donor. quality_index is
+            # a donor property (marginality from age/comorbidities/warm ischemia), so both kidneys
+            # and every other organ from one donor carry the same index, drawn from the pathway.
             antigens = donor_antigens(rng)
             donor_body_size = body_size(rng)
             donor_type = random_donor_type(rng)
+            quality_index = random_quality_index(donor_type, rng)
 
             for organ_type in OrganType:
                 # determines if this organ is suitable for recovery from this donor
@@ -70,7 +74,8 @@ class OrganGenerator:
                                             location=location_id,
                                             hla_antigens=antigens,
                                             donor_size=donor_body_size,
-                                            donor_type=donor_type))
+                                            donor_type=donor_type,
+                                            quality_index=quality_index))
         return organs
 
     @staticmethod

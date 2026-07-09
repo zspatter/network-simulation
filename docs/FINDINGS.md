@@ -37,7 +37,7 @@ Sampling arrivals from the ~85%-kidney prevalence snapshot over-generated kidney
 ### Validation
 
 After the fixes, `validate_realism.py` on the real network reproduces 2024 to within a few
-percent - deceased transplants within **6 of 42,048** (1.00×), discard 21.6% vs 20.7% (1.04×),
+percent - deceased transplants within **38 of 42,048** (1.00×), discard 21.8% vs 20.7% (1.05×),
 living donors 1.04×. Full table in [METHODOLOGY.md](METHODOLOGY.md) §3.
 
 ## Performance findings

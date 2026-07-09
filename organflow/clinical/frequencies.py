@@ -113,6 +113,28 @@ DONOR_TYPE_WEIGHTS: Dict[DonorType, float] = {
     DonorType.DCD: 7_284.0,
 }
 
+# Continuous donor-quality index on the KDPI convention: 0 = ideal (lowest-risk) donor,
+# 100 = most marginal. It generalizes the binary DBD/DCD split (see clinical.acceptance) into a
+# continuum, so utilization/discard and graft survival vary organ-by-organ rather than by a single
+# per-pathway step. A donor's index is drawn from a Beta distribution (bounded on [0, 100], no
+# calibration constant to overshoot) whose shape depends on the pathway: DBD donors skew toward the
+# ideal end, DCD toward the marginal end, since circulatory-death donation adds warm ischemia and
+# selects sicker donors. These are documented approximations (real KDPI is a kidney-specific
+# percentile from many donor factors); the shapes are chosen so the pathway *means* land where the
+# retired DBD/DCD multipliers did - DBD ~40, DCD ~60 - VERIFY against organ-specific KDPI/quality
+# distributions before quoting absolute quality figures.
+QUALITY_INDEX_BETA_PARAMS: Dict[DonorType, Tuple[float, float]] = {
+    DonorType.DBD: (2.0, 3.0),  # Beta mean 0.40 -> index 40
+    DonorType.DCD: (3.0, 2.0),  # Beta mean 0.60 -> index 60
+}
+
+# Population-mean donor-quality index across the 57/43 DBD/DCD split: the analytic mean of the two
+# pathway Beta means weighted by DONOR_TYPE_WEIGHTS ((0.571*40 + 0.429*60) ~= 48.6). This is the
+# reference the mean-preserving discard multiplier is centered on and the neutral default an
+# organ carries when its quality is unspecified (see clinical.acceptance, Organ). A test asserts
+# the generated population mean matches it, so the calibration can't silently drift.
+POPULATION_MEAN_QUALITY_INDEX = 48.6
+
 
 def weighted_choice(items: Sequence[T], weights: Sequence[float],
                     rng: Optional[random.Random] = None) -> T:
@@ -184,6 +206,21 @@ def random_donor_type(rng: Optional[random.Random] = None) -> DonorType:
     types = list(DONOR_TYPE_WEIGHTS.keys())
     weights = list(DONOR_TYPE_WEIGHTS.values())
     return weighted_choice(types, weights, rng)
+
+
+def random_quality_index(donor_type: DonorType, rng: Optional[random.Random] = None) -> float:
+    """
+    Draws a donor-quality index in [0, 100] (KDPI convention: higher = more marginal) from the
+    pathway-specific Beta distribution in QUALITY_INDEX_BETA_PARAMS. DCD donors skew toward the
+    marginal end, DBD toward the ideal end.
+
+    :param DonorType donor_type: the donor pathway (sets the distribution shape)
+    :param random.Random rng: optional seeded source (defaults to the global module)
+    :return: a donor-quality index in [0.0, 100.0]
+    """
+    source = rng or random
+    alpha, beta = QUALITY_INDEX_BETA_PARAMS[donor_type]
+    return source.betavariate(alpha, beta) * 100.0
 
 
 def is_pediatric_arrival(organ_type: OrganType, rng: Optional[random.Random] = None) -> bool:

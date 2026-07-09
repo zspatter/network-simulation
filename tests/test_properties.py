@@ -13,7 +13,8 @@ from organflow.allocation.matchers.greedy import GreedyMatcher
 from organflow.allocation.matchers.optimal import OptimalMatcher
 from organflow.allocation.scoring import PriorityScore
 from organflow.BloodType import BloodType
-from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity
+from organflow.clinical import acceptance
+from organflow.compatibility_markers import BloodTypeLetter, BloodTypePolarity, OrganType
 from organflow.GraphBuilder import GraphBuilder
 from organflow.OrganGenerator import OrganGenerator
 from organflow.OrganList import OrganList
@@ -46,6 +47,18 @@ def test_blood_compatibility_matches_independent_abo_rh_rule(rl, rp, dl, dp):
     assert recipient.is_compatible_recipient(donor) is expected
     # the two directions must agree: D can donate to R iff R can receive from D
     assert donor.is_compatible_donor(recipient) is expected
+
+
+@given(a=st.floats(0.0, 100.0), b=st.floats(0.0, 100.0))
+def test_donor_quality_effects_are_monotonic(a, b):
+    lo, hi = min(a, b), max(a, b)
+    # a more marginal organ (higher quality index) is never discarded less often and never grafts
+    # better than a less marginal one - the whole point of the continuous quality axis
+    assert acceptance.quality_discard_multiplier(hi) >= acceptance.quality_discard_multiplier(lo)
+    assert acceptance.quality_graft_factor(hi) <= acceptance.quality_graft_factor(lo)
+    assert acceptance.discard_probability(OrganType.Kidney, 2.0, hi) >= \
+           acceptance.discard_probability(OrganType.Kidney, 2.0, lo)
+    assert acceptance.graft_survival_factor(2.0, hi) <= acceptance.graft_survival_factor(2.0, lo)
 
 
 @given(seed=st.integers(0, 10_000), n_patients=st.integers(4, 40), n_donors=st.integers(2, 8))

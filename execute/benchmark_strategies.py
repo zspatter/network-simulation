@@ -88,6 +88,12 @@ class TrialMetrics:
     # organs matched to a recipient but then declined/discarded (a subset of organs_wasted);
     # only nonzero when run_trial's realistic_outcomes is enabled - see clinical.acceptance
     organs_discarded: int = 0
+    # running sums of the donor-quality index over transplanted vs discarded organs (populated
+    # only under realistic_outcomes) - lets the benchmark check that marginal (high-index) organs
+    # are preferentially discarded, so the mean transplanted organ is better than the mean wasted
+    # one (see clinical.acceptance and the quality-index metamorphic test)
+    quality_transplanted_sum: float = 0.0
+    quality_discarded_sum: float = 0.0
     # pediatric candidates seen / transplanted / died - lets the benchmark measure whether the
     # pediatric priority in the policy scorers actually helps kids (see allocation.scoring)
     pediatric_seen: int = 0
@@ -121,6 +127,16 @@ class TrialMetrics:
         return statistics.median(self.wait_times_to_transplant) \
             if self.wait_times_to_transplant else 0.0
 
+    def mean_transplanted_quality(self) -> float:
+        """Mean donor-quality index of transplanted organs (0.0 if none; realistic_outcomes)."""
+        return self.quality_transplanted_sum / self.organs_transplanted \
+            if self.organs_transplanted else 0.0
+
+    def mean_discarded_quality(self) -> float:
+        """Mean donor-quality index of discarded organs (0.0 if none; realistic_outcomes)."""
+        return self.quality_discarded_sum / self.organs_discarded \
+            if self.organs_discarded else 0.0
+
 
 @dataclass
 class TrialConfig:
@@ -149,15 +165,17 @@ def _record_allocation(result: AllocationResult, network: Network, wait_list: Wa
         transit_hours = 0.0
         if config.realistic_outcomes:
             transit_hours = network.transit_from(organ.origin_location)[patient.location]
-            if acceptance.is_discarded(organ.organ_type, transit_hours, organ.donor_type, rng):
+            if acceptance.is_discarded(organ.organ_type, transit_hours, organ.quality_index, rng):
                 # declined down the match run -> wasted; the patient keeps waiting
                 metrics.organs_wasted += 1
                 metrics.organs_discarded += 1
+                metrics.quality_discarded_sum += organ.quality_index
                 continue
 
         life_years = LIFE_YEARS_BY_ORGAN[patient.organ_needed]
         if config.realistic_outcomes:
-            life_years *= acceptance.graft_survival_factor(transit_hours, organ.donor_type)
+            life_years *= acceptance.graft_survival_factor(transit_hours, organ.quality_index)
+            metrics.quality_transplanted_sum += organ.quality_index
 
         metrics.organs_transplanted += 1
         metrics.total_priority_served += patient.priority

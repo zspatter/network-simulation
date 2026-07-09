@@ -12,6 +12,13 @@ if TYPE_CHECKING:
 path_structure = Optional[List[Optional[int]]]
 shortest_path_structure = Tuple[path_structure, float]
 
+# Neutral donor-quality index for a hand-constructed organ (KDPI convention, 0 = ideal ..
+# 100 = marginal): the population-mean index, which yields a neutral (1.0) discard multiplier and
+# full graft survival (see organflow.clinical.acceptance). Kept as a local literal so the base
+# Organ entity does not import the clinical stats package; a test pins it to
+# frequencies.POPULATION_MEAN_QUALITY_INDEX so the two cannot drift.
+NEUTRAL_QUALITY_INDEX = 48.6
+
 
 class Organ:
     """
@@ -20,11 +27,12 @@ class Organ:
     Each organ has a name, a unique ID, lifetime (a maximum out of body duration),
     type matching, and a location.
 
-    Clinical fields (hla_antigens, donor_size, donor_type) describe the donor and
-    gate feasibility / outcomes: HLA crossmatch (kidney), size matching (heart/lung),
-    and the DBD/DCD pathway (which affects discard and graft survival). They are
-    populated by the generator and default to empty/None/DBD so hand-constructed
-    organs simply pass those gates and carry no DCD penalty (see organflow.clinical).
+    Clinical fields (hla_antigens, donor_size, donor_type, quality_index) describe
+    the donor and gate feasibility / outcomes: HLA crossmatch (kidney), size matching
+    (heart/lung), the DBD/DCD pathway, and a continuous donor-quality index (KDPI
+    convention) that drives discard and graft survival. They are populated by the
+    generator and default to empty/None/DBD/neutral so hand-constructed organs simply
+    pass those gates and carry no quality penalty (see organflow.clinical).
     """
 
     organ_count = 0
@@ -33,7 +41,8 @@ class Organ:
                  location: int, organ_list: Optional[OrganList] = None,
                  hla_antigens: FrozenSet[int] = frozenset(),
                  donor_size: Optional[float] = None,
-                 donor_type: DonorType = DonorType.DBD) -> None:
+                 donor_type: DonorType = DonorType.DBD,
+                 quality_index: float = NEUTRAL_QUALITY_INDEX) -> None:
         Organ.organ_count = Organ.organ_count + 1
 
         self.organ_id: int = Organ.organ_count
@@ -48,6 +57,7 @@ class Organ:
         self.hla_antigens: FrozenSet[int] = hla_antigens
         self.donor_size: Optional[float] = donor_size
         self.donor_type: DonorType = donor_type
+        self.quality_index: float = quality_index
 
         if organ_list:
             organ_list.add_organ(self)

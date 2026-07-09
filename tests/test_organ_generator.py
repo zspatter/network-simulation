@@ -42,6 +42,18 @@ def test_generated_organs_carry_a_donor_type_and_both_pathways_appear():
     assert donor_types == {DonorType.DBD, DonorType.DCD}
 
 
+def test_generated_organs_carry_a_bounded_quality_index_that_tracks_pathway():
+    # every organ gets a donor-quality index in [0, 100]; the index is a donor-level attribute,
+    # and DCD donors are more marginal on average, so their organs' mean index is higher
+    organs = OrganGenerator.generate_organs(graph=test_net, n=200, rng=random.Random(0))
+    assert all(0.0 <= organ.quality_index <= 100.0 for organ in organs)
+
+    dbd = [o.quality_index for o in organs if o.donor_type is DonorType.DBD]
+    dcd = [o.quality_index for o in organs if o.donor_type is DonorType.DCD]
+    assert dbd and dcd
+    assert sum(dcd) / len(dcd) > sum(dbd) / len(dbd)
+
+
 def test_generate_organs_restricts_location_to_eligible_nodes():
     multi_node_net = Network()
     multi_node_net.add_node(Node(1))

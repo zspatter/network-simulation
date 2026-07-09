@@ -1,16 +1,19 @@
 import random
+import statistics
 from collections import Counter
 
 from organflow.clinical.frequencies import (
     DONOR_RECOVERY_PROBABILITIES,
     DONOR_TYPE_WEIGHTS,
     PEDIATRIC_FRACTION_BY_ORGAN,
+    POPULATION_MEAN_QUALITY_INDEX,
     US_BLOOD_TYPE_WEIGHTS,
     US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS,
     US_WAITLIST_ORGAN_WEIGHTS,
     is_pediatric_arrival,
     random_arrival_organ,
     random_donor_type,
+    random_quality_index,
     random_us_blood_type,
     random_waitlist_organ,
     weighted_choice,
@@ -102,6 +105,30 @@ def test_random_donor_type_matches_the_2024_split():
     # DBD is the majority pathway, but DCD is a large minority (~43%)
     assert counts[DonorType.DBD] > counts[DonorType.DCD]
     assert counts[DonorType.DCD] / n > 0.35
+
+
+def test_random_quality_index_is_bounded_and_pathway_dependent():
+    rng = random.Random(29)
+    n = 40000
+    dbd = [random_quality_index(DonorType.DBD, rng) for _ in range(n)]
+    dcd = [random_quality_index(DonorType.DCD, rng) for _ in range(n)]
+
+    # KDPI convention is a percentile-style index bounded on [0, 100]
+    assert all(0.0 <= q <= 100.0 for q in dbd)
+    assert all(0.0 <= q <= 100.0 for q in dcd)
+    # DCD donors are more marginal on average (higher index) than DBD
+    assert statistics.mean(dcd) > statistics.mean(dbd)
+    assert abs(statistics.mean(dbd) - 40.0) < 1.0
+    assert abs(statistics.mean(dcd) - 60.0) < 1.0
+
+
+def test_quality_index_population_mean_matches_the_constant():
+    # sampling the whole donor population (pathway split + per-pathway quality) must recover the
+    # documented POPULATION_MEAN_QUALITY_INDEX, the reference the discard multiplier is centered on
+    rng = random.Random(31)
+    n = 60000
+    draws = [random_quality_index(random_donor_type(rng), rng) for _ in range(n)]
+    assert abs(statistics.mean(draws) - POPULATION_MEAN_QUALITY_INDEX) < 0.5
 
 
 def test_is_pediatric_arrival_matches_the_per_organ_fraction():

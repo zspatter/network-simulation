@@ -1,6 +1,12 @@
 # ADR-0008: Model DCD vs DBD donor quality as a mean-preserving discard/graft modifier
 
-**Date**: 2026-07-09 · **Status**: Accepted
+**Date**: 2026-07-09 · **Status**: Superseded by [ADR-0010](0010-continuous-donor-quality-index.md)
+
+> Superseded: the binary DBD/DCD discard/graft multipliers this record introduced were replaced by
+> a continuous donor-quality index in [ADR-0010](0010-continuous-donor-quality-index.md). The
+> `donor_type` attribute and the 57/43 split remain - they now select the per-pathway quality
+> distribution rather than a single multiplier - so DCD-is-more-marginal survives as a special case
+> of the continuum. The mean-preserving property below is preserved by construction.
 
 ## Context
 

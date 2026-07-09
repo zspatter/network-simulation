@@ -13,5 +13,6 @@ gets a new record that supersedes the old one.
 | [0005](0005-patient-identity-equality.md) | `Patient` uses identity equality; matchers apply side effects explicitly | 2026-07-08 |
 | [0006](0006-per-organ-type-optimal-matching.md) | Optimal matching is per-organ-type LAP (scipy), not one global graph match | 2026-07-08 |
 | [0007](0007-wait-list-outflow-channels.md) | Model all four wait-list exits, not just transplant and death | 2026-07-08 |
-| [0008](0008-dcd-vs-dbd-donor-quality.md) | Model DCD vs DBD donor quality as a mean-preserving discard/graft modifier | 2026-07-09 |
+| [0008](0008-dcd-vs-dbd-donor-quality.md) | Model DCD vs DBD donor quality as a mean-preserving discard/graft modifier *(superseded by 0010)* | 2026-07-09 |
 | [0009](0009-pediatric-priority.md) | Model pediatric priority as a scorer bonus in the policy scorers only | 2026-07-09 |
+| [0010](0010-continuous-donor-quality-index.md) | Generalize DBD/DCD into a continuous donor-quality index | 2026-07-09 |

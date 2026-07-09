@@ -67,14 +67,18 @@ but not for kidney (30 h budget reaches every hospital). `organflow/distance.py`
 | Prevalence organ mix (stock) | 85% kidney (validation only) | OPTN/SRTR waitlist snapshot |
 | Donor recovery / donor | Kidney 0.95 (×2) / Liver 0.75 / Heart 0.30 / Lung 0.20 / Pancreas 0.10 / Intestine 0.03 | per-organ recovery likelihood |
 | Donor pathway | DBD 57% / DCD 43% | OPTN/SRTR 2024 (9,705 DBD / 7,284 DCD) |
+| Donor quality index | KDPI-style 0-100; DBD mean ~40, DCD mean ~60 (per-pathway Beta) | documented approximation (VERIFY vs organ KDPI) |
 | Pediatric share of arrivals | Intestine 25% · Heart 11% · Liver 6% · Kidney/Lung 2% · Pancreas 0.5% | documented approximation (VERIFY vs OPTN) |
 
 Arrivals are drawn from the **additions** mix, not the prevalence snapshot - see
-[ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). DCD organs (donation after circulatory
-death) are discarded more and graft worse than DBD - see
-[ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md). Pediatric candidates (< 18) get a priority
-bonus in the policy scorers (`RealWorldScore`, `ContinuousDistributionScore`) - see
-[ADR-0009](adr/0009-pediatric-priority.md). `organflow/clinical/frequencies.py`.
+[ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). Each donor carries a continuous
+donor-quality index (KDPI convention, 0 = ideal .. 100 = marginal) that drives discard and graft
+survival; DCD donors skew marginal, so DCD organs are discarded more and graft worse than DBD as a
+special case - see [ADR-0010](adr/0010-continuous-donor-quality-index.md) (which generalized the
+earlier binary DBD/DCD model, [ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md)). Pediatric
+candidates (< 18) get a priority bonus in the policy scorers (`RealWorldScore`,
+`ContinuousDistributionScore`) - see [ADR-0009](adr/0009-pediatric-priority.md).
+`organflow/clinical/frequencies.py`.
 
 ### Urgency, mortality, and the non-transplant exits
 
@@ -84,7 +88,7 @@ bonus in the policy scorers (`RealWorldScore`, `ContinuousDistributionScore`) - 
 | Mortality hazard | 0.05/yr (acuity→0) … 12.0/yr (acuity→1), geometric | reproduces e.g. liver MELD 90-day mortality bands |
 | Non-death removal | 5%/yr competing risk | too sick / improved / transferred / declined |
 | Living-donor transplants | ~7,000/yr (kidney/liver) | OPTN/SRTR 2024 (7,024 living donors) |
-| Organ discard (non-use) | Kidney 29.3% / Pancreas 25.1% / Liver 11.5% / Lung 11.3% / Intestine 4.9% / Heart 1.9% (population average; ×0.78 for DBD, ×1.30 for DCD) | OPTN/SRTR 2024 ADR, Deceased Organ Donation |
+| Organ discard (non-use) | Kidney 29.3% / Pancreas 25.1% / Liver 11.5% / Lung 11.3% / Intestine 4.9% / Heart 1.9% (population average; scaled by a mean-preserving donor-quality multiplier, so marginal organs are discarded more) | OPTN/SRTR 2024 ADR, Deceased Organ Donation |
 
 `clinical/urgency.py`, `clinical/mortality.py`, `clinical/removal.py`, `clinical/living_donor.py`,
 `clinical/acceptance.py`.
@@ -96,16 +100,16 @@ Output of `python execute/validate_realism.py` (real network, 10% scale extrapol
 
 | Metric | Model | OPTN 2024 | Ratio |
 |---|---|---|---|
-| Deceased-donor transplants/yr | 42,042 | 42,048 | **1.00×** |
+| Deceased-donor transplants/yr | 42,010 | 42,048 | **1.00×** |
 | Living-donor transplants/yr | 7,280 | 7,024 | 1.04× |
-| Organ non-use (discard) rate | 21.6% | 20.7% | 1.04× |
-| Wait-list deaths/yr | 7,167 | ~6,000 | 1.19× |
-| Wait-list size (still climbing at 8 yr) | 91,813 | ~103,000 | 0.89× |
-| Non-death removals/yr | 2,754 | ~8,000 | 0.34× |
+| Organ non-use (discard) rate | 21.8% | 20.7% | 1.05× |
+| Wait-list deaths/yr | 7,412 | ~6,000 | 1.24× |
+| Wait-list size (still climbing at 8 yr) | 91,030 | ~103,000 | 0.88× |
+| Non-death removals/yr | 2,639 | ~8,000 | 0.33× |
 
 The primary flows (transplants, discard, living donors) reproduce reality to within a few
 percent. The two weakest matches are **coupled**: the 5%/yr removal rate under-produces removals
-(0.34×), which leaves slightly too many patients to die (1.19×). Raising the removal rate would
+(0.33×), which leaves slightly too many patients to die (1.24×). Raising the removal rate would
 improve both; it is left as a documented knob because the sensitivity analysis (below) shows the
 conclusions do not depend on it.
 

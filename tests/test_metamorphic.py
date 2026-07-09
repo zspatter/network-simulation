@@ -107,6 +107,29 @@ def test_pediatric_priority_transplants_more_children():
     assert with_priority > without_priority
 
 
+def _pooled_quality_means(seeds):
+    # pool transplanted/discarded quality across seeds (small per-trial discard counts are noisy),
+    # then compare the pooled means. realistic_outcomes must be on for the quality sums to populate.
+    tx_sum = tx_n = disc_sum = disc_n = 0.0
+    for seed in seeds:
+        m = run_trial(seed=seed, strategy=STRATEGIES['real_world_circle'], num_nodes=12,
+                      rounds=10, patients_per_round=25, harvests_per_round=6,
+                      realistic_outcomes=True)
+        tx_sum += m.quality_transplanted_sum
+        tx_n += m.organs_transplanted
+        disc_sum += m.quality_discarded_sum
+        disc_n += m.organs_discarded
+    return tx_sum / tx_n, disc_sum / disc_n
+
+
+def test_marginal_organs_are_preferentially_discarded():
+    # discard probability rises with the donor-quality index, so across a run the organs that end
+    # up discarded are more marginal on average than the ones transplanted - the continuous quality
+    # index surfacing as a measurable utilization effect, not just a per-organ multiplier
+    mean_transplanted_q, mean_discarded_q = _pooled_quality_means(range(6))
+    assert mean_discarded_q > mean_transplanted_q
+
+
 def test_acuity_scorer_ranks_a_sicker_patient_at_least_as_high():
     # monotonicity of the "sickest first" policy: raising a patient's acuity can only raise
     # (never lower) its allocation score
