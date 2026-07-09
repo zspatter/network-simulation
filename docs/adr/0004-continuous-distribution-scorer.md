@@ -8,7 +8,7 @@ Real OPTN policy is moving from hard geographic boundaries (regions → distance
 **continuous distribution**, where distance is one continuously-weighted point factor with no
 boundary (already live for lung; heart and liver in progress). The existing geographic models in
 the codebase are all hard constraints applied by `TieredMatcher`. To study where policy is
-headed, the model needs a soft, continuous geography term — and, more importantly, a way to ask
+headed, the model needs a soft, continuous geography term - and, more importantly, a way to ask
 "how much geographic weight is right?" rather than assuming an answer.
 
 ## Decision

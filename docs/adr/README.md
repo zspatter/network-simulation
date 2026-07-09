@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Short, dated records of the load-bearing modeling and design decisions — the *why* behind
+Short, dated records of the load-bearing modeling and design decisions - the *why* behind
 choices that aren't obvious from the code. Each is immutable once accepted; a later reversal
 gets a new record that supersedes the old one.
 

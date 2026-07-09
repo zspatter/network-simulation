@@ -7,7 +7,7 @@
 US deceased donors follow two pathways: donation after brain death (DBD) and donation after
 circulatory death (DCD). DCD organs endure a warm-ischemia interval between withdrawal of support
 and cold perfusion, so they are recovered later, discarded more often, and graft somewhat worse.
-DCD is now a large and growing share — 7,284 of 16,989 deceased donors in 2024 (~43%). The model
+DCD is now a large and growing share - 7,284 of 16,989 deceased donors in 2024 (~43%). The model
 treated all donors identically, so it could not represent this quality difference or study the
 utilization questions (marginal-organ acceptance) that current policy debates center on.
 
@@ -25,7 +25,7 @@ DCD rather than inflating the total.
 ## Consequences
 
 - National calibration is unchanged: deceased transplants stay at 1.00× of 42,048 and organ
-  non-use at 21.7% vs. the observed 20.7% — verified with `validate_realism.py` after the change.
+  non-use at 21.7% vs. the observed 20.7% - verified with `validate_realism.py` after the change.
   Donor quality now shows up in *outcomes* (which organs are wasted, how long grafts last)
   without perturbing the validated aggregates.
 - A test asserts the multipliers are mean-preserving, so the calibration can't silently drift if

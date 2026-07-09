@@ -4,7 +4,7 @@
 
 ## Context
 
-Real allocation gives pediatric candidates (< 18) substantial priority — very strong for heart
+Real allocation gives pediatric candidates (< 18) substantial priority - very strong for heart
 and kidney, and via PELD (rather than MELD) for liver. The model treated every candidate the
 same regardless of age, so it could not represent this policy lever or measure what it buys
 pediatric patients.
@@ -12,13 +12,13 @@ pediatric patients.
 ## Decision
 
 Add `Patient.is_pediatric`, generated per an organ-specific fraction (`PEDIATRIC_FRACTION_BY_ORGAN`
-— peds are a large share of intestine listings, a small share of kidney/lung). Apply a pediatric
+- peds are a large share of intestine listings, a small share of kidney/lung). Apply a pediatric
 **priority bonus** only in the policy-modeling scorers: a flat `+25` to `RealWorldScore`'s policy
 points and a `pediatric_weight` term in `ContinuousDistributionScore`. The comparison-baseline
 scorers (`PriorityScore`, `AcuityScore`, `CompositeScore`) are left unchanged, so a benchmark can
 still isolate the pediatric effect by holding the scorer's other factors fixed.
 
-The bonus is large but not absolute — decisive on the low-numbered heart status scale, a
+The bonus is large but not absolute - decisive on the low-numbered heart status scale, a
 strong-but-beatable boost on the wider kidney/lung scales, which is roughly how real policy treats
 peds across organs.
 

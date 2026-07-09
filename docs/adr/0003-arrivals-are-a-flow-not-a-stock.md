@@ -13,7 +13,7 @@ inflates the backlog.
 
 ## Decision
 
-Sample arrivals from a distinct **additions** distribution — the actual 2024 OPTN new-registration
+Sample arrivals from a distinct **additions** distribution - the actual 2024 OPTN new-registration
 counts by organ (kidney ~65%, not 85%). Keep the prevalence snapshot separately, used only to
 validate the *resulting* steady-state composition.
 
@@ -23,5 +23,5 @@ validate the *resulting* steady-state composition.
   generation) and `US_WAITLIST_ORGAN_WEIGHTS` (stock, validation).
 - Corrects the largest structural contributor to unrealistic backlog growth, alongside the
   missing outflow channels ([ADR-0007](0007-wait-list-outflow-channels.md)).
-- The exact counts are pinned to the 2024 ADR — see
+- The exact counts are pinned to the 2024 ADR - see
   [DATA_PROVENANCE.md](../DATA_PROVENANCE.md).

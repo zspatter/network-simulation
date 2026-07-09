@@ -13,7 +13,7 @@ general-graph `max_weight_matching` over every organ at once. On a real national
 
 Solve **one `scipy.optimize.linear_sum_assignment` (Hungarian/Jonker-Volgenant) per organ type**.
 Organ types never share candidates (a patient needs one organ type), so the global bipartite
-graph decomposes into independent per-type components anyway — solving them separately is exact,
+graph decomposes into independent per-type components anyway - solving them separately is exact,
 not an approximation. scipy's LAP solver is specialized for exactly this rectangular assignment
 problem.
 
@@ -21,6 +21,6 @@ problem.
 
 - Handles a several-hundred × tens-of-thousands matrix in well under a second (vs. minutes /
   crashes), which is what makes national-scale scenario reports feasible.
-- Adds a `scipy` dependency — justified by the scale requirement.
+- Adds a `scipy` dependency - justified by the scale requirement.
 - A property test asserts the optimal total score is never below the greedy heuristic's, guarding
   the optimality claim.

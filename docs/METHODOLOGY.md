@@ -4,13 +4,13 @@ How the simulation is grounded in reality: every model constant, its source, the
 target it is meant to reproduce, and the measured result. This is the reference for *why* the
 numbers are what they are; the code comments carry the same citations inline.
 
-All figures are regenerable — see [Regenerating these results](#regenerating-these-results).
+All figures are regenerable - see [Regenerating these results](#regenerating-these-results).
 
 ## 1. What the model is
 
 A discrete-event simulation of US deceased-donor organ allocation. One **round = 7 days**. Each
 round: new patients are listed, organs are recovered from deceased donors, an allocation
-strategy matches feasible organ/patient pairs, and the patients still waiting deteriorate — some
+strategy matches feasible organ/patient pairs, and the patients still waiting deteriorate - some
 are transplanted from living donors, some are removed for non-death reasons, and some die. The
 whole thing is deterministic under one seeded `random.Random`, so differences between strategies
 are attributable to the strategy, not noise.
@@ -28,25 +28,25 @@ Four exits and two entries govern the wait-list balance (all calibrated below):
 ### Organ viability and operation buffer (hours)
 
 `viability` is the maximum cold-ischemia time; `operation_buffer` is the implant-to-reperfusion
-portion of the recipient operation that runs *within* that window (not the full OR time — see
+portion of the recipient operation that runs *within* that window (not the full OR time - see
 [ADR-0002](adr/0002-operation-buffer-is-implant-to-reperfusion.md)). A match is feasible only if
-`viability − transit ≥ operation_buffer`.
+`viability - transit ≥ operation_buffer`.
 
 | Organ | Viability (max CIT) | Operation buffer | Published CIT range |
 |---|---|---|---|
-| Heart | 6 h | 1.5 h | 4–6 h |
-| Lung | 6 h | 1.5 h | 4–8 h |
-| Liver | 12 h | 2.0 h | 8–12 h |
-| Kidney | 30 h | 1.0 h | 24–36 h |
-| Pancreas | 12 h | 1.5 h | 12–18 h |
-| Intestine | 8 h | 2.0 h | 6–8 h |
+| Heart | 6 h | 1.5 h | 4-6 h |
+| Lung | 6 h | 1.5 h | 4-8 h |
+| Liver | 12 h | 2.0 h | 8-12 h |
+| Kidney | 30 h | 1.0 h | 24-36 h |
+| Pancreas | 12 h | 1.5 h | 12-18 h |
+| Intestine | 8 h | 2.0 h | 6-8 h |
 
 Source: published cold-ischemia-time ranges (transplant literature). `Organ.get_viability` /
 `Organ.get_operation_buffer`.
 
 ### Transit time
 
-Door-to-door transport is the faster of two modes, `min(ground, air)` — monotonic and
+Door-to-door transport is the faster of two modes, `min(ground, air)` - monotonic and
 continuous in distance (see [ADR-0001](adr/0001-transit-model.md)):
 
 ```
@@ -69,11 +69,11 @@ but not for kidney (30 h budget reaches every hospital). `organflow/distance.py`
 | Donor pathway | DBD 57% / DCD 43% | OPTN/SRTR 2024 (9,705 DBD / 7,284 DCD) |
 | Pediatric share of arrivals | Intestine 25% · Heart 11% · Liver 6% · Kidney/Lung 2% · Pancreas 0.5% | documented approximation (VERIFY vs OPTN) |
 
-Arrivals are drawn from the **additions** mix, not the prevalence snapshot — see
+Arrivals are drawn from the **additions** mix, not the prevalence snapshot - see
 [ADR-0003](adr/0003-arrivals-are-a-flow-not-a-stock.md). DCD organs (donation after circulatory
-death) are discarded more and graft worse than DBD — see
+death) are discarded more and graft worse than DBD - see
 [ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md). Pediatric candidates (< 18) get a priority
-bonus in the policy scorers (`RealWorldScore`, `ContinuousDistributionScore`) — see
+bonus in the policy scorers (`RealWorldScore`, `ContinuousDistributionScore`) - see
 [ADR-0009](adr/0009-pediatric-priority.md). `organflow/clinical/frequencies.py`.
 
 ### Urgency, mortality, and the non-transplant exits
@@ -116,12 +116,12 @@ outcome from low to high, ranked by effect on wait-list deaths):
 
 | Constant | Deaths swing | Interpretation |
 |---|---|---|
-| donor recovery prob | −91% | **dominant** — organ supply is the fundamental scarcity |
-| air overhead (transit) | +21% | secondary — transit realism gates thoracic feasibility |
-| max acuity death rate | +11% | secondary — the mortality calibration itself |
-| base discard prob | +11% | secondary — fewer transplants → more deaths |
-| ischemia discard / hr | −9% | small (near noise at low seed counts) |
-| other removal rate | +2% | **robust** — conclusions do not lean on it |
+| donor recovery prob | -91% | **dominant** - organ supply is the fundamental scarcity |
+| air overhead (transit) | +21% | secondary - transit realism gates thoracic feasibility |
+| max acuity death rate | +11% | secondary - the mortality calibration itself |
+| base discard prob | +11% | secondary - fewer transplants → more deaths |
+| ischemia discard / hr | -9% | small (near noise at low seed counts) |
+| other removal rate | +2% | **robust** - conclusions do not lean on it |
 | graft penalty / hr | 0% | **robust** (affects life-years only) |
 
 Takeaway: any conclusion about lives saved rests primarily on organ supply and transit realism,
@@ -135,7 +135,7 @@ continuous-distribution scorer; see [ADR-0004](adr/0004-continuous-distribution-
 | proximity weight | life-years | mean transit | discard |
 |---|---|---|---|
 | 0 (geography ignored) | 29,182 | 4.60 h | 22.0% |
-| 0.5–1.0 (sweet spot) | ~31,500 | 1.5–1.8 h | ~21% |
+| 0.5-1.0 (sweet spot) | ~31,500 | 1.5-1.8 h | ~21% |
 | 8 (hyper-local) | 31,479 | 1.36 h | 21.1% |
 
 **Non-obvious result**: ignoring geography entirely is *worse* on life-years, because far-flung

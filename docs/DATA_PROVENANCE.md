@@ -10,14 +10,14 @@ is refreshed.
   <https://www.hrsa.gov/optn/about/membership/optn-membership-database>
 - **Snapshot in repo**: `execute/import/optn_membership/optn_membership_2026-07-02.csv`
 - **What is used**: rows of type `Transplant Hospital`, `Independent OPO`, `Hospital Based OPO`
-  with `membershipStatus = Approved` — the only member types that are physical locations the
+  with `membershipStatus = Approved` - the only member types that are physical locations the
   simulation places patients/organs at.
 - **Geocoding**: US Census Bureau batch geocoder (no API key), with a rate-limited Nominatim
   (OpenStreetMap) fallback for institutional-campus addresses Census cannot match. The result
   (297 nodes: 245 transplant hospitals, 52 OPOs) is cached at
   `<csv>.network_cache.pkl` so runs don't re-hit the geocoder. See `execute/import_hospitals.py`.
 
-## National calibration figures — OPTN/SRTR 2024 Annual Data Report
+## National calibration figures - OPTN/SRTR 2024 Annual Data Report
 
 Retrieved **2026-07-08** from <https://srtr.hrsa.gov/adr/2024/> (Overview and Deceased Organ
 Donation chapters). These pin the arrival, discard, donor, and living-donor constants.
@@ -27,7 +27,7 @@ Donation chapters). These pin the arrival, discard, donor, and living-donor cons
 | New waitlist registrations, total | 70,600 | `scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS` |
 | New registrations by organ | Kidney 50,481 · Liver 15,395 · Heart 6,068 · Lung 3,822 · Pancreas 1,979¹ · Intestine 128 | `frequencies.US_WAITLIST_ADDITIONS_ORGAN_WEIGHTS` |
 | Deceased donors | 16,989 | `scenario_report.NATIONAL_WEEKLY_DECEASED_DONORS` |
-| Donor pathway split | DBD 9,705 · DCD 7,284 (~57% / 43%) | `frequencies.DONOR_TYPE_WEIGHTS` (drives per-organ DCD discard/graft — see [ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md)) |
+| Donor pathway split | DBD 9,705 · DCD 7,284 (~57% / 43%) | `frequencies.DONOR_TYPE_WEIGHTS` (drives per-organ DCD discard/graft - see [ADR-0008](adr/0008-dcd-vs-dbd-donor-quality.md)) |
 | Living donors | 7,024 | `scenario_report.NATIONAL_WEEKLY_LIVING_DONORS` (~7,000) |
 | Deceased-donor transplants | 42,048 | validation target |
 | Organ non-use (discard) rate, overall | 20.7% | validation target |
@@ -38,7 +38,7 @@ Donation chapters). These pin the arrival, discard, donor, and living-donor cons
 one-organ-per-patient model can't represent the dual need.
 
 > **Note on stock vs. flow.** The ADR also reports 167,230 "candidates on the waiting list
-> during 2024" — that is a flow-inclusive count (everyone listed at any point), not the standing
+> during 2024" - that is a flow-inclusive count (everyone listed at any point), not the standing
 > snapshot. The steady-state validation target is the ~103,000 point-prevalence figure.
 
 **Verification history**: the arrival mix and discard rates were originally documented
@@ -65,5 +65,5 @@ HRSA/OPTN policy history:
   <https://www.hrsa.gov/optn/professionals/resources/kidney-pancreas/kidney-allocation-system/removal-dsa-region-kidney-allocation-policy>
 - Continuous distribution overview:
   <https://www.hrsa.gov/optn/policies-bylaws/policy-issues/continuous-distribution>
-- Continuous distribution — heart:
+- Continuous distribution - heart:
   <https://optn.transplant.hrsa.gov/policies-bylaws/a-closer-look/continuous-distribution/continuous-distribution-heart/>
