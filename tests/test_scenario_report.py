@@ -270,3 +270,18 @@ def test_build_network_uses_the_import_hospitals_pipeline(monkeypatch, tmp_path)
     assert len(network.network_dict) == 2
     assert transplant_hospital_ids == {1}
     assert opo_ids == {2}
+
+
+def test_build_network_rebuilds_when_the_cache_is_unreadable(monkeypatch, tmp_path):
+    csv_path = tmp_path / 'membership.csv'
+    csv_path.write_text(
+            'region,organizationType,membershipStatus,accountName,address1,city,state,zipCode\n'
+            '4,Transplant Hospital,Approved,Test Hospital,100 Main St,Austin,TX,78701\n')
+    # a stale/corrupt cache (e.g. pickled under a previous module name) must not be fatal
+    cache_path = csv_path.with_suffix('.network_cache.pkl')
+    cache_path.write_bytes(b'not a valid pickle')
+    monkeypatch.setattr(import_hospitals, 'geocode_addresses', lambda rows: {0: (30.27, -97.74)})
+
+    network, _, _ = scenario_report.build_network(str(csv_path))
+
+    assert len(network.network_dict) == 1  # rebuilt from the CSV, ignoring the unreadable cache

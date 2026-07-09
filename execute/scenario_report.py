@@ -184,8 +184,13 @@ def build_network(membership_csv_path: str,
     """
     cache_path = Path(membership_csv_path).with_suffix('.network_cache.pkl')
     if use_cache and cache_path.exists():
-        with cache_path.open('rb') as cache_file:
-            return pickle.load(cache_file)
+        try:
+            with cache_path.open('rb') as cache_file:
+                return pickle.load(cache_file)
+        except (pickle.UnpicklingError, ModuleNotFoundError, AttributeError, EOFError):
+            # a stale or incompatible cache (e.g. pickled under a previous module name, or a
+            # partial write) should never be fatal - fall through and rebuild it fresh
+            pass
 
     rows = filter_physical_locations(read_membership_csv(membership_csv_path))
     result = import_nodes(rows, NEIGHBOR_REGIONS)
