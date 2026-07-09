@@ -10,6 +10,7 @@ import scenario_report  # noqa: E402
 from benchmark_strategies import AggregatedMetrics, SignificanceResult, TrialMetrics  # noqa: E402
 
 from organflow.allocation import STRATEGIES  # noqa: E402
+from organflow.clinical.retransplant import RETRANSPLANT_SHARE_OF_LISTINGS  # noqa: E402
 from organflow.GraphBuilder import GraphBuilder  # noqa: E402
 
 
@@ -37,15 +38,22 @@ def test_resolve_strategy_names_rejects_unknown_names():
 def test_scaled_weekly_rates_scales_down_from_national_figures():
     patients, donors, living = scenario_report.scaled_weekly_rates(0.1)
 
-    assert patients == round(scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS * 0.1)
+    # patients is the FIRST-TIME rate: the national total minus the re-transplant share, which the
+    # graft-failure loop supplies endogenously (see clinical.retransplant)
+    first_time = (scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS
+                  * (1.0 - RETRANSPLANT_SHARE_OF_LISTINGS))
+    assert patients == round(first_time * 0.1)
     assert donors == round(scenario_report.NATIONAL_WEEKLY_DECEASED_DONORS * 0.1)
     assert living == round(scenario_report.NATIONAL_WEEKLY_LIVING_DONORS * 0.1)
 
 
-def test_scaled_weekly_rates_at_full_scale_matches_national_figures():
+def test_scaled_weekly_rates_at_full_scale_is_the_first_time_share_of_national():
     patients, donors, living = scenario_report.scaled_weekly_rates(1.0)
 
-    assert patients == scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS
+    # first-time only; re-transplants are generated endogenously to reach the national total
+    assert patients == round(
+            scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS * (1.0 - RETRANSPLANT_SHARE_OF_LISTINGS))
+    assert patients < scenario_report.NATIONAL_WEEKLY_NEW_PATIENTS
     assert donors == scenario_report.NATIONAL_WEEKLY_DECEASED_DONORS
     assert living == scenario_report.NATIONAL_WEEKLY_LIVING_DONORS
 

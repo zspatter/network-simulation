@@ -130,6 +130,26 @@ def test_marginal_organs_are_preferentially_discarded():
     assert mean_discarded_q > mean_transplanted_q
 
 
+def _retransplant_listings(harvests_per_round, seeds):
+    return sum(run_trial(seed=seed, strategy=STRATEGIES['real_world_circle'], num_nodes=12,
+                         rounds=52 * 6, patients_per_round=30,
+                         harvests_per_round=harvests_per_round,
+                         realistic_outcomes=True).retransplant_listings
+               for seed in seeds)
+
+
+def test_more_transplants_produce_more_retransplant_listings():
+    # the feedback loop: transplanting more organs now creates more living grafts, so more of them
+    # later fail and relist. Abundant supply must yield at least as many re-transplant listings as
+    # scarce supply over the same horizon - a relation only the graft-failure loop can satisfy.
+    seeds = range(4)
+    scarce = _retransplant_listings(harvests_per_round=3, seeds=seeds)
+    abundant = _retransplant_listings(harvests_per_round=12, seeds=seeds)
+
+    assert scarce > 0
+    assert abundant > scarce
+
+
 def test_acuity_scorer_ranks_a_sicker_patient_at_least_as_high():
     # monotonicity of the "sickest first" policy: raising a patient's acuity can only raise
     # (never lower) its allocation score

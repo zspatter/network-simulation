@@ -60,8 +60,10 @@ def test_wait_list_approaches_a_steady_state_rather_than_growing_without_bound()
 
     first_year_growth = sizes[0]
     last_year_growth = sizes[-1] - sizes[-2]
-    # growth must decelerate sharply - the original two-exit model grew ~linearly forever
-    assert last_year_growth < 0.5 * first_year_growth
+    # growth must decelerate clearly - the original two-exit model grew ~linearly forever (ratio
+    # ~1.0). The graft-failure loop adds a re-transplant inflow that ramps up as the graft pool
+    # fills, so it slows (but does not stop) the approach to steady state - hence 0.65, not 0.5.
+    assert last_year_growth < 0.65 * first_year_growth
 
 
 def test_most_arrivals_are_absorbed_by_the_real_outflow_channels():

@@ -32,7 +32,8 @@ class Patient:
                  acuity: float = 0.0, raw_urgency: float = 0.0,
                  body_size: Optional[float] = None,
                  unacceptable_antigens: FrozenSet[int] = frozenset(),
-                 cpra: float = 0.0, is_pediatric: bool = False) -> None:
+                 cpra: float = 0.0, is_pediatric: bool = False,
+                 is_retransplant: bool = False) -> None:
 
         Patient.patient_count = Patient.patient_count + 1
 
@@ -54,6 +55,11 @@ class Patient:
         # pediatric candidates (< 18) get allocation priority under real policy (large for
         # kidney/heart); a fixed patient attribute, not per-round state
         self.is_pediatric: bool = is_pediatric
+        # True once this patient's prior graft has failed and they have relisted (a re-transplant
+        # candidate). Set by clinical.retransplant when a graft fails; drives no allocation bonus
+        # itself, but re-listing bumps sensitization (harder to match), which does. Not per-round
+        # state - it is a permanent mark once relisted.
+        self.is_retransplant: bool = is_retransplant
 
         if wait_list:
             wait_list.add_patient(self)

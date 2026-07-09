@@ -25,6 +25,7 @@ from scenario_report import DEFAULT_MEMBERSHIP_CSV, build_network, scaled_weekly
 
 from organflow.allocation import STRATEGIES
 from organflow.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
+from organflow.clinical.retransplant import RETRANSPLANT_SHARE_OF_LISTINGS
 
 # ---- Published 2024 OPTN/SRTR national figures (full scale) ----
 OPTN_2024 = {
@@ -36,6 +37,8 @@ OPTN_2024 = {
     # standing (point-prevalence) wait list, not the flow-inclusive 167k "ever listed in 2024"
     'waitlist_snapshot': 103_000,
     'kidney_share_of_waitlist': 0.86,
+    # re-transplant candidates as a share of all new listings (kidney ~9.6%, liver 3.4%, blended)
+    'retransplant_share_of_listings': RETRANSPLANT_SHARE_OF_LISTINGS,
 }
 
 
@@ -60,7 +63,8 @@ def run_validation(network, patient_nodes: List[int], organ_nodes: List[int],
     rounds = years * 52
 
     totals = {k: 0.0 for k in ('transplanted', 'discarded', 'wasted', 'deaths', 'living',
-                               'removals', 'final_size', 'kidney_final')}
+                               'removals', 'final_size', 'kidney_final', 'first_time',
+                               'retransplant')}
     for seed in range(seeds):
         m = run_trial(seed=seed, strategy=STRATEGIES['real_world_circle'], rounds=rounds,
                       patients_per_round=patients_per_round, harvests_per_round=harvests_per_round,
@@ -73,11 +77,14 @@ def run_validation(network, patient_nodes: List[int], organ_nodes: List[int],
         totals['deaths'] += m.waitlist_deaths
         totals['living'] += m.living_donor_transplants
         totals['removals'] += m.other_removals
+        totals['first_time'] += m.first_time_listings
+        totals['retransplant'] += m.retransplant_listings
         final = m.wait_list_size_snapshots[-1][1] if m.wait_list_size_snapshots else 0
         totals['final_size'] += final
 
     per_seed = {k: v / seeds for k, v in totals.items()}
     recovered = per_seed['transplanted'] + per_seed['wasted']
+    all_listings = per_seed['first_time'] + per_seed['retransplant']
     to_full = 1.0 / scale
     return {
         'deceased_transplants_per_year': per_seed['transplanted'] / years * to_full,
@@ -85,6 +92,7 @@ def run_validation(network, patient_nodes: List[int], organ_nodes: List[int],
         'deaths_per_year': per_seed['deaths'] / years * to_full,
         'removals_per_year': per_seed['removals'] / years * to_full,
         'non_use_rate': per_seed['discarded'] / recovered if recovered else 0.0,
+        'retransplant_share': per_seed['retransplant'] / all_listings if all_listings else 0.0,
         'waitlist_final': per_seed['final_size'] * to_full,
     }
 
@@ -100,6 +108,8 @@ def comparison_rows(model: Dict[str, float]) -> List[ValidationRow]:
         ValidationRow('Non-death removals/yr', model['removals_per_year'], 8_000, 'count'),
         ValidationRow('Organ non-use rate', model['non_use_rate'],
                       OPTN_2024['overall_non_use_rate'], 'rate'),
+        ValidationRow('Re-transplant share of listings', model['retransplant_share'],
+                      OPTN_2024['retransplant_share_of_listings'], 'rate'),
         ValidationRow('Wait-list size (approaching)', model['waitlist_final'],
                       OPTN_2024['waitlist_snapshot'], 'count'),
     ]

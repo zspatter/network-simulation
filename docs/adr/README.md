@@ -16,3 +16,4 @@ gets a new record that supersedes the old one.
 | [0008](0008-dcd-vs-dbd-donor-quality.md) | Model DCD vs DBD donor quality as a mean-preserving discard/graft modifier *(superseded by 0010)* | 2026-07-09 |
 | [0009](0009-pediatric-priority.md) | Model pediatric priority as a scorer bonus in the policy scorers only | 2026-07-09 |
 | [0010](0010-continuous-donor-quality-index.md) | Generalize DBD/DCD into a continuous donor-quality index | 2026-07-09 |
+| [0011](0011-retransplant-loop.md) | Model graft failure and re-transplantation as an endogenous feedback loop | 2026-07-09 |

@@ -32,6 +32,7 @@ Donation chapters). These pin the arrival, discard, donor, and living-donor cons
 | Deceased-donor transplants | 42,048 | validation target |
 | Organ non-use (discard) rate, overall | 20.7% | validation target |
 | Non-use by organ | Kidney 29.3% · Pancreas 25.1% · Liver 11.5% · Lung 11.3% · Intestine 4.9% · Heart 1.9% | `acceptance.BASE_DISCARD_PROB` |
+| Re-transplant share of listings | Kidney ~9.6% (first-time 90.4% of DDKT), liver 3.4% of candidates; blended ~9% | `retransplant.RETRANSPLANT_SHARE_OF_LISTINGS` (splits first-time vs endogenous relists - see [ADR-0011](adr/0011-retransplant-loop.md)) |
 | Standing wait list (point prevalence) | ~103,000 (~86% kidney) | validation target |
 
 ¹ Kidney-pancreas (1,667) folded into Pancreas with pancreas-alone/after-kidney (312), since a

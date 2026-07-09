@@ -24,7 +24,7 @@ from benchmark_stats import (
 )
 
 from organflow.allocation import STRATEGIES, AllocationResult, Strategy
-from organflow.clinical import acceptance
+from organflow.clinical import acceptance, retransplant
 from organflow.clinical.living_donor import simulate_living_donor_transplants
 from organflow.clinical.progression import simulate_round_progression
 from organflow.clinical.removal import simulate_round_removals
@@ -33,6 +33,7 @@ from organflow.GraphBuilder import GraphBuilder
 from organflow.Network import Network
 from organflow.OrganGenerator import OrganGenerator
 from organflow.OrganList import OrganList
+from organflow.Patient import Patient
 from organflow.PatientGenerator import PatientGenerator
 from organflow.WaitList import WaitList
 
@@ -99,6 +100,13 @@ class TrialMetrics:
     pediatric_seen: int = 0
     pediatric_transplanted: int = 0
     pediatric_deaths: int = 0
+    # re-transplant loop (only under realistic_outcomes; see clinical.retransplant): first-time vs
+    # re-listed arrivals (their ratio is the emergent re-transplant share), and post-transplant
+    # deaths from graft failure - a separate outcome from waitlist_deaths (the patient had already
+    # left the list via transplant), so it never inflates the wait-list-death calibration
+    first_time_listings: int = 0
+    retransplant_listings: int = 0
+    graft_failure_deaths: int = 0
     deaths_by_organ: Dict[OrganType, int] = field(
             default_factory=lambda: {organ: 0 for organ in OrganType})
     wait_times_to_transplant: List[int] = field(default_factory=list)
@@ -137,6 +145,11 @@ class TrialMetrics:
         return self.quality_discarded_sum / self.organs_discarded \
             if self.organs_discarded else 0.0
 
+    def retransplant_share(self) -> float:
+        """Re-transplant relists as a share of all listings (0.0 if none; realistic_outcomes)."""
+        total = self.first_time_listings + self.retransplant_listings
+        return self.retransplant_listings / total if total else 0.0
+
 
 @dataclass
 class TrialConfig:
@@ -153,12 +166,14 @@ class TrialConfig:
 
 def _record_allocation(result: AllocationResult, network: Network, wait_list: WaitList,
                        organ_list: OrganList, metrics: TrialMetrics, config: TrialConfig,
-                       rng: random.Random) -> None:
+                       rng: random.Random, graft_registry: List[Patient]) -> None:
     """
     Accrues transplant/discard/waste metrics for one allocation and removes the recipients who
     actually received an organ. With realistic_outcomes a matched organ may be declined
     (cold-ischemia-dependent) and discarded - counted as wasted, its patient kept waiting - and
-    a transplanted organ's life-years are scaled by a cold-ischemia graft-survival penalty.
+    a transplanted organ's life-years are scaled by a cold-ischemia graft-survival penalty. Each
+    accepted recipient is enrolled in graft_registry, where their graft can later fail and relist
+    them (see clinical.retransplant); the round applies that after this recipient has aged a round.
     """
     transplanted_patients = []
     for organ, patient in result.matches:
@@ -189,9 +204,11 @@ def _record_allocation(result: AllocationResult, network: Network, wait_list: Wa
     metrics.organs_wasted += len(result.unmatched_organs)
 
     if config.realistic_outcomes:
-        # only the accepted recipients leave the list; discarded organs' patients stay
+        # only the accepted recipients leave the list; discarded organs' patients stay. The
+        # recipients enter the graft registry, where a later graft failure can relist them.
         for patient in transplanted_patients:
             wait_list.remove_patient(patient)
+        graft_registry.extend(transplanted_patients)
         organ_list.empty_list()
     else:
         result.apply(wait_list, organ_list)
@@ -218,14 +235,17 @@ def _record_outflows(wait_list: WaitList, metrics: TrialMetrics, config: TrialCo
 
 
 def _simulate_round(strategy: Strategy, network: Network, wait_list: WaitList,
-                    metrics: TrialMetrics, config: TrialConfig, rng: random.Random) -> None:
-    """One round: generate arrivals, harvest and allocate organs, then deterioration/outflow.
-    Mutates wait_list and metrics. Kept as three named steps so a round is testable and the
-    rng draw order (arrivals -> organs -> allocation/discard -> deaths -> removals -> living)
-    stays explicit and reproducible."""
+                    metrics: TrialMetrics, config: TrialConfig, rng: random.Random,
+                    graft_registry: List[Patient]) -> None:
+    """One round: generate arrivals, harvest and allocate organs, then deterioration/outflow and
+    (with realistic_outcomes) graft failure. Mutates wait_list, metrics, and graft_registry. Kept
+    as named steps so a round is testable and the rng draw order (arrivals -> organs ->
+    allocation/discard -> deaths -> removals -> living -> graft failure) stays explicit and
+    reproducible."""
     new_patients = PatientGenerator.generate_patients(
             network, config.patients_per_round, rng, eligible_nodes=config.patient_nodes)
     wait_list.add_patients(new_patients)
+    metrics.first_time_listings += len(new_patients)
     for patient in new_patients:
         metrics.tier_seen[_priority_tier(patient.priority, config.priority_range)] += 1
         if patient.is_pediatric:
@@ -235,9 +255,21 @@ def _simulate_round(strategy: Strategy, network: Network, wait_list: WaitList,
     OrganGenerator.generate_organs_to_list(
             network, config.harvests_per_round, organ_list, rng, eligible_nodes=config.organ_nodes)
 
+    n_prior_grafts = len(graft_registry)
     result = strategy.allocate(organ_list, wait_list, network)
-    _record_allocation(result, network, wait_list, organ_list, metrics, config, rng)
+    _record_allocation(result, network, wait_list, organ_list, metrics, config, rng, graft_registry)
     _record_outflows(wait_list, metrics, config, rng)
+
+    if config.realistic_outcomes:
+        # only grafts that existed before this round's transplants can fail (>= 1 round of aging);
+        # this round's new recipients (appended by _record_allocation) are held safe until next
+        prior_grafts, new_grafts = graft_registry[:n_prior_grafts], graft_registry[n_prior_grafts:]
+        relisted, graft_deaths, survivors = retransplant.simulate_graft_failures(prior_grafts, rng)
+        graft_registry[:] = survivors + new_grafts
+        wait_list.add_patients(relisted)
+        metrics.retransplant_listings += len(relisted)
+        metrics.graft_failure_deaths += graft_deaths
+
     wait_list.increment_wait_times()
 
 
@@ -281,9 +313,11 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
         organflow.clinical.living_donor.
     :param realistic_outcomes: when True, each matched organ may be declined/discarded with a
         cold-ischemia-dependent probability (a matched-but-discarded organ counts as wasted and
-        its patient stays on the list), and transplanted organs' life-years are scaled down by a
-        cold-ischemia graft-survival penalty. Off by default (so the bare strategy comparison and
-        tests are unaffected); the reality-calibrated scenario report enables it - see
+        its patient stays on the list), transplanted organs' life-years are scaled down by a
+        cold-ischemia graft-survival penalty, and each recipient's graft can later fail and either
+        relist them as a re-transplant candidate or die post-transplant (see
+        organflow.clinical.retransplant). Off by default (so the bare strategy comparison and tests
+        are unaffected); the reality-calibrated scenario report enables it - see
         organflow.clinical.acceptance.
     :return: aggregate metrics for the trial
     """
@@ -300,9 +334,11 @@ def run_trial(seed: int, strategy: Strategy, num_nodes: int = 30, rounds: int = 
             realistic_outcomes=realistic_outcomes,
             priority_range=100 + patients_per_round)  # matches PatientGenerator's randrange(100+n)
 
+    graft_registry: List[Patient] = []  # recipients living with a graft; a failure can relist them
+
     start = time.perf_counter()
     for round_number in range(1, rounds + 1):
-        _simulate_round(strategy, network, wait_list, metrics, config, rng)
+        _simulate_round(strategy, network, wait_list, metrics, config, rng, graft_registry)
 
         if snapshot_interval_rounds and round_number % snapshot_interval_rounds == 0:
             metrics.wait_list_size_snapshots.append((round_number, len(wait_list.wait_list)))

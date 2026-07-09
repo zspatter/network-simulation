@@ -11,16 +11,18 @@ All figures are regenerable - see [Regenerating these results](#regenerating-the
 A discrete-event simulation of US deceased-donor organ allocation. One **round = 7 days**. Each
 round: new patients are listed, organs are recovered from deceased donors, an allocation
 strategy matches feasible organ/patient pairs, and the patients still waiting deteriorate - some
-are transplanted from living donors, some are removed for non-death reasons, and some die. The
-whole thing is deterministic under one seeded `random.Random`, so differences between strategies
-are attributable to the strategy, not noise.
+are transplanted from living donors, some are removed for non-death reasons, and some die. A
+transplanted recipient is not gone for good: their graft can later fail and relist them as a
+re-transplant candidate. The whole thing is deterministic under one seeded `random.Random`, so
+differences between strategies are attributable to the strategy, not noise.
 
-Four exits and two entries govern the wait-list balance (all calibrated below):
+Four exits, two entries, and one feedback loop govern the wait-list balance (all calibrated below):
 
 ```
-      arrivals ──►  WAIT LIST  ──► deceased-donor transplant
-   living donor ──►           ──► death
-                              ──► non-death removal (too sick / improved / transferred)
+      arrivals ──►  WAIT LIST  ──► deceased-donor transplant ──► graft failure ─┐
+   living donor ──►           ──► death                                         │
+        relist  ◄──           ──► non-death removal (too sick / improved / …)   │
+              └──────────────────────────────────────────────────────────────◄─┘
 ```
 
 ## 2. Clinical constants and their sources
@@ -89,9 +91,16 @@ candidates (< 18) get a priority bonus in the policy scorers (`RealWorldScore`,
 | Non-death removal | 5%/yr competing risk | too sick / improved / transferred / declined |
 | Living-donor transplants | ~7,000/yr (kidney/liver) | OPTN/SRTR 2024 (7,024 living donors) |
 | Organ discard (non-use) | Kidney 29.3% / Pancreas 25.1% / Liver 11.5% / Lung 11.3% / Intestine 4.9% / Heart 1.9% (population average; scaled by a mean-preserving donor-quality multiplier, so marginal organs are discarded more) | OPTN/SRTR 2024 ADR, Deceased Organ Donation |
+| Graft failure -> re-transplant | 5.5%/yr graft failure, competing with 12%/yr recipient exit (death with a working graft); a failure relists (kidney 90% / heart 30% / …) or is a post-transplant death | re-transplant share of listings: kidney ~9.6%, liver 3.4% (blended ~9%) |
+
+A transplanted recipient's graft can later fail and relist them as a re-transplant candidate,
+more sensitized than before (prior-graft antibodies raise cPRA). Re-transplants are part of the
+calibrated national additions, so first-time arrivals are generated at (1 - 9%) of the national
+rate and the graft-failure loop supplies the rest - see
+[ADR-0011](adr/0011-retransplant-loop.md).
 
 `clinical/urgency.py`, `clinical/mortality.py`, `clinical/removal.py`, `clinical/living_donor.py`,
-`clinical/acceptance.py`.
+`clinical/acceptance.py`, `clinical/retransplant.py`.
 
 ## 3. Calibration: model vs. OPTN/SRTR 2024
 
@@ -100,18 +109,22 @@ Output of `python execute/validate_realism.py` (real network, 10% scale extrapol
 
 | Metric | Model | OPTN 2024 | Ratio |
 |---|---|---|---|
-| Deceased-donor transplants/yr | 42,010 | 42,048 | **1.00×** |
+| Deceased-donor transplants/yr | 41,854 | 42,048 | **1.00×** |
 | Living-donor transplants/yr | 7,280 | 7,024 | 1.04× |
-| Organ non-use (discard) rate | 21.8% | 20.7% | 1.05× |
-| Wait-list deaths/yr | 7,412 | ~6,000 | 1.24× |
-| Wait-list size (still climbing at 8 yr) | 91,030 | ~103,000 | 0.88× |
-| Non-death removals/yr | 2,639 | ~8,000 | 0.33× |
+| Organ non-use (discard) rate | 21.7% | 20.7% | 1.05× |
+| Wait-list deaths/yr | 5,998 | ~6,000 | **1.00×** |
+| Re-transplant share of listings | 6.1% | ~9.0% | 0.68× |
+| Wait-list size (still climbing at 8 yr) | 88,900 | ~103,000 | 0.86× |
+| Non-death removals/yr | 2,410 | ~8,000 | 0.30× |
 
-The primary flows (transplants, discard, living donors) reproduce reality to within a few
-percent. The two weakest matches are **coupled**: the 5%/yr removal rate under-produces removals
-(0.33×), which leaves slightly too many patients to die (1.24×). Raising the removal rate would
-improve both; it is left as a documented knob because the sensitivity analysis (below) shows the
-conclusions do not depend on it.
+The primary flows (transplants, discard, living donors, deaths) reproduce reality to within a few
+percent. Two rows are still **approaching** their targets at this 8-year horizon rather than
+missing them: the wait-list size (0.86×) and the re-transplant share (0.68×) both climb toward
+reality as their pools fill - the graft pool that feeds re-transplants accumulates over a
+graft-lifetime timescale, reaching ~9% only near steady state (run more years to see it). The one
+genuine miss is **non-death removals** (0.30×): the 5%/yr removal rate under-produces them, a
+documented knob left as-is because the sensitivity analysis (below) shows the conclusions do not
+depend on it.
 
 ## 4. Sensitivity analysis
 

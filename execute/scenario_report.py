@@ -29,11 +29,15 @@ from import_hospitals import filter_physical_locations, import_nodes, read_membe
 
 from organflow.allocation import STRATEGIES
 from organflow.clinical.removal import OTHER_REMOVAL_ANNUAL_RATE
+from organflow.clinical.retransplant import RETRANSPLANT_SHARE_OF_LISTINGS
 from organflow.Network import Network
 
 # ---- Real-world calibration (OPTN/SRTR 2024 data - see README for full sourcing) ----
 # 70,600 new waitlist additions across all organs in 2024 -> per week. PatientGenerator already
-# splits this across organs via clinical.frequencies' real kidney-dominant weights.
+# splits this across organs via clinical.frequencies' real kidney-dominant weights. This total
+# includes re-transplant candidates; exogenous generation covers only the first-time share and the
+# graft-failure loop supplies the rest, so total inflow stays calibrated - see scaled_weekly_rates,
+# clinical.retransplant, and RETRANSPLANT_SHARE_OF_LISTINGS.
 NATIONAL_WEEKLY_NEW_PATIENTS = round(70_600 / 52)
 # 16,989 deceased donors in 2024 -> per week. OrganGenerator already splits organ recovery via
 # clinical.frequencies.DONOR_RECOVERY_PROBABILITIES.
@@ -55,9 +59,14 @@ DEFAULT_SCALE = 0.1
 def scaled_weekly_rates(scale: float) -> Tuple[int, int, int]:
     """
     :param float scale: fraction of real national weekly volume (1.0 == literal national figures)
-    :return: (patients_per_round, harvests_per_round, living_donors_per_round) at that scale
+    :return: (patients_per_round, harvests_per_round, living_donors_per_round) at that scale.
+        patients_per_round is the FIRST-TIME listing rate only: the calibrated national total
+        already includes re-transplant candidates, and the graft-failure loop supplies those
+        endogenously, so exogenous generation is reduced by RETRANSPLANT_SHARE_OF_LISTINGS to keep
+        total inflow (first-time + relists) at the national figure - see clinical.retransplant.
     """
-    return (round(NATIONAL_WEEKLY_NEW_PATIENTS * scale),
+    first_time_weekly = NATIONAL_WEEKLY_NEW_PATIENTS * (1.0 - RETRANSPLANT_SHARE_OF_LISTINGS)
+    return (round(first_time_weekly * scale),
            round(NATIONAL_WEEKLY_DECEASED_DONORS * scale),
            round(NATIONAL_WEEKLY_LIVING_DONORS * scale))
 
@@ -360,8 +369,10 @@ def _methodology_section(network_node_count: int, transplant_hospital_count: int
         f'- **Arrival calibration** (OPTN/SRTR 2024, real national rates: '
         f'{NATIONAL_WEEKLY_NEW_PATIENTS:,} new patients/week from 70,600/year across all '
         f'organs, {NATIONAL_WEEKLY_DECEASED_DONORS:,} deceased donors/week from 16,989/year): '
-        f'this report simulates {scale_note} - {patients_per_round:,} patients/week, '
-        f'{harvests_per_round:,} donors/week. One simulated round = 1 week.\n'
+        f'this report simulates {scale_note} - {patients_per_round:,} first-time patients/week '
+        f'(the national total includes re-transplants, which the graft-failure loop supplies '
+        f'endogenously - see clinical.retransplant), {harvests_per_round:,} donors/week. '
+        f'One simulated round = 1 week.\n'
         '- **Strategies compared**:\n'
         f'{strategy_lines}\n'
         '- **Seeds per horizon** (fewer for longer horizons - runtime compounds with horizon '
