@@ -18,6 +18,11 @@ dev = [
     "pytest-cov>=5.0",
     "mypy>=1.10",
     "ruff>=0.6",
+    "hypothesis>=6.100",
+]
+# Mutation testing (kept separate: heavier, run on demand, not part of the normal dev loop).
+mutation = [
+    "mutmut>=2.4,<3",
 ]
 report = [
     "reportlab>=4.0",

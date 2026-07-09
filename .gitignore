@@ -25,5 +25,8 @@ reports/*
 # Cached geocoded network (rebuilt from the membership CSV on demand)
 *.network_cache.pkl
 
+# Mutation-testing cache
+.mutmut-cache
+
 # Claude Code personal settings
 .claude/settings.local.json
