@@ -8,9 +8,11 @@ effects rather than differences in who happened to show up.
 
 Run directly: `python execute/benchmark_strategies.py`
 """
+import os
 import random
 import statistics
 import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from typing import Dict, Iterable, List, Optional, Tuple
 
@@ -292,8 +294,46 @@ class AggregatedMetrics:
     runtime_mean: float
 
 
+def _aggregate_trials(name: str, trials: List[TrialMetrics]) -> AggregatedMetrics:
+    """Collapses one strategy's per-seed trials into mean/stdev summary metrics."""
+    transplanted = [t.organs_transplanted for t in trials]
+    return AggregatedMetrics(
+            strategy_name=name,
+            transplanted_mean=statistics.mean(transplanted),
+            transplanted_stdev=statistics.stdev(transplanted) if len(transplanted) > 1 else 0.0,
+            wasted_mean=statistics.mean(t.organs_wasted for t in trials),
+            deaths_mean=statistics.mean(t.waitlist_deaths for t in trials),
+            deaths_high_acuity_mean=statistics.mean(t.deaths_high_acuity for t in trials),
+            median_wait_mean=statistics.mean(t.median_wait() for t in trials),
+            life_years_mean=statistics.mean(t.life_years_saved for t in trials),
+            priority_served_mean=statistics.mean(t.total_priority_served for t in trials),
+            fairness_spread_mean=statistics.mean(t.fairness_spread() for t in trials),
+            runtime_mean=statistics.mean(t.runtime_seconds for t in trials))
+
+
+def _run_all_trials(names: List[str], seeds: List[int], workers: int,
+                    trial_kwargs: dict) -> Dict[str, List[TrialMetrics]]:
+    """
+    Runs every (strategy, seed) trial and returns them grouped by strategy in seed order.
+    Trials are independent and fully seeded, so a parallel run is bit-for-bit identical to a
+    sequential one - results are keyed by (name, seed) and reassembled in order, never by
+    completion order. workers == 1 stays a plain sequential loop (no process-pool overhead).
+    """
+    if workers <= 1:
+        return {name: [run_trial(seed, STRATEGIES[name], **trial_kwargs) for seed in seeds]
+                for name in names}
+
+    completed: Dict[Tuple[str, int], TrialMetrics] = {}
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        futures = {executor.submit(run_trial, seed, STRATEGIES[name], **trial_kwargs): (name, seed)
+                   for name in names for seed in seeds}
+        for future in as_completed(futures):
+            completed[futures[future]] = future.result()
+    return {name: [completed[(name, seed)] for seed in seeds] for name in names}
+
+
 def run_benchmark(strategy_names: Optional[Iterable[str]] = None,
-                  seeds: Iterable[int] = range(30), **trial_kwargs
+                  seeds: Iterable[int] = range(30), workers: int = 1, **trial_kwargs
                   ) -> Tuple[List[AggregatedMetrics], Dict[str, List[TrialMetrics]]]:
     """
     Runs run_trial() for every (strategy, seed) pair and aggregates the
@@ -303,34 +343,19 @@ def run_benchmark(strategy_names: Optional[Iterable[str]] = None,
 
     :param strategy_names: subset of STRATEGIES to compare (defaults to all)
     :param seeds: seeds to run each strategy over
+    :param int workers: process-pool size for running trials in parallel (default 1 =
+        sequential). Trials are independent and seeded, so any worker count yields identical
+        results; use os.cpu_count() to parallelize the (embarrassingly parallel) sweep.
     :param trial_kwargs: forwarded to run_trial (num_nodes, rounds, etc.)
     :return: (per-strategy aggregated metrics, per-strategy per-seed raw trials -
         the latter is what compare_to_reference needs for paired comparisons,
         since aggregates alone can't be re-paired by seed)
     """
     names = list(strategy_names) if strategy_names is not None else list(STRATEGIES.keys())
-    aggregated = []
-    trials_by_strategy: Dict[str, List[TrialMetrics]] = {}
+    seeds = list(seeds)
 
-    for name in names:
-        strategy = STRATEGIES[name]
-        trials = [run_trial(seed, strategy, **trial_kwargs) for seed in seeds]
-        trials_by_strategy[name] = trials
-
-        transplanted = [t.organs_transplanted for t in trials]
-        aggregated.append(AggregatedMetrics(
-                strategy_name=name,
-                transplanted_mean=statistics.mean(transplanted),
-                transplanted_stdev=statistics.stdev(transplanted) if len(transplanted) > 1 else 0.0,
-                wasted_mean=statistics.mean(t.organs_wasted for t in trials),
-                deaths_mean=statistics.mean(t.waitlist_deaths for t in trials),
-                deaths_high_acuity_mean=statistics.mean(t.deaths_high_acuity for t in trials),
-                median_wait_mean=statistics.mean(t.median_wait() for t in trials),
-                life_years_mean=statistics.mean(t.life_years_saved for t in trials),
-                priority_served_mean=statistics.mean(t.total_priority_served for t in trials),
-                fairness_spread_mean=statistics.mean(t.fairness_spread() for t in trials),
-                runtime_mean=statistics.mean(t.runtime_seconds for t in trials)))
-
+    trials_by_strategy = _run_all_trials(names, seeds, workers, trial_kwargs)
+    aggregated = [_aggregate_trials(name, trials_by_strategy[name]) for name in names]
     return aggregated, trials_by_strategy
 
 
@@ -450,7 +475,8 @@ def print_significance_report(results: List[SignificanceResult], alpha: float = 
 
 if __name__ == '__main__':
     report, trials_by_strategy = run_benchmark(seeds=range(30), num_nodes=30, rounds=12,
-                                               patients_per_round=40, harvests_per_round=12)
+                                               patients_per_round=40, harvests_per_round=12,
+                                               workers=os.cpu_count() or 1)
     print_report(report)
 
     significance = compare_to_reference(trials_by_strategy)

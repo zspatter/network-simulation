@@ -165,6 +165,22 @@ def test_run_trial_records_no_snapshots_by_default():
     assert metrics.wait_list_size_snapshots == []
 
 
+def test_run_benchmark_parallel_matches_sequential_exactly():
+    # trials are independent and seeded, so a process-pool run must be bit-for-bit identical
+    # to the sequential one - the parallelization is a pure speedup, not a behavior change
+    kwargs = dict(strategy_names=['baseline', 'optimal_composite'], seeds=range(3),
+                  num_nodes=10, rounds=4, patients_per_round=8, harvests_per_round=3)
+    _, sequential = run_benchmark(workers=1, **kwargs)
+    _, parallel = run_benchmark(workers=2, **kwargs)
+
+    assert sequential.keys() == parallel.keys()
+    for name in sequential:
+        assert [t.organs_transplanted for t in sequential[name]] == \
+               [t.organs_transplanted for t in parallel[name]]
+        assert [t.waitlist_deaths for t in sequential[name]] == \
+               [t.waitlist_deaths for t in parallel[name]]
+
+
 def test_run_benchmark_aggregates_every_strategy():
     report, trials_by_strategy = run_benchmark(seeds=range(2), num_nodes=10, rounds=4,
                                                patients_per_round=10, harvests_per_round=2)

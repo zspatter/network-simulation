@@ -9,6 +9,7 @@ Run directly: `python execute/scenario_report.py`
 """
 import argparse
 import csv
+import os
 import statistics
 import time
 from dataclasses import dataclass, field
@@ -124,6 +125,9 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     parser.add_argument('--formats', default='markdown,csv',
                         help='Comma-separated output formats: markdown, csv, pdf (pdf needs '
                              'the optional reportlab dependency; default: markdown,csv)')
+    parser.add_argument('--workers', type=int, default=os.cpu_count() or 1,
+                        help='Parallel worker processes for the (independent, seeded) trials '
+                             '(default: all CPU cores). 1 forces a sequential run.')
     parser.add_argument('--output-dir', default=None,
                         help='Output directory (default: reports/<timestamp>/)')
     parser.add_argument('--membership-csv', default=str(DEFAULT_MEMBERSHIP_CSV),
@@ -184,7 +188,8 @@ class HorizonResult:
 def run_horizon(years: int, strategy_names: List[str], seeds: int, network: Network,
                 patient_nodes: List[int], organ_nodes: List[int], patients_per_round: int,
                 harvests_per_round: int, living_donors_per_round: int = 0,
-                other_removal_annual_rate: float = OTHER_REMOVAL_ANNUAL_RATE) -> HorizonResult:
+                other_removal_annual_rate: float = OTHER_REMOVAL_ANNUAL_RATE,
+                workers: int = 1) -> HorizonResult:
     """
     Runs every strategy in strategy_names over `years` simulated years (rounds = years * 52),
     on the given real network. Arrival/donor rates are the caller's responsibility (see
@@ -203,7 +208,7 @@ def run_horizon(years: int, strategy_names: List[str], seeds: int, network: Netw
             snapshot_interval_rounds=ROUNDS_PER_YEAR,
             living_donors_per_round=living_donors_per_round,
             other_removal_annual_rate=other_removal_annual_rate,
-            realistic_outcomes=True)
+            realistic_outcomes=True, workers=workers)
 
     significance: List[SignificanceResult] = []
     if seeds >= 2 and DEFAULT_REFERENCE_STRATEGY in trials_by_strategy:
@@ -444,7 +449,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         horizon_results.append(
                 run_horizon(years, strategy_names, seeds, network, patient_nodes, organ_nodes,
                            patients_per_round, harvests_per_round,
-                           living_donors_per_round=living_donors_per_round))
+                           living_donors_per_round=living_donors_per_round,
+                           workers=args.workers))
         print(f'  done in {time.perf_counter() - start:.1f}s')
 
     if 'markdown' in formats:
